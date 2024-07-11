@@ -11,18 +11,6 @@
               <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label" for="parentUnit">
-              {{ "ParentUnit"|localize  }}
-            </label>
-            <div class="col-md-9">
-              <select class="form-control" aria-label="From" #parentUnitIdModel="ngModel" name="parentUnitId" [(ngModel)]="unit.parentUnitId"
-                #parentUnitIdEl>
-                <option *ngFor="let parentUnit of parentUnits" value={{parentUnit.id}}>{{parentUnit.name}}</option>
-              </select>
-              <abp-validation-summary [control]="parentUnitIdModel" [controlEl]="parentUnitIdEl"></abp-validation-summary>
-              </div>
-          </div>
     </div>
     <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createUnitModal.form.valid || saving"
       (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>

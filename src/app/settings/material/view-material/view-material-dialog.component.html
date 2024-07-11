@@ -17,32 +17,22 @@
   </div>
 
   <div class="form-group row">
-    <label class="col-md-3 col-form-label" for="code">
-      {{ "Code" | localize }}
+    <label class="col-md-3 col-form-label" for="category">
+      {{ "Category" | localize }}
     </label>
     <div class="col-md-9">
-      <label class="form-control" name="code" id="code">
-        {{ data.code }}
+      <label class="form-control" name="category" id="category">
+        {{ category.name }}
       </label>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-md-3 col-form-label" for="supplier">
-      {{ "Suppliers" | localize }}
-    </label>
-      <div class="col-md-9">
-          <label class="form-control" name="supplier" id="supplier"  *ngFor="let materialSupplier of data.suppliers">
-            {{ materialSupplier.supplier.name + " | " + materialSupplier.leadTime + " Day" }}
-          </label>
-      </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-md-3 col-form-label" for="description">
-      {{ "Description" | localize }}
+    <label class="col-md-3 col-form-label" for="specification">
+      {{ "Specification" | localize }}
     </label>
     <div class="col-md-9">
-      <label class="form-control" name="description" id="description">
-        {{ data.description }}
+      <label class="form-control" name="specification" id="specification">
+        {{ data.specification }}
       </label>
     </div>
   </div>

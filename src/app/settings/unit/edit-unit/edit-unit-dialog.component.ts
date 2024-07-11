@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UnitServiceProxy, UpdateUnitDto, UnitNameForDropdownDto } from '@shared/service-proxies/service-proxies';
+import { UnitServiceProxy, UpdateUnitDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
@@ -11,7 +11,6 @@ import { finalize } from 'rxjs';
 })
 export class EditUnitDialogComponent extends AppComponentBase {
   saving = false;
-  parentUnits: UnitNameForDropdownDto[] = [];
   id: number;
   unit = new UpdateUnitDto();
   @Output() onSave = new EventEmitter<any>();
@@ -24,19 +23,12 @@ export class EditUnitDialogComponent extends AppComponentBase {
   }
 
   ngOnInit(): void {
-    this.initialAllParentUnits();
+    this.initUnit();
   }
 
-  initialAllParentUnits(){
-    this._unitService.getAllParentUnits()
-    .subscribe((result)=>{
-      this.parentUnits = result;
-      this.initUnit();
-    });
-  }
-
+  
   initUnit() {
-    this._unitService.getIncludeParent(this.id).subscribe((result) => {
+    this._unitService.getForEdit(this.id).subscribe((result) => {
       this.unit = result;
     });
   }

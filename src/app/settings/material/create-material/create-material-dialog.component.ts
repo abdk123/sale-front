@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
-import { CreateMaterialDto, CreateMaterialSuppliersDto, MaterialServiceProxy, SupplierDto, SupplierNameForDropdownDto, SupplierServiceProxy, UpdateMaterialSuppliersDto } from '@shared/service-proxies/service-proxies';
+import { CreateMaterialDto, CreateMaterialCustomersDto, MaterialServiceProxy, CustomerDto, CustomerNameForDropdownDto, CustomerServiceProxy, UpdateMaterialCustomersDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
@@ -13,9 +13,9 @@ import { finalize } from 'rxjs';
 export class CreateMaterialDialogComponent extends AppComponentBase {
   saving = false;
   material = new CreateMaterialDto();
-  suppliers: SupplierNameForDropdownDto[] = [];
-  materialSuppliers: CreateMaterialSuppliersDto[] = [];
-  supplierList: SupplierNameForDropdownDto[] = [];
+  customers: CustomerNameForDropdownDto[] = [];
+  materialCustomers: CreateMaterialCustomersDto[] = [];
+  customerList: CustomerNameForDropdownDto[] = [];
   defaultValidationErrors: Partial<AbpValidationError>[] = [
     {
       name: 'min',
@@ -25,65 +25,65 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   @Output() onSave = new EventEmitter<any>();
   constructor(injector: Injector,
     private _materialService: MaterialServiceProxy,
-    private _supplierService: SupplierServiceProxy,
+    private _customerService: CustomerServiceProxy,
     public bsModalRef: BsModalRef,
 
   ) {
     super(injector);
   }
   ngOnInit(): void {
-    this.material.suppliers = []
-    this.initSupplier();
+    this.material.customers = []
+    this.initCustomer();
   }
   leadTimeValidationErrors(){
     let errors: AbpValidationError[] = [{name:'min',localizationKey:'leadTimeCanNotBeNegativeOrZero',propertyKey:'leadTimeCanNotBeNegativeOrZero'}];
     return errors;
   }
-  initSupplier() {
+  initCustomer() {
 
-    this._supplierService.getNameForDropdown().subscribe((result: SupplierNameForDropdownDto[]) => {
-      this.suppliers = result;
+    this._customerService.getNameForDropdown().subscribe((result: CustomerNameForDropdownDto[]) => {
+      this.customers = result;
 
     });
   }
-  hasDuplicatesSuppliers(){
-  var valueArr = this.material.suppliers.map(function(item){ return item.supplierId });
+  hasDuplicatesCustomers(){
+  var valueArr = this.material.customers.map(function(item){ return item.customerId });
   var isDuplicate = valueArr.some(function(item, idx){ 
     return valueArr.indexOf(item) != idx 
     });
     return isDuplicate;
   }
-  addMaterialSupplier() {
-    const index = this.material.suppliers.length ;
+  addMaterialCustomer() {
+    const index = this.material.customers.length ;
     //list have one element at least
     if(index>0)
     {
-      if ((this.material.suppliers[index-1].supplierId == null || this.material.suppliers[index-1].leadTime == null) ) {
-        this.notify.error(this.l('FillSupplierAndLeadTimeFieldFirst'));
+      if ((this.material.customers[index-1].customerId == null || this.material.customers[index-1].leadTime == null) ) {
+        this.notify.error(this.l('FillCustomerAndLeadTimeFieldFirst'));
       }
       else{
-        let materialSupplier = new CreateMaterialSuppliersDto();
-        this.material.suppliers.push(materialSupplier);
+        let materialCustomer = new CreateMaterialCustomersDto();
+        this.material.customers.push(materialCustomer);
       }
     }
     //if the list empty 
     else
     {
-      let materialSupplier = new CreateMaterialSuppliersDto();
-      this.material.suppliers.push(materialSupplier);
+      let materialCustomer = new CreateMaterialCustomersDto();
+      this.material.customers.push(materialCustomer);
     }
   }
-  removeMaterialSupplier(i: number) {
-    this.material.suppliers.splice(i, 1);
+  removeMaterialCustomer(i: number) {
+    this.material.customers.splice(i, 1);
   }
 
   save(): void {
 
-    if (this.material.suppliers.length < 1) {
-      this.notify.error(this.l('AddOneSupplierAtLeast'));
+    if (this.material.customers.length < 1) {
+      this.notify.error(this.l('AddOneCustomerAtLeast'));
     }
     else {
-      if(!this.hasDuplicatesSuppliers()){
+      if(!this.hasDuplicatesCustomers()){
         this.saving = true;
         this._materialService.
           create(
@@ -102,7 +102,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
           });
       }
       else {
-        this.notify.error(this.l('TheSupplierCannotBeDuplicated'));
+        this.notify.error(this.l('TheCustomerCannotBeDuplicated'));
       }
   
     }

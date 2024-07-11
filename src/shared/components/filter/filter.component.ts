@@ -1,9 +1,7 @@
 import { filter } from 'rxjs/operators';
 import { AfterViewInit, Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { ProductComponent } from '@app/settings/product/product.component';
 import { QueryBuilderClassNames, QueryBuilderConfig } from 'angular2-query-builder';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { ProductServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/app-component-base';
 import { ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
@@ -14,11 +12,9 @@ import { element } from 'protractor';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent extends AppComponentBase implements OnInit {
-  @ViewChild(ProductComponent) ProductComponent!: ProductComponent;
   query:  any;
   componentName: string;
-  constructor(injcter: Injector, public bsModalRef: BsModalRef,
-    private _productService: ProductServiceProxy) {
+  constructor(injcter: Injector, public bsModalRef: BsModalRef) {
     super(injcter);
   }
 
@@ -77,7 +73,7 @@ export class FilterComponent extends AppComponentBase implements OnInit {
         fields: {
           name: { name: 'Name', type: 'string' },
           size: { name: 'Code', type: 'string' },
-          price: { name: 'Suppliers', type: 'string' },
+          price: { name: 'Customers', type: 'string' },
 
         }
       }
@@ -85,7 +81,7 @@ export class FilterComponent extends AppComponentBase implements OnInit {
     }
 
 
-    else if (this.componentName == 'SupplierComponent' || this.componentName == 'UnitComponent') {
+    else if (this.componentName == 'CustomerComponent' || this.componentName == 'UnitComponent') {
       this.config = {
         fields: {
           name: { name: 'Name', type: 'string' },

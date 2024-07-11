@@ -1,19 +1,16 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FilterComponentBase } from '@shared/filter-Component-base';
-import { CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
-import { QueryBuilderConfig,Option } from 'angular2-query-builder';
+import { QueryBuilderConfig } from 'angular2-query-builder';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'filter-material-dialog',
-  templateUrl: './filter-material-dialog.component.html',
-
+  selector: 'filter-customer-dialog',
+  templateUrl: './filter-customer-dialog.component.html',
+ 
 })
-export class FilterMaterialDialogComponent extends FilterComponentBase implements OnInit {
+export class FilterCustomerDialogComponent  extends FilterComponentBase implements OnInit {
   public config: QueryBuilderConfig;
-  customers: Option[] = [];
   constructor(injcter: Injector,
-    private _customerService:CustomerServiceProxy,
     public bsModalRef: BsModalRef) {
     super(injcter);
   }
@@ -21,15 +18,11 @@ export class FilterMaterialDialogComponent extends FilterComponentBase implement
     this.initialQuery();
     this.initialConfig();
   }
-
   initialConfig() {
     this.classNames;
     this.config = {
       fields: {
         name: { name: this.l('Name'), type: 'string', operators: this.getOperators('string') },  
-        code: { name: this.l('Code'), type: 'string', operators: this.getOperators('string') },  
-  
-    
       }
     }
   }

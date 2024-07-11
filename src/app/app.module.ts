@@ -23,14 +23,10 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { HotkeyModule } from 'angular2-hotkeys';
 import { ComponentsModule } from './@components/components.module';
-import { ProductionModule } from './production/production.module';
 import { SettingsModule } from './settings/settings.module';
-import { WarehousesModule } from './warehouses/warehouses.module';
-import { SecurityModule } from './security/security.module';import { EmployeeServiceProxy } from '@shared/service-proxies/service-proxies';
-import { PersonnelModule } from './personnel/personnel.module';// notification
+import { SecurityModule } from './security/security.module';
 import {NotificationModule} from './layout/notification/notification.module'
 import { ReportsModule } from './reports/reports.module';
-import {WorkFlowModule} from '../app/workflow/work-flow.module'
 
 @NgModule({
   declarations: [
@@ -68,12 +64,9 @@ import {WorkFlowModule} from '../app/workflow/work-flow.module'
     //   useBootstrap4: true,
     // }),
     ComponentsModule,
-    ProductionModule,
     NotificationModule,
     SettingsModule,
     SecurityModule,
-    WarehousesModule,
-    PersonnelModule,
     ReportsModule
   ],
 

@@ -15,9 +15,7 @@ export class CategoryComponent extends FullPagedListingComponentBase<CategoryDto
   categories: CategoryDto[] = [];
   fields = [
     { label: this.l('Name'), name: 'name', sortable: true, type: 'string' },
-    { label: this.l('Description'), name: 'description', sortable: false, type: 'string' },
-    { label: this.l('ParentCategory'), name: 'parentCategory', sortable: true, type: 'reference', referenceTextField: 'name' },
-
+    { label: this.l('Description'), name: 'description', sortable: true, type: 'string' },
   ];
   constructor(injector: Injector,
     private _modalService: BsModalService,

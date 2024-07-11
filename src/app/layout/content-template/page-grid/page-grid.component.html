@@ -42,11 +42,6 @@
                           &nbsp;&nbsp;
                           <span>{{'View'|localize}}</span>
                         </a>
-                        <ng-container *ngIf="IsOutputRequest">
-                        <li class="divider dropdown-divider"></li>
-                        <a *ngIf="item.status == 0" class="dropdown-item" (click)="onchangeStatusToInProduction(item.id)">{{ "InProduction" | localize }}</a>
-                        <a *ngIf="item.status == 1"   class="dropdown-item"  (click)="onchangeStatusToFinish(item.id)" >{{ "Finished" | localize }}</a>
-                      </ng-container>
                       </ul>
                       <!-- <a *ngIf="hasDetails"
                       class="pointer" (click)="getParentId(item.id)"

@@ -15,11 +15,11 @@ const permissions:String[]=[
     'Setting.Products.Create',
     'Setting.Products.Edit',
     'Setting.Products.Delete',
-    // Suppliers
-    'Setting.Suppliers',
-    'Setting.Suppliers.Create',
-    'Setting.Suppliers.Edit',
-    'Setting.Suppliers.Delete',
+    // Customers
+    'Setting.Customers',
+    'Setting.Customers.Create',
+    'Setting.Customers.Edit',
+    'Setting.Customers.Delete',
 
     // unite
      'Setting.Units',

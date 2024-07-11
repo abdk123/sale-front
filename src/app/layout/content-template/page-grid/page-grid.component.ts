@@ -3,7 +3,6 @@ import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output, Qu
 import { AppComponentBase } from '@shared/app-component-base';
 import { BtSortableHeader, SortEvent } from '@shared/directives/bt-sortable-header.directive';
 import { IPageField } from '../page-default/page-field';
-import { OutputRequestServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -34,7 +33,6 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   selected = {};
   constructor(injector: Injector,
     public bsModalRef: BsModalRef,
-    private _OutputRequestService: OutputRequestServiceProxy,
     private _datePipe: DatePipe
   ) {
     super(injector);
@@ -61,27 +59,6 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
     this.editItem.emit(id);
   }
 
-
-  onchangeStatusToInProduction(id: number) {
-    this._OutputRequestService.changeStatus(1, id).subscribe((result) => {
-
-      this.notify.info(this.l('changeSuccessfully'));
-      this.bsModalRef.hide();
-      location.reload();
-    })
-
-  }
-
-  onchangeStatusToFinish(id: number) {
-    this._OutputRequestService.changeStatus(2, id).subscribe((result) => {
-
-      this.notify.info(this.l('changeSuccessfully'));
-      this.bsModalRef.hide();
-      location.reload();
-
-    })
-
-  }
   onDeleteItem(id: number) {
     this.deleteItem.emit(id);
   }

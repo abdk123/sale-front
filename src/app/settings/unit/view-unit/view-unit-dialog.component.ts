@@ -27,7 +27,7 @@ export class ViewUnitDialogComponent extends AppComponentBase {
 
   initUnit() {
     (this.id)
-    this._unitService.getIncludeParent(this.id).subscribe((result) => {
+    this._unitService.get(this.id).subscribe((result) => {
       this.unit = result;
     });
   }

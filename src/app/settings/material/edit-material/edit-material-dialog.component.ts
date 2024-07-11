@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
-import { CreateMaterialDto, MaterialDto, MaterialServiceProxy, SupplierDto, SupplierNameForDropdownDto, SupplierServiceProxy, UpdateMaterialDto, UpdateMaterialSuppliersDto, UpdateSupplierDto } from '@shared/service-proxies/service-proxies';
+import { CreateMaterialDto, MaterialDto, MaterialServiceProxy, CustomerDto, CustomerNameForDropdownDto, CustomerServiceProxy, UpdateMaterialDto, UpdateMaterialCustomersDto, UpdateCustomerDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
@@ -14,9 +14,9 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   saving = false;
   id: number;
   material = new UpdateMaterialDto();
-  suppliers: SupplierNameForDropdownDto[] = [];
-  supplierIds: number[] = []
-  updateSupplier: UpdateMaterialSuppliersDto[] = [];
+  customers: CustomerNameForDropdownDto[] = [];
+  customerIds: number[] = []
+  updateCustomer: UpdateMaterialCustomersDto[] = [];
   defaultValidationErrors: Partial<AbpValidationError>[] = [
     {
       name: 'min',
@@ -26,21 +26,21 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   @Output() onSave = new EventEmitter<any>();
   constructor(injector: Injector,
     private _materialService: MaterialServiceProxy,
-    private _supplierService: SupplierServiceProxy,
+    private _customerService: CustomerServiceProxy,
     public bsModalRef: BsModalRef,
 
   ) {
     super(injector);
   }
   ngOnInit(): void {
-    this.material.suppliers = []
-    this.initSupplier();
+    this.material.customers = []
+    this.initCustomer();
     this.initMaterial();
   }
 
-  initSupplier() {
-    this._supplierService.getNameForDropdown().subscribe((result: SupplierNameForDropdownDto[]) => {
-      this.suppliers = result;
+  initCustomer() {
+    this._customerService.getNameForDropdown().subscribe((result: CustomerNameForDropdownDto[]) => {
+      this.customers = result;
     });
   }
   leadTimeValidationErrors() {
@@ -53,47 +53,47 @@ export class EditMaterialDialogComponent extends AppComponentBase {
       this.material.name = result.name;
       this.material.code = result.code;
       this.material.description = result.description;
-      result.suppliers.forEach((item) => {
-        let supplier = new UpdateMaterialSuppliersDto();
-        supplier.id = item.id,
-          supplier.supplierId = item.supplier.id
-        supplier.leadTime = item.leadTime
-        this.material.suppliers.push(supplier);
+      result.customers.forEach((item) => {
+        let customer = new UpdateMaterialCustomersDto();
+        customer.id = item.id,
+          customer.customerId = item.customer.id
+        customer.leadTime = item.leadTime
+        this.material.customers.push(customer);
       });
     });
   }
 
-  addMaterialSupplier() {
-    const index = this.material.suppliers.length;
+  addMaterialCustomer() {
+    const index = this.material.customers.length;
     //list have one element at least
     if (index > 0) {
-      if ((this.material.suppliers[index - 1].supplierId == null || this.material.suppliers[index - 1].leadTime == null)) {
-        this.notify.error(this.l('FillSupplierAndLeadTimeFieldFirst'));
+      if ((this.material.customers[index - 1].customerId == null || this.material.customers[index - 1].leadTime == null)) {
+        this.notify.error(this.l('FillCustomerAndLeadTimeFieldFirst'));
       }
       else {
-        let materialSupplier = new UpdateMaterialSuppliersDto();
-        materialSupplier.materialId = this.material.id;
-        this.material.suppliers.push(materialSupplier);
+        let materialCustomer = new UpdateMaterialCustomersDto();
+        materialCustomer.materialId = this.material.id;
+        this.material.customers.push(materialCustomer);
       }
     }
     //if the list empty
     else {
-      let materialSupplier = new UpdateMaterialSuppliersDto();
-      materialSupplier.materialId = this.material.id;
-      this.material.suppliers.push(materialSupplier);
+      let materialCustomer = new UpdateMaterialCustomersDto();
+      materialCustomer.materialId = this.material.id;
+      this.material.customers.push(materialCustomer);
     }
   }
 
-  removeMaterialSupplier (i:number){
+  removeMaterialCustomer (i:number){
     if(i!=-1)
     {
-      this.material.suppliers.splice(i,1);
+      this.material.customers.splice(i,1);
 
     }
   }
-  hasDuplicatesSuppliers() {
+  hasDuplicatesCustomers() {
 
-    var valueArr: number[] = this.material.suppliers.map(function (item) { return item.supplierId });
+    var valueArr: number[] = this.material.customers.map(function (item) { return item.customerId });
     var isDuplicate = valueArr.some(function (item, idx) {
       return valueArr.indexOf(item) !== idx
     });
@@ -101,13 +101,13 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   }
 
   save(): void {
-    if (this.material.suppliers.length < 1) {
-      this.notify.error(this.l('AddOneSupplierAtLeast'));
+    if (this.material.customers.length < 1) {
+      this.notify.error(this.l('AddOneCustomerAtLeast'));
     }
     else {
-      if (!this.hasDuplicatesSuppliers()) {
+      if (!this.hasDuplicatesCustomers()) {
         this.saving = true;
-        this.material.suppliers.forEach((element) =>
+        this.material.customers.forEach((element) =>
           element.id = 0);
         this._materialService.
           update(
@@ -125,7 +125,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
           });
       }
       else {
-        this.notify.error(this.l('TheSupplierCannotBeDuplicated'));
+        this.notify.error(this.l('TheCustomerCannotBeDuplicated'));
       }
     }
     this.saving = true;
