@@ -1,0 +1,14 @@
+<app-page-header [title]="'Category' | localize"  [fields]="fields"
+ [CreatePermission]="'Setting.Categories.Create'" (addNewItem)="showAddNewModal()"
+  (advanceFilter)="showFilterDialog($event)" 
+  [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Categories.Edit'" 
+[DeletePermission]="'Setting.Categories.Delete'" [fields]="fields" [data]="categories" 
+[totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
+(viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
+(editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
+(changePage)="pageChanged($event)" ></app-page-grid>

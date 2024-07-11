@@ -1,0 +1,21 @@
+<abp-modal-header [title]="'ViewMoreDetails' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<div class="modal-body">
+    <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="name">
+            {{ "Name" | localize }}
+        </label>
+        <div class="col-md-9 ">
+            <label class="form-control" name="name" id="name">
+                {{unit.name}}
+            </label>
+        </div>
+        <label class="col-md-3 col-form-label" for="parentUnit" *ngIf="unit.parentUnit">
+            {{ "ParentUnit" | localize }}
+        </label>
+        <div class="col-md-9 " *ngIf="unit.parentUnit">
+            <label class="form-control" name="parentUnit" id="parentUnit">
+                {{unit.parentUnit?.name}}
+            </label>
+        </div>
+    </div>
+</div>

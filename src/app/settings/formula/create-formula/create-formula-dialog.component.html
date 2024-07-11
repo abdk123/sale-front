@@ -1,0 +1,89 @@
+<form class="form-horizontal " autocomplete="off" #createformulaModal="ngForm">
+  <div class="modal-body modal-xl">
+    <div class="row">
+      <div class="col-md-11">
+        <!-- Inputs -->
+        <div class="row">
+          <div class="col-md-3 required">
+            <label form="materialId">{{'Material'|localize}}</label>
+            <select aria-placeholder="material" class="form-control" aria-label="Material" #materialIdModel="ngModel"
+              required name="materialId" [(ngModel)]="formula.materialId" #materialIdEl (change)="initUnits($event)">
+              <option *ngFor="let item of materialsForDropDown" value={{item.id}}>{{item.code}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 required">
+            <label form="quantity">{{'Quantity'|localize}}</label>
+            <input type="number" class="form-control" name="quantity" id="quantity" required min="0"
+              [(ngModel)]="formula.quantity" #quantityModel="ngModel"
+              #quantityEl />
+              <abp-validation-summary [control]="quantityModel"[customValidationErrors]="quantityValidationErrors()" [controlEl]="quantityEl"></abp-validation-summary>
+          </div>
+          <div class="col-md-3 required">
+            <label form="unitId">{{'Unit'|localize}}</label>
+            <select class="form-control" aria-label="unit" #unitIdModel="ngModel" required name="unitId"
+              [(ngModel)]="formula.unitId" #unitIdEl>
+              <option value="0">...</option>
+              <option *ngFor="let item of units" value={{item.id}}>{{item.name}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 required">
+            <label form="percentage">{{'Percentage'|localize}}</label>
+            <input type="number" class="form-control" name="percentage" id="percentage" required min="0.0001"
+           max="100"   [(ngModel)]="formula.percentage" #percentageModel="ngModel" #percentageEl />
+              <abp-validation-summary [control]="percentageModel"[customValidationErrors]="percentageValidationErrors()" [controlEl]="percentageEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <!-- Button -->
+        <button type="button" class="btn btn-outline-primary mt-4" (click)="addToFormulaList()">
+          <i class="bi bi-check-lg"> </i>
+        </button>
+      </div>
+    </div>
+    <div class="separator my-5"></div>
+    <!-- tabel -->
+    <div class="row">
+      <div class="col-12 list table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover table-borderless">
+          <thead class="border-bottom">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">{{'Material'|localize}}</th>
+              <th scope="col">{{'Quantity'|localize}}</th>
+              <th scope="col">{{'Percentage'|localize}}</th>
+              <th scope="col">{{'Action'|localize}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let formula of data;let i=index; ">
+              <td>{{i+1}}</td>
+              <ng-contanier *ngFor="let m of materials;let mId=index">
+                <td *ngIf="mId==i">{{m.code}} </td>
+              </ng-contanier>
+              <td>{{formula.quantity }}
+                <ng-contanier *ngFor="let u of unitsNames; let uId = index">
+                  <span *ngIf="uId == i">{{u }}</span>
+                </ng-contanier>
+              </td>
+              <td>{{formula.percentage}}%</td>
+              <td> <button id="button-basic" type="button" id="edit" class="header-icon btn btn-empty text-primary"
+                  [disabled]="isButtonDisabled" (click)="edit(formula)">
+                  <i class="simple-icon-pencil text-primary"></i>
+                </button>
+                <button id="button-basic" type="button" id="delete" class="header-icon btn btn-empty text-primary"
+                  (click)="delete(formula)">
+                  <i class="simple-icon-trash text-primary"></i>
+                </button>
+                <button id="button-basic" type="button" id="delete" class="header-icon btn btn-empty text-primary"
+                  (click)="view(formula)">
+                  <i class="simple-icon-eye text-primary"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>

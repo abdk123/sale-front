@@ -1,0 +1,31 @@
+<div class="card ">
+    <abp-modal-header [title]="planProduct.product?.name" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="card-body pt-0">
+        <div class="d-flex row-flex mt-">
+            <div class="w-50">
+                <ul class="mb-0">
+                    <li class="text-one">{{'AmountWasted'|localize}} <i [tooltip]="tooltipData.amountWasted" class="bi bi-question-circle-fill text-primary"></i> :</li>
+                    <li class="text-one">{{'TotalSalesAmount'|localize}} <i [tooltip]="tooltipData.totalSalesAmount" class="bi bi-question-circle-fill text-primary"></i> :</li>
+                    <li class="text-one">{{'ProduceCost'|localize}} <i [tooltip]="tooltipData.produceCost" class="bi bi-question-circle-fill text-primary"></i> :</li>
+                    <li class="text-one">{{'Arbitrage'|localize}} <i [tooltip]="tooltipData.productArbitrage" class="bi bi-question-circle-fill text-primary"></i> :</li>
+                </ul>
+            </div>
+            <div class="w-50">
+                <ul class="list-unstyled mb-0">
+                    <li class="text-one">
+                        {{planProduct.amountWasted | commaNumber}}
+                    </li>
+                    <li class="text-one">
+                        {{planProduct.totalSalesAmount | commaNumber}}
+                    </li>
+                    <li class="text-one">
+                        {{planProduct.produceCost | commaNumber}}
+                    </li>
+                    <li class="text-one">
+                        {{planProduct.productArbitrage | commaNumber}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

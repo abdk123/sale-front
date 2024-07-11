@@ -1,0 +1,57 @@
+<form class="form-horizontal " autocomplete="off" #generalSettings="ngForm" (ngSubmit)="save()">
+  <div class="card">
+    <div class="card-body border-bottom pb-2">
+      <div class="float-left float-none-xs">
+        <div class="d-inline-block">
+          <h5 class="d-inline">{{title}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <!--  -->
+      <div class="form-group row required">
+        <label class="col-md-3 col-form-label" for="expiryDurationNotify">
+          {{ "ExpiryDurationNotify" | localize }}
+        </label>
+        <div class="col-md-9 ">
+          <input type="number" class="form-control" placeholder="{{'InDays'|localize}}" name="expiryDurationNotify"
+            id="expiryDurationNotify" required [(ngModel)]="expiryDurationNotify " min="1"
+            #expiryDurationNotifyModel="ngModel" #expiryDurationNotifyEl />
+          <abp-validation-summary [control]="expiryDurationNotifyModel"
+            [controlEl]="expiryDurationNotifyEl"></abp-validation-summary>
+        </div>
+      </div>
+      <!--  -->
+      <div class="form-group row required">
+        <label class="col-md-3 col-form-label" for="expiryDurationNotify">
+          {{ "SsrsUrl" | localize }}
+        </label>
+        <div class="col-md-9 ">
+          <input  class="form-control" placeholder="{{'Server Url'|localize}}" name="ssrsUrl"
+            id="ssrsUrl" required [(ngModel)]="ssrsUrl " min="1"
+            #ssrsUrlModel="ngModel" #ssrsUrlEl />
+          <abp-validation-summary [control]="ssrsUrlModel"
+            [controlEl]="ssrsUrlEl"></abp-validation-summary>
+        </div>
+      </div>
+      <!--  -->
+      <div class="form-group row required">
+        <label class="col-md-3 col-form-label" for="ssrsFolder">
+          {{ "SsrsFolder" | localize }}
+        </label>
+        <div class="col-md-9 ">
+          <input class="form-control" placeholder="{{'Reports Folder'|localize}}" name="ssrsFolder"
+            id="ssrsFolder" required [(ngModel)]="ssrsFolder " min="1"
+            #ssrsFolderModel="ngModel" #ssrsFolderEl />
+          <abp-validation-summary [control]="ssrsFolderModel"
+            [controlEl]="ssrsFolderEl"></abp-validation-summary>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer justify-content-between ">
+      <button type="submit" class="btn btn-outline-primary" [disabled]="!generalSettings.form.valid">
+        <i class="bi bi-check"> </i> {{ 'Save' | localize }}
+      </button>
+    </div>
+  </div>
+</form>

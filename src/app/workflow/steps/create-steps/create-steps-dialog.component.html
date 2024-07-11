@@ -1,0 +1,89 @@
+<form class="form-horizontal " autocomplete="off" #createUnitModal="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'AddNewWorkFlowStep'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  
+    <div class="modal-body modal-xl">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="Title">
+              {{ "Title"|localize  }}
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" name="Title" id="Title" required 
+                [(ngModel)]="step.title" #TitleModel="ngModel" #TitleEl   />
+              <abp-validation-summary [control]="TitleModel" [controlEl]="TitleEl"></abp-validation-summary>
+            </div>
+          </div>
+          <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="Index">
+              {{ "Index"|localize  }}
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" name="Index" id="Index" required 
+                [(ngModel)]="step.index" #IndexModel="ngModel" #IndexEl   />
+              <abp-validation-summary [control]="IndexModel" [controlEl]="IndexEl"></abp-validation-summary>
+            </div>
+          </div>
+          <!-- Action -->
+          <div class="form-group row required ">
+            <label class="col-md-3 col-form-label" for="actions">
+              {{ "Actions" | localize }}
+            </label>
+            <div class="col-md-9 mb-2">
+              <button type="button" class="btn btn-primary btn-md mb-1" (click)="addWorkFlowAction()"><i
+                  class="iconsminds-add"></i>
+                {{'addWorkFlowAction'|localize}}</button>
+            </div>
+          </div>
+          
+            <div class="row required" >
+            <div class="col-md-12">
+              <div *ngFor="let action of step.actions;  let i=index">
+                <div class="separator mb-1"></div>
+                <div class="row mx-3 my-3">
+                  <label class="col-md-2 col-form-label" for="Name">
+                    {{ "Name"|localize }}
+                  </label>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" name="Name{{i}}" id="Name{{i}}" required 
+                      [(ngModel)]="action.Name" #NameModel="ngModel" #NameEl
+                      placeholder="{{'Name'|localize}}" />
+                    <abp-validation-summary [control]="NameModel" [controlEl]="NameEl"></abp-validation-summary>
+                  </div>
+                  <!-- <div class="col-md-3 ">
+                    <select class="form-control" aria-label="workFlowIndexs" #workFlowIndexsModel="ngModel" required name="workFlowIndexs{{i}}"
+                      id="workFlowIndexs{{i}}" [(ngModel)]="action.workflowIndexId" #workFlowIndexsEl>
+                      <option *ngFor="let item of workFlowIndexs" [ngValue]="item.id">{{item.actionName}}</option>
+                      <abp-validation-summary [control]="workFlowIndexsModel" [controlEl]="workFlowIndexsEl"></abp-validation-summary>
+                    </select>
+                  </div> -->
+                  <label class="col-md-3 col-form-label" for="workFlowType">
+                    {{ "WorkFlowType"|localize }}
+                  </label>
+                  <div class="col-md-3 ">
+                    <select class="form-control" aria-label="workFlowType" #workFlowTypeModel="ngModel" required name="workFlowType{{i}}"
+                      id="workFlowType{{i}}" [(ngModel)]="action.type" #workFlowTypeEl>
+                      <option [ngValue]="0">{{'Next'|localize}}</option>
+                      <option [ngValue]="1">{{'Back'|localize}}</option>
+                      <option [ngValue]="2">{{'End'|localize}}</option>
+                      <abp-validation-summary [control]="workFlowTypeModel" [controlEl]="workFlowTypeEl"></abp-validation-summary>
+                    </select>
+                  </div>
+
+                  
+                  <div class="col-md-1">
+                    <button type="button" class="btn btn-outline-danger mb-1" (click)="removeWorkFlowAction(i)"><i
+                        class="iconsminds-remove"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        
+      
+    </div>
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createUnitModal.form.valid || saving"
+      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+  
+  
+  </form>
+  

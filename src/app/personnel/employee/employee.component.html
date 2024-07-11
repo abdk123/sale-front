@@ -1,0 +1,14 @@
+<app-page-header [title]="'Employee' | localize"  [fields]="fields" [CreatePermission]="'Pages.Employee.Create'" (addNewItem)="showAddNewModal()"
+  (advanceFilter)="showFilterDialog($event)" [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+<app-details *ngIf="loadDetails" [ParentId]="employeeId" [data]="detailData">
+</app-details>
+
+<app-page-grid [hasDetails]="true" [EditPermission]="'Pages.Employee.Edit'" [DeletePermission]="'Pages.Employee.Delete'" [fields]="fields" [data]="employees" [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"
+   (changeOrderBy)="changeOrderBy($event)"
+    (editItem)="showEditModal($event)" 
+    (deleteItem)="deleteItem($event)"
+   (viewItem)="showViewModal($event)"
+  (changePage)="pageChanged($event)" (ParentId)="getEmployeeIdForChildren($event)"></app-page-grid>

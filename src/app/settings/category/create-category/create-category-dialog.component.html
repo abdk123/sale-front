@@ -1,0 +1,43 @@
+
+<form class="form-horizontal " autocomplete="off" #createCategoryModal="ngForm" (ngSubmit)="save()" >
+    <abp-modal-header [title]="'Create New Category' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body modal-xl">
+          <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="name">
+              {{ "Name" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" name="name" id="name" required 
+                [(ngModel)]="category.name" #nameModel="ngModel" #nameEl   />
+              <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="parentCategoryId">
+              {{ "ParentCategory" | localize }}
+            </label>
+            <div class="col-md-9">
+              <select class="form-control" aria-label="ParentCategory" [(ngModel)]="category.parentCategoryId"
+              name="parentCategoryId" #parentCategoryModal="ngModel" #parentCategoryId>
+                <option *ngFor="let item of parentCategories" value={{item.id}}>{{item.name}}</option>
+            </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="description">
+              {{ "Description" | localize }}
+            </label>
+            <div class="col-md-9">
+              <textarea type="text" class="form-control" name="description" id="description" 
+                [(ngModel)]="category.description" #descriptionModel="ngModel" #descriptionEl >
+                </textarea>
+              <abp-validation-summary [control]="descriptionModel" [controlEl]="descriptionEl"></abp-validation-summary>
+            </div>
+          </div>
+ 
+    </div>
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createCategoryModal.form.valid || saving"
+      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+  </form>
+
+ 

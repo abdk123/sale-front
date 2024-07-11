@@ -1,0 +1,13 @@
+<app-page-header [title]="'Transfer' | localize"  [fields]="fields"
+ [CreatePermission]="'Setting.Transfers.Create'" (addNewItem)="showAddNewModal()"
+  (advanceFilter)="showFilterDialog($event)" 
+  [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Transfers.Edit'" 
+[DeletePermission]="'Setting.Transfers.Delete'" [fields]="fields" [data]="transfers" 
+[totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"    (viewItem)="showViewModal($event)"
+   (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
+  (changePage)="pageChanged($event)" ></app-page-grid>

@@ -1,0 +1,94 @@
+<!-- <div class="container drag-and-drop-container">
+  <div cdkDropListGroup>
+    <div class="two-list-container">
+      <h2>{{"Avaliable"|localize}}</h2>
+      <div class="Items">
+        <div cdkDropList [cdkDropListData]="avaliableList" class="two-list rounded" (cdkDropListDropped)="drop($event)">
+          <perfect-scrollbar>
+            <div class="two-list-box custom-control" *ngFor="let item of avaliableList" id="{{item.name}}AV"
+              (click)="selectedItem = item;setSelectedItem(true,item)" (cdkDragStarted)="DragPreviewAvaliable(item)"
+              (cdkDragEnded)="DragEnded()" cdkDrag>{{item.name}}
+            </div>
+          </perfect-scrollbar>
+        </div>
+      </div>
+    </div>
+    <div class="two-list-container-buttons">
+      <br>
+      <br>
+      <div class="Items-no-Scroll">
+        <div class="btn btn-primary btn-sm btn-margin-all" (click)="MoveSelectedBackward()"><span
+            class="iconsminds-arrow-left"></span></div>
+        <div class="btn btn-primary btn-sm btn-margin-all" (click)="MoveAllBackward()"><span
+            class="iconsminds-arrow-left-2"></span>
+        </div>
+        <div class="btn btn-primary btn-sm btn-margin-all" (click)="MoveAllForward()"><span
+            class="iconsminds-arrow-right-2"></span>
+        </div>
+        <div class="btn btn-primary btn-sm btn-margin-all" (click)="MoveSelectedForward()"><span
+            class="iconsminds-arrow-right"></span></div>
+      </div>
+    </div>
+    <div class="two-list-container">
+      <h2>{{ "Selected" | localize}}</h2>
+      <div class="Items">
+        <div cdkDropList [cdkDropListData]="selectedList" class="two-list rounded" (cdkDropListDropped)="drop($event)">
+          <perfect-scrollbar>
+            <div class="two-list-box custom-control row" *ngFor="let item of selectedList" id="{{item.name}}SEL"
+              (click)="selectedItem = item;setSelectedItem(false,item)" (cdkDragStarted)="DragPreviewSelected(item)"
+              (cdkDragEnded)="DragEnded()" cdkDrag>
+              <div class="custom-control col-6">{{item.name}}</div>
+                <div class="col-1 simple-icon-plus " id="{{item.name}}INS"></div>
+                <div class="col-1 simple-icon-pencil " id="{{item.name}}EDI"></div>
+                <div class="col-1 simple-icon-trash " id="{{item.name}}DEL"></div>
+            </div>
+          </perfect-scrollbar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="drag-and-drop-buttons-container">
+  <div class="Items-no-Scroll">
+    <div class="buttons-group">
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button" (click)="setInsertable()"> {{"Insertable"
+        |localize}}</div>
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="setAllInsertable()">{{"All
+        Insertable" |localize}}</div>
+    </div>
+    <div class="buttons-group">
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button" (click)="setEditable()">{{"Editable"
+        |localize}} </div>
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button" (click)="setAllEditable()">{{"All
+        Editable" |localize}}</div>
+    </div>
+    <div class="buttons-group">
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button" (click)="setDeleteable()"> {{"Deleteable"
+        |localize}}</div>
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button" (click)="setAllDeleteable()">{{"All
+        Deleteable" |localize}}</div>
+    </div>
+    <div class="buttons-group">
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="removeInsertable()">{{"Not
+        Insertable" |localize}}</div>
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="removeAllInsertable()"> {{"All
+        Not Insertable" |localize}}</div>
+    </div>
+    <div class="buttons-group">
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="removeEditable()">{{"Not
+        Editable" |localize}}</div>
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="removeAllEditable()">{{"All Not
+        Editable" |localize}}</div>
+    </div>
+    <div class="buttons-group">
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="removeDeleteable()">{{"Not
+        Deleteable" |localize}}</div>
+      <div class="btn btn-primary btn-margin-all btn-sm drag-and-drop-button " (click)="removeAllDeleteable()"> {{"All
+        Not Deleteable" |localize}}</div>
+    </div>
+  </div>
+</div>
+
+
+<button (click)="Save()">Save</button> -->

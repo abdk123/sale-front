@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-12">
+        <div class="top-right-button-container ">
+            <div class="d-flex justify-content-center ">
+                <div class="home-text d-flex justify-content-center  ">
+                    <a class=" top-right-button btn btn-primary btn-sm mr-2 " (click)="save()">
+                        {{'Save'|localize}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-right   ">
+            <div class="simple-line-icons">
+                <div>
+                    <a class="glyph-icon simple-icon-action-undo btn-md text-primary" (click)="backToAllroles()"
+                        data-bs-toggle="tooltip" data-bs-placement="right" title="back to all role">
+                    </a>
+                </div>
+            </div> &nbsp;&nbsp; &nbsp;&nbsp;
+            <app-heading title="{{'EditRole'|localize}}"></app-heading>
+        </div>
+        <div class="separator "></div>
+        <br>
+        <accordion class="mt-2">
+            <accordion-group [panelClass]="'border'" [isOpen]="true">
+                <div class="modal-body modal-xl">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group row required">
+                                <label class="col-md-12 col-form-label" for="name">
+                                    {{ "Name"|localize }}
+                                </label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="name" id="name" required
+                                        [(ngModel)]="role.name" #nameModel="ngModel" #nameEl />
+                                    <abp-validation-summary [control]="nameModel"
+                                        [controlEl]="nameEl"></abp-validation-summary>
+                                </div>
+                            </div>
+                            <div class="form-group row required">
+                                <label class="col-md-12 col-form-label" for="displayName">
+                                    {{ "DisplayName"|localize }}
+                                </label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" displayName="displayName" id="displayName"
+                                        required [(ngModel)]="role.displayName" #displayNameModel="ngModel"
+                                        #displayNameEl />
+                                    <abp-validation-summary [control]="displayNameModel"
+                                        [controlEl]="displayNameEl"></abp-validation-summary>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="col-md-12 col-form-label" for="description">
+                                    {{ "Description"|localize }}
+                                </label>
+                                <div class="col-md-12">
+                                    <textarea type="text" class="form-control" name="description" id="description"
+                                        [(ngModel)]="role.description" #descriptionModel="ngModel" #descriptionEl>
+                                    </textarea>
+                                    <abp-validation-summary [control]="descriptionModel"
+                                        [controlEl]="descriptionEl"></abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4 mt-1">
+                            <label class="text">{{'Permissions' | localize}}</label>
+                            <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
+                            </ngx-treeview>
+                        </div>
+                    </div>
+                </div>
+            </accordion-group>
+        </accordion>
+    </div>
+</div>

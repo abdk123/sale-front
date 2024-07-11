@@ -1,0 +1,10 @@
+
+     <div class="cards mb-5"  >
+      <div class="card " *ngFor="let d of data" >
+        <a (click)="navigateToChildren(d.destinationRoute)"   >
+        <h3 class="pt-3  {{d.icon}} text-color" [ngClass]="{ 'darkened':  !ParentId  }"></h3>
+        <p class="  text-color "[ngClass]="{ 'darkened':  !ParentId  }">{{ d.label | localize }}</p>
+        </a>
+    </div>
+    </div>
+     

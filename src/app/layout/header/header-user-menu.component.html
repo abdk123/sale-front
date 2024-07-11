@@ -1,0 +1,82 @@
+<div class="navbar-right">
+  <div class="header-icons d-inline-block align-middle">
+
+    <div class="d-none d-md-inline-block align-text-bottom mr-1">
+      <div class="custom-control custom-switch" tooltip="Dark Mode" placement="left">
+        <input type="checkbox" class="custom-control-input" id="darkModeSwitch" [checked]="isDarkModeActive"
+          (change)="onDarkModeChange($event)">
+        <label class="custom-control-label" for="darkModeSwitch"></label>
+      </div>
+    </div>
+    <!-- Notification -->
+
+    <div class="position-relative d-inline-block">
+      <div dropdown>
+
+        <button id="button-basic" dropdownToggle type="button" id="notificationButton"
+          class="header-icon btn btn-empty">
+          <i class="simple-icon-bell"></i>
+          <span class="count">{{unreadNotificationCount.unreadCount}}</span>
+        </button>
+        <div id="dropdown-basic" *dropdownMenu class="  dropdown-menu dropdown-menu-right mt-3"
+          id="notificationDropdown" style=" width: 350px;"  >
+          <perfect-scrollbar>
+            <ng-container *ngFor="let item of notifications">
+              <div class="d-flex flex-row mb-3 pb-3 border-bottom" *ngIf="item.isUnread">
+                <a href="javascript:;">
+                  <span [class]="item.icon" style="font-size: xx-large;"></span>
+                </a>
+                <div class="pl-3">
+                  <div>
+                    <a href="javascript:;">
+                      <p class="font-weight-medium mb-1">{{item.text}}</p>
+                    </a>
+                    <span class="mb-0">
+                      <span class="text-muted text-small">{{item.creationTime | date: 'dd.MM.yyyy - hh:mm'}}</span>
+                      <span>
+                        <a href="javascript:;" *ngIf="item.state=='UNREAD'" class="btn btn-link ml-1 text-small"
+                          (click)="setNotificationAsRead(item); $event.preventDefault(); $event.stopPropagation();">{{"SetAsRead"
+                          | localize}}</a>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="d-flex justify-content-center text-primary"  *ngIf="notifications.length<1">
+              {{'NothingToShow'|localize}}
+            </div>
+          </perfect-scrollbar>
+
+          <div class="text-center">
+            <a class="p-4 text-primary" (click)="navigateToNotificationList()" style="cursor: pointer;">
+              {{"ShowAllNotifications" | localize}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton"
+      (click)="fullScreenClick()">
+      <i *ngIf="!isFullScreen" class="simple-icon-size-fullscreen"></i>
+      <i *ngIf="isFullScreen" class="simple-icon-size-actual"></i>
+    </button>
+
+  </div>
+
+  <div class="user d-inline-block" dropdown>
+    <button class="btn btn-empty p-0" type="button" dropdownToggle>
+      <span class="name">{{displayName}}</span>
+      <span>
+        <img alt="Profile Picture" src="/assets/img/profiles/person.png" />
+      </span>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-right mt-3" *dropdownMenu role="menu">
+      <a class="dropdown-item c-pointer">{{'Account' |localize}}</a>
+      <li class="divider dropdown-divider"></li>
+      <a class="dropdown-item c-pointer simple-icon-logout" (click)="logout()"> {{'Logout' |localize}}</a>
+    </div>
+  </div>
+
+</div>

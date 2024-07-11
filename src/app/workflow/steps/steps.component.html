@@ -1,0 +1,9 @@
+
+<app-page-header [CreatePermission]="'Workflow.Step.Create'" [title]="'Steps' | localize" [fields]="fields" (addNewItem)="showAddNewModal()"
+  [IsDetail]="true" [ParentName]="'Workflow'| localize"
+  (advanceFilter)="showFilterDialog($event)" [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+<app-page-grid  [EditPermission]="'Workflow.Step.Edit'" [DeletePermission]="'Workflow.Step.Delete'" [fields]="fields" [data]="steps" [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"
+   (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)"
+  (changePage)="pageChanged($event)" (ParentId)="getParentIdForChildren($event)" ></app-page-grid>

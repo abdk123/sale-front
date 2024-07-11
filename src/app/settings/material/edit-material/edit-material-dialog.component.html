@@ -1,0 +1,84 @@
+<form class="form-horizontal " autocomplete="off" #editBrandModal="ngForm" (ngSubmit)="save()">
+  <abp-modal-header [title]="'EditMaterial'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <div class="modal-body modal-xl">
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="name">
+        {{ "Name"|localize }}
+      </label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="material.name"
+          #nameModel="ngModel" #nameEl />
+        <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+      </div>
+    </div>
+
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="code">
+        {{ "Code"|localize }}
+      </label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" name="code" id="code" required [(ngModel)]="material.code"
+          #codeModel="ngModel" #codeEl />
+        <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+      </div>
+    </div>
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label" for="description">
+        {{ "Description"|localize }}
+      </label>
+      <div class="col-md-9">
+        <textarea type="text" class="form-control" name="description" id="description"
+          [(ngModel)]="material.description" #descriptionModel="ngModel" #descriptionEl>
+            </textarea>
+        <abp-validation-summary [control]="descriptionModel" [controlEl]="descriptionEl"></abp-validation-summary>
+      </div>
+    </div>
+    <div class="form-group row required ">
+      <label class="col-md-3 col-form-label" for="suppliers">
+        {{ "Suppliers" | localize }}
+      </label>
+      <div class="col-md-9 mb-2">
+        <button type="button" class="btn btn-primary btn-md mb-1" (click)="addMaterialSupplier()"><i
+            class="iconsminds-add"></i>
+          {{'AddSupplier'|localize}}</button>
+      </div>
+      <div style=" position: relative;
+          max-height: 250px;
+          overflow: auto;">
+        <div class="col-md-12">
+          <div *ngFor="let materialsupplier of material.suppliers;  let i=index">
+            <div class="separator mb-1"></div>
+            <div class="row mx-3 my-3">
+              <label class="col-md-2  col-form-label" for="name">
+                {{i+1}}
+              </label>
+              <div class="col-md-3 ">
+                <select class="form-control" aria-label="supplier" #supplierModel="ngModel" required
+                  name="supplier{{i}}" id="supplier{{i}}" [(ngModel)]="materialsupplier.supplierId" #supplierEl>
+                  <option *ngFor="let item of suppliers" [ngValue]="item.id">{{item.name}}</option>
+                  <abp-validation-summary [control]="supplierModel" [controlEl]="supplierEl"></abp-validation-summary>
+                </select>
+              </div>
+              <label class="col-md-2 col-form-label" for="leadTime">
+                {{ "leadTime"|localize }}
+              </label>
+              <div class="col-md-3">
+                <input type="number" class="form-control" name="leadTime{{i}}" id="leadTime{{i}}" required min="1"
+                  [(ngModel)]="materialsupplier.leadTime" #leadTimeModel="ngModel" #leadTimeEl
+                  placeholder="{{'InDays'|localize}}" />
+                <abp-validation-summary [control]="leadTimeModel" [customValidationErrors]="leadTimeValidationErrors()"
+                  [controlEl]="leadTimeEl"></abp-validation-summary>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger mb-1" (click)="removeMaterialSupplier(i)"><i
+                    class="iconsminds-remove"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!editBrandModal.form.valid "
+    (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

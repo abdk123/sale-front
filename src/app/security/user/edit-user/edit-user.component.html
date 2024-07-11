@@ -1,0 +1,71 @@
+<form class="form-horizontal " autocomplete="off" #createUserModal="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'EditNewUser'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="modal-body modal-xl">
+                <div class="form-group col-12 required">
+                    <label class="col-md-3 col-form-label" for="name">
+                        {{ "Name"|localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="user.name"
+                            #nameModel="ngModel" #nameEl />
+                        <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="form-group col-12 required">
+                    <label class="col-md-3 col-form-label" for="surname">
+                        {{ "Surname"|localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="surname" id="surname" [(ngModel)]="user.surname"
+                            required #surnameModel="ngModel" #surnameEl />
+                        <abp-validation-summary [control]="surnameModel"
+                            [controlEl]="surnameEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="form-group col-12 required">
+                    <label class="col-md-3 col-form-label" for="userName">
+                        {{ "UserName"|localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="userName" id="userName" required
+                            [(ngModel)]="user.userName" #userNameModel="ngModel" #userNameEl />
+                        <abp-validation-summary [control]="userNameModel"
+                            [controlEl]="userNameEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="form-group  col-12 required">
+                    <label class="col-md-3 col-form-label" for="emailAddress">
+                        {{ "EmailAddress"|localize }}
+                    </label>
+                    <div class="col-md-9">
+                        <input type="email" class="form-control" name="emailAddress" id="emailAddress" required
+                            [(ngModel)]="user.emailAddress" #emailAddressModel="ngModel" #emailAddressEl />
+                        <abp-validation-summary [control]="emailAddressModel"
+                            [controlEl]="emailAddressEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label class="col-md-4 col-form-label" for="isActive">
+                        {{ "IsActive"|localize }}
+                    </label>
+                    <div class="col-md-2">
+                        <input type="checkbox" class="form-control" name="isActive" id="isActive"
+                            [(ngModel)]="user.isActive" #isActiveModel="ngModel" #isActiveEl />
+                        <abp-validation-summary [control]="isActiveModel"
+                            [controlEl]="isActiveEl"></abp-validation-summary>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-1"></div> -->
+        <div class="col-md-4 mt-4">
+            <label class="text">{{'Roles' | localize}}</label>
+            <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
+            </ngx-treeview>
+        </div>
+    </div>
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createUserModal.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

@@ -1,0 +1,23 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{'LastLogins'|localize}}</h5>
+        <div class="dashboard-list-with-user">
+            <perfect-scrollbar class="scroll" [config]="{suppressScrollX: true, wheelPropagation: false}">
+                <div *ngFor="let login of data" class="d-flex flex-row mb-3 pb-3 border-bottom">
+                    <a routerLink="#">
+                        <img [src]="login.thumb" [alt]="login.title"
+                            class="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall" />
+                    </a>
+                    <div class="pl-3 pr-2">
+                        <a routerLink="#">
+                            <p class="font-weight-medium mb-0 ">{{login.title}}</p>
+                            <p class="text-muted mb-0 text-small">
+                                {{login.detail}}
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </perfect-scrollbar>
+        </div>
+    </div>
+</div>

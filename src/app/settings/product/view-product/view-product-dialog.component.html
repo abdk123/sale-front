@@ -1,0 +1,62 @@
+<abp-modal-header
+  [title]="'ViewMoreDetails' | localize"
+  (onCloseClick)="bsModalRef.hide()"
+></abp-modal-header>
+
+<div class="modal-body my-custom-scrollbar">
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="name">
+      {{ "Name" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="name" id="name">
+        {{ data.name }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="price">
+      {{ "Price" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="price" id="price">
+        {{ data.price }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="size">
+      {{ "Size" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="size" id="size">
+        {{ data.size }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="category">
+      {{ "Category" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="category" id="category">
+        {{data.category?.name}}
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="description">
+      {{ "Description" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="description" id="description">
+        {{ data.description }}
+      </label>
+    </div>
+  </div>
+
+</div>
+<div *ngIf="loaded">
+  <view-formula-dialog [productId]="data.id"></view-formula-dialog>
+</div>

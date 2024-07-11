@@ -1,0 +1,9 @@
+
+<app-page-header [CreatePermission]="'Pages.Child.Create'" [title]="'Children' | localize" [fields]="fields" (addNewItem)="showAddNewModal()"
+  [IsDetail]="true" [ParentName]="'Employee'| localize"
+  (advanceFilter)="showFilterDialog($event)" [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+<app-page-grid  [EditPermission]="'Pages.Child.Edit'" [DeletePermission]="'Pages.Child.Delete'" [fields]="fields" [data]="children" [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"
+   (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)"
+  (changePage)="pageChanged($event)" (employeeId)="getEmployeeIdForChildren($event)"></app-page-grid>

@@ -1,0 +1,19 @@
+<abp-modal-header title="{{warning}}" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<div class="modal-body">
+   
+  <h6> {{ "AreYouSureYouWantToArchivedThisPlan"|localize }}</h6>
+</div>
+
+<div class="modal-footer justify-content-between ">
+    <button
+      type="button"
+      class="btn btn-outline-danger"
+      [disabled]="cancelDisabled"
+      (click)="onCancelClick()"
+    >
+    <i [class]="cancelIcon"> </i> {{ cancelLabel }}
+    </button>
+    <button type="submit" class="btn btn-outline-primary" [disabled]="saving"  (click)="onSave()">
+      <i [class]="saveIcon"> </i> {{ saveLabel }}
+    </button>
+  </div>

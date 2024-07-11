@@ -1,0 +1,44 @@
+<div class="d-flex align-items-center navbar-left">
+  <a (click)="menuButtonClick($event, sidebar.menuClickCount, sidebar.containerClassnames); false;"
+    href="javascript:;" class="menu-button d-none d-md-block">
+    <svg class="main" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 17">
+      <rect x="0.48" y="0.5" width="7" height="1" />
+      <rect x="0.48" y="7.5" width="7" height="1" />
+      <rect x="0.48" y="15.5" width="7" height="1" />
+    </svg> {{" "}}
+    <svg class="sub" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17">
+      <rect x="1.56" y="0.5" width="16" height="1" />
+      <rect x="1.56" y="7.5" width="16" height="1" />
+      <rect x="1.56" y="15.5" width="16" height="1" />
+    </svg>
+  </a>
+
+  <a (click)="mobileMenuButtonClick($event, sidebar.containerClassnames)" href="javascript:;"
+    class="menu-button-mobile d-xs-block d-sm-block d-md-none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 17">
+      <rect x="0.5" y="0.5" width="25" height="1" />
+      <rect x="0.5" y="7.5" width="25" height="1" />
+      <rect x="0.5" y="15.5" width="25" height="1" />
+    </svg>
+  </a>
+
+  <div class="search" (click)="searchAreaClick($event)">
+    <input placeholder= "{{ 'Search' | localize }}" [(ngModel)]="searchKey" (keyup)="searchKeyUp($event)">
+    <span class="search-icon" (click)="searchClick($event)">
+      <i class="simple-icon-magnifier"></i>
+    </span>
+  </div>
+
+  <div class="btn-group ml-2" dropdown >
+    <button dropdownToggle type="button" class="language-button dropdown-toggle btn btn-light btn-sm">
+      {{currentLanguage.displayName | localize}} 
+      
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu" role="menu">
+          <li role="menuitem" *ngFor="let item of customLanguage" (click)="changeLanguage(item.name)"><a class="text-muted dropdown-item"
+            href="javascript:;">{{item.displayName }}</a></li>
+      
+    </ul>
+  </div>
+</div>

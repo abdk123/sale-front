@@ -1,0 +1,144 @@
+<div class="d-flex justify-content-right">
+  <app-heading title="{{ notifications }}"></app-heading>
+</div>
+<div class="separator mb-2"></div>
+<div class="row">
+  <div class="col-6">
+    <div class="card">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn btn-outline-primary mb-1"
+          (click)="SetAllAsRead()"
+        >
+          {{ "Set All as Read" | localize }}
+        </button>
+      </div>
+      <div class="card-body my-custom-scrollbar">
+        <!-- table start -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr [class]="'pointer pt-5'">
+                <th scope="col">Text</th>
+                <th scope="col">Time</th>
+
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let notification of data"
+                [ngClass]="{
+                  'highlighted-row ': notification.state == 'UNREAD'
+
+                }"
+              >
+                <td
+                  (click)="move(notification.userNotificationId)"
+                  class="c-pointer"
+                >
+                  {{ notification.text }}
+                </td>
+
+                <td
+                  (click)="move(notification.userNotificationId)"
+                  class="c-pointer"
+                >
+                  {{ notification.creationTime._i | date : "h:mm a" }}
+                </td>
+
+                <td
+                  (click)="move(notification.userNotificationId)"
+                  class="c-pointer"
+                >
+                  {{ notification.creationTime._i | date : "yyyy-MM-dd" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- table end -->
+        <!-- pagination start -->
+        <div class="col-12" *ngIf="totalItems > pageSize">
+          <!-- <div class="separator"></div> -->
+          <pagination
+            [totalItems]="totalItems"
+            [itemsPerPage]="pageSize"
+            [rotate]="true"
+            [maxSize]="5"
+            [(ngModel)]="pageNumber"
+            (pageChanged)="pageChanged($event)"
+            class="justify-content-center"
+            [customNextTemplate]="nextTemplate"
+            [customPreviousTemplate]="prevTemplate"
+          >
+          </pagination>
+        </div>
+
+        <!-- pagination end -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div
+      class="card h-100"
+      style="
+        background-image: url(/assets/img/notifications/bell.png);
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+      "
+    >
+      <div class="card-body">
+        <div *ngIf="isMove">
+          <h3 class="d-flex align-items-center">
+            <span
+              style="font-size: xx-large"
+              [class]="selectedNotification.icon"
+            ></span>
+            &nbsp;
+            <span style="font-size: 120%">
+              {{ selectedNotification.text }}</span
+            >
+          </h3>
+          <span class="text-muted ml-4">{{
+            selectedNotification.creationTime | format
+          }}</span>
+          <div class="separator"></div>
+          <h3 class="mt-5 ml-5">
+            <span>
+              {{ selectedNotification.text }}
+              {{
+                selectedNotification.creationTime | date : "yyyy-MM-dd"
+              }}</span
+            >
+          </h3>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="isMove">
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="onDeleteclick(selectedNotification.userNotificationId)"
+        >
+          <i [class]="deleteIcon"> </i> {{ deleteLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template
+  #nextTemplate
+  let-disabled="disabled"
+  let-currentPage="currentPage"
+>
+  <i class="simple-icon-arrow-right"></i>
+</ng-template>
+<ng-template
+  #prevTemplate
+  let-disabled="disabled"
+  let-currentPage="currentPage"
+>
+  <i class="simple-icon-arrow-left"></i>
+</ng-template>

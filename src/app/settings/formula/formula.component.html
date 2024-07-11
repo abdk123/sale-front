@@ -1,0 +1,53 @@
+<app-list-page-header [title]="title" [itemOrder]="itemOrder" [itemOptionsOrders]="itemOptionsOrders"
+  [displayMode]="displayMode" [itemOptionsPerPage]="[5,10,20]" [itemsPerPage]="itemsPerPage"
+  [selectAllState]="selectAllState" (changeDisplayMode)="changeDisplayMode($event)" (addNewItem)="showAddNewModal()"
+  (deleteItem)="deleteItem()" [selectedCount]="selectedCount" (selectAllChange)="selectAllChange($event)"
+  (itemsPerPageChange)="itemsPerPageChange($event)" (changeOrderBy)="changeOrderBy($event)"
+  (searchKeyUp)="searchKeyUp($event)">
+</app-list-page-header>
+<!-- <app-add-new-product-modal #addNewModalRef></app-add-new-product-modal> -->
+
+
+
+<div class="row">
+  <div class="col-12 list" *ngIf="displayMode==='list'">
+    <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index"
+    >
+      <div class="d-flex flex-grow-1 min-width-zero">
+        <div
+          class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+          <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
+            {{p.name}}
+          </a>
+          <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.quantity}}</p>
+        </div>
+          <button id="button-basic" type="button" id="edit" class=" custom-control btn btn-empty text-primary align-self-center pr-4" (click)="editButton(p.id)">
+            <i class=" text-primary simple-icon-pencil"></i>
+          </button>
+          <button id="button-basic" type="button" id="delete" class="custom-control btn btn-empty text-primary align-self-center pr-4"(click)="delete(p)">
+            <i class="  text-primary simple-icon-trash"></i>
+          </button>
+          <button id="button-basic" type="button" id="edit" class="custom-control btn btn-empty text-primary align-self-center pr-4"(click)="viewButton(p.id)">
+            <i class="  text-primary simple-icon-eye"></i>
+          </button>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="col-12">
+    <!-- <pagination [totalItems]="totalItem" [itemsPerPage]="itemsPerPage" [rotate]="true" [maxSize]="5"
+      [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" class="justify-content-center"
+      [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
+    </pagination> -->
+  </div>
+</div>
+
+<!-- <ng-template #nextTemplate let-disabled="disabled" let-currentPage="currentPage">
+  <i class='simple-icon-arrow-right'></i>
+</ng-template>
+<ng-template #prevTemplate let-disabled="disabled" let-currentPage="currentPage">
+  <i class='simple-icon-arrow-left'></i>
+</ng-template> -->

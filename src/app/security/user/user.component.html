@@ -1,0 +1,10 @@
+<app-page-header [title]="'User' | localize" [fields]="fields" [CreatePermission]="'Security.Users.Create'"
+  (addNewItem)="showAddNewModal()" (advanceFilter)="showFilterDialog($event)"
+  [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+<app-page-grid [hasDetails]="false" [EditPermission]="'Security.Users.Edit'"
+  [DeletePermission]="'Security.Users.Delete'" [fields]="fields" [data]="users" [totalItems]="totalItems"
+  [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
+  (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
+  (changePage)="pageChanged($event)" [ViewButton]="false"></app-page-grid>

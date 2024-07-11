@@ -1,0 +1,83 @@
+<form class="form-horizontal " autocomplete="off" #createUserModal="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'CreateNewUser'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body modal-xl">
+        <div class=" row ">
+            <div class=" col-md-6 ">
+                <div class="row form-group required">
+                    <label class="col-md-3 col-form-label" for="name">
+                        {{ "Name"|localize }}
+                    </label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="user.name"
+                            #nameModel="ngModel" #nameEl />
+                        <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+                    </div>
+                 </div>
+                <div class="row form-group required">
+                    <label class="col-md-3 col-form-label" for="surname">
+                        {{ "Surname"|localize }}
+                    </label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="surname" id="surname" [(ngModel)]="user.surname"
+                            required #surnameModel="ngModel" #surnameEl />
+                        <abp-validation-summary [control]="surnameModel"
+                            [controlEl]="surnameEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="row form-group required">
+                    <label class="col-md-3 col-form-label" for="userName">
+                        {{ "UserName"|localize }}
+                    </label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="userName" id="userName" required
+                            [(ngModel)]="user.userName" #userNameModel="ngModel" #userNameEl />
+                        <abp-validation-summary [control]="userNameModel"
+                            [controlEl]="userNameEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="row form-group required">
+                    <label class="col-md-3 col-form-label" for="password">
+                        {{ "Password"|localize }}
+                    </label>
+                    <div class="col-md-8">
+                        <input type="password" class="form-control" name="password" id="password" required
+                            [(ngModel)]="user.password" #passwordModel="ngModel" #passwordEl />
+                        <abp-validation-summary [control]="passwordModel"
+                            [controlEl]="passwordEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="row form-group required">
+                    <label class="col-md-3 col-form-label" for="emailAddress">
+                        {{ "Email"|localize }}
+                    </label>
+                    <div class="col-md-8">
+                        <input type="email" class="form-control" name="emailAddress" id="emailAddress" required
+                            [(ngModel)]="user.emailAddress" #emailAddressModel="ngModel" #emailAddressEl />
+                        <abp-validation-summary [control]="emailAddressModel"
+                            [controlEl]="emailAddressEl"></abp-validation-summary>
+                    </div>
+                </div>
+                <div class="row form-group required">
+                    <label class="col-md-3 col-form-label" for="isActive">
+                        {{ "IsActive"|localize }}
+                    </label>
+                    <div class="col-md-2 ">
+                        <input type="checkbox" class="form-control mt-2 align-self-start" name="isActive" id="isActive"
+                            [(ngModel)]="user.isActive" #isActiveModel="ngModel" #isActiveEl />
+                        <abp-validation-summary [control]="isActiveModel"
+                            [controlEl]="isActiveEl"></abp-validation-summary>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+                <label class="text">{{'Roles' | localize}}</label>
+                <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
+                </ngx-treeview>
+            </div>
+        </div>
+  </div>
+
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createUserModal.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

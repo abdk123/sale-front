@@ -1,0 +1,14 @@
+
+<div class="modal-footer justify-content-between ">
+  <button
+    type="button"
+    class="btn btn-outline-danger"
+    [disabled]="cancelDisabled"
+    (click)="onCancelClick.emit()"
+  >
+  <i [class]="cancelIcon"> </i> {{ cancelLabel }}
+  </button>
+  <button type="submit" class="btn btn-outline-primary" [disabled]="saveDisabled">
+    <i [class]="saveIcon"> </i> {{ saveLabel }}
+  </button>
+</div>

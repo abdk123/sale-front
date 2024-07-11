@@ -1,0 +1,15 @@
+<form class="form-horizontal " autocomplete="off" #filterEmployeeModal="ngForm" (ngSubmit)="filter()">
+    <abp-modal-header [title]="'Filter'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body my-custom-scrollbar">
+      <div class="form-group row">
+        <query-builder name="filter" [(ngModel)]='query' [config]='config' [classNames]='classNames' [allowRuleset]="false"></query-builder>
+      </div>
+    </div>
+    <div class="modal-footer justify-content-between ">
+      <button type="submit" class="btn btn-outline-primary">
+         Filter
+      </button>
+    </div>
+  </form>
+  
+  

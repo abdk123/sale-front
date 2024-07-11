@@ -1,0 +1,7 @@
+<abp-modal-header [title]="'Employee' " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<div class="modal-body">
+        <div class="card-body">
+            <ssrs-reportviewer [reportserver]="reportServer" [reporturl]="reportUrl" [language]="language">
+            </ssrs-reportviewer>
+        </div>
+</div>

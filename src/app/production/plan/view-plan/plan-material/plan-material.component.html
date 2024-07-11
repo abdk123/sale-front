@@ -1,0 +1,44 @@
+<div class="row mb-4 " style="width: 100%;">
+  <div class="col-12 col-lg-12">
+    <div class="card h-100 p-0">
+      <div class="card-body">
+        <h5 class="card-title">{{ 'Stock' | localize }}</h5>
+        <div class="row">
+          <!-- Chart -->
+          <div class="col-lg-4 border-right">
+            <div class="chart-container">
+              <app-bar-chart [shadow]="true" [options]="chartDataConfig.barChartOptions"
+                [data]="radarChartData"></app-bar-chart>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <perfect-scrollbar class="scroll" [config]="{suppressScrollX: true, wheelPropagation: false}">
+              <ngx-datatable [rows]="rows" [columns]="columns" [columnMode]="columnMode.flex"
+                [sorts]="[{ prop: 'title', dir: 'asc' }]" [rowClass]="getRowClass">
+                <ngx-datatable-column [name]="l('Material')" prop="name" [flexGrow]="1">
+                  <ng-template let-row="row" ngx-datatable-cell-template >
+                     <a class="btn btn-empty" (click)="editMaterial(row.id)" [ngClass]="{'text-danger' : row.totalQuantity > row.inventory,'text-muted' : row.totalQuantity <= row.inventory}">
+                      {{row.name}}
+                     </a>
+                  </ng-template>
+                </ngx-datatable-column>
+                <!--  -->
+                <ngx-datatable-column [name]="l('TotalQuentity')" prop="totalQuantity" [flexGrow]="1">
+                  <ng-template let-row="row" ngx-datatable-cell-template >
+                     {{row.totalQuantity}} {{row.unit?.name}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <!--  -->
+                <ngx-datatable-column [name]="l('Inventory')" prop="inventory" [flexGrow]="1">
+                  <ng-template let-row="row" ngx-datatable-cell-template >
+                     {{row.inventory}} {{row.unit?.name}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </perfect-scrollbar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

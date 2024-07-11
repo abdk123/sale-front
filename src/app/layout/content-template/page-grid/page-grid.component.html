@@ -1,0 +1,179 @@
+<div class="row">
+  <!-- start table mode -->
+  <div class="col-md-12" *ngIf="displayMode==='table'">
+    <div class="card">
+      <div class="card-body pb-0">
+        <!-- table start -->
+        <div class="table-responsive">
+          <table class="table ">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="bi" *ngFor="let field of fields" [sortable]="field.sortable ? field.name : ''"
+                  (sort)="onSort($event)">{{field.label}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data; index as i" (click)="getParentId(item.id)" [class]="'pointer pt-5  '+getClassForRow(item.id)" >
+                <td >
+                  <span id="anchorDropdownContainer">
+                    <span dropdown container="#anchorDropdownContainer">
+                      <a href id="basic-link" dropdownToggle (click)="(false)" aria-controls="basic-link-dropdown">
+                        <i class="text-primary simple-icon-options-vertical"></i></a>
+                      <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu dropdown-menu-left" role="menu"
+                        aria-labelledby="basic-link">
+                        <ng-conatiner>
+                          <a *ngIf="isGranted(EditPermission)" id="button-basic" type="button" id="edit" (click)="onEditItem(item.id)"
+                            class="btn btn-empty dropdown-item text-primary align-self-center">
+                            <i class="text-primary simple-icon-pencil">
+                            </i>&nbsp;&nbsp;
+                            <span>{{'Edit'|localize}}</span>
+                          </a>
+                          <a *ngIf="isGranted(DeletePermission)" id="button-basic" type="button" id="delete"  (click)="onDeleteItem(item.id)"
+                            class="btn btn-empty dropdown-item text-primary align-self-center">
+                            <i class="text-primary simple-icon-trash"></i>
+                            &nbsp;&nbsp;
+                            <span>{{'Delete'|localize}}</span>
+                          </a>
+                        </ng-conatiner>
+                        <a *ngIf="ViewButton" id="button-basic" type="button" id="view" (click)="onViewItem(item.id)"
+                          class="btn btn-empty dropdown-item text-primary align-self-center">
+                          <i class="text-primary simple-icon-eye "></i>
+                          &nbsp;&nbsp;
+                          <span>{{'View'|localize}}</span>
+                        </a>
+                        <ng-container *ngIf="IsOutputRequest">
+                        <li class="divider dropdown-divider"></li>
+                        <a *ngIf="item.status == 0" class="dropdown-item" (click)="onchangeStatusToInProduction(item.id)">{{ "InProduction" | localize }}</a>
+                        <a *ngIf="item.status == 1"   class="dropdown-item"  (click)="onchangeStatusToFinish(item.id)" >{{ "Finished" | localize }}</a>
+                      </ng-container>
+                      </ul>
+                      <!-- <a *ngIf="hasDetails"
+                      class="pointer" (click)="getParentId(item.id)"
+                       data-bs-toggle="tooltip"
+                       data-bs-placement="right" title="{{'Details'|localize}}">
+                       <i class=" ml-4 text-primary  iconsminds-arrow-inside"></i>
+                      </a> -->
+                    </span>
+                  </span>
+                </td>
+                <td *ngFor="let field of fields" [innerHtml]="getValue(item, field)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- table end -->
+        <!-- pagination start -->
+        <div class="col-12" *ngIf="totalItems > pageSize">
+          <!-- <div class="separator"></div> -->
+          <pagination [totalItems]="totalItems" [itemsPerPage]="pageSize" [rotate]="true" [maxSize]="5"
+            [(ngModel)]="pageNumber" (pageChanged)="pageChanged($event)" class="justify-content-center"
+            [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
+          </pagination>
+        </div>
+        <!-- pagination end -->
+      </div>
+    </div>
+  </div>
+  <!-- end table mode -->
+  <!-- <div class="col-12 list" *ngIf="displayMode==='list'">
+        <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index"
+          [contextMenu]="basicMenu" [contextMenuSubject]="p">
+          <div class="d-flex flex-grow-1 min-width-zero">
+            <div
+              class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+              <a class="list-item-heading mb-0 truncate w-40 w-xs-100" href="javascript:;">
+                {{p.title}}
+              </a>
+              <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.category}}</p>
+              <p class="mb-0 text-muted text-small w-15 w-xs-100">{{p.date}}</p>
+              <div class="w-15 w-xs-100">
+                <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.status}}</span>
+              </div>
+            </div>
+            <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+              <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                (change)="onSelect(p)">
+              <label class="custom-control-label" [for]="'customCheck'+i"></label>
+            </label>
+          </div>
+        </div>
+      </div> -->
+
+  <!-- <div class="col-12 list" *ngIf="displayMode==='thumb'">
+        <div [ngClass]="{'card d-flex flex-row mb-3': true, 'active':isSelected(p)}" *ngFor="let p of data; let i=index"
+          [contextMenu]="basicMenu" [contextMenuSubject]="p">
+          <a class="d-flex" href="javascript:;">
+            <img [src]="p.img" [alt]="p.title" class="list-thumbnail responsive border-0 card-img-left" />
+          </a>
+          <div class="pl-2 d-flex flex-grow-1 min-width-zero">
+            <div
+              class="card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
+              <a href="javascript:;" class="w-40 w-sm-100">
+                <p class="list-item-heading mb-0 truncate">{{p.title}}</p>
+              </a>
+              <p class="mb-0 text-muted text-small w-15 w-sm-100">{{p.category}}</p>
+              <p class="mb-0 text-muted text-small w-15 w-sm-100">{{p.date}}</p>
+              <div class="w-15 w-sm-100">
+                <span [class]="'badge badge-pill badge-'+ p.statusColor">{{p.status}}</span>
+              </div>
+            </div>
+            <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+              <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                (change)="onSelect(p)">
+              <label class="custom-control-label" [for]="'customCheck'+i"></label>
+            </label>
+          </div>
+        </div>
+      </div> -->
+
+  <!-- <div class="col-12 list" *ngIf="displayMode==='image'">
+        <div class="row">
+          <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4" *ngFor="let p of data; let i=index" [contextMenu]="basicMenu"
+            [contextMenuSubject]="p">
+            <div [ngClass]="{'card': true, 'active':isSelected(p)}">
+              <div class="position-relative">
+                <a href="javascript:;"><img class="card-img-top" [src]="p.img" [alt]="p.title"></a>
+                <span
+                  [class]="'badge badge-pill position-absolute badge-top-left badge-'+ p.statusColor">{{p.status}}</span>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-2">
+                    <div class="custom-control custom-checkbox pl-1">
+                      <label class="custom-control custom-checkbox  mb-0">
+                        <input type="checkbox" class="custom-control-input" [id]="'customCheck'+i" [checked]="isSelected(p)"
+                          (change)="onSelect(p)">
+                        <label class="custom-control-label" [for]="'customCheck'+i"></label>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-10">
+                    <a href="javascript:;">
+                      <p class="list-item-heading mb-4 pt-1">{{p.title}}</p>
+                    </a>
+                    <footer>
+                      <p class="text-muted text-small mb-0 font-weight-light">{{p.date}}</p>
+                    </footer>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+  <div class="col-12" *ngIf="displayMode != 'table'">
+    <pagination [totalItems]="totalItems" [itemsPerPage]="pageSize" [rotate]="true" [maxSize]="5"
+      [(ngModel)]="pageNumber" (pageChanged)="pageChanged($event)" class="justify-content-center"
+      [customNextTemplate]="nextTemplate" [customPreviousTemplate]="prevTemplate">
+    </pagination>
+  </div>
+</div>
+
+<ng-template #nextTemplate let-disabled="disabled" let-currentPage="currentPage">
+  <i class='simple-icon-arrow-right'></i>
+</ng-template>
+<ng-template #prevTemplate let-disabled="disabled" let-currentPage="currentPage">
+  <i class='simple-icon-arrow-left'></i>
+</ng-template>

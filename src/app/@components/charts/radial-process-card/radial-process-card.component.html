@@ -1,0 +1,17 @@
+<!-- <div [class]="'card ' + class">
+  <div *ngIf="isSortable" class="card-header p-0 position-relative">
+    <div class="position-absolute handle card-icon">
+      <i class="simple-icon-shuffle"></i>
+    </div>
+  </div> -->
+  <div class="card-body d-flex align-items-center">
+    <!-- <h6 class="card-title mb-0">{{title}}</h6> -->
+    <div class="progress-bar-circle-lg justify-content-center position-relative">
+      <div class="progressbar-text">{{ percent }}%</div>
+      <round-progress [current]="percent" [max]="100" [responsive]="true" [duration]="800"
+        [animation]="'easeInOutQuart'" [animationDelay]="0" [radius]="50" [rounded]="true" [stroke]="8">
+      </round-progress>
+    </div>
+  </div>
+  <h6 class="card-title mb-0 " style="text-align: center;">{{title}}</h6>
+<!-- </div> -->

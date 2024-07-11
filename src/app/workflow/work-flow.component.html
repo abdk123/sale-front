@@ -1,0 +1,14 @@
+<app-page-header [title]="'Workflow' | localize"  [fields]="fields"
+ [CreatePermission]="'Workflow.Create'" (addNewItem)="showAddNewModal()"
+  (advanceFilter)="showFilterDialog($event)"
+  [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+<app-details *ngIf="loadDetails" [ParentId]="workflowId" [data]="detailData">
+</app-details>
+<app-page-grid  [hasDetails]="true" [EditPermission]="'Workflow.Step.Edit'"
+[DeletePermission]="'Workflow.Step.Delete'" [fields]="fields" [data]="Workflows"
+[totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"    (viewItem)="showViewModal($event)"
+   (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
+   (ParentId)="getWorkflowIdForSteps($event)"
+  (changePage)="pageChanged($event)" ></app-page-grid>

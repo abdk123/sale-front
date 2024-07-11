@@ -1,0 +1,21 @@
+<abp-modal-header [title]="'ViewMoreDetails' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<div class="modal-body">
+    <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="title">
+            {{ "Title" | localize }}
+        </label>
+        <div class="col-md-9 ">
+            <label class="form-control" name="title" id="title">
+                {{Workflow.title}}
+            </label>
+        </div>
+        <label class="col-md-3 col-form-label" for="description">
+            {{ "Description" | localize }}
+        </label>
+        <div class="col-md-9 " *ngIf="Workflow.description">
+            <label class="form-control" name="description" id="description">
+                {{Workflow.description}}
+            </label>
+        </div>
+    </div>
+</div>

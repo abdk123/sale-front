@@ -1,0 +1,45 @@
+<abp-modal-header [title]="'ViewMoreDetails'|localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+
+<div class="modal-body my-custom-scrollbar" *ngIf="loading">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="name">
+            {{ "Name"|localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="name" id="name">
+                {{role?.name}}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="displayName">
+            {{ "DisplayName"|localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="displayName" id="displayName">
+                {{role?.displayName}}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="description">
+            {{ "Description"|localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="description" id="description">
+                {{role?.description}}
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <h6>{{"Permissions" | localize}} :</h6>
+    </div>
+    <div class="row ml-2">
+        <div class="col-3" *ngFor="let permission of role.grantedPermissions">
+            <span class="badge badge-outline-primary badge-light mb-1 mr-1">
+                {{permission | localize}}
+            </span>
+        </div>
+
+    </div>
+</div>

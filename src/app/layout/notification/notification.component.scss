@@ -1,0 +1,19 @@
+.row-color {
+    background-color:rgba(255, 99, 71, 0.2);
+    border-radius: 6px;
+}
+.red{
+    background-color:rgba(222, 230, 66, 0.2);
+}
+.black{
+    background-color:rgba(22, 230, 164, 0.2);
+}
+.my-custom-scrollbar {
+    position: relative;
+    max-height: 300px;
+    overflow: auto;
+}
+.highlighted-row {
+        // border: solid 3px   #46789b66;
+        background-color: #46789b66;
+}

@@ -1,0 +1,46 @@
+<form class="form-horizontal " autocomplete="off" #createUnitModal="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'EditEmployee'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  
+    <div class="modal-body modal-xl">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="FirstName">
+              {{ "FirstName"|localize  }}
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" name="FirstName" id="FirstName" required 
+                [(ngModel)]="child.firstName" #FirstNameModel="ngModel" #FirstNameEl   />
+              <abp-validation-summary [control]="FirstNameModel" [controlEl]="FirstNameEl"></abp-validation-summary>
+            </div>
+          </div>
+          <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="LastName">
+              {{ "LastName"|localize  }}
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" name="LastName" id="LastName" required 
+                [(ngModel)]="child.lastName" #LastNameModel="ngModel" #LastNameEl   />
+              <abp-validation-summary [control]="LastNameModel" [controlEl]="LastNameEl"></abp-validation-summary>
+            </div>
+          </div>
+          <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="dateOfBirth">
+              {{ "DateOfBirth"|localize  }}
+            </label>
+            <div class="col-md-9">
+                <input type="text"  placeholder="{{ 'DateOfBirth' | localize }}"   class="form-control"
+                bsDatepicker
+                placement="top"
+                name="dateOfBirth" id="dateOfBirth" required
+                [(ngModel)]="child.dateOfBirth" #dateOfBirthElModel="ngModel" #dateOfBirthEl
+                [bsConfig]="{  dateInputFormat: 'DD-MM-YYYY', isAnimated: true }"
+              >
+              <abp-validation-summary [control]="dateOfBirthElModel" [controlEl]="dateOfBirthEl"></abp-validation-summary>
+            </div>
+          </div>
+    </div>
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createUnitModal.form.valid || saving"
+      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+  
+  
+  </form>
+  
