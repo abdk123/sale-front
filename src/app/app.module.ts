@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
@@ -78,6 +78,8 @@ import { ReportsModule } from './reports/reports.module';
     CreateTenantDialogComponent,
     EditTenantDialogComponent,
   ],
-
+providers:[
+  DatePipe 
+]
 })
 export class AppModule {}
