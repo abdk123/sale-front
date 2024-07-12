@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CategoryNameForDropdownDto, CategoryServiceProxy,  UpdateCategoryDto,  } from '@shared/service-proxies/service-proxies';
+import { CategoryServiceProxy,  UpdateCategoryDto,  } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 @Component({
@@ -13,7 +13,6 @@ export class EditCategoryDialogComponent extends AppComponentBase implements OnI
   category = new UpdateCategoryDto();
   id: number;
   @Output() onSave = new EventEmitter<any>();
-  parentCategories: CategoryNameForDropdownDto[] = [];
 
   constructor(
     injector: Injector,
@@ -23,16 +22,9 @@ export class EditCategoryDialogComponent extends AppComponentBase implements OnI
   }
 
   ngOnInit(): void {
-    this.initParentCategories();
     this.initialCategory();
   }
 
-  initParentCategories(){
-    this._categoryService.getNameForDropdown()
-    .subscribe(result =>{
-      this.parentCategories = result;
-    })
-  }
 
   initialCategory(){
     this._categoryService.getForEdit(this.id)

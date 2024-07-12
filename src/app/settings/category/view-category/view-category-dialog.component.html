@@ -21,21 +21,6 @@
         />
       </div>
     </div>
-    <div class="form-group row ">
-        <label class="col-md-3 col-form-label" for="ParentCategory">
-          {{ "ParentCategory" | localize }}
-        </label>
-        <div class="col-md-9">
-          <input
-            type="text"
-            class="form-control"
-            name="ParentCategory"
-            id="ParentCategory"
-            [value]="category.parentCategory?.name"
-            [readonly]="!editable"
-          />
-        </div>
-      </div>
       <div class="form-group row ">
         <label class="col-md-3 col-form-label" for="description">
           {{ "Description" | localize }}

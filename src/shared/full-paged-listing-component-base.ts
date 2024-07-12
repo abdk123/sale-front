@@ -69,7 +69,6 @@ export abstract class FullPagedListingComponentBase<TEntityDto> extends AppCompo
     this.refresh();
   }
   searchKeyUp(event): void {
-    console.log(event.target.value);
     this.request.keyword = event.target.value.toLowerCase().trim();
     this.refresh();
   }

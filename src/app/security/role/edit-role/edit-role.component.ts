@@ -44,11 +44,9 @@ export class EditRoleComponent extends AppComponentBase implements OnInit {
   }
 
   initialRole(id){
-    console.log(id)
     this._roleService.get(id)
     .subscribe((result)=>{
       this.role = result;
-      console.log(this.role)
       this.initialPermissions();
     })
   }
@@ -56,7 +54,6 @@ export class EditRoleComponent extends AppComponentBase implements OnInit {
   initialPermissions() {
     this._roleService.getAllPermissions()
       .subscribe(result => {
-        console.log(result)
         this.permissions = result;
         this.initialItems();
       });

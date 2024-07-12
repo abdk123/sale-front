@@ -14,7 +14,6 @@ import { MaterialComponent } from './material/material.component';
 import { CreateMaterialDialogComponent } from './material/create-material/create-material-dialog.component';
 import { EditMaterialDialogComponent } from './material/edit-material/edit-material-dialog.component';
 import { ViewMaterialDialogComponent } from './material/view-material/view-material-dialog.component';
-import { MaterialDetailsComponent } from './material/material-details/material-details.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CreateCustomerDialogComponent } from './customer/create-customer/create-customer-dialog.component';
 import { EditCustomerDialogComponent } from './customer/edit-customer/edit-customer-dialog.component';
@@ -29,6 +28,8 @@ import { ViewCategoryDialogComponent } from './category/view-category/view-categ
 import { CategoryComponent } from './category/category.component';
 import { FilterCategoryDialogComponent } from './category/filter-category/filter-category-dialog.component';
 import { SharedModule } from '@shared/shared.module';
+import { FilterMaterialDialogComponent } from './material/filter-material/filter-material-dialog.component';
+import { CategoryServiceProxy, CustomerServiceProxy, MaterialServiceProxy } from '@shared/service-proxies/service-proxies';
 
 
 @NgModule({
@@ -42,7 +43,6 @@ import { SharedModule } from '@shared/shared.module';
     CreateMaterialDialogComponent,
     EditMaterialDialogComponent,
     ViewMaterialDialogComponent,
-    MaterialDetailsComponent,
     CustomerComponent,
     CreateCustomerDialogComponent,
     EditCustomerDialogComponent,
@@ -53,7 +53,8 @@ import { SharedModule } from '@shared/shared.module';
     EditCategoryDialogComponent,
     ViewCategoryDialogComponent,
     CategoryComponent,
-    FilterCategoryDialogComponent
+    FilterCategoryDialogComponent,
+    FilterMaterialDialogComponent
   ],
   imports: [
   AccordionModule.forRoot(),
@@ -67,6 +68,11 @@ import { SharedModule } from '@shared/shared.module';
     QueryBuilderModule,
     SettingsRoutingModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
+  providers:[
+    MaterialServiceProxy,
+    CategoryServiceProxy,
+    CustomerServiceProxy,
+  ]
 })
 export class SettingsModule { }

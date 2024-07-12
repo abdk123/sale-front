@@ -16,9 +16,11 @@
         {{ "Category"|localize }}
       </label>
       <div class="col-md-9">
-        <input type="text" class="form-control" name="category" id="category" required [(ngModel)]="material.category"
-          #categoryModel="ngModel" #categoryEl />
-
+        <select class="form-control" aria-label="category" #categoryModel="ngModel" required name="category"
+          id="category" [(ngModel)]="material.categoryId" #categoryEl>
+          <option *ngFor="let item of categories" [ngValue]="item.id">{{item.name}}</option>
+          <abp-validation-summary [control]="categoryModel" [controlEl]="categoryEl"></abp-validation-summary>
+        </select>
         <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
       </div>
     </div>
@@ -31,17 +33,6 @@
           [(ngModel)]="material.specification" #specificationModel="ngModel" #specificationEl>
               </textarea>
         <abp-validation-summary [control]="specificationModel" [controlEl]="specificationEl"></abp-validation-summary>
-      </div>
-    </div>
-    <div class="form-group row required ">
-
-      <label class="col-md-3 col-form-label" for="customers">
-        {{ "Customers" | localize }}
-      </label>
-      <div class="col-md-9 mb-2">
-        <button type="button" class="btn btn-primary btn-md mb-1" (click)="addMaterialCustomer()"><i
-            class="iconsminds-add"></i>
-          {{'AddCustomer'|localize}}</button>
       </div>
     </div>
   </div>

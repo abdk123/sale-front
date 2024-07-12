@@ -36,7 +36,7 @@ const data: IMenuItem[] = [
 
       {
         label: 'Category',
-        to: `${adminRoot}/settings/Category`,
+        to: `${adminRoot}/settings/category`,
         icon: 'simple-icon-list',
         permissions: permissionsSetting,
 

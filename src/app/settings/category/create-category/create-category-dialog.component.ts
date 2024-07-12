@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CreateCategoryDto, CategoryNameForDropdownDto, CategoryServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateCategoryDto, CategoryServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
@@ -11,8 +11,6 @@ import { finalize } from 'rxjs';
 export class CreateCategoryDialogComponent extends AppComponentBase {
   saving = false;
   category = new CreateCategoryDto();
-  parentCategories: CategoryNameForDropdownDto[] = [];
-
   @Output() onSave = new EventEmitter<any>();
 
   constructor(injector: Injector,
@@ -23,13 +21,6 @@ export class CreateCategoryDialogComponent extends AppComponentBase {
   }
 
   ngOnInit(): void { 
-    this.initialParentCategories();
-  }
-
-  initialParentCategories(){
-    this._categoryService.getNameForDropdown() 
-    .subscribe((result)=>{
-      this.parentCategories = result});
   }
 
   save(): void {

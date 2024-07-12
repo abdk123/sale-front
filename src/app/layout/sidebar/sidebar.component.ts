@@ -84,7 +84,6 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
   async ngOnInit(): Promise<void> {
     this._roleService.get(1).subscribe((response)=>{
       this._sharedService.permissons=response.grantedPermissions;
-      console.log(this._sharedService.permissons)
      })
     setTimeout(() => {
       this.selectMenu();

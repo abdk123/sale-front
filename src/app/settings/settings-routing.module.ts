@@ -18,7 +18,7 @@ const routes: Routes = [
         path: "customer",
         component: CustomerComponent,
 
-        data: { permission: "Setting.Customers" },
+        //data: { permission: "Setting.Customers" },
         canActivate: [AppRouteGuard],
       },
 
@@ -26,7 +26,7 @@ const routes: Routes = [
         path: "unit",
         component: UnitComponent,
 
-        data: { permission: "Setting.Units" },
+        //data: { permission: "Setting.Units" },
         canActivate: [AppRouteGuard],
       },
 
@@ -34,7 +34,7 @@ const routes: Routes = [
         path: "material",
         component: MaterialComponent,
 
-        data: { permission: "Setting.Materials" },
+        //data: { permission: "Setting.Materials" },
         canActivate: [AppRouteGuard],
       },
 
@@ -47,7 +47,7 @@ const routes: Routes = [
       {
         path: "category",
         component: CategoryComponent,
-        data: { permission: "Setting.Categories" },
+        //data: { permission: "Setting.Categories" },
         canActivate: [AppRouteGuard],
       },
     ],

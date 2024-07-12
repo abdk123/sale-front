@@ -79,7 +79,6 @@ export abstract class FilterComponentBase extends AppComponentBase implements On
       });
       filterInput.rules.push(rule);
     }
-    console.log(filterInput.rules)
     this.onSave.emit(filterInput);
   }
 

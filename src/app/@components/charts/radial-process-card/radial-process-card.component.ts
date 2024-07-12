@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PlanProductDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-radial-process-card',

@@ -38,7 +38,6 @@ export class RoleComponent extends FullPagedListingComponentBase<RoleDto> implem
     this._roleService.read(request)
       .subscribe(result => {
         this.roles = result.items;
-        console.log(this.roles)
         this.showPaging(result, pageNumber);
       })
   }

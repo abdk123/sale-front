@@ -64,7 +64,6 @@ export class LoginComponent extends AppComponentBase implements OnInit, OnDestro
     return true;
   }
   togglePasswordVisibilty() {
-    console.log(this.showPassword)
     this.showPassword = !this.showPassword;
   }
   login(): void {
