@@ -1,0 +1,12 @@
+<app-page-header [title]="'ClearanceCompany' | localize" [fields]="fields" [CreatePermission]="'Setting.Companies.Create'"
+    (addNewItem)="showAddNewModal()" (advanceFilter)="showFilterDialog($event)"
+    [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+    (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Companies.Update'"
+    [DeletePermission]="'Setting.Companies.Delete'" [fields]="fields" [data]="categories" [totalItems]="totalItems"
+    [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
+    (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
+    (changePage)="pageChanged($event)"></app-page-grid>

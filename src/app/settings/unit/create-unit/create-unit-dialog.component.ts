@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CreateUnitDto,  UnitServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateSizeDto, CreateUnitDto,  SizeServiceProxy,  UnitServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
@@ -11,12 +11,12 @@ import { finalize } from 'rxjs';
 
 export class CreateUnitDialogComponent extends AppComponentBase {
   saving = false;
-  unit = new CreateUnitDto();
+  unit = new CreateSizeDto();
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(injector: Injector,
-    private _unitService: UnitServiceProxy,
+    private _sizeService: SizeServiceProxy,
     public bsModalRef: BsModalRef,
   ) {
     super(injector);
@@ -28,18 +28,16 @@ export class CreateUnitDialogComponent extends AppComponentBase {
 
   save(): void {
     this.saving = true;
-    this._unitService.
-      create(
-        this.unit
-      )
+    this._sizeService
+      .create(this.unit)
       .pipe(
         finalize(() => {
           this.saving = false;
         })
       )
       .subscribe((response: any) => {
-        (response);
-        this.notify.info(this.l('SavedSuccessfully'));
+        response;
+        this.notify.info(this.l("SavedSuccessfully"));
         this.bsModalRef.hide();
         this.onSave.emit();
       });

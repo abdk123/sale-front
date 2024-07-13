@@ -1,0 +1,64 @@
+<form class="form-horizontal " autocomplete="off" #createTransportCompanyModal="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'Create New TransportCompany' | localize"
+        (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body modal-xl">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="name">
+                {{ "Name" | localize }}
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="transportCompany.name"
+                    #nameModel="ngModel" #nameEl />
+                <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="phoneNumber">
+                {{ "PhoneNumber" | localize }}
+            </label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
+                    [(ngModel)]="transportCompany.phoneNumber" #phoneNumberModel="ngModel" #phoneNumberEl />
+    
+                <abp-validation-summary [control]="phoneNumberModel" [controlEl]="phoneNumberEl"></abp-validation-summary>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="address">
+                {{ "Address" | localize }}
+            </label>
+            <div class="col-md-9">
+                <textarea type="text" class="form-control" name="address" id="address"
+                    [(ngModel)]="transportCompany.address" #addressModel="ngModel" #addressEl>
+                            </textarea>
+                <abp-validation-summary [control]="addressModel" [controlEl]="addressEl"></abp-validation-summary>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="balanceInDollar">
+                {{ "BalanceInDollar" | localize }}
+            </label>
+            <div class="col-md-9">
+                <input type="number" class="form-control" name="balanceInDollar" id="balanceInDollar"
+                    [(ngModel)]="transportCompany.balanceInDollar" #balanceInDollarModel="ngModel" #balanceInDollarEl />
+    
+                <abp-validation-summary [control]="balanceInDollarModel"
+                    [controlEl]="balanceInDollarEl"></abp-validation-summary>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="balanceInDinar">
+                {{ "BalanceInDinar" | localize }}
+            </label>
+            <div class="col-md-9">
+                <input type="number" class="form-control" name="balanceInDinar" id="balanceInDinar"
+                    [(ngModel)]="transportCompany.balanceInDinar" #balanceInDinarModel="ngModel" #balanceInDinarEl />
+    
+                <abp-validation-summary [control]="balanceInDinarModel"
+                    [controlEl]="balanceInDinarEl"></abp-validation-summary>
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createTransportCompanyModal.form.valid || saving"
+        (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

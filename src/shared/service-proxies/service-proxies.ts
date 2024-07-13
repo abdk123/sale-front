@@ -153,15 +153,10 @@ export class CategoryServiceProxy {
     }
 
     /**
-     * @param keyword (optional) 
      * @return Success
      */
-    getForDropdown(keyword: string | undefined): Observable<CategoryForDropdownDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/Category/GetForDropdown?";
-        if (keyword === null)
-            throw new Error("The parameter 'keyword' cannot be null.");
-        else if (keyword !== undefined)
-            url_ += "keyword=" + encodeURIComponent("" + keyword) + "&";
+    getForDropdown(): Observable<CategoryForDropdownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Category/GetForDropdown";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3907,6 +3902,64 @@ export class SizeServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getForDropdown(): Observable<SizeForDropdownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Size/GetForDropdown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForDropdown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForDropdown(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SizeForDropdownDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SizeForDropdownDto[]>;
+        }));
+    }
+
+    protected processGetForDropdown(response: HttpResponseBase): Observable<SizeForDropdownDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SizeForDropdownDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -4342,6 +4395,69 @@ export class StockServiceProxy {
     }
 
     /**
+     * @param materialId (optional) 
+     * @return Success
+     */
+    getAllByMaterialId(materialId: number | undefined): Observable<StockDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Stock/GetAllByMaterialId?";
+        if (materialId === null)
+            throw new Error("The parameter 'materialId' cannot be null.");
+        else if (materialId !== undefined)
+            url_ += "materialId=" + encodeURIComponent("" + materialId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllByMaterialId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllByMaterialId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockDto[]>;
+        }));
+    }
+
+    protected processGetAllByMaterialId(response: HttpResponseBase): Observable<StockDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(StockDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -4774,6 +4890,64 @@ export class StoreServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getForDropdown(): Observable<StoreForDropdownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Store/GetForDropdown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForDropdown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForDropdown(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StoreForDropdownDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StoreForDropdownDto[]>;
+        }));
+    }
+
+    protected processGetForDropdown(response: HttpResponseBase): Observable<StoreForDropdownDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(StoreForDropdownDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -12117,6 +12291,7 @@ export class MaterialDto implements IMaterialDto {
     name: string | undefined;
     specification: string | undefined;
     categoryId: number | undefined;
+    category: CategoryForDropdownDto;
 
     constructor(data?: IMaterialDto) {
         if (data) {
@@ -12133,6 +12308,7 @@ export class MaterialDto implements IMaterialDto {
             this.name = _data["name"];
             this.specification = _data["specification"];
             this.categoryId = _data["categoryId"];
+            this.category = _data["category"] ? CategoryForDropdownDto.fromJS(_data["category"]) : <any>undefined;
         }
     }
 
@@ -12149,6 +12325,7 @@ export class MaterialDto implements IMaterialDto {
         data["name"] = this.name;
         data["specification"] = this.specification;
         data["categoryId"] = this.categoryId;
+        data["category"] = this.category ? this.category.toJSON() : <any>undefined;
         return data;
     }
 
@@ -12165,6 +12342,7 @@ export interface IMaterialDto {
     name: string | undefined;
     specification: string | undefined;
     categoryId: number | undefined;
+    category: CategoryForDropdownDto;
 }
 
 export class MaterialDtoPagedResultDto implements IMaterialDtoPagedResultDto {
@@ -14305,6 +14483,53 @@ export interface ISizeDtoPagedResultDto {
     totalCount: number;
 }
 
+export class SizeForDropdownDto implements ISizeForDropdownDto {
+    id: number;
+    name: string | undefined;
+
+    constructor(data?: ISizeForDropdownDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): SizeForDropdownDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SizeForDropdownDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+
+    clone(): SizeForDropdownDto {
+        const json = this.toJSON();
+        let result = new SizeForDropdownDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISizeForDropdownDto {
+    id: number;
+    name: string | undefined;
+}
+
 export class StockDto implements IStockDto {
     id: number;
     barcode: string | undefined;
@@ -14555,6 +14780,53 @@ export class StoreDtoPagedResultDto implements IStoreDtoPagedResultDto {
 export interface IStoreDtoPagedResultDto {
     items: StoreDto[] | undefined;
     totalCount: number;
+}
+
+export class StoreForDropdownDto implements IStoreForDropdownDto {
+    id: number;
+    name: string | undefined;
+
+    constructor(data?: IStoreForDropdownDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): StoreForDropdownDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StoreForDropdownDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+
+    clone(): StoreForDropdownDto {
+        const json = this.toJSON();
+        let result = new StoreForDropdownDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStoreForDropdownDto {
+    id: number;
+    name: string | undefined;
 }
 
 export class StructLayoutAttribute implements IStructLayoutAttribute {

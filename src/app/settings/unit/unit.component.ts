@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { UnitDto, UnitServiceProxy, FilterDto, FullPagedRequestDto } from '@shared/service-proxies/service-proxies';
+import { UnitDto, UnitServiceProxy, FilterDto, FullPagedRequestDto, SizeServiceProxy, SizeDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FilterUnitDialogComponent } from './filter-unit/filter-unit-dialog.component';
 import { CreateUnitDialogComponent } from './create-unit/create-unit-dialog.component';
@@ -12,18 +12,18 @@ import { ViewUnitDialogComponent } from './view-unit/view-unit-dialog.component'
   templateUrl: './unit.component.html',
 })
 export class UnitComponent extends FullPagedListingComponentBase<UnitDto> implements OnInit {
-  units: UnitDto[] = [];
+  units: SizeDto[] = [];
   fields = [
     { label: this.l('Name'), name: 'name', sortable: true, type: 'string' },
   ];
   constructor(injector: Injector,
     private _modalService: BsModalService,
-    private _unitService: UnitServiceProxy,
+    private _sizeService: SizeServiceProxy,
     public bsModalRef: BsModalRef) {
     super(injector);
   }
   protected list(request: FullPagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    this._unitService.read(request)
+    this._sizeService.read(request)
       .subscribe(result => {
         this.units = result.items;
         this.showPaging(result, pageNumber);
@@ -69,7 +69,7 @@ export class UnitComponent extends FullPagedListingComponentBase<UnitDto> implem
       undefined,
       (result: boolean) => {
         if (result) {
-          this._unitService.delete(id).subscribe(() => {
+          this._sizeService.delete(id).subscribe(() => {
             abp.notify.success(this.l('SuccessfullyDeleted'));
             this.refresh();
           });
