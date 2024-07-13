@@ -68,7 +68,11 @@ export const environment = {
         'Setting.Units.Edit',
         'Setting.Units.Delete',
 
-        
+        // Offer
+        'Setting.Offers',
+        'Setting.Offers.Create',
+        'Setting.Offers.Edit',
+        'Setting.Offers.Delete',
     ],
     
     permissionsUser: [] = [
@@ -108,6 +112,7 @@ export const environment = {
         'Workflow.StepIndex.Edit',
         'Workflow.StepIndex.Delete',
 
-    ]
+    ],
+
 
 };

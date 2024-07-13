@@ -36,7 +36,7 @@ const data: IMenuItem[] = [
 
       {
         label: 'Category',
-        to: `${adminRoot}/settings/category`,
+        to: `${adminRoot}/settings/Category`,
         icon: 'simple-icon-list',
         permissions: permissionsSetting,
 
@@ -56,6 +56,22 @@ const data: IMenuItem[] = [
       
     ],
 
+  },
+  //Offers
+  {
+    icon: 'simple-icon-layers',
+    label: 'Offers',
+    to: `${adminRoot}/orders`,
+    permissions: permissionsSetting,
+    subs: [
+      {
+        label: 'Offers',
+        to: `${adminRoot}/orders/offers`,
+        icon: 'iconsminds-address-book-2',
+        permissions: permissionsSetting,
+      }
+
+    ],
   },
   //Security
   {
@@ -79,7 +95,6 @@ const data: IMenuItem[] = [
 
     ],
   },
-
   //WorkFlow
   {
     icon: 'iconsminds-recycling-2',
