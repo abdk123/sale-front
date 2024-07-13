@@ -27,6 +27,7 @@ import { SettingsModule } from './settings/settings.module';
 import { SecurityModule } from './security/security.module';
 import {NotificationModule} from './layout/notification/notification.module'
 import { ReportsModule } from './reports/reports.module';
+import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ReportsModule } from './reports/reports.module';
     NotificationModule,
     SettingsModule,
     SecurityModule,
-    ReportsModule
+    ReportsModule,
+    PurchaseOrderModule
   ],
 
   schemas: [

@@ -72,6 +72,23 @@ const data: IMenuItem[] = [
         permissions: permissionsSetting,
       },
     ],
+
+  },
+  //Offers
+  {
+    icon: 'simple-icon-layers',
+    label: 'Offers',
+    to: `${adminRoot}/orders`,
+    permissions: permissionsSetting,
+    subs: [
+      {
+        label: 'Offers',
+        to: `${adminRoot}/orders/offers`,
+        icon: 'iconsminds-address-book-2',
+        permissions: permissionsSetting,
+      }
+
+    ],
   },
   //Security
   {
@@ -94,7 +111,6 @@ const data: IMenuItem[] = [
       },
     ],
   },
-
   //WorkFlow
   {
     icon: "iconsminds-recycling-2",

@@ -17,6 +17,7 @@ import { TenantsComponent } from './tenants/tenants.component';
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'settings', loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)},
                     { path: 'security', loadChildren: () => import('./security/security.module').then(m => m.SecurityModule) },
+                    { path: 'orders', loadChildren: () => import('./purchase-order/purchase-order.module').then(m => m.PurchaseOrderModule) },
                     { path: 'notifications', loadChildren: () => import('../app/layout/notification/notification.module').then(m => m.NotificationModule) },
                 ]
             },
