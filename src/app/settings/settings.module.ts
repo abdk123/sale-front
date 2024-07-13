@@ -29,7 +29,19 @@ import { CategoryComponent } from './category/category.component';
 import { FilterCategoryDialogComponent } from './category/filter-category/filter-category-dialog.component';
 import { SharedModule } from '@shared/shared.module';
 import { FilterMaterialDialogComponent } from './material/filter-material/filter-material-dialog.component';
-import { CategoryServiceProxy, CustomerServiceProxy, MaterialServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryServiceProxy, ClearanceCompanyServiceProxy, CustomerServiceProxy, MaterialServiceProxy, SizeServiceProxy, StockServiceProxy, StoreServiceProxy, TransportCompanyServiceProxy } from '@shared/service-proxies/service-proxies';
+import { StoreComponent } from './store/store.component';
+import { CreateStoreComponent } from './store/create-store/create-store.component';
+import { EditStoreComponent } from './store/edit-store/edit-store.component';
+import { ViewStoreComponent } from './store/view-store/view-store.component';
+import { ClearanceCompanyComponent } from './clearance-company/clearance-company.component';
+import { TransportCompanyComponent } from './transport-company/transport-company.component';
+import { CreateClearanceCompanyComponent } from './clearance-company/create-clearance-company/create-clearance-company.component';
+import { EditClearanceCompanyComponent } from './clearance-company/edit-clearance-company/edit-clearance-company.component';
+import { ViewClearanceCompanyComponent } from './clearance-company/view-clearance-company/view-clearance-company.component';
+import { ViewTransportCompanyComponent } from './transport-company/view-transport-company/view-transport-company.component';
+import { CreateTransportCompanyComponent } from './transport-company/create-transport-company/create-transport-company.component';
+import { EditTransportCompanyComponent } from './transport-company/edit-transport-company/edit-transport-company.component';
 
 
 @NgModule({
@@ -54,10 +66,22 @@ import { CategoryServiceProxy, CustomerServiceProxy, MaterialServiceProxy } from
     ViewCategoryDialogComponent,
     CategoryComponent,
     FilterCategoryDialogComponent,
-    FilterMaterialDialogComponent
+    FilterMaterialDialogComponent,
+    StoreComponent,
+    CreateStoreComponent,
+    EditStoreComponent,
+    ViewStoreComponent,
+    ClearanceCompanyComponent,
+    TransportCompanyComponent,
+    CreateClearanceCompanyComponent,
+    EditClearanceCompanyComponent,
+    ViewClearanceCompanyComponent,
+    ViewTransportCompanyComponent,
+    CreateTransportCompanyComponent,
+    EditTransportCompanyComponent,
   ],
   imports: [
-  AccordionModule.forRoot(),
+    AccordionModule.forRoot(),
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
@@ -68,11 +92,16 @@ import { CategoryServiceProxy, CustomerServiceProxy, MaterialServiceProxy } from
     QueryBuilderModule,
     SettingsRoutingModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
-  providers:[
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  providers: [
     MaterialServiceProxy,
     CategoryServiceProxy,
     CustomerServiceProxy,
-  ]
+    StoreServiceProxy,
+    ClearanceCompanyServiceProxy,
+    TransportCompanyServiceProxy,
+    SizeServiceProxy,
+    StockServiceProxy,
+  ],
 })
-export class SettingsModule { }
+export class SettingsModule {}

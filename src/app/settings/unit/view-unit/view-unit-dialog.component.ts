@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UnitServiceProxy, UnitDto } from '@shared/service-proxies/service-proxies';
+import { UnitServiceProxy, UnitDto, SizeDto, SizeServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -12,10 +12,10 @@ export class ViewUnitDialogComponent extends AppComponentBase {
   saving = false;
   editable: true;
   id: number;
-  unit: UnitDto = new UnitDto();
+  unit: SizeDto = new SizeDto();
 
   constructor(injector: Injector,
-    private _unitService: UnitServiceProxy,
+    private _sizeService: SizeServiceProxy,
     public bsModalRef: BsModalRef,
   ) {
     super(injector);
@@ -27,7 +27,7 @@ export class ViewUnitDialogComponent extends AppComponentBase {
 
   initUnit() {
     (this.id)
-    this._unitService.get(this.id).subscribe((result) => {
+    this._sizeService.get(this.id).subscribe((result) => {
       this.unit = result;
     });
   }

@@ -23,4 +23,54 @@
       </label>
     </div>
   </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="address">
+      {{ "Address" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="address" id="address">
+        {{ data.address }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="balanceInDollar">
+      {{ "BalanceInDollar" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="balanceInDollar" id="balanceInDollar">
+        {{ data.balanceInDollar }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="balanceInDinar">
+      {{ "BalanceInDinar" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="balanceInDinar" id="balanceInDinar">
+        {{ data.balanceInDinar }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="initialBalance">
+      {{ "InitialBalance" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="initialBalance" id="initialBalance">
+        {{ data.initialBalance }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label" for="type">
+      {{ "Type" | localize }}
+    </label>
+    <div class="col-md-9">
+      <label class="form-control" name="type" id="type">
+        {{ data.type == 0 ? this.l('Customer') : data.type == 1 ? this.l('Supplier') : this.l('CustomerAndSupplier') }}
+      </label>
+    </div>
+  </div>
 </div>

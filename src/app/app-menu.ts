@@ -18,42 +18,59 @@ export interface IMenuItem {
 }
 
 const data: IMenuItem[] = [
-
   //Setting
   {
-    icon: 'simple-icon-settings',
-    label: 'Settings',
+    icon: "simple-icon-settings",
+    label: "Settings",
     to: `${adminRoot}/settings`,
     permissions: permissionsSetting,
     subs: [
       {
-        label: 'Material',
+        label: "Material",
         to: `${adminRoot}/settings/material`,
-        icon: 'iconsminds-shopping-basket',
+        icon: "iconsminds-shopping-basket",
         permissions: permissionsSetting,
-
       },
 
       {
-        label: 'Category',
-        to: `${adminRoot}/settings/Category`,
-        icon: 'simple-icon-list',
+        label: "Store",
+        to: `${adminRoot}/settings/store`,
+        icon: "iconsminds-clothing-store",
         permissions: permissionsSetting,
+      },
 
+      {
+        label: "ClearanceCompany",
+        to: `${adminRoot}/settings/clearanceCompany`,
+        icon: "iconsminds-empire-state-building",
+        permissions: permissionsSetting,
+      },
+
+      {
+        label: "TransportCompany",
+        to: `${adminRoot}/settings/transportCompany`,
+        icon: "iconsminds-building",
+        permissions: permissionsSetting,
+      },
+
+      {
+        label: "Category",
+        to: `${adminRoot}/settings/category`,
+        icon: "simple-icon-list",
+        permissions: permissionsSetting,
       },
       {
-        label: 'Customer',
+        label: "Customer",
         to: `${adminRoot}/settings/customer`,
-        icon: 'simple-icon-user',
+        icon: "simple-icon-user",
         permissions: permissionsSetting,
       },
       {
-        label: 'Unit',
+        label: "Unit",
         to: `${adminRoot}/settings/unit`,
-        icon: 'iconsminds-scale',
+        icon: "iconsminds-scale",
         permissions: permissionsSetting,
       },
-      
     ],
 
   },
@@ -75,43 +92,39 @@ const data: IMenuItem[] = [
   },
   //Security
   {
-    icon: 'iconsminds-security-settings',
-    label: 'Security',
+    icon: "iconsminds-security-settings",
+    label: "Security",
     to: `${adminRoot}/security`,
     permissions: permissionsUser,
     subs: [
       {
-        label: 'Role',
+        label: "Role",
         to: `${adminRoot}/security/role`,
-        icon: 'iconsminds-lock-2',
+        icon: "iconsminds-lock-2",
         permissions: permissionsUser,
       },
       {
-        label: 'User',
+        label: "User",
         to: `${adminRoot}/security/user`,
-        icon: 'iconsminds-business-man-woman',
+        icon: "iconsminds-business-man-woman",
         permissions: permissionsUser,
       },
-
     ],
   },
   //WorkFlow
   {
-    icon: 'iconsminds-recycling-2',
-    label: 'WorkFlow',
+    icon: "iconsminds-recycling-2",
+    label: "WorkFlow",
     to: `${adminRoot}/workflow`,
     permissions: permissionsWorkflow,
     subs: [
       {
-        label: 'WorkFlow',
+        label: "WorkFlow",
         to: `${adminRoot}/workflow/workflow`,
-        icon: 'iconsminds-recycling-2',
+        icon: "iconsminds-recycling-2",
         permissions: permissionsWorkflow,
       },
-
-
     ],
   },
-
 ];
 export default data;
