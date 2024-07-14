@@ -85,7 +85,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
 
   initialCategories() {
     this._categoryService
-      .getForDropdown()
+      .getAllForDropdown()
       .subscribe((result: CategoryForDropdownDto[]) => {
         this.categories = result;
       });
