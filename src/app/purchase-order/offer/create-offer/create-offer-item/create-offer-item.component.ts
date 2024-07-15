@@ -46,7 +46,7 @@ export class CreateOfferItemComponent
   }
 
   initialMaterialUnits(materialId: number){
-    this.stockService.getMaterialUnites(materialId)
+    this.stockService.getMaterialUnits(materialId)
     .subscribe(result=>{
       this.units = result;
     });
