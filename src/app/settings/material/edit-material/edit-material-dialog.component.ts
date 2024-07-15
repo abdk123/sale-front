@@ -170,7 +170,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
         unitClass.unitId = result.id;
         this.units.push(unitClass);
 
-        const stock = new StockDto(this.stock);
+        const stock = new StockDto();
         stock.quantityInLargeUnit = Math.round(
           this.stock.numberInLargeUnit * this.stock.count
         );

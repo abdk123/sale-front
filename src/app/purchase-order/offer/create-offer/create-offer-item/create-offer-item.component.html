@@ -74,7 +74,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of items;let i = $index">
+                    <tr *ngFor="let item of items; index as i">
                         <td>{{getMaterialName(item.materialId)}}</td>
                         <td>{{getUnit(item.unitId)}}</td>
                         <td>{{getPackingUnit(item.sizeId)}}</td>

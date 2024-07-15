@@ -13408,7 +13408,7 @@ export class CreateOfferDto implements ICreateOfferDto {
     currency: number;
     customerId: number | undefined;
     note: string | undefined;
-    status: OfferStatus;
+    status: number;
     porchaseOrderId: string | undefined;
     offerItems: CreateOfferItemDto[] | undefined;
 
@@ -13476,7 +13476,7 @@ export interface ICreateOfferDto {
     currency: number;
     customerId: number | undefined;
     note: string | undefined;
-    status: OfferStatus;
+    status: number;
     porchaseOrderId: string | undefined;
     offerItems: CreateOfferItemDto[] | undefined;
 }
@@ -17377,14 +17377,6 @@ export class OfferDtoPagedResultDto implements IOfferDtoPagedResultDto {
 export interface IOfferDtoPagedResultDto {
     items: OfferDto[] | undefined;
     totalCount: number;
-}
-
-export enum OfferStatus {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-    _4 = 4,
 }
 
 export enum ParameterAttributes {

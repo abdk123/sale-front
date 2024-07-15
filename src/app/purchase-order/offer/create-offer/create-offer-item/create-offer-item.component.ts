@@ -72,17 +72,17 @@ export class CreateOfferItemComponent
   }
 
   onChangeAddedbyUnit(dto: MaterialUnitDto) {
-    if (dto.isSmallUnit) {
-      this.item.addedBySmallUnit = dto.isSmallUnit;
-      this.item.sizeId = dto.id;
-    } else {
-      this.item.unitId = dto.id;
+    if(dto){
+      if (dto.isSmallUnit) {
+        this.item.addedBySmallUnit = dto.isSmallUnit;
+        this.item.sizeId = dto.id;
+      } else {
+        this.item.unitId = dto.id;
+      }
     }
   }
 
   save() {
-    debugger;
-    
     this.materialIsRequired = this.item.materialId ? false : true;
     this.addByUnitIsRequired =
       this.item.sizeId || this.item.unitId ? false : true;
@@ -116,6 +116,7 @@ export class CreateOfferItemComponent
     this.items[this.indexUpdate].unitPrice = this.item.unitPrice;
     this.items[this.indexUpdate].specefecation = this.item.specefecation;
     this.onSave.emit(this.items);
+    this.item = new CreateOfferItemDto();
   }
 
   addNewItem() {
@@ -125,7 +126,6 @@ export class CreateOfferItemComponent
   }
 
   deleteItem(index:number): void {
-    debugger;
     var material = this.materials.find(x=> x.id == this.items[index].materialId);
     abp.message.confirm(
       this.l('OfferMaterialDeleteWarningMessage',material.name),
