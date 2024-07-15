@@ -28,6 +28,7 @@ import { SecurityModule } from './security/security.module';
 import {NotificationModule} from './layout/notification/notification.module'
 import { ReportsModule } from './reports/reports.module';
 import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
+import { VouchersModule } from './vouchers/vouchers.module';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
     SettingsModule,
     SecurityModule,
     ReportsModule,
-    PurchaseOrderModule
+    PurchaseOrderModule,
+    VouchersModule
   ],
 
   schemas: [

@@ -1,39 +1,72 @@
-<abp-modal-header
-
-  [title]="'MaterialDetails'|localize"
-
-  (onCloseClick)="bsModalRef.hide()"
-></abp-modal-header>
+<abp-modal-header [title]="'MaterialDetails'|localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
 <div class="modal-body my-custom-scrollbar">
-  <div class="form-group row">
-    <label class="col-md-3 col-form-label" for="name">
-      {{ "Name" | localize }}
-    </label>
-    <div class="col-md-9">
-      <label class="form-control" name="name" id="name">
-        {{ data.name }}
-      </label>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group row">
+        <label class="col-md-12 col-form-label" for="name">
+          {{ "Name" | localize }}
+        </label>
+        <div class="col-md-9">
+          <label class="form-control" name="name" id="name">
+            {{ data.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group row">
+        <label class="col-md-12 col-form-label" for="category">
+          {{ "Category" | localize }}
+        </label>
+        <div class="col-md-9">
+          <label class="form-control" name="category" id="category">
+            {{ category.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group row">
+        <label class="col-md-12 col-form-label" for="specification">
+          {{ "Specification" | localize }}
+        </label>
+        <div class="col-md-9">
+          <label class="form-control" name="specification" id="specification">
+            {{ data.specification }}
+          </label>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="form-group row">
-    <label class="col-md-3 col-form-label" for="category">
-      {{ "Category" | localize }}
-    </label>
-    <div class="col-md-9">
-      <label class="form-control" name="category" id="category">
-        {{ category.name }}
-      </label>
-    </div>
+  <div class="separator mb-3"></div>
+  <div class="mb-3">
+    <h4>{{"Stock" | localize}}</h4>
   </div>
-  <div class="form-group row">
-    <label class="col-md-3 col-form-label" for="specification">
-      {{ "Specification" | localize }}
-    </label>
-    <div class="col-md-9">
-      <label class="form-control" name="specification" id="specification">
-        {{ data.specification }}
-      </label>
-    </div>
+  <div class="separator mb-3"></div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
+          <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
+          <th style="width: 13%;" class="bi">{{'NumberInLargeUnit' | localize}}</th>
+          <th style="width: 12%;" class="bi">{{'Count' | localize}}</th>
+          <th style="width: 13%;" class="bi">{{'QuantityInLargeUnit' | localize}}</th>
+          <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
+          <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of stocks; index as i">
+          <td>{{getStoreName(item.storeId)}}</td>
+          <td>{{getUnitName(item.id)}}</td>
+          <td>{{item.numberInLargeUnit}}</td>
+          <td>{{item.count}}</td>
+          <td>{{item.quantityInLargeUnit}}</td>
+          <td>{{item.totalNumberInSmallUnit + ' ' + getSizeName(item.sizeId)}}</td>
+          <td>{{item.numberInSmallUnit}}</td>          
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

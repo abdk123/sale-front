@@ -1,42 +1,357 @@
-<form class="form-horizontal " autocomplete="off" #editBrandModal="ngForm" (ngSubmit)="save()">
-  <abp-modal-header [title]="'EditMaterial'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
-  <div class="modal-body modal-xl">
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="name">
-        {{ "Name"|localize }}
-      </label>
-      <div class="col-md-9">
-        <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="material.name"
-          #nameModel="ngModel" #nameEl />
-        <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+<form class="form-horizontal " autocomplete="off" #createMaterialModal="ngForm">
+  <div class="row">
+    <div class="col-12 separator">
+      <h1>{{'EditMaterial' | localize}}</h1>
+      <a class="btn btn-link btn-empty btn-lg" href="/app/settings/material">{{'BackToMaterialList' | localize}} <i
+          class="simple-icon-arrow-right"></i></a>
+      <div class="top-right-button-container text-zero">
+        <button type="button" [disabled]="!createMaterialModal.form.valid || saving"
+          class="top-right-button btn btn-primary  mb-3 mr-2" (click)="save()">{{ 'Save Material' |
+          localize}}
+        </button>
       </div>
     </div>
-
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="code">
-        {{ "Category"|localize }}
-      </label>
-      <div class="col-md-9">
-        <select class="form-control" aria-label="category" #categoryModel="ngModel" required name="category"
-          id="category" [(ngModel)]="material.categoryId" #categoryEl>
-          <option *ngFor="let item of categories" [ngValue]="item.id">{{item.name}}</option>
-          <abp-validation-summary [control]="categoryModel" [controlEl]="categoryEl"></abp-validation-summary>
-        </select>
-      </div>
-    </div>
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="specification">
-        {{ "Specification"|localize }}
-      </label>
-      <div class="col-md-9">
-        <textarea type="text" class="form-control" name="specification" id="specification"
-          [(ngModel)]="material.specification" #specificationModel="ngModel" #specificationEl>
-            </textarea>
-        <abp-validation-summary [control]="specificationModel" [controlEl]="specificationEl"></abp-validation-summary>
-      </div>
-    </div>
-
   </div>
-  <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!editBrandModal.form.valid "
-    (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+
+  <!--Material-->
+  <div class="card mt-2">
+    <div class="d-flex justify-content-between">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title separator pb-2 mb-3">{{ 'MaterialInfo' | localize }}</h5>
+      <div class="row">
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="material.name"
+              #nameModel="ngModel" #nameEl />
+            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+            <span>{{ "Name"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <ng-select [items]="categories" name="category" bindLabel="name" required bindValue="id"
+              [(ngModel)]="material.categoryId">
+            </ng-select>
+            <span>{{ 'Category' | localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <textarea type="text" class="form-control" required name="specification" id="specification"
+              [(ngModel)]="material.specification" #specificationModel="ngModel" rows="1" #specificationEl>
+             </textarea>
+            <abp-validation-summary [control]="specificationModel"
+              [controlEl]="specificationEl"></abp-validation-summary>
+            <span>{{ "Specification"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <input class="form-control" bsDatepicker [container]="'html'" required
+              [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="expiryDate" id="expiryDate"
+              [(ngModel)]="expiryDate" #expiryDateModel="ngModel" #expiryDateEl />
+            <abp-validation-summary [control]="expiryDateModel" [controlEl]="expiryDateEl"></abp-validation-summary>
+            <span>{{ "ExpiryDate"|localize }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Stock-->
+  <div class="card mt-2">
+    <div class="d-flex justify-content-between">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title separator pb-2 mb-3">{{ 'Stock' | localize }}</h5>
+      <div class="row">
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <ng-select [items]="stores" bindLabel="name" name="stock" bindValue="id" [(ngModel)]="stock.storeId">
+            </ng-select>
+            <span>{{ 'Store' | localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <input type="text" class="form-control" unit="unit" id="unit" name="unit" [(ngModel)]="unit"
+              #unitModel="ngModel" #unitEl />
+            <abp-validation-summary [control]="unitModel" [controlEl]="unitEl"></abp-validation-summary>
+            <span>{{ "Unit"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.count"
+              #countModel="ngModel" #countEl />
+            <abp-validation-summary [control]="countModel" [controlEl]="countEl"></abp-validation-summary>
+            <span>{{ "Count"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label">
+            <ng-select [items]="sizes" name="size" [(ngModel)]="stock.sizeId" bindLabel="name" bindValue="id">
+            </ng-select>
+            <span>{{ 'Size' | localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3 mt-3">
+          <label class=" has-float-label">
+            <input type="number" name="numberInLargeUnit" class="form-control" numberInLargeUnit="numberInLargeUnit"
+              id="numberInLargeUnit" [(ngModel)]="stock.numberInLargeUnit" #numberInLargeUnitModel="ngModel"
+              #numberInLargeUnitEl />
+            <abp-validation-summary [control]="numberInLargeUnitModel"
+              [controlEl]="numberInLargeUnitEl"></abp-validation-summary>
+            <span>{{ "NumberInLargeUnit"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-3 mt-3">
+          <label class=" has-float-label">
+            <input type="number" class="form-control" name="numberInSmallUnit" numberInSmallUnit="numberInSmallUnit"
+              id="numberInSmallUnit" [(ngModel)]="stock.numberInSmallUnit" #numberInSmallUnitModel="ngModel"
+              #numberInSmallUnitEl />
+            <abp-validation-summary [control]="numberInSmallUnitModel"
+              [controlEl]="numberInSmallUnitEl"></abp-validation-summary>
+            <span>{{ "NumberInSmallUnit"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-3 mt-3">
+          <button type="button" class="btn btn-outline-primary" [disabled]="false" (click)="AddStock()">
+            <i [class]="'bi bi-plus'"> </i> {{ 'Add' | localize }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Stock List-->
+  <div class="card mt-2">
+    <div class="d-flex justify-content-between">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title separator pb-2 mb-3">{{ 'StockList' | localize }}</h5>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
+              <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
+              <th style="width: 13%;" class="bi">{{'NumberInLargeUnit' | localize}}</th>
+              <th style="width: 12%;" class="bi">{{'Count' | localize}}</th>
+              <th style="width: 13%;" class="bi">{{'QuantityInLargeUnit' | localize}}</th>
+              <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
+              <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th>
+              <th style="width: 3%;" class="bi"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of stocks; index as i">
+              <td>{{getStoreName(item.storeId)}}</td>
+              <td>{{getUnitName(item.id,item.unitId)}}</td>
+              <td>{{item.numberInLargeUnit}}</td>
+              <td>{{item.count}}</td>
+              <td>{{item.quantityInLargeUnit}}</td>
+              <td>{{item.totalNumberInSmallUnit + ' ' + getSizeName(item.sizeId)}}</td>
+              <td>{{item.numberInSmallUnit}}</td>
+              <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
+                  style="font-size: large; color: #dc3545; padding: 0;"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </form>
+
+
+
+
+<!-- <form class="form-horizontal " autocomplete="off" #createBrandModal="ngForm" (ngSubmit)="save()">
+  <abp-modal-header [title]="'CreateNewMaterial'|localize " (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <div class="modal-body modal-xl">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group row required">
+          <label class="col-md-12 col-form-label" for="name">
+            {{ "Name"|localize }}
+          </label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="material.name"
+              #nameModel="ngModel" #nameEl />
+            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group row required">
+          <label class="col-md-12 col-form-label" for="category">
+            {{ "Category"|localize }}
+          </label>
+          <div class="col-md-9">
+            <select class="form-control" aria-label="category" #categoryModel="ngModel" required name="category"
+              id="category" [(ngModel)]="material.categoryId" #categoryEl>
+              <option *ngFor="let item of categories" [ngValue]="item.id">{{item.name}}</option>
+              <abp-validation-summary [control]="categoryModel" [controlEl]="categoryEl"></abp-validation-summary>
+            </select>
+            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group row ">
+          <label class="col-md-12 col-form-label" for="specification">
+            {{ "Specification"|localize }}
+          </label>
+          <div class="col-md-9">
+            <textarea type="text" class="form-control" name="specification" id="specification"
+              [(ngModel)]="material.specification" #specificationModel="ngModel" #specificationEl>
+                      </textarea>
+            <abp-validation-summary [control]="specificationModel"
+              [controlEl]="specificationEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group row ">
+          <label class="col-md-12 col-form-label" for="expiryDate">
+            {{ "ExpiryDate"|localize }}
+          </label>
+          <div class="col-md-9">
+            <input type="date" class="form-control" name="expiryDate" id="expiryDate" [(ngModel)]="expiryDate"
+              #expiryDateModel="ngModel" #expiryDateEl />
+            <abp-validation-summary [control]="expiryDateModel" [controlEl]="expiryDateEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="separator mb-3"></div>
+    <div class="mb-3">
+      <h4>{{"Stock" | localize}}</h4>
+    </div>
+    <div class="separator mb-3"></div>
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group row">
+          <label class="col-md-12 col-form-label" for="store">
+            {{ "Store"|localize }}
+          </label>
+          <div class="col-md-9">
+            <select class="form-control" aria-label="store" #storeModel="ngModel" name="store" id="store"
+              [(ngModel)]="stock.storeId" #storeEl>
+              <option *ngFor="let item of stores" [ngValue]="item.id">{{item.name}}</option>
+              <abp-validation-summary [control]="storeModel" [controlEl]="storeEl"></abp-validation-summary>
+            </select>
+            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group row">
+          <label class="col-md-12 col-form-label" for="unit">
+            {{ "Unit"|localize }}
+          </label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" unit="unit" id="unit" name="unit" [(ngModel)]="unit"
+              #unitModel="ngModel" #unitEl />
+            <abp-validation-summary [control]="unitModel" [controlEl]="unitEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group row">
+          <label class="col-md-12 col-form-label" for="count">
+            {{ "Count"|localize }}
+          </label>
+          <div class="col-md-9">
+            <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.count"
+              #countModel="ngModel" #countEl />
+            <abp-validation-summary [control]="countModel" [controlEl]="countEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group row">
+          <label class="col-md-12 col-form-label" for="size">
+            {{ "Size"|localize }}
+          </label>
+          <div class="col-md-9">
+            <select class="form-control" aria-label="size" #sizeModel="ngModel" name="size" id="size"
+              [(ngModel)]="stock.sizeId" #sizeEl>
+              <option *ngFor="let item of sizes" [ngValue]="item.id">{{item.name}}</option>
+              <abp-validation-summary [control]="sizeModel" [controlEl]="sizeEl"></abp-validation-summary>
+            </select>
+            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group row">
+          <label class="col-md-12 col-form-label" for="numberInLargeUnit">
+            {{ "NumberInLargeUnit"|localize }}
+          </label>
+          <div class="col-md-9">
+            <input type="number" name="numberInLargeUnit" class="form-control" numberInLargeUnit="numberInLargeUnit"
+              id="numberInLargeUnit" [(ngModel)]="stock.numberInLargeUnit" #numberInLargeUnitModel="ngModel"
+              #numberInLargeUnitEl />
+            <abp-validation-summary [control]="numberInLargeUnitModel"
+              [controlEl]="numberInLargeUnitEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group row">
+          <label class="col-md-12 col-form-label" for="numberInSmallUnit">
+            {{ "NumberInSmallUnit"|localize }}
+          </label>
+          <div class="col-md-9">
+            <input type="number" class="form-control" name="numberInSmallUnit" numberInSmallUnit="numberInSmallUnit"
+              id="numberInSmallUnit" [(ngModel)]="stock.numberInSmallUnit" #numberInSmallUnitModel="ngModel"
+              #numberInSmallUnitEl />
+            <abp-validation-summary [control]="numberInSmallUnitModel"
+              [controlEl]="numberInSmallUnitEl"></abp-validation-summary>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 mb-3">
+        <button type="button" class="btn btn-outline-primary" [disabled]="false" (click)="AddStock()">
+          <i [class]="'bi bi-plus'"> </i> {{ 'Add' | localize }}
+        </button>
+      </div>
+    </div>
+    <div class="separator mb-3"></div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
+            <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
+            <th style="width: 13%;" class="bi">{{'NumberInLargeUnit' | localize}}</th>
+            <th style="width: 12%;" class="bi">{{'Count' | localize}}</th>
+            <th style="width: 13%;" class="bi">{{'QuantityInLargeUnit' | localize}}</th>
+            <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
+            <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th>
+            <th style="width: 3%;" class="bi"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of stocks; index as i">
+            <td>{{getStoreName(item.storeId)}}</td>
+            <td>{{getUnitName(item.id,item.unitId)}}</td>
+            <td>{{item.numberInLargeUnit}}</td>
+            <td>{{item.count}}</td>
+            <td>{{item.quantityInLargeUnit}}</td>
+            <td>{{item.totalNumberInSmallUnit + ' ' + getSizeName(item.sizeId)}}</td>
+            <td>{{item.numberInSmallUnit}}</td>
+            <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
+                style="font-size: large; color: #dc3545; padding: 0;"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createBrandModal.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form> -->

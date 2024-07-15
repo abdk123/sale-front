@@ -5,51 +5,59 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'edit-material-dialog',
-  templateUrl: './edit-customer-dialog.component.html',
-
+  selector: "edit-material-dialog",
+  templateUrl: "./edit-customer-dialog.component.html",
 })
 export class EditCustomerDialogComponent extends AppComponentBase {
   saving = false;
-  id:number;
-  customer =  new UpdateCustomerDto ();
+  id: number;
+  customer = new UpdateCustomerDto();
+  types = [];
   @Output() onSave = new EventEmitter<any>();
-  constructor(injector: Injector,
-    private _customerService:CustomerServiceProxy,
-    public bsModalRef: BsModalRef,
-
+  constructor(
+    injector: Injector,
+    private _customerService: CustomerServiceProxy,
+    public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
   ngOnInit(): void {
-    this. initCustomer();
+    this.types = [
+      {
+        id: 0,
+        name: this.l("Customer"),
+      },
+      {
+        id: 1,
+        name: this.l("Supplier"),
+      },
+      {
+        id: 2,
+        name: this.l("CustomerAndSupplier"),
+      },
+    ];
+
+    this.initCustomer();
   }
 
-
-
-  initCustomer(){
-    this._customerService.get(this.id).subscribe((response:CustomerDto) => {
-     this.customer = response;
-   });
-   }
-   save(): void {
+  initCustomer() {
+    this._customerService.get(this.id).subscribe((response: CustomerDto) => {
+      this.customer = response;
+    });
+  }
+  save(): void {
     this.saving = true;
     this._customerService
-      .update(
-        this.customer
-      )
+      .update(this.customer)
       .pipe(
         finalize(() => {
           this.saving = false;
         })
       )
-      .subscribe((response:any) => {
-
-          this.notify.info(this.l('SavedSuccessfully'));
-          this.bsModalRef.hide();
-          this.onSave.emit();
+      .subscribe((response: any) => {
+        this.notify.info(this.l("SavedSuccessfully"));
+        this.bsModalRef.hide();
+        this.onSave.emit();
       });
-
   }
-
 }
