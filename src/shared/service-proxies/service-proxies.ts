@@ -13097,7 +13097,7 @@ export class CreateCustomerVoucherDto implements ICreateCustomerVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     customerId: number | undefined;
 
     constructor(data?: ICreateCustomerVoucherDto) {
@@ -13116,7 +13116,7 @@ export class CreateCustomerVoucherDto implements ICreateCustomerVoucherDto {
             this.currency = _data["currency"];
             this.amount = _data["amount"];
             this.voucherNumber = _data["voucherNumber"];
-            this.voucherDate = _data["voucherDate"] ? moment(_data["voucherDate"].toString()) : <any>undefined;
+            this.voucherDate = _data["voucherDate"];
             this.customerId = _data["customerId"];
         }
     }
@@ -13135,7 +13135,7 @@ export class CreateCustomerVoucherDto implements ICreateCustomerVoucherDto {
         data["currency"] = this.currency;
         data["amount"] = this.amount;
         data["voucherNumber"] = this.voucherNumber;
-        data["voucherDate"] = this.voucherDate ? this.voucherDate.toISOString() : <any>undefined;
+        data["voucherDate"] = this.voucherDate;
         data["customerId"] = this.customerId;
         return data;
     }
@@ -13154,7 +13154,7 @@ export interface ICreateCustomerVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     customerId: number | undefined;
 }
 
@@ -14764,8 +14764,9 @@ export class CustomerVoucherDto implements ICustomerVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     customerId: number | undefined;
+    customer: DropdownDto;
 
     constructor(data?: ICustomerVoucherDto) {
         if (data) {
@@ -14783,8 +14784,9 @@ export class CustomerVoucherDto implements ICustomerVoucherDto {
             this.currency = _data["currency"];
             this.amount = _data["amount"];
             this.voucherNumber = _data["voucherNumber"];
-            this.voucherDate = _data["voucherDate"] ? moment(_data["voucherDate"].toString()) : <any>undefined;
+            this.voucherDate = _data["voucherDate"];
             this.customerId = _data["customerId"];
+            this.customer = _data["customer"] ? DropdownDto.fromJS(_data["customer"]) : <any>undefined;
         }
     }
 
@@ -14802,8 +14804,9 @@ export class CustomerVoucherDto implements ICustomerVoucherDto {
         data["currency"] = this.currency;
         data["amount"] = this.amount;
         data["voucherNumber"] = this.voucherNumber;
-        data["voucherDate"] = this.voucherDate ? this.voucherDate.toISOString() : <any>undefined;
+        data["voucherDate"] = this.voucherDate;
         data["customerId"] = this.customerId;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         return data;
     }
 
@@ -14821,8 +14824,9 @@ export interface ICustomerVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     customerId: number | undefined;
+    customer: DropdownDto;
 }
 
 export class CustomerVoucherDtoPagedResultDto implements ICustomerVoucherDtoPagedResultDto {
@@ -20758,7 +20762,7 @@ export class UpdateCustomerVoucherDto implements IUpdateCustomerVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     customerId: number | undefined;
 
     constructor(data?: IUpdateCustomerVoucherDto) {
@@ -20777,7 +20781,7 @@ export class UpdateCustomerVoucherDto implements IUpdateCustomerVoucherDto {
             this.currency = _data["currency"];
             this.amount = _data["amount"];
             this.voucherNumber = _data["voucherNumber"];
-            this.voucherDate = _data["voucherDate"] ? moment(_data["voucherDate"].toString()) : <any>undefined;
+            this.voucherDate = _data["voucherDate"];
             this.customerId = _data["customerId"];
         }
     }
@@ -20796,7 +20800,7 @@ export class UpdateCustomerVoucherDto implements IUpdateCustomerVoucherDto {
         data["currency"] = this.currency;
         data["amount"] = this.amount;
         data["voucherNumber"] = this.voucherNumber;
-        data["voucherDate"] = this.voucherDate ? this.voucherDate.toISOString() : <any>undefined;
+        data["voucherDate"] = this.voucherDate;
         data["customerId"] = this.customerId;
         return data;
     }
@@ -20815,7 +20819,7 @@ export interface IUpdateCustomerVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     customerId: number | undefined;
 }
 

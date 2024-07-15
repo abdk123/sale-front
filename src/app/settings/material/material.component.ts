@@ -63,33 +63,28 @@ export class MaterialComponent
   }
 
   showAddNewModal() {
-    // let createMaterialDialog: BsModalRef;
-    // createMaterialDialog = this._modalService.show(
-    //   CreateMaterialDialogComponent,
-    //   {
-    //     backdrop: true,
-    //     ignoreBackdropClick: true,
-    //     class: "modal-lg",
-    //   }
-    // );
-    // createMaterialDialog.content.onSave.subscribe(() => {
-    //   this.refresh();
-    // });
     this._router.navigate(["/app/settings/create-material"]);
   }
   showEditModal(id: any) {
-    let editMaterialDialog: BsModalRef;
-    editMaterialDialog = this._modalService.show(EditMaterialDialogComponent, {
-      backdrop: true,
-      ignoreBackdropClick: true,
-      class: "modal-lg",
-      initialState: {
+    // let editMaterialDialog: BsModalRef;
+    // editMaterialDialog = this._modalService.show(EditMaterialDialogComponent, {
+    //   backdrop: true,
+    //   ignoreBackdropClick: true,
+    //   class: "modal-lg",
+    //   initialState: {
+    //     id: id,
+    //   },
+    // });
+    // editMaterialDialog.content.onSave.subscribe(() => {
+    //   this.refresh();
+    // });
+
+    this._router.navigate([
+      "/app/settings/update-material",
+      {
         id: id,
       },
-    });
-    editMaterialDialog.content.onSave.subscribe(() => {
-      this.refresh();
-    });
+    ]);
   }
   deleteItem(id: number): void {
     abp.message.confirm(
