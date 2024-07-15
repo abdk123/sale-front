@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="materials" name="materialId" [(ngModel)]="item.materialId" bindLabel="name" bindValue="id"
+                        <ng-select [items]="materials" required name="materialId" [(ngModel)]="item.materialId" bindLabel="name" bindValue="id"
                             (change)="onSelectMaterial($event)"></ng-select>
                         <span>{{ 'Material' | localize }}</span>
                     </label>
@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" class="form-control" name="quantity" [(ngModel)]="item.quantity"
+                        <input type="number" required class="form-control" name="quantity" [(ngModel)]="item.quantity"
                             #quantityModel="ngModel" #quantityEl />
                         <span>{{ 'Quantity' | localize }}</span>
                     </label>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <input type="number" class="form-control" name="unitPrice" [(ngModel)]="item.unitPrice"
+                        <input type="number" required class="form-control" name="unitPrice" [(ngModel)]="item.unitPrice"
                             #unitPriceModel="ngModel" #unitPriceEl />
                         <span>{{ 'UnitPrice' | localize }}</span>
                     </label>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="units" bindLabel="name" bindValue="name"
+                        <ng-select [items]="units" required bindLabel="name" bindValue="name"
                             (change)="onChangeAddedbyUnit($event)"></ng-select>
                         <span>{{ 'AddByUnit' | localize }}</span>
                     </label>
@@ -40,12 +40,11 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <textarea type="number" class="form-control" name="unitPrice"
+                        <textarea type="number" class="form-control" name="specefecation"
                             [(ngModel)]="item.specefecation"></textarea>
                         <span>{{ 'Specification' | localize }}</span>
                     </label>
-                    <abp-validation-summary [control]="unitPriceModel" [controlEl]="unitPriceEl">
-                    </abp-validation-summary>
+                    
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex justify-content-center align-items-center">
@@ -70,10 +69,12 @@
                         <th>{{'MaterialPrice' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'QuantityInStore' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of items">
+                    <tr *ngFor="let item of items;let i = $index">
                         <td>{{getMaterialName(item.materialId)}}</td>
                         <td>{{getUnit(item.unitId)}}</td>
                         <td>{{getPackingUnit(item.sizeId)}}</td>
@@ -81,6 +82,15 @@
                         <td>{{item.unitPrice}}</td>
                         <td>{{item.unitPrice * item.quantity}}</td>
                         <td>{{getStock(item.materialId)}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                        <td>
+                            <button (click)="initialItemForUpdate(i)" class="btn btn-xs btn-outline-success mx-1">
+                                <i class="bi bi-pencil-square"></i> {{'Edit' | localize}}
+                            </button>
+                            <button class="btn btn-outline-danger btn-xs">
+                                <i class="bi bi-trash"></i> {{'Delete' | localize}}
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

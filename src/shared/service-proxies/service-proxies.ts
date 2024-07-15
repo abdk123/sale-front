@@ -13404,12 +13404,12 @@ export interface ICreateMaterialDto {
 
 export class CreateOfferDto implements ICreateOfferDto {
     id: number;
-    orderNumber: string | undefined;
     offerEndDate: moment.Moment | undefined;
     currency: number;
     customerId: number | undefined;
     note: string | undefined;
     status: OfferStatus;
+    porchaseOrderId: string | undefined;
     offerItems: CreateOfferItemDto[] | undefined;
 
     constructor(data?: ICreateOfferDto) {
@@ -13424,12 +13424,12 @@ export class CreateOfferDto implements ICreateOfferDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.orderNumber = _data["orderNumber"];
             this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
             this.customerId = _data["customerId"];
             this.note = _data["note"];
             this.status = _data["status"];
+            this.porchaseOrderId = _data["porchaseOrderId"];
             if (Array.isArray(_data["offerItems"])) {
                 this.offerItems = [] as any;
                 for (let item of _data["offerItems"])
@@ -13448,12 +13448,12 @@ export class CreateOfferDto implements ICreateOfferDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["orderNumber"] = this.orderNumber;
         data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
         data["customerId"] = this.customerId;
         data["note"] = this.note;
         data["status"] = this.status;
+        data["porchaseOrderId"] = this.porchaseOrderId;
         if (Array.isArray(this.offerItems)) {
             data["offerItems"] = [];
             for (let item of this.offerItems)
@@ -13472,12 +13472,12 @@ export class CreateOfferDto implements ICreateOfferDto {
 
 export interface ICreateOfferDto {
     id: number;
-    orderNumber: string | undefined;
     offerEndDate: moment.Moment | undefined;
     currency: number;
     customerId: number | undefined;
     note: string | undefined;
     status: OfferStatus;
+    porchaseOrderId: string | undefined;
     offerItems: CreateOfferItemDto[] | undefined;
 }
 
@@ -17244,7 +17244,6 @@ export interface INotificationSubscriptionWithDisplayNameDto {
 export class OfferDto implements IOfferDto {
     id: number;
     porchaseOrderId: string | undefined;
-    orderNumber: string | undefined;
     status: number;
     offerEndDate: moment.Moment | undefined;
     currency: number;
@@ -17268,7 +17267,6 @@ export class OfferDto implements IOfferDto {
         if (_data) {
             this.id = _data["id"];
             this.porchaseOrderId = _data["porchaseOrderId"];
-            this.orderNumber = _data["orderNumber"];
             this.status = _data["status"];
             this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
@@ -17292,7 +17290,6 @@ export class OfferDto implements IOfferDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["porchaseOrderId"] = this.porchaseOrderId;
-        data["orderNumber"] = this.orderNumber;
         data["status"] = this.status;
         data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
@@ -17316,7 +17313,6 @@ export class OfferDto implements IOfferDto {
 export interface IOfferDto {
     id: number;
     porchaseOrderId: string | undefined;
-    orderNumber: string | undefined;
     status: number;
     offerEndDate: moment.Moment | undefined;
     currency: number;
@@ -18771,6 +18767,7 @@ export class StockDto implements IStockDto {
     unitId: number | undefined;
     sizeId: number | undefined;
     materialId: number | undefined;
+    material: string | undefined;
     storeId: number | undefined;
 
     constructor(data?: IStockDto) {
@@ -18795,6 +18792,7 @@ export class StockDto implements IStockDto {
             this.unitId = _data["unitId"];
             this.sizeId = _data["sizeId"];
             this.materialId = _data["materialId"];
+            this.material = _data["material"];
             this.storeId = _data["storeId"];
         }
     }
@@ -18819,6 +18817,7 @@ export class StockDto implements IStockDto {
         data["unitId"] = this.unitId;
         data["sizeId"] = this.sizeId;
         data["materialId"] = this.materialId;
+        data["material"] = this.material;
         data["storeId"] = this.storeId;
         return data;
     }
@@ -18843,6 +18842,7 @@ export interface IStockDto {
     unitId: number | undefined;
     sizeId: number | undefined;
     materialId: number | undefined;
+    material: string | undefined;
     storeId: number | undefined;
 }
 

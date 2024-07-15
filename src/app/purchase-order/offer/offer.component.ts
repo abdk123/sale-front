@@ -62,9 +62,20 @@ export class OfferComponent extends FullPagedListingComponentBase<OfferDto> impl
   }
 
   deleteItem(id:number): void {
-
+    abp.message.confirm(
+      this.l('OfferDeleteWarningMessage',  'Offers'),
+      undefined,
+      (result: boolean) => {
+        if (result) {
+          this.offerService.delete(id).subscribe(() => {
+            abp.notify.success(this.l('SuccessfullyDeleted'));
+            this.refresh();
+          });
+        }
+      }
+    );
   }
-
+  
   showViewModal(id:number){
     
   }

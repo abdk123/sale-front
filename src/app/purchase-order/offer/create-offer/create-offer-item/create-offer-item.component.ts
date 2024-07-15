@@ -119,10 +119,23 @@ export class CreateOfferItemComponent
   }
 
   addNewItem() {
-    
     this.items.push(this.item);
+    this.item = new CreateOfferItemDto();
     this.onSave.emit(this.items);
-    
+  }
+
+  deleteItem(index:number): void {
+    debugger;
+    var material = this.materials.find(x=> x.id == this.items[index].materialId);
+    abp.message.confirm(
+      this.l('OfferMaterialDeleteWarningMessage',material.name),
+      undefined,
+      (result: boolean) => {
+        if (result) {
+          this.items.splice(index,1);
+        }
+      }
+    );
   }
 
   getMaterialName(materialId: number) {
@@ -150,5 +163,9 @@ export class CreateOfferItemComponent
       var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
     }
     return `${valueInLargeUnit}-${valueInSmallUnit}`;
+  }
+
+  getSaleType(addedBySmallUnit){
+    return addedBySmallUnit ? `${this.l("SmallUnit")}` : `${this.l("LargeUnit")}`
   }
 }
