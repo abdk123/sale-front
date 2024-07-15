@@ -18,7 +18,7 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { finalize } from "rxjs";
-import { UnitClass } from "../view-material/view-material-dialog.component";
+import { ActivatedRoute, Router } from "@angular/router";
 
 export class ClassUnit{
   unitId: number | undefined;
@@ -52,14 +52,17 @@ export class EditMaterialDialogComponent extends AppComponentBase {
     private _categoryService: CategoryServiceProxy,
     private _storeService: StoreServiceProxy,
     private _sizeService: SizeServiceProxy,
+    private _router: Router,
     private _stockService: StockServiceProxy,
     private _unitService: UnitServiceProxy,
+    private _route: ActivatedRoute,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.id = this._route.snapshot?.params?.id;
     this.initMaterial();
     this.initialCategories();
     this.initialStores();
@@ -117,7 +120,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
 
   getUnitName(stockId, unitId) {
     return this.units.find((x) => {
-      return (x.stockId === stockId && x.unitId === unitId)
+      return x.stockId === stockId && x.unitId === unitId;
     }).name;
   }
 
@@ -139,6 +142,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
           this.saving = false;
           this.notify.info(this.l("SavedSuccessfully"));
           this.bsModalRef.hide();
+          this._router.navigate(["/app/settings/material"]);
           this.onSave.emit();
         })
       )
@@ -170,7 +174,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
         unitClass.unitId = result.id;
         this.units.push(unitClass);
 
-        const stock = new StockDto(this.stock);
+        const stock = new UpdateStockDto(this.stock);
         stock.quantityInLargeUnit = Math.round(
           this.stock.numberInLargeUnit * this.stock.count
         );
@@ -180,7 +184,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
         stock.unitId = result.id;
         this.stocks.push(stock);
 
-        this.stock.init(new StockDto());
+        this.stock.init(new UpdateStockDto());
         this.stock.numberInLargeUnit = 0;
         this.stock.numberInSmallUnit = 0;
         this.stock.count = 0;
@@ -190,8 +194,8 @@ export class EditMaterialDialogComponent extends AppComponentBase {
 
   deleteStock(index) {
     const dStock = this.stocks[index];
-    this.units = this.units.filter((z)=>{
-      return !(z.stockId === dStock.id && z.unitId === dStock.unitId)
+    this.units = this.units.filter((z) => {
+      return !(z.stockId === dStock.id && z.unitId === dStock.unitId);
     });
 
     if (dStock.id === undefined) {

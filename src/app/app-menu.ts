@@ -94,6 +94,12 @@ const data: IMenuItem[] = [
         icon: "iconsminds-book",
         permissions: permissionsVoucher,
       },
+      {
+        label: "CustomerVoucher",
+        to: `${adminRoot}/vouchers/customer-voucher`,
+        icon: "iconsminds-book",
+        permissions: permissionsVoucher,
+      },
     ],
   },
   //Offers

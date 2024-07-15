@@ -14,10 +14,14 @@ import { ClearanceCompanyVoucherComponent } from './clearance-company-voucher/cl
 import { CreateTransportCompanyVoucherComponent } from './transport-company-voucher/create-transport-company-voucher/create-transport-company-voucher.component';
 import { EditTransportCompanyVoucherComponent } from './transport-company-voucher/edit-transport-company-voucher/edit-transport-company-voucher.component';
 import { ViewTransportCompanyVoucherComponent } from './transport-company-voucher/view-transport-company-voucher/view-transport-company-voucher.component';
-import { ClearanceCompanyVoucherServiceProxy, TransportCompanyVoucherServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ClearanceCompanyVoucherServiceProxy, CustomerVoucherServiceProxy, TransportCompanyVoucherServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ViewClearanceCompanyVoucherComponent } from './clearance-company-voucher/view-clearance-company-voucher/view-clearance-company-voucher.component';
 import { CreateClearanceCompanyVoucherComponent } from './clearance-company-voucher/create-clearance-company-voucher/create-clearance-company-voucher.component';
 import { EditClearanceCompanyVoucherComponent } from './clearance-company-voucher/edit-clearance-company-voucher/edit-clearance-company-voucher.component';
+import { CustomerVoucherComponent } from './customer-voucher/customer-voucher.component';
+import { CreateCustomerVoucherComponent } from './customer-voucher/create-customer-voucher/create-customer-voucher.component';
+import { EditCustomerVoucherComponent } from './customer-voucher/edit-customer-voucher/edit-customer-voucher.component';
+import { ViewCustomerVoucherComponent } from './customer-voucher/view-customer-voucher/view-customer-voucher.component';
 
 
 
@@ -32,6 +36,10 @@ import { EditClearanceCompanyVoucherComponent } from './clearance-company-vouche
     ViewClearanceCompanyVoucherComponent,
     CreateClearanceCompanyVoucherComponent,
     EditClearanceCompanyVoucherComponent,
+    CustomerVoucherComponent,
+    CreateCustomerVoucherComponent,
+    EditCustomerVoucherComponent,
+    ViewCustomerVoucherComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -49,6 +57,7 @@ import { EditClearanceCompanyVoucherComponent } from './clearance-company-vouche
   providers: [
     TransportCompanyVoucherServiceProxy,
     ClearanceCompanyVoucherServiceProxy,
+    CustomerVoucherServiceProxy,
   ],
 })
 export class VouchersModule {}
