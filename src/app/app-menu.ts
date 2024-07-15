@@ -4,6 +4,7 @@ import { environment } from 'environments/environment';
 const adminRoot = environment.adminRoot;
 const permissionsWorkflow = environment.permissionsWorkflow;
 const permissionsSetting = environment.permissionsSetting;
+const permissionsVoucher = environment.permissionsVoucher;
 const permissionsUser = environment.permissionsUser;
 
 export interface IMenuItem {
@@ -72,22 +73,42 @@ const data: IMenuItem[] = [
         permissions: permissionsSetting,
       },
     ],
+  },
 
+  //Vouchers
+  {
+    icon: "simple-icon-book-open",
+    label: "Vouchers",
+    to: `${adminRoot}/vouchers`,
+    permissions: permissionsVoucher,
+    subs: [
+      {
+        label: "TransportCompanyVoucher",
+        to: `${adminRoot}/vouchers/transportCompanyVoucher`,
+        icon: "iconsminds-book",
+        permissions: permissionsVoucher,
+      },
+      {
+        label: "ClearanceCompanyVoucher",
+        to: `${adminRoot}/vouchers/clearanceCompanyVoucher`,
+        icon: "iconsminds-book",
+        permissions: permissionsVoucher,
+      },
+    ],
   },
   //Offers
   {
-    icon: 'simple-icon-layers',
-    label: 'Offers',
+    icon: "simple-icon-layers",
+    label: "Offers",
     to: `${adminRoot}/orders`,
     permissions: permissionsSetting,
     subs: [
       {
-        label: 'Offers',
+        label: "Offers",
         to: `${adminRoot}/orders/offers`,
-        icon: 'iconsminds-address-book-2',
+        icon: "iconsminds-address-book-2",
         permissions: permissionsSetting,
-      }
-
+      },
     ],
   },
   //Security
