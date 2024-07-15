@@ -6,7 +6,7 @@
 </app-page-header>
 
 
-<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Customers.Edit'" 
+<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Customers.Update'" 
 [DeletePermission]="'Setting.Customers.Delete'" [fields]="fields" [data]="customers" 
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"    (viewItem)="showViewModal($event)"
    (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"

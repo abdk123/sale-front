@@ -8,6 +8,10 @@ import { AppRouteGuard } from "@shared/auth/auth-route-guard";
 import { MaterialComponent } from "./material/material.component";
 import { NotificationComponent } from "@app/layout/notification/notification.component";
 import { CategoryComponent } from "./category/category.component";
+import { StoreComponent } from "./store/store.component";
+import { ClearanceCompanyComponent } from "./clearance-company/clearance-company.component";
+import { TransportCompanyComponent } from "./transport-company/transport-company.component";
+import { CreateMaterialDialogComponent } from "./material/create-material/create-material-dialog.component";
 
 const routes: Routes = [
   {
@@ -39,6 +43,14 @@ const routes: Routes = [
       },
 
       {
+        path: "create-material",
+        component: CreateMaterialDialogComponent,
+
+        //data: { permission: "Setting.Materials" },
+        canActivate: [AppRouteGuard],
+      },
+
+      {
         path: "notifications",
         component: NotificationComponent,
         canActivate: [AppRouteGuard],
@@ -47,6 +59,27 @@ const routes: Routes = [
       {
         path: "category",
         component: CategoryComponent,
+        //data: { permission: "Setting.Categories" },
+        canActivate: [AppRouteGuard],
+      },
+
+      {
+        path: "store",
+        component: StoreComponent,
+        //data: { permission: "Setting.Categories" },
+        canActivate: [AppRouteGuard],
+      },
+
+      {
+        path: "clearanceCompany",
+        component: ClearanceCompanyComponent,
+        //data: { permission: "Setting.Categories" },
+        canActivate: [AppRouteGuard],
+      },
+
+      {
+        path: "transportCompany",
+        component: TransportCompanyComponent,
         //data: { permission: "Setting.Categories" },
         canActivate: [AppRouteGuard],
       },

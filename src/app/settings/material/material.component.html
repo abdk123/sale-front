@@ -4,7 +4,7 @@
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
   (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
 </app-page-header>
-<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Materials.Edit'" 
+<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.Materials.Update'" 
 [DeletePermission]="'Setting.Materials.Delete'" [fields]="fields" [data]="materials" 
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize"    (viewItem)="showViewModal($event)"
    (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
