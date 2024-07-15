@@ -3818,6 +3818,64 @@ export class MaterialServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getForDropdown(): Observable<DropdownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Material/GetForDropdown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForDropdown(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForDropdown(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DropdownDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DropdownDto[]>;
+        }));
+    }
+
+    protected processGetForDropdown(response: HttpResponseBase): Observable<DropdownDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DropdownDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -6572,6 +6630,69 @@ export class StockServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param materialId (optional) 
+     * @return Success
+     */
+    getMaterialUnites(materialId: number | undefined): Observable<DropdownDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Stock/GetMaterialUnites?";
+        if (materialId === null)
+            throw new Error("The parameter 'materialId' cannot be null.");
+        else if (materialId !== undefined)
+            url_ += "materialId=" + encodeURIComponent("" + materialId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMaterialUnites(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMaterialUnites(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DropdownDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DropdownDto[]>;
+        }));
+    }
+
+    protected processGetMaterialUnites(response: HttpResponseBase): Observable<DropdownDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DropdownDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -12930,6 +13051,8 @@ export class CreateOfferDto implements ICreateOfferDto {
     offerEndDate: moment.Moment | undefined;
     currency: number;
     customerId: number | undefined;
+    note: string | undefined;
+    status: OfferStatus;
     offerItems: CreateOfferItemDto[] | undefined;
 
     constructor(data?: ICreateOfferDto) {
@@ -12948,6 +13071,8 @@ export class CreateOfferDto implements ICreateOfferDto {
             this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
             this.customerId = _data["customerId"];
+            this.note = _data["note"];
+            this.status = _data["status"];
             if (Array.isArray(_data["offerItems"])) {
                 this.offerItems = [] as any;
                 for (let item of _data["offerItems"])
@@ -12970,6 +13095,8 @@ export class CreateOfferDto implements ICreateOfferDto {
         data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
         data["customerId"] = this.customerId;
+        data["note"] = this.note;
+        data["status"] = this.status;
         if (Array.isArray(this.offerItems)) {
             data["offerItems"] = [];
             for (let item of this.offerItems)
@@ -12992,6 +13119,8 @@ export interface ICreateOfferDto {
     offerEndDate: moment.Moment | undefined;
     currency: number;
     customerId: number | undefined;
+    note: string | undefined;
+    status: OfferStatus;
     offerItems: CreateOfferItemDto[] | undefined;
 }
 
@@ -13258,8 +13387,6 @@ export class CreateStockDto implements ICreateStockDto {
     count: number;
     numberInLargeUnit: number;
     numberInSmallUnit: number;
-    quantityInLargeUnit: number;
-    totalNumberInSmallUnit: number;
     unitId: number | undefined;
     sizeId: number | undefined;
     materialId: number | undefined;
@@ -13282,8 +13409,6 @@ export class CreateStockDto implements ICreateStockDto {
             this.count = _data["count"];
             this.numberInLargeUnit = _data["numberInLargeUnit"];
             this.numberInSmallUnit = _data["numberInSmallUnit"];
-            this.quantityInLargeUnit = _data["quantityInLargeUnit"];
-            this.totalNumberInSmallUnit = _data["totalNumberInSmallUnit"];
             this.unitId = _data["unitId"];
             this.sizeId = _data["sizeId"];
             this.materialId = _data["materialId"];
@@ -13306,8 +13431,6 @@ export class CreateStockDto implements ICreateStockDto {
         data["count"] = this.count;
         data["numberInLargeUnit"] = this.numberInLargeUnit;
         data["numberInSmallUnit"] = this.numberInSmallUnit;
-        data["quantityInLargeUnit"] = this.quantityInLargeUnit;
-        data["totalNumberInSmallUnit"] = this.totalNumberInSmallUnit;
         data["unitId"] = this.unitId;
         data["sizeId"] = this.sizeId;
         data["materialId"] = this.materialId;
@@ -13330,8 +13453,6 @@ export interface ICreateStockDto {
     count: number;
     numberInLargeUnit: number;
     numberInSmallUnit: number;
-    quantityInLargeUnit: number;
-    totalNumberInSmallUnit: number;
     unitId: number | undefined;
     sizeId: number | undefined;
     materialId: number | undefined;
@@ -16834,6 +16955,14 @@ export interface IOfferDtoPagedResultDto {
     totalCount: number;
 }
 
+export enum OfferStatus {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
 export enum ParameterAttributes {
     _0 = 0,
     _1 = 1,
@@ -18162,7 +18291,6 @@ export class StockDto implements IStockDto {
     count: number;
     numberInLargeUnit: number;
     numberInSmallUnit: number;
-    quantityInLargeUnit: number;
     totalNumberInSmallUnit: number;
     unitId: number | undefined;
     sizeId: number | undefined;
@@ -18186,7 +18314,6 @@ export class StockDto implements IStockDto {
             this.count = _data["count"];
             this.numberInLargeUnit = _data["numberInLargeUnit"];
             this.numberInSmallUnit = _data["numberInSmallUnit"];
-            this.quantityInLargeUnit = _data["quantityInLargeUnit"];
             this.totalNumberInSmallUnit = _data["totalNumberInSmallUnit"];
             this.unitId = _data["unitId"];
             this.sizeId = _data["sizeId"];
@@ -18210,7 +18337,6 @@ export class StockDto implements IStockDto {
         data["count"] = this.count;
         data["numberInLargeUnit"] = this.numberInLargeUnit;
         data["numberInSmallUnit"] = this.numberInSmallUnit;
-        data["quantityInLargeUnit"] = this.quantityInLargeUnit;
         data["totalNumberInSmallUnit"] = this.totalNumberInSmallUnit;
         data["unitId"] = this.unitId;
         data["sizeId"] = this.sizeId;
@@ -18234,7 +18360,6 @@ export interface IStockDto {
     count: number;
     numberInLargeUnit: number;
     numberInSmallUnit: number;
-    quantityInLargeUnit: number;
     totalNumberInSmallUnit: number;
     unitId: number | undefined;
     sizeId: number | undefined;
@@ -20687,8 +20812,6 @@ export class UpdateStockDto implements IUpdateStockDto {
     count: number;
     numberInLargeUnit: number;
     numberInSmallUnit: number;
-    quantityInLargeUnit: number;
-    totalNumberInSmallUnit: number;
     unitId: number | undefined;
     sizeId: number | undefined;
     materialId: number | undefined;
@@ -20711,8 +20834,6 @@ export class UpdateStockDto implements IUpdateStockDto {
             this.count = _data["count"];
             this.numberInLargeUnit = _data["numberInLargeUnit"];
             this.numberInSmallUnit = _data["numberInSmallUnit"];
-            this.quantityInLargeUnit = _data["quantityInLargeUnit"];
-            this.totalNumberInSmallUnit = _data["totalNumberInSmallUnit"];
             this.unitId = _data["unitId"];
             this.sizeId = _data["sizeId"];
             this.materialId = _data["materialId"];
@@ -20735,8 +20856,6 @@ export class UpdateStockDto implements IUpdateStockDto {
         data["count"] = this.count;
         data["numberInLargeUnit"] = this.numberInLargeUnit;
         data["numberInSmallUnit"] = this.numberInSmallUnit;
-        data["quantityInLargeUnit"] = this.quantityInLargeUnit;
-        data["totalNumberInSmallUnit"] = this.totalNumberInSmallUnit;
         data["unitId"] = this.unitId;
         data["sizeId"] = this.sizeId;
         data["materialId"] = this.materialId;
@@ -20759,8 +20878,6 @@ export interface IUpdateStockDto {
     count: number;
     numberInLargeUnit: number;
     numberInSmallUnit: number;
-    quantityInLargeUnit: number;
-    totalNumberInSmallUnit: number;
     unitId: number | undefined;
     sizeId: number | undefined;
     materialId: number | undefined;

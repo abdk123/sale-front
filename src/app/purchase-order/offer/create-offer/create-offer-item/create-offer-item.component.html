@@ -1,0 +1,48 @@
+
+    <div class="card mt-2">
+        <div class="card-body">
+            <h5 class="card-title separator pb-2 mb-3">{{ 'AddOfferMaterials' | localize }}</h5>
+            <form class="form-horizontal " autocomplete="off" #createOfferItemForm="ngForm" (ngSubmit)="save()">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class=" has-float-label">
+                            <ng-select [items]="materials" bindLabel="name" bindValue="id"></ng-select>
+                            <span>{{ 'Material' | localize }}</span>
+                        </label>
+                        
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-group has-float-label">
+                            <input type="number" class="form-control" name="quantity" [(ngModel)]="item.quantity" #quantityModel="ngModel" #quantityEl />
+                            <span>{{ 'Quantity' | localize }}</span>
+                        </label>
+                        <abp-validation-summary [control]="quantityModel" [controlEl]="quantityEl">
+                        </abp-validation-summary>
+                    </div>
+                    <div class="col-md-3">
+                        <label class=" has-float-label">
+                            <input type="number" class="form-control" name="unitPrice" [(ngModel)]="item.unitPrice" #unitPriceModel="ngModel" #unitPriceEl />
+                            <span>{{ 'UnitPrice' | localize }}</span>
+                        </label>
+                        <abp-validation-summary [control]="unitPriceModel" [controlEl]="unitPriceEl">
+                        </abp-validation-summary>
+                    </div>
+                    
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of items">
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

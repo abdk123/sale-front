@@ -67,6 +67,7 @@ export class AbpValidationSummaryComponent extends AppComponentBase implements O
 
   ngOnInit() {
     if (this.controlEl) {
+      
       this.control.valueChanges.subscribe(() => {
         if (
           this.control.valid &&
