@@ -1,48 +1,99 @@
-
-    <div class="card mt-2">
-        <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'AddOfferMaterials' | localize }}</h5>
-            <form class="form-horizontal " autocomplete="off" #createOfferItemForm="ngForm" (ngSubmit)="save()">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label class=" has-float-label">
-                            <ng-select [items]="materials" bindLabel="name" bindValue="id"></ng-select>
-                            <span>{{ 'Material' | localize }}</span>
-                        </label>
-                        
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-group has-float-label">
-                            <input type="number" class="form-control" name="quantity" [(ngModel)]="item.quantity" #quantityModel="ngModel" #quantityEl />
-                            <span>{{ 'Quantity' | localize }}</span>
-                        </label>
-                        <abp-validation-summary [control]="quantityModel" [controlEl]="quantityEl">
-                        </abp-validation-summary>
-                    </div>
-                    <div class="col-md-3">
-                        <label class=" has-float-label">
-                            <input type="number" class="form-control" name="unitPrice" [(ngModel)]="item.unitPrice" #unitPriceModel="ngModel" #unitPriceEl />
-                            <span>{{ 'UnitPrice' | localize }}</span>
-                        </label>
-                        <abp-validation-summary [control]="unitPriceModel" [controlEl]="unitPriceEl">
-                        </abp-validation-summary>
-                    </div>
+<div class="card mt-2">
+    <div class="card-body">
+        <h5 class="card-title separator pb-2 mb-3">{{ 'AddOfferMaterials' | localize }}</h5>
+        <form class="form-horizontal " autocomplete="off" #createOfferItemForm="ngForm" (ngSubmit)="save()">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="materials" required name="materialId" [(ngModel)]="item.materialId" bindLabel="name" bindValue="id"
+                            (change)="onSelectMaterial($event)"></ng-select>
+                        <span>{{ 'Material' | localize }}</span>
+                    </label>
+                    <span *ngIf="materialIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-group has-float-label">
+                        <input type="number" required class="form-control" name="quantity" [(ngModel)]="item.quantity"
+                            #quantityModel="ngModel" #quantityEl />
+                        <span>{{ 'Quantity' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="quantityModel" [controlEl]="quantityEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <input type="number" required class="form-control" name="unitPrice" [(ngModel)]="item.unitPrice"
+                            #unitPriceModel="ngModel" #unitPriceEl />
+                        <span>{{ 'UnitPrice' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="unitPriceModel" [controlEl]="unitPriceEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="units" required bindLabel="name" bindValue="name"
+                            (change)="onChangeAddedbyUnit($event)"></ng-select>
+                        <span>{{ 'AddByUnit' | localize }}</span>
+                    </label>
+                    <span *ngIf="addByUnitIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <textarea type="number" class="form-control" name="specefecation"
+                            [(ngModel)]="item.specefecation"></textarea>
+                        <span>{{ 'Specification' | localize }}</span>
+                    </label>
                     
                 </div>
-            </form>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of items">
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="col-md-3">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button type="submit" class="btn btn-sm btn-outline-primary mx-1"
+                            [disabled]="!createOfferItemForm.form.valid || saving"> <i
+                                class="bi bi-save mx-1"></i> {{ 'SaveMaterial' | localize}}</button>
+                        <button *ngIf="indexUpdate > -1" type="button" class="btn btn-sm btn-outline-danger mx-1"
+                            (click)="cancelUpdate()">{{ 'Cancel' | localize}}</button>
+
+                    </div>
+                </div>
             </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'Material' | localize}}</th>
+                        <th>{{'Unit' | localize}}</th>
+                        <th>{{'PackingUnit' | localize}}</th>
+                        <th>{{'Quantity' | localize}}</th>
+                        <th>{{'MaterialPrice' | localize}}</th>
+                        <th>{{'TotalPrice' | localize}}</th>
+                        <th>{{'QuantityInStore' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items;let i = $index">
+                        <td>{{getMaterialName(item.materialId)}}</td>
+                        <td>{{getUnit(item.unitId)}}</td>
+                        <td>{{getPackingUnit(item.sizeId)}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.unitPrice}}</td>
+                        <td>{{item.unitPrice * item.quantity}}</td>
+                        <td>{{getStock(item.materialId)}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                        <td>
+                            <button (click)="initialItemForUpdate(i)" class="btn btn-xs btn-outline-success mx-1">
+                                <i class="bi bi-pencil-square"></i> {{'Edit' | localize}}
+                            </button>
+                            <button class="btn btn-outline-danger btn-xs">
+                                <i class="bi bi-trash"></i> {{'Delete' | localize}}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
