@@ -67,7 +67,7 @@ const data: IMenuItem[] = [
         permissions: permissionsSetting,
       },
       {
-        label: "Unit",
+        label: "Size",
         to: `${adminRoot}/settings/unit`,
         icon: "iconsminds-scale",
         permissions: permissionsSetting,
@@ -84,13 +84,13 @@ const data: IMenuItem[] = [
     subs: [
       {
         label: "TransportCompanyVoucher",
-        to: `${adminRoot}/vouchers/transportCompanyVoucher`,
+        to: `${adminRoot}/vouchers/transport-company-voucher`,
         icon: "iconsminds-book",
         permissions: permissionsVoucher,
       },
       {
         label: "ClearanceCompanyVoucher",
-        to: `${adminRoot}/vouchers/clearanceCompanyVoucher`,
+        to: `${adminRoot}/vouchers/clearance-company-voucher`,
         icon: "iconsminds-book",
         permissions: permissionsVoucher,
       },

@@ -11,13 +11,13 @@ const routes: Routes = [
     component: VouchersComponent,
     children: [
       {
-        path: "transportCompanyVoucher",
+        path: "transport-company-voucher",
         component: TransportCompanyVoucherComponent,
         //data: { permission: "Setting.Categories" },
         canActivate: [AppRouteGuard],
       },
       {
-        path: "clearanceCompanyVoucher",
+        path: "clearance-company-voucher",
         component: ClearanceCompanyVoucherComponent,
         //data: { permission: "Setting.Categories" },
         canActivate: [AppRouteGuard],

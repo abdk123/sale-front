@@ -20432,7 +20432,7 @@ export class UpdateClearanceCompanyVoucherDto implements IUpdateClearanceCompany
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     clearanceCompanyId: number | undefined;
 
     constructor(data?: IUpdateClearanceCompanyVoucherDto) {
@@ -20451,7 +20451,7 @@ export class UpdateClearanceCompanyVoucherDto implements IUpdateClearanceCompany
             this.currency = _data["currency"];
             this.amount = _data["amount"];
             this.voucherNumber = _data["voucherNumber"];
-            this.voucherDate = _data["voucherDate"] ? moment(_data["voucherDate"].toString()) : <any>undefined;
+            this.voucherDate = _data["voucherDate"];
             this.clearanceCompanyId = _data["clearanceCompanyId"];
         }
     }
@@ -20470,7 +20470,7 @@ export class UpdateClearanceCompanyVoucherDto implements IUpdateClearanceCompany
         data["currency"] = this.currency;
         data["amount"] = this.amount;
         data["voucherNumber"] = this.voucherNumber;
-        data["voucherDate"] = this.voucherDate ? this.voucherDate.toISOString() : <any>undefined;
+        data["voucherDate"] = this.voucherDate;
         data["clearanceCompanyId"] = this.clearanceCompanyId;
         return data;
     }
@@ -20489,7 +20489,7 @@ export interface IUpdateClearanceCompanyVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     clearanceCompanyId: number | undefined;
 }
 
@@ -21350,7 +21350,7 @@ export class UpdateTransportCompanyVoucherDto implements IUpdateTransportCompany
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     transportCompanyId: number | undefined;
 
     constructor(data?: IUpdateTransportCompanyVoucherDto) {
@@ -21369,7 +21369,7 @@ export class UpdateTransportCompanyVoucherDto implements IUpdateTransportCompany
             this.currency = _data["currency"];
             this.amount = _data["amount"];
             this.voucherNumber = _data["voucherNumber"];
-            this.voucherDate = _data["voucherDate"] ? moment(_data["voucherDate"].toString()) : <any>undefined;
+            this.voucherDate = _data["voucherDate"];
             this.transportCompanyId = _data["transportCompanyId"];
         }
     }
@@ -21388,7 +21388,7 @@ export class UpdateTransportCompanyVoucherDto implements IUpdateTransportCompany
         data["currency"] = this.currency;
         data["amount"] = this.amount;
         data["voucherNumber"] = this.voucherNumber;
-        data["voucherDate"] = this.voucherDate ? this.voucherDate.toISOString() : <any>undefined;
+        data["voucherDate"] = this.voucherDate;
         data["transportCompanyId"] = this.transportCompanyId;
         return data;
     }
@@ -21407,7 +21407,7 @@ export interface IUpdateTransportCompanyVoucherDto {
     currency: number;
     amount: number;
     voucherNumber: string | undefined;
-    voucherDate: moment.Moment | undefined;
+    voucherDate: string | undefined;
     transportCompanyId: number | undefined;
 }
 

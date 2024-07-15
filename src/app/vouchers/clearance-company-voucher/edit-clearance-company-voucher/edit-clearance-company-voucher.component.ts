@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { UpdateClearanceCompanyVoucherDto, DropdownDto, ClearanceCompanyVoucherServiceProxy, ClearanceCompanyServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -14,6 +15,8 @@ export class EditClearanceCompanyVoucherComponent extends AppComponentBase {
   id: number;
   @Output() onSave = new EventEmitter<any>();
   clearanceCompanies: DropdownDto[] = [];
+  voucherDate: string;
+
   types = [
     {
       id: 0,
@@ -55,6 +58,11 @@ export class EditClearanceCompanyVoucherComponent extends AppComponentBase {
       .getForEdit(this.id)
       .subscribe((result: UpdateClearanceCompanyVoucherDto) => {
         this.clearanceCompanyVoucher = result;
+
+        this.voucherDate = new DatePipe("en-US").transform(
+          this.clearanceCompanyVoucher.voucherDate,
+          "yyyy-MM-dd"
+        );
       });
   }
 
@@ -66,6 +74,7 @@ export class EditClearanceCompanyVoucherComponent extends AppComponentBase {
 
   save(): void {
     this.saving = true;
+    this.clearanceCompanyVoucher.voucherDate = this.voucherDate;
     this._clearanceCompanyVoucherService
       .update(this.clearanceCompanyVoucher)
       .pipe(

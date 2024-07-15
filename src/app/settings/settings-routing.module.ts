@@ -11,6 +11,7 @@ import { CategoryComponent } from "./category/category.component";
 import { StoreComponent } from "./store/store.component";
 import { ClearanceCompanyComponent } from "./clearance-company/clearance-company.component";
 import { TransportCompanyComponent } from "./transport-company/transport-company.component";
+import { CreateMaterialDialogComponent } from "./material/create-material/create-material-dialog.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,14 @@ const routes: Routes = [
       {
         path: "material",
         component: MaterialComponent,
+
+        //data: { permission: "Setting.Materials" },
+        canActivate: [AppRouteGuard],
+      },
+
+      {
+        path: "create-material",
+        component: CreateMaterialDialogComponent,
 
         //data: { permission: "Setting.Materials" },
         canActivate: [AppRouteGuard],

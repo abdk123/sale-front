@@ -11,6 +11,7 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { FullPagedListingComponentBase } from "@shared/full-paged-listing-component-base";
 import { FilterMaterialDialogComponent } from "./filter-material/filter-material-dialog.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "material",
@@ -42,6 +43,7 @@ export class MaterialComponent
     injector: Injector,
     private _modalService: BsModalService,
     private _materialService: MaterialServiceProxy,
+    private _router: Router,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -61,18 +63,19 @@ export class MaterialComponent
   }
 
   showAddNewModal() {
-    let createMaterialDialog: BsModalRef;
-    createMaterialDialog = this._modalService.show(
-      CreateMaterialDialogComponent,
-      {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: "modal-lg",
-      }
-    );
-    createMaterialDialog.content.onSave.subscribe(() => {
-      this.refresh();
-    });
+    // let createMaterialDialog: BsModalRef;
+    // createMaterialDialog = this._modalService.show(
+    //   CreateMaterialDialogComponent,
+    //   {
+    //     backdrop: true,
+    //     ignoreBackdropClick: true,
+    //     class: "modal-lg",
+    //   }
+    // );
+    // createMaterialDialog.content.onSave.subscribe(() => {
+    //   this.refresh();
+    // });
+    this._router.navigate(["/app/settings/create-material"]);
   }
   showEditModal(id: any) {
     let editMaterialDialog: BsModalRef;

@@ -42,6 +42,7 @@ import { ViewClearanceCompanyComponent } from './clearance-company/view-clearanc
 import { ViewTransportCompanyComponent } from './transport-company/view-transport-company/view-transport-company.component';
 import { CreateTransportCompanyComponent } from './transport-company/create-transport-company/create-transport-company.component';
 import { EditTransportCompanyComponent } from './transport-company/edit-transport-company/edit-transport-company.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { EditTransportCompanyComponent } from './transport-company/edit-transpor
     CommonModule,
     QueryBuilderModule,
     SettingsRoutingModule,
+    BsDatepickerModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [

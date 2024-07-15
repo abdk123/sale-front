@@ -20,6 +20,13 @@ import { finalize } from "rxjs";
 @Component({
   selector: "create-material-dialog",
   templateUrl: "./create-material-dialog.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class CreateMaterialDialogComponent extends AppComponentBase {
   saving = false;
@@ -148,6 +155,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
         })
       )
       .subscribe((result) => {
+        debugger;
         this.units.push(this.unit);
 
         const stock = new CreateStockDto(this.stock);

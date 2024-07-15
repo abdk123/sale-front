@@ -1,7 +1,7 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { DropdownDto, TransportCompanyServiceProxy, TransportCompanyVoucherServiceProxy, UpdateTransportCompanyVoucherDto } from '@shared/service-proxies/service-proxies';
-import * as moment from 'moment';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
@@ -15,6 +15,8 @@ export class EditTransportCompanyVoucherComponent extends AppComponentBase {
   id: number;
   @Output() onSave = new EventEmitter<any>();
   transportCompanies: DropdownDto[] = [];
+  voucherDate: string;
+
   types = [
     {
       id: 0,
@@ -56,6 +58,11 @@ export class EditTransportCompanyVoucherComponent extends AppComponentBase {
       .getForEdit(this.id)
       .subscribe((result: UpdateTransportCompanyVoucherDto) => {
         this.transportCompanyVoucher = result;
+
+        this.voucherDate = new DatePipe("en-US").transform(
+          this.transportCompanyVoucher.voucherDate,
+          "yyyy-MM-dd"
+        );
       });
   }
 
@@ -67,6 +74,7 @@ export class EditTransportCompanyVoucherComponent extends AppComponentBase {
 
   save(): void {
     this.saving = true;
+    this.transportCompanyVoucher.voucherDate = this.voucherDate;
     this._transportCompanyVoucherService
       .update(this.transportCompanyVoucher)
       .pipe(
