@@ -1,50 +1,57 @@
-<div class="row">
-    <div class="col-12 separator">
-        <h1>{{'AddNewOffer' | localize}}</h1>
-        <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToOfferList' | localize}} <i
-                class="simple-icon-arrow-right"></i></a>
-        <div class="top-right-button-container text-zero">
-            <button type="button" class="top-right-button btn btn-primary  mb-3 mr-2" (click)="save()">{{ 'Save Offer' |
-                localize}}</button>
+<form class="form-horizontal " autocomplete="off" #createOfferForm="ngForm" (ngSubmit)="save()">
+    <div class="row">
+        <div class="col-12 separator">
+            <h1>{{'AddNewOffer' | localize}}</h1>
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToOfferList' | localize}} <i
+                    class="simple-icon-arrow-right"></i></a>
+            <div class="top-right-button-container text-zero">
+                <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
+                    [disabled]="!createOfferForm.form.valid || saving" (click)="save()">{{ 'Save Offer' | localize}}</button>
+            </div>
         </div>
     </div>
-</div>
-<div class="card mt-2">
-    <div class="d-flex justify-content-between">
+    <div class="card mt-2">
+        <div class="card-body">
+            <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="customers" bindLabel="name" bindValue="id" name="customerId"
+                            [(ngModel)]="offer.customerId">
+                        </ng-select>
+                        <span>{{ 'Customer' | localize }}</span>
+                    </label>
+                    <span *ngIf="customerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="currency">
+                        </ng-select>
+                        <span>{{ 'Currency' | localize }}</span>
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="status" bindLabel="name" bindValue="id">
+                        </ng-select>
+                        <span>{{ 'Status' | localize }}</span>
+                    </label>
 
-    </div>
-    <div class="card-body">
-        <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
-        <div class="row">
-            <div class="col-md-3">
-                <label class=" has-float-label">
-                    <ng-select [items]="customers"
-                        bindLabel="name" bindValue="id">
-                    </ng-select>
-                    <span>{{ 'Customer' | localize }}</span>
-                </label>
-            </div>
-            <div class="col-md-3">
-                <label class=" has-float-label">
-                    <ng-select [items]="currencies" bindLabel="name" bindValue="id">
-                    </ng-select>
-                    <span>{{ 'Currency' | localize }}</span>
-                </label>
-            </div>
-            <div class="col-md-3">
-                <label class=" has-float-label">
-                    <ng-select [items]="status" bindLabel="name" bindValue="id">
-                    </ng-select>
-                    <span>{{ 'Currency' | localize }}</span>
-                </label>
-            </div>
-            <div class="col-md-3">
-                <label class=" has-float-label">
-                    <input class="form-control" bsDatepicker [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }">
-                    <span>{{ 'OfferEndDate' | localize }}</span>
-                </label>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <input class="form-control" required [(ngModel)]="offer.offerEndDate" name="offerEndDate"
+                            bsDatepicker [container]="'html'"
+                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
+                            #offerEndDateModel="ngModel" #offerEndDateEl>
+                        <span>{{ 'OfferEndDate' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="offerEndDateModel" [controlEl]="offerEndDateEl">
+                    </abp-validation-summary>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--  -->
+    <create-offer-item></create-offer-item>
+    
+</form>

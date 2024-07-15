@@ -10,16 +10,18 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerServiceProxy, OfferServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, MaterialServiceProxy, OfferServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CreateOfferItemComponent } from './offer/create-offer/create-offer-item/create-offer-item.component';
 
 @NgModule({
   declarations: [
     PurchaseOrderComponent,
     OfferComponent,
     CreateOfferComponent,
+    CreateOfferItemComponent,
     
   ],
   imports: [
@@ -39,7 +41,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
   schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
   providers:[
     OfferServiceProxy,
-    CustomerServiceProxy
+    CustomerServiceProxy,
+    StockServiceProxy,
+    MaterialServiceProxy
   ]
 })
 export class PurchaseOrderModule { }
