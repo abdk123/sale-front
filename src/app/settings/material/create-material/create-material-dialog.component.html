@@ -20,22 +20,23 @@
   <div class="card-body">
     <h5 class="card-title separator pb-2 mb-3">{{ 'MaterialInfo' | localize }}</h5>
     <div class="row">
-      <div class="col-md-3">
-        <label class=" has-float-label">
+      <div class="col-md-4">
+        <label class="has-float-label">
           <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="material.name"
             #nameModel="ngModel" #nameEl />
           <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
           <span>{{ "Name"|localize }}</span>
         </label>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <label class=" has-float-label">
           <ng-select [items]="categories" name="category" bindLabel="name" required bindValue="id" [(ngModel)]="material.categoryId">
           </ng-select>
           <span>{{ 'Category' | localize }}</span>
         </label>
+        <span *ngIf="categoryIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <label class=" has-float-label">
           <textarea type="text" class="form-control" required name="specification" id="specification"
             [(ngModel)]="material.specification" #specificationModel="ngModel" rows="1" #specificationEl>
@@ -44,15 +45,15 @@
           <span>{{ "Specification"|localize }}</span>
         </label>
       </div>
-      <div class="col-md-3">
+      <!-- <div class="col-md-3">
         <label class=" has-float-label">
-          <input class="form-control" bsDatepicker [container]="'html'" required
+          <input class="form-control" bsDatepicker [container]="'html'"
             [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="expiryDate" id="expiryDate"
             [(ngModel)]="expiryDate" #expiryDateModel="ngModel" #expiryDateEl />
           <abp-validation-summary [control]="expiryDateModel" [controlEl]="expiryDateEl"></abp-validation-summary>
           <span>{{ "ExpiryDate"|localize }}</span>
         </label>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -152,42 +153,4 @@
       </div>
   </div>
 </div>
-
-<!--Stock List-->
-<!-- <div class="card mt-2">
-  <div class="d-flex justify-content-between">
-  </div>
-  <div class="card-body">
-    <h5 class="card-title separator pb-2 mb-3">{{ 'StockList' | localize }}</h5>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
-            <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
-            <th style="width: 13%;" class="bi">{{'NumberInLargeUnit' | localize}}</th>
-            <th style="width: 12%;" class="bi">{{'Count' | localize}}</th>
-            <th style="width: 13%;" class="bi">{{'QuantityInLargeUnit' | localize}}</th>
-            <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
-            <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th>
-            <th style="width: 3%;" class="bi"></th>
-          </tr>
-        </thead>
-        <tbody> 
-          <tr *ngFor="let item of stocks; index as i">
-            <td>{{getStoreName(item.storeId)}}</td>
-            <td>{{getUnitName(i)}}</td>
-            <td>{{item.numberInLargeUnit}}</td>
-            <td>{{item.count}}</td>
-            <td>{{item.quantityInLargeUnit}}</td>
-            <td>{{item.totalNumberInSmallUnit + ' ' + getSizeName(item.sizeId)}}</td>
-            <td>{{item.numberInSmallUnit}}</td>
-            <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
-                style="font-size: large; color: #dc3545; padding: 0;"></i></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div> -->
 </form>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, Output } from "@angular/core";
+import { Router } from "@angular/router";
 import { AppComponentBase } from "@shared/app-component-base";
 import {
   CreateMaterialDto,
@@ -39,6 +40,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   unit: string = "";
   units: string[] = [];
   expiryDate: Date;
+  categoryIsRequired = false;
   @Output() onSave = new EventEmitter<any>();
 
   // fields = [
@@ -79,6 +81,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
     private _sizeService: SizeServiceProxy,
     private _stockService: StockServiceProxy,
     private _unitService: UnitServiceProxy,
+    private _router: Router,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -127,23 +130,27 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   }
 
   save(): void {
-    this.saving = true;
-    this._materialService
-      .create(this.material)
-      .pipe(
-        finalize(() => {
-          this.saving = false;
-          this.notify.info(this.l("SavedSuccessfully"));
-          this.bsModalRef.hide();
-          this.onSave.emit();
-        })
-      )
-      .subscribe((result) => {
-        this.stocks.forEach((item) => {
-          item.materialId = result.id;
-          this._stockService.create(item).subscribe((res) => {});
+    this.categoryIsRequired = this.material.categoryId ? false : true;
+    if(!this.categoryIsRequired){
+      this.saving = true;
+      this._materialService
+        .create(this.material)
+        .pipe(
+          finalize(() => {
+            this.saving = false;
+            this.notify.info(this.l("SavedSuccessfully"));
+            this.bsModalRef.hide();
+            this._router.navigate(["/app/settings/material"]);
+            this.onSave.emit();
+          })
+        )
+        .subscribe((result) => {
+          this.stocks.forEach((item) => {
+            item.materialId = result.id;
+            this._stockService.create(item).subscribe((res) => {});
+          });
         });
-      });
+    }    
   }
 
   AddStock() {
