@@ -1,1 +1,63 @@
-<p>view-customer-voucher works!</p>
+<abp-modal-header [title]="'ViewMoreDetails' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<div class="modal-body">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="voucherType">
+            {{ "VoucherType" | localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="voucherType" id="voucherType">
+                {{ type }}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="currency">
+            {{ "Currency" | localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="currency" id="currency">
+                {{ currency }}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="category">
+            {{ "Customer" | localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="category" id="category">
+                {{ customer.fullName }}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="amount">
+            {{ "Amount" | localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="amount" id="amount">
+                {{ data.amount }}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="voucherNumber">
+            {{ "VoucherNumber" | localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="voucherNumber" id="voucherNumber">
+                {{ data.voucherNumber }}
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="voucherDate">
+            {{ "VoucherDate" | localize }}
+        </label>
+        <div class="col-md-9">
+            <label class="form-control" name="voucherDate" id="voucherDate">
+                {{ data.voucherDate }}
+            </label>
+        </div>
+    </div>
+</div>
