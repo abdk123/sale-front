@@ -6,8 +6,10 @@ import {
   CreateOfferItemDto,
   CustomerServiceProxy,
   DropdownDto,
+  OfferServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { result } from "lodash-es";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "create-offer",
@@ -20,6 +22,7 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
   customerIsRequired = false;
   currencyIsRequired = false;
   statusIsRequired = false;
+  showPorchaseOrder = false;
   customers: DropdownDto[] = [];
   itemIndex: number;
   currencies = [
@@ -32,7 +35,9 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
   ];
   constructor(
     injector: Injector,
-    private customerService: CustomerServiceProxy
+    private router: Router,
+    private customerService: CustomerServiceProxy,
+    private offerService: OfferServiceProxy,
   ) {
     super(injector);
   }
@@ -46,14 +51,40 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
     });
   }
 
+  onChangeStatus(status){
+    if(status?.id == 1){
+      this.showPorchaseOrder = true;
+    }else{
+      this.showPorchaseOrder = false;
+      this.offer.porchaseOrderId = '';
+    }
+  }
+
   save() {
+    debugger;
     this.customerIsRequired = this.offer.customerId ? false : true;
-    this.statusIsRequired = this.offer.status ? false : true;
-    this.currencyIsRequired = this.offer.currency ? false : true;
-    if(!this.customerIsRequired && !this.statusIsRequired && this.currencyIsRequired){
+    this.statusIsRequired = this.offer.status == undefined ? true : false;
+    this.currencyIsRequired = this.offer.currency == undefined ? true : false;
+    if(!this.customerIsRequired && !this.statusIsRequired && !this.currencyIsRequired){
       if(!this.offer.offerItems){
-        
+        abp.message.warn(this.l('PleaseAddAtLeastOneMaterial'));
       }
+      if(!this.offer.porchaseOrderId && this.offer.status == 1){
+        abp.message.warn(this.l('PoNumberIsRequired'));
+      }
+      this.saving = true;
+    this.offerService
+      .create(this.offer)
+      .pipe(
+        finalize(() => {
+          this.saving = false;
+          this.notify.info(this.l("SavedSuccessfully"));
+          this.router.navigate(['/app/orders/offers']);
+        })
+      )
+      .subscribe((result) => {
+        
+      });
     }
   }
 
