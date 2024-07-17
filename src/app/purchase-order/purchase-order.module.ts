@@ -15,6 +15,8 @@ import { CreateOfferComponent } from './offer/create-offer/create-offer.componen
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CreateOfferItemComponent } from './offer/create-offer/create-offer-item/create-offer-item.component';
+import { EditOfferComponent } from './offer/edit-offer/edit-offer.component';
+import { EditOfferItemComponent } from './offer/edit-offer/eidt-offer-item/edit-offer-item.component';
 
 @NgModule({
   declarations: [
@@ -22,10 +24,11 @@ import { CreateOfferItemComponent } from './offer/create-offer/create-offer-item
     OfferComponent,
     CreateOfferComponent,
     CreateOfferItemComponent,
-    
+    EditOfferComponent,
+    EditOfferItemComponent,
   ],
   imports: [
-  AccordionModule.forRoot(),
+    AccordionModule.forRoot(),
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,14 +39,14 @@ import { CreateOfferItemComponent } from './offer/create-offer/create-offer-item
     QueryBuilderModule,
     PurchaseOrderRoutingModule,
     NgSelectModule,
-    BsDatepickerModule
+    BsDatepickerModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
-  providers:[
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  providers: [
     OfferServiceProxy,
     CustomerServiceProxy,
     StockServiceProxy,
-    MaterialServiceProxy
-  ]
+    MaterialServiceProxy,
+  ],
 })
-export class PurchaseOrderModule { }
+export class PurchaseOrderModule {}

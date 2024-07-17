@@ -5,8 +5,8 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="materials" required name="materialId" [(ngModel)]="item.materialId" bindLabel="name" bindValue="id"
-                            (change)="onSelectMaterial($event)"></ng-select>
+                        <ng-select [items]="materials" required name="materialId" [(ngModel)]="item.materialId"
+                            bindLabel="name" bindValue="id" (change)="onSelectMaterial($event)"></ng-select>
                         <span>{{ 'Material' | localize }}</span>
                     </label>
                     <span *ngIf="materialIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
@@ -44,13 +44,13 @@
                             [(ngModel)]="item.specefecation"></textarea>
                         <span>{{ 'Specification' | localize }}</span>
                     </label>
-                    
+
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex justify-content-center align-items-center">
                         <button type="submit" class="btn btn-sm btn-outline-primary mx-1"
-                            [disabled]="!createOfferItemForm.form.valid || saving"> <i
-                                class="bi bi-save mx-1"></i> {{ 'SaveMaterial' | localize}}</button>
+                            [disabled]="!createOfferItemForm.form.valid || saving"> <i class="bi bi-save mx-1"></i> {{
+                            'SaveMaterial' | localize}}</button>
                         <button *ngIf="indexUpdate > -1" type="button" class="btn btn-sm btn-outline-danger mx-1"
                             (click)="cancelUpdate()">{{ 'Cancel' | localize}}</button>
 
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </form>
-        <div class="table-responsive">
+        <div *ngIf="loading" class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -84,10 +84,11 @@
                         <td>{{getStock(item.materialId)}}</td>
                         <td>{{getSaleType(item.addedBySmallUnit)}}</td>
                         <td>
-                            <button type="button" (click)="initialItemForUpdate(i)" class="btn btn-xs btn-outline-success mx-1">
+                            <button type="button" (click)="initialItemForUpdate(i)"
+                                class="btn btn-xs btn-outline-success mx-1">
                                 <i class="bi bi-pencil-square"></i> {{'Edit' | localize}}
                             </button>
-                            <button type="button" class="btn btn-outline-danger btn-xs">
+                            <button type="button" (click)="DeleteItem(i)" class="btn btn-outline-danger btn-xs">
                                 <i class="bi bi-trash"></i> {{'Delete' | localize}}
                             </button>
                         </td>
