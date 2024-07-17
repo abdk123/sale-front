@@ -58,7 +58,12 @@ export class OfferComponent extends FullPagedListingComponentBase<OfferDto> impl
   }
 
   showEditModal(id: any){
-    this._router.navigate(['', id]);
+    this._router.navigate([
+      "/app/orders/update-offer",
+      {
+        id: id,
+      },
+    ]);
   }
 
   deleteItem(id:number): void {

@@ -4806,6 +4806,125 @@ export class OfferServiceProxy {
     }
 
     /**
+     * @param offerId (optional) 
+     * @return Success
+     */
+    getItemsByOfferId(offerId: number | undefined): Observable<UpdateOfferItemDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/GetItemsByOfferId?";
+        if (offerId === null)
+            throw new Error("The parameter 'offerId' cannot be null.");
+        else if (offerId !== undefined)
+            url_ += "offerId=" + encodeURIComponent("" + offerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetItemsByOfferId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetItemsByOfferId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UpdateOfferItemDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UpdateOfferItemDto[]>;
+        }));
+    }
+
+    protected processGetItemsByOfferId(response: HttpResponseBase): Observable<UpdateOfferItemDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(UpdateOfferItemDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    update(body: UpdateOfferDto | undefined): Observable<OfferDto> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OfferDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OfferDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<OfferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -5099,62 +5218,6 @@ export class OfferServiceProxy {
     }
 
     protected processCreate(response: HttpResponseBase): Observable<OfferDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OfferDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    update(body: UpdateOfferDto | undefined): Observable<OfferDto> {
-        let url_ = this.baseUrl + "/api/services/app/Offer/Update";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<OfferDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<OfferDto>;
-        }));
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<OfferDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6904,6 +6967,64 @@ export class StockServiceProxy {
     }
 
     protected processGetMaterialUnits(response: HttpResponseBase): Observable<MaterialUnitDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(MaterialUnitDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllMaterialUnits(): Observable<MaterialUnitDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Stock/GetAllMaterialUnits";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllMaterialUnits(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllMaterialUnits(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MaterialUnitDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MaterialUnitDto[]>;
+        }));
+    }
+
+    protected processGetAllMaterialUnits(response: HttpResponseBase): Observable<MaterialUnitDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -17257,6 +17378,7 @@ export class OfferDto implements IOfferDto {
     totalPrice: number;
     customer: CustomerDto;
     creationTime: moment.Moment;
+    offerItems: OfferItemDto[] | undefined;
 
     constructor(data?: IOfferDto) {
         if (data) {
@@ -17280,6 +17402,11 @@ export class OfferDto implements IOfferDto {
             this.totalPrice = _data["totalPrice"];
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
             this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            if (Array.isArray(_data["offerItems"])) {
+                this.offerItems = [] as any;
+                for (let item of _data["offerItems"])
+                    this.offerItems.push(OfferItemDto.fromJS(item));
+            }
         }
     }
 
@@ -17303,6 +17430,11 @@ export class OfferDto implements IOfferDto {
         data["totalPrice"] = this.totalPrice;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        if (Array.isArray(this.offerItems)) {
+            data["offerItems"] = [];
+            for (let item of this.offerItems)
+                data["offerItems"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -17326,6 +17458,7 @@ export interface IOfferDto {
     totalPrice: number;
     customer: CustomerDto;
     creationTime: moment.Moment;
+    offerItems: OfferItemDto[] | undefined;
 }
 
 export class OfferDtoPagedResultDto implements IOfferDtoPagedResultDto {
@@ -17381,6 +17514,77 @@ export class OfferDtoPagedResultDto implements IOfferDtoPagedResultDto {
 export interface IOfferDtoPagedResultDto {
     items: OfferDto[] | undefined;
     totalCount: number;
+}
+
+export class OfferItemDto implements IOfferItemDto {
+    id: number;
+    materialId: number | undefined;
+    sizeId: number | undefined;
+    unitId: number | undefined;
+    quantity: number;
+    unitPrice: number;
+    specefecation: string | undefined;
+    addedBySmallUnit: boolean;
+
+    constructor(data?: IOfferItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.materialId = _data["materialId"];
+            this.sizeId = _data["sizeId"];
+            this.unitId = _data["unitId"];
+            this.quantity = _data["quantity"];
+            this.unitPrice = _data["unitPrice"];
+            this.specefecation = _data["specefecation"];
+            this.addedBySmallUnit = _data["addedBySmallUnit"];
+        }
+    }
+
+    static fromJS(data: any): OfferItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OfferItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["materialId"] = this.materialId;
+        data["sizeId"] = this.sizeId;
+        data["unitId"] = this.unitId;
+        data["quantity"] = this.quantity;
+        data["unitPrice"] = this.unitPrice;
+        data["specefecation"] = this.specefecation;
+        data["addedBySmallUnit"] = this.addedBySmallUnit;
+        return data;
+    }
+
+    clone(): OfferItemDto {
+        const json = this.toJSON();
+        let result = new OfferItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOfferItemDto {
+    id: number;
+    materialId: number | undefined;
+    sizeId: number | undefined;
+    unitId: number | undefined;
+    quantity: number;
+    unitPrice: number;
+    specefecation: string | undefined;
+    addedBySmallUnit: boolean;
 }
 
 export enum ParameterAttributes {
@@ -21124,15 +21328,13 @@ export interface IUpdateNotificationSettingsInput {
 
 export class UpdateOfferDto implements IUpdateOfferDto {
     id: number;
-    porchaseOrderId: string | undefined;
-    orderNumber: string | undefined;
-    status: number;
-    offerEndDate: moment.Moment | undefined;
+    offerEndDate: string | undefined;
     currency: number;
     customerId: number | undefined;
-    supplierId: number | undefined;
-    totalQuantity: number;
-    totalPrice: number;
+    note: string | undefined;
+    status: number;
+    porchaseOrderId: string | undefined;
+    offerItems: UpdateOfferItemDto[] | undefined;
 
     constructor(data?: IUpdateOfferDto) {
         if (data) {
@@ -21146,15 +21348,17 @@ export class UpdateOfferDto implements IUpdateOfferDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.porchaseOrderId = _data["porchaseOrderId"];
-            this.orderNumber = _data["orderNumber"];
-            this.status = _data["status"];
-            this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
+            this.offerEndDate = _data["offerEndDate"];
             this.currency = _data["currency"];
             this.customerId = _data["customerId"];
-            this.supplierId = _data["supplierId"];
-            this.totalQuantity = _data["totalQuantity"];
-            this.totalPrice = _data["totalPrice"];
+            this.note = _data["note"];
+            this.status = _data["status"];
+            this.porchaseOrderId = _data["porchaseOrderId"];
+            if (Array.isArray(_data["offerItems"])) {
+                this.offerItems = [] as any;
+                for (let item of _data["offerItems"])
+                    this.offerItems.push(UpdateOfferItemDto.fromJS(item));
+            }
         }
     }
 
@@ -21168,15 +21372,17 @@ export class UpdateOfferDto implements IUpdateOfferDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["porchaseOrderId"] = this.porchaseOrderId;
-        data["orderNumber"] = this.orderNumber;
-        data["status"] = this.status;
-        data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
+        data["offerEndDate"] = this.offerEndDate;
         data["currency"] = this.currency;
         data["customerId"] = this.customerId;
-        data["supplierId"] = this.supplierId;
-        data["totalQuantity"] = this.totalQuantity;
-        data["totalPrice"] = this.totalPrice;
+        data["note"] = this.note;
+        data["status"] = this.status;
+        data["porchaseOrderId"] = this.porchaseOrderId;
+        if (Array.isArray(this.offerItems)) {
+            data["offerItems"] = [];
+            for (let item of this.offerItems)
+                data["offerItems"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -21190,15 +21396,84 @@ export class UpdateOfferDto implements IUpdateOfferDto {
 
 export interface IUpdateOfferDto {
     id: number;
-    porchaseOrderId: string | undefined;
-    orderNumber: string | undefined;
-    status: number;
-    offerEndDate: moment.Moment | undefined;
+    offerEndDate: string | undefined;
     currency: number;
     customerId: number | undefined;
-    supplierId: number | undefined;
-    totalQuantity: number;
-    totalPrice: number;
+    note: string | undefined;
+    status: number;
+    porchaseOrderId: string | undefined;
+    offerItems: UpdateOfferItemDto[] | undefined;
+}
+
+export class UpdateOfferItemDto implements IUpdateOfferItemDto {
+    id: number;
+    materialId: number | undefined;
+    sizeId: number | undefined;
+    unitId: number | undefined;
+    quantity: number;
+    unitPrice: number;
+    specefecation: string | undefined;
+    addedBySmallUnit: boolean;
+
+    constructor(data?: IUpdateOfferItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.materialId = _data["materialId"];
+            this.sizeId = _data["sizeId"];
+            this.unitId = _data["unitId"];
+            this.quantity = _data["quantity"];
+            this.unitPrice = _data["unitPrice"];
+            this.specefecation = _data["specefecation"];
+            this.addedBySmallUnit = _data["addedBySmallUnit"];
+        }
+    }
+
+    static fromJS(data: any): UpdateOfferItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateOfferItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["materialId"] = this.materialId;
+        data["sizeId"] = this.sizeId;
+        data["unitId"] = this.unitId;
+        data["quantity"] = this.quantity;
+        data["unitPrice"] = this.unitPrice;
+        data["specefecation"] = this.specefecation;
+        data["addedBySmallUnit"] = this.addedBySmallUnit;
+        return data;
+    }
+
+    clone(): UpdateOfferItemDto {
+        const json = this.toJSON();
+        let result = new UpdateOfferItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateOfferItemDto {
+    id: number;
+    materialId: number | undefined;
+    sizeId: number | undefined;
+    unitId: number | undefined;
+    quantity: number;
+    unitPrice: number;
+    specefecation: string | undefined;
+    addedBySmallUnit: boolean;
 }
 
 export class UpdateReceivingDto implements IUpdateReceivingDto {
