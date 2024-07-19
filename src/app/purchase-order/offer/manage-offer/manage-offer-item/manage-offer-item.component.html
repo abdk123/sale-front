@@ -1,0 +1,32 @@
+
+        
+
+        <div *ngIf="loading" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'Material' | localize}}</th>
+                        <th>{{'Unit' | localize}}</th>
+                        <th>{{'PackingUnit' | localize}}</th>
+                        <th>{{'Quantity' | localize}}</th>
+                        <th>{{'MaterialPrice' | localize}}</th>
+                        <th>{{'TotalPrice' | localize}}</th>
+                        <th>{{'QuantityInStore' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; index as i">
+                        <td>{{getMaterialName(item.materialId)}}</td>
+                        <td>{{getUnit(item.unitId)}}</td>
+                        <td>{{getPackingUnit(item.sizeId)}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.unitPrice}}</td>
+                        <td>{{item.unitPrice * item.quantity}}</td>
+                        <td>{{getStock(item.materialId)}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    

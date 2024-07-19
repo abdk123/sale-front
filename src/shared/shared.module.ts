@@ -31,7 +31,8 @@ import { BtSortableHeader } from './directives/bt-sortable-header.directive';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FilterComponent } from './components/filter/filter.component';
 import { QueryBuilderModule } from 'angular2-query-builder';
-import { DetailsComponent } from '../shared/components/details/details.component'
+import { DetailsComponent } from '../shared/components/details/details.component';
+import { ItemInfoComponent } from './components/item-info/item-info.component'
 
 @NgModule({
     imports: [
@@ -62,7 +63,8 @@ import { DetailsComponent } from '../shared/components/details/details.component
         DateFormattedPipe,
         BtSortableHeader,
         FilterComponent,
-        DetailsComponent
+        DetailsComponent,
+        ItemInfoComponent
     ],
     exports: [
         AbpPaginationControlsComponent,
@@ -80,7 +82,8 @@ import { DetailsComponent } from '../shared/components/details/details.component
         SafeHtmlPipe,
         DateFormattedPipe,
         BtSortableHeader,
-        DetailsComponent
+        DetailsComponent,
+        ItemInfoComponent
     ]
 })
 export class SharedModule {

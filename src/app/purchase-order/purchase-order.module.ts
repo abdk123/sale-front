@@ -17,6 +17,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CreateOfferItemComponent } from './offer/create-offer/create-offer-item/create-offer-item.component';
 import { EditOfferComponent } from './offer/edit-offer/edit-offer.component';
 import { EditOfferItemComponent } from './offer/edit-offer/eidt-offer-item/edit-offer-item.component';
+import { ManageOfferComponent } from './offer/manage-offer/manage-offer.component';
+import { ManageOfferItemComponent } from './offer/manage-offer/manage-offer-item/manage-offer-item.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { EditOfferItemComponent } from './offer/edit-offer/eidt-offer-item/edit-
     CreateOfferItemComponent,
     EditOfferComponent,
     EditOfferItemComponent,
+    ManageOfferComponent,
+    ManageOfferItemComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

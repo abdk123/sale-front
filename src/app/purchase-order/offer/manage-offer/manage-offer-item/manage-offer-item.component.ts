@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  selector: "edit-offer-item",
-  templateUrl: "./edit-offer-item.component.html",
-  styleUrls: ["./edit-offer-item.component.scss"],
+  selector: 'manage-offer-item',
+  templateUrl: './manage-offer-item.component.html',
+  styleUrls: ['./manage-offer-item.component.scss']
 })
-export class EditOfferItemComponent extends AppComponentBase implements OnInit {
+export class ManageOfferItemComponent extends AppComponentBase implements OnInit {
   item: UpdateOfferItemDto = new UpdateOfferItemDto();
   @Output() onSave = new EventEmitter<UpdateOfferItemDto[]>();
   @Input() offerId: number;
@@ -16,7 +16,6 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
   units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
   allUnits: MaterialUnitDto[] = [];
-  loading: boolean = false;
   saving = false;
   indexUpdate = -1;
   materialIsRequired = false;
@@ -41,7 +40,7 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
       this.items = result;
     });
   }
-  
+  loading: boolean = false;
   initialMaterials() {
     this.materialService.getForDropdown().subscribe((result) => {
       this.materials = result;
@@ -175,10 +174,8 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
 
   allStocks: StockDto[] = [];
   initialAllStocks(){
-    debugger;
     this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
     .subscribe((result)=>{
-      debugger;
       this.allStocks = result.items;
     })
   }
@@ -212,3 +209,4 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
       : `${this.l("LargeUnit")}`;
   }
 }
+

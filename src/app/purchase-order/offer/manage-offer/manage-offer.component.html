@@ -1,0 +1,89 @@
+<form class="form-horizontal " autocomplete="off" #updateOfferForm="ngForm" (ngSubmit)="save()">
+    <div class="row">
+        <div class="col-12 separator">
+            <h1>{{'ManageOffer' | localize}}</h1>
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToOfferList' | localize}} <i
+                    class="simple-icon-arrow-right"></i></a>
+            <div class="top-right-button-container text-zero">
+                <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
+                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' |
+                    localize}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-body">
+            <h5 class="card-title separator pb-2 mb-3">{{ 'UpdateOffer' | localize }}</h5>
+            <div class="row">
+                
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="status" required bindLabel="name" bindValue="id" name="status"
+                            [(ngModel)]="offer.status">
+                        </ng-select>
+                        <span>{{ 'Status' | localize }}</span>
+                    </label>
+                    <span *ngIf="statusIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-group has-float-label">
+                        <input type="text" class="form-control" name="porchaseOrderId"
+                            [(ngModel)]="offer.porchaseOrderId" #porchaseOrderIdModel="ngModel" #porchaseOrderIdEl />
+                        <span>{{ 'PoNumber' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="porchaseOrderIdModel" [controlEl]="porchaseOrderIdEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <input class="form-control" required [(ngModel)]="approveDate" name="approveDate" bsDatepicker
+                            [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
+                            #approveDateModel="ngModel" #approveDateEl>
+                        <span>{{ 'approveDate' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="approveDateModel" [controlEl]="approveDateEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="customers" required bindLabel="name" bindValue="id" name="supplierId"
+                            [(ngModel)]="offer.supplierId">
+                        </ng-select>
+                        <span>{{ 'Supplier' | localize }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="card mt-2">
+    <div class="card-body">
+        <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
+        <div class="row">
+            <div class="col-md-3">
+                <item-info title="Customer" [value]="offer.customer.fullName" icon="bi bi-person"></item-info>
+            </div>
+            <div class="col-md-3">
+                <item-info title="OfferId" [value]="offer.id" icon="bi bi-bookmark"></item-info>
+            </div>
+            <div class="col-md-3">
+                <item-info title="Currency" value="{{offer.currency == 1 ? 'Dollar' : 'Dinar'}}" icon="bi bi-cash-stack"></item-info>
+            </div>
+            <div class="col-md-3">
+                <item-info title="StartDate" value="{{offer.creationTime.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+            </div>
+            <div class="col-md-3">
+                <item-info title="OfferEndDate" value="{{offer.offerEndDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+            </div>
+            <div class="col-md-3">
+                <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>
+            </div>
+            <div class="col-md-3">
+                <item-info title="TotalPrice" value="{{offer.totalPrice}}"></item-info>
+            </div>
+        </div>
+        <div class="separator mb-2"></div>
+        <manage-offer-item [offerId]="id"></manage-offer-item>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { AppRouteGuard } from "@shared/auth/auth-route-guard";
 import { OfferComponent } from "./offer/offer.component";
 import { CreateOfferComponent } from "./offer/create-offer/create-offer.component";
 import { EditOfferComponent } from "./offer/edit-offer/edit-offer.component";
+import { ManageOfferComponent } from "./offer/manage-offer/manage-offer.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,12 @@ const routes: Routes = [
       {
         path: "update-offer",
         component: EditOfferComponent,
+        data: { permission: "Setting.Offers.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "manage-offer",
+        component: ManageOfferComponent,
         data: { permission: "Setting.Offers.Update" },
         canActivate: [AppRouteGuard],
       },

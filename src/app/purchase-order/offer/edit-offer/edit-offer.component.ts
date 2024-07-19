@@ -72,7 +72,6 @@ export class EditOfferComponent extends AppComponentBase implements OnInit {
   }
 
   save() {
-    debugger;
     this.customerIsRequired = this.offer.customerId ? false : true;
     this.statusIsRequired = this.offer.status == undefined ? true : false;
     this.currencyIsRequired = this.offer.currency == undefined ? true : false;
