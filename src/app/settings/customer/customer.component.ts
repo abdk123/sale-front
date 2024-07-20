@@ -93,7 +93,7 @@ export class CustomerComponent
     finishedCallback: Function
   ): void {
     this._customerService.read(request).subscribe((result) => {
-      debugger;
+      
       this.customers = result.items;
       this.showPaging(result, pageNumber);
     });

@@ -3502,6 +3502,62 @@ export class InvoiceServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getWithDetail(id: number | undefined): Observable<InvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/Invoice/GetWithDetail?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetWithDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWithDetail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InvoiceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InvoiceDto>;
+        }));
+    }
+
+    protected processGetWithDetail(response: HttpResponseBase): Observable<InvoiceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     get(id: number | undefined): Observable<InvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/Invoice/Get?";
         if (id === null)
@@ -16387,7 +16443,14 @@ export interface IIntPtr {
 export class InvoiceDto implements IInvoiceDto {
     id: number;
     status: number;
+    supplierName: string | undefined;
+    poNumber: string | undefined;
+    currency: number;
     offerId: number | undefined;
+    offerDate: moment.Moment | undefined;
+    totalQuantity: number;
+    totalPrice: number;
+    invoiseDetails: InvoiceItemDto[] | undefined;
 
     constructor(data?: IInvoiceDto) {
         if (data) {
@@ -16402,7 +16465,18 @@ export class InvoiceDto implements IInvoiceDto {
         if (_data) {
             this.id = _data["id"];
             this.status = _data["status"];
+            this.supplierName = _data["supplierName"];
+            this.poNumber = _data["poNumber"];
+            this.currency = _data["currency"];
             this.offerId = _data["offerId"];
+            this.offerDate = _data["offerDate"] ? moment(_data["offerDate"].toString()) : <any>undefined;
+            this.totalQuantity = _data["totalQuantity"];
+            this.totalPrice = _data["totalPrice"];
+            if (Array.isArray(_data["invoiseDetails"])) {
+                this.invoiseDetails = [] as any;
+                for (let item of _data["invoiseDetails"])
+                    this.invoiseDetails.push(InvoiceItemDto.fromJS(item));
+            }
         }
     }
 
@@ -16417,7 +16491,18 @@ export class InvoiceDto implements IInvoiceDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["status"] = this.status;
+        data["supplierName"] = this.supplierName;
+        data["poNumber"] = this.poNumber;
+        data["currency"] = this.currency;
         data["offerId"] = this.offerId;
+        data["offerDate"] = this.offerDate ? this.offerDate.toISOString() : <any>undefined;
+        data["totalQuantity"] = this.totalQuantity;
+        data["totalPrice"] = this.totalPrice;
+        if (Array.isArray(this.invoiseDetails)) {
+            data["invoiseDetails"] = [];
+            for (let item of this.invoiseDetails)
+                data["invoiseDetails"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -16432,7 +16517,14 @@ export class InvoiceDto implements IInvoiceDto {
 export interface IInvoiceDto {
     id: number;
     status: number;
+    supplierName: string | undefined;
+    poNumber: string | undefined;
+    currency: number;
     offerId: number | undefined;
+    offerDate: moment.Moment | undefined;
+    totalQuantity: number;
+    totalPrice: number;
+    invoiseDetails: InvoiceItemDto[] | undefined;
 }
 
 export class InvoiceDtoPagedResultDto implements IInvoiceDtoPagedResultDto {
@@ -16488,6 +16580,65 @@ export class InvoiceDtoPagedResultDto implements IInvoiceDtoPagedResultDto {
 export interface IInvoiceDtoPagedResultDto {
     items: InvoiceDto[] | undefined;
     totalCount: number;
+}
+
+export class InvoiceItemDto implements IInvoiceItemDto {
+    id: number;
+    quantity: number;
+    totalMaterilPrice: number;
+    receivedQuantity: number;
+    offerItem: OfferItemDto;
+
+    constructor(data?: IInvoiceItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.quantity = _data["quantity"];
+            this.totalMaterilPrice = _data["totalMaterilPrice"];
+            this.receivedQuantity = _data["receivedQuantity"];
+            this.offerItem = _data["offerItem"] ? OfferItemDto.fromJS(_data["offerItem"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): InvoiceItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InvoiceItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["quantity"] = this.quantity;
+        data["totalMaterilPrice"] = this.totalMaterilPrice;
+        data["receivedQuantity"] = this.receivedQuantity;
+        data["offerItem"] = this.offerItem ? this.offerItem.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): InvoiceItemDto {
+        const json = this.toJSON();
+        let result = new InvoiceItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInvoiceItemDto {
+    id: number;
+    quantity: number;
+    totalMaterilPrice: number;
+    receivedQuantity: number;
+    offerItem: OfferItemDto;
 }
 
 export class IsTenantAvailableInput implements IIsTenantAvailableInput {

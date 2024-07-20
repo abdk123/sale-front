@@ -1,17 +1,20 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, InvoiceDto, InvoiceItemDto, InvoiceServiceProxy, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  selector: "edit-offer-item",
-  templateUrl: "./edit-offer-item.component.html",
-  styleUrls: ["./edit-offer-item.component.scss"],
+  selector: "edit-invoice-item",
+  templateUrl: "./edit-invoice-item.component.html",
+  styleUrls: ["./edit-invoice-item.component.scss"],
 })
-export class EditOfferItemComponent extends AppComponentBase implements OnInit {
+export class EditInvoiceItemComponent extends AppComponentBase implements OnInit {
   item: UpdateOfferItemDto = new UpdateOfferItemDto();
   @Output() onSave = new EventEmitter<UpdateOfferItemDto[]>();
+  @Output() onSaveInvoice = new EventEmitter<InvoiceItemDto[]>();
   @Input() offerId: number;
+  @Input() invoiceId: number;
   items: UpdateOfferItemDto[] = [];
+  invoiceItems: InvoiceItemDto[] = [];
   materials: DropdownDto[] = [];
   units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
@@ -24,20 +27,30 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
-    private _offerService: OfferServiceProxy,
-    private stockService: StockServiceProxy
+    private offerService: OfferServiceProxy,
+    private stockService: StockServiceProxy,
+    private invoiceService: InvoiceServiceProxy,
   ) {
     super(injector);
   }
   ngOnInit(): void {
+    this.initialInvoice();
     this.initialAllStocks();
     this.initialItems();
     this.initialMaterials();
     this.initialAllMaterialUnits();
+    
+  }
+
+  initialInvoice() {
+    this.invoiceService.getWithDetail(this.invoiceId)
+    .subscribe(result=>{
+      this.invoiceItems = result.invoiseDetails;
+    })
   }
 
   initialItems() {
-    this._offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
+    this.offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
       this.items = result;
     });
   }
@@ -49,6 +62,7 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
   }
 
   initialMaterialUnits(materialId: number) {
+    
     this.stockService.getMaterialUnits(materialId).subscribe((result) => {
       this.units = result;
     });
@@ -102,8 +116,11 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
 
   initialItemForUpdate(index: number) {
     this.indexUpdate = index;
-    this.item = this.items[this.indexUpdate];
-
+    const materialId = this.items[this.indexUpdate]?.materialId;
+    if(materialId){
+      this.initialMaterialUnits(materialId);
+      this.item = this.items[this.indexUpdate];
+    }
     // 
     // this.initialMaterialUnits(this.item.materialId);
     // if (this.stocks.findIndex((x) => x.materialId) == -1) {
@@ -211,4 +228,41 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
       ? `${this.l("SmallUnit")}`
       : `${this.l("LargeUnit")}`;
   }
+
+  getInvoiceQuantity(offerItemId){
+    const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
+    if(invoiceItem){
+      return invoiceItem.quantity;
+    }
+    return 0;
+  }
+
+  getInvoicePrice(offerItemId){
+    const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
+    if(invoiceItem){
+      return invoiceItem.totalMaterilPrice;
+    }
+    return 0;
+  }
+  updateInvoiceQuantity(args,offerItemId){
+    this.invoiceItems.find(x=>x.offerItem.id == offerItemId).quantity = Number(args.target.value);
+    this.onSaveInvoice.emit(this.invoiceItems);
+  }
+
+  updateInvoicePrice(args,offerItemId){
+    this.invoiceItems.find(x=>x.offerItem.id == offerItemId).totalMaterilPrice = Number(args.target.value);
+    this.onSaveInvoice.emit(this.invoiceItems);
+    
+  }
+
+  getTotalPrice(offerItemId){
+    let total = 0;
+    const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
+    if(invoiceItem && invoiceItem.quantity && invoiceItem.totalMaterilPrice){
+      total = Number(invoiceItem.quantity) + Number(invoiceItem.totalMaterilPrice);
+    }
+    return total;
+  }
+
+  
 }

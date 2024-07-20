@@ -32,7 +32,7 @@ export class StoreComponent
     public bsModalRef: BsModalRef
   ) {
     super(injector);
-    debugger;
+    
   }
   protected list(
     request: FullPagedRequestDto,

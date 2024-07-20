@@ -105,7 +105,7 @@ const data: IMenuItem[] = [
   //Offers
   {
     icon: "simple-icon-layers",
-    label: "Offers",
+    label: "Orders",
     to: `${adminRoot}/orders`,
     permissions: permissionsSetting,
     subs: [
@@ -113,6 +113,12 @@ const data: IMenuItem[] = [
         label: "Offers",
         to: `${adminRoot}/orders/offers`,
         icon: "iconsminds-address-book-2",
+        permissions: permissionsSetting,
+      },
+      {
+        label: "Invoices",
+        to: `${adminRoot}/orders/invoices`,
+        icon: "iconsminds-calendar-4",
         permissions: permissionsSetting,
       },
     ],

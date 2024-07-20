@@ -56,7 +56,7 @@ export class MaterialComponent
   ): void {
     request.including = "category";
     this._materialService.read(request).subscribe((result) => {
-      debugger;
+      
       this.materials = result.items;
       this.showPaging(result, pageNumber);
     });

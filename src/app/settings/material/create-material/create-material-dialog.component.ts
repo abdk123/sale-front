@@ -162,7 +162,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
         })
       )
       .subscribe((result) => {
-        debugger;
+        
         this.units.push(this.unit);
 
         const stock = new CreateStockDto(this.stock);

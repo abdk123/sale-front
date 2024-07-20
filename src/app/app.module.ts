@@ -30,12 +30,14 @@ import { ReportsModule } from './reports/reports.module';
 import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
 import { VouchersModule } from './vouchers/vouchers.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     TenantsComponent,
     CreateTenantDialogComponent,
     EditTenantDialogComponent,
+    
 
 
   ],

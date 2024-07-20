@@ -139,7 +139,7 @@ export class CreateOfferItemComponent
   }
 
   getMaterialName(materialId: number) {
-    return this.materials.find((x) => x.id == materialId).name;
+    return this.materials.find((x) => x.id == materialId)?.name;
   }
 
   getUnit(id: number) {

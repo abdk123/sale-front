@@ -33,7 +33,7 @@ export class EditUnitDialogComponent extends AppComponentBase {
   }
 
   save(): void {
-    debugger;
+    
     this.saving = true;
     this._sizeService
       .update(this.unit)

@@ -72,6 +72,12 @@ export const environment = {
     "Setting.Offers.Create",
     "Setting.Offers.Edit",
     "Setting.Offers.Delete",
+
+    // Invoice
+    "PurshaseOrder.Invoices",
+    "PurshaseOrder.Invoices.Create",
+    "PurshaseOrder.Invoices.Edit",
+    "PurshaseOrder.Invoices.Delete",
   ]),
 
   permissionsVoucher: ([] = [
