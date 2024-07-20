@@ -49,14 +49,22 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
       .getOfferWithDetailId(this.id)
       .subscribe((result: OfferDto) => {
         this.offer = result;
+        this.initialValue();
       });
   }
   
+  initialValue(){
+    this.changeStatusInput.supplierId = this.offer.supplierId;
+      this.changeStatusInput.id = this.offer.id;
+      this.changeStatusInput.porchaseOrderId = this.offer.porchaseOrderId;
+      this.changeStatusInput.status = this.offer.status;
+  }
   save(){
     this.statusIsRequired = this.offer.status == undefined ? true : false;
     if (
       !this.statusIsRequired
     ) {
+      
       this.changeStatusInput.approveDate = this.approveDate.toISOString();
       this.saving = true;
       this.offerService
@@ -64,11 +72,26 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
         .pipe(
           finalize(() => {
             this.saving = false;
-            this.notify.info(this.l("SavedSuccessfully"));
-            this._router.navigate(["/app/orders/offers"]);
+            
           })
         )
-        .subscribe((result) => {});
+        .subscribe((result) => {
+          this.notify.info(this.l("SavedSuccessfully"));
+            this._router.navigate(["/app/orders/offers"]);
+        });
     }
+  }
+
+  convertToPurchaseInvoice(){
+    if(this.changeStatusInput.status == 0){
+      abp.message.error(this.l('TheOfferMustBeApprovedFirst')); 
+      return;  
+    }
+    if(this.changeStatusInput.supplierId == 0){
+      abp.message.error(this.l('SupplierIsRequired')); 
+      return;  
+    }
+    this.changeStatusInput.generateInvoice = true;
+    this.save();
   }
 }

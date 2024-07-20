@@ -12568,6 +12568,7 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
     status: number;
     porchaseOrderId: string | undefined;
     approveDate: string | undefined;
+    supplierId: number | undefined;
     generateInvoice: boolean;
 
     constructor(data?: IChangeOfferStatusDto) {
@@ -12585,6 +12586,7 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
             this.status = _data["status"];
             this.porchaseOrderId = _data["porchaseOrderId"];
             this.approveDate = _data["approveDate"];
+            this.supplierId = _data["supplierId"];
             this.generateInvoice = _data["generateInvoice"];
         }
     }
@@ -12602,6 +12604,7 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
         data["status"] = this.status;
         data["porchaseOrderId"] = this.porchaseOrderId;
         data["approveDate"] = this.approveDate;
+        data["supplierId"] = this.supplierId;
         data["generateInvoice"] = this.generateInvoice;
         return data;
     }
@@ -12619,6 +12622,7 @@ export interface IChangeOfferStatusDto {
     status: number;
     porchaseOrderId: string | undefined;
     approveDate: string | undefined;
+    supplierId: number | undefined;
     generateInvoice: boolean;
 }
 

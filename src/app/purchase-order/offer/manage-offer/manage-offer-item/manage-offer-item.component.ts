@@ -103,7 +103,7 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
     this.indexUpdate = index;
     this.item = this.items[this.indexUpdate];
 
-    // debugger;
+    // 
     // this.initialMaterialUnits(this.item.materialId);
     // if (this.stocks.findIndex((x) => x.materialId) == -1) {
     //   this.initialStocks(this.item.materialId);
@@ -155,7 +155,7 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   }
 
   getMaterialName(materialId: number) {
-    return this.materials.find((x) => x.id == materialId).name;
+    return this.materials.find((x) => x.id == materialId)?.name;
   }
 
   getUnit(id: number) {
@@ -181,7 +181,7 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   }
 
   getStock(materialId: number) {
-    debugger;
+    
     if(this.stocks.length !== 0){
     var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
     }else{
