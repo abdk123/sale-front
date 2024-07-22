@@ -53,6 +53,13 @@ import { TenantsComponent } from './tenants/tenants.component';
               ),
           },
           {
+            path: "cash-flows",
+            loadChildren: () =>
+              import("./cash-flows/cash-flows.module").then(
+                (m) => m.CashFlowsModule
+              ),
+          },
+          {
             path: "notifications",
             loadChildren: () =>
               import("../app/layout/notification/notification.module").then(
