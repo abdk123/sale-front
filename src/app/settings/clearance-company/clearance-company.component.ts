@@ -5,6 +5,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { EditClearanceCompanyComponent } from './edit-clearance-company/edit-clearance-company.component';
 import { CreateClearanceCompanyComponent } from './create-clearance-company/create-clearance-company.component';
 import { ViewClearanceCompanyComponent } from './view-clearance-company/view-clearance-company.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: "clearance-company",
@@ -46,7 +47,8 @@ export class ClearanceCompanyComponent
     injector: Injector,
     private _modalService: BsModalService,
     private _clearanceCompanyService: ClearanceCompanyServiceProxy,
-    public bsModalRef: BsModalRef
+    public bsModalRef: BsModalRef,
+    private _router: Router
   ) {
     super(injector);
   }
@@ -75,6 +77,15 @@ export class ClearanceCompanyComponent
     createClearanceCompanyDialog.content.onSave.subscribe(() => {
       this.refresh();
     });
+  }
+
+  viewCashFlows(id) {
+    this._router.navigate([
+      "/app/cash-flows/clearance-company-cash-flows",
+      {
+        id: id,
+      },
+    ]);
   }
 
   showEditModal(id: any) {

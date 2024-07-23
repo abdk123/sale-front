@@ -66,19 +66,6 @@ export class MaterialComponent
     this._router.navigate(["/app/settings/create-material"]);
   }
   showEditModal(id: any) {
-    // let editMaterialDialog: BsModalRef;
-    // editMaterialDialog = this._modalService.show(EditMaterialDialogComponent, {
-    //   backdrop: true,
-    //   ignoreBackdropClick: true,
-    //   class: "modal-lg",
-    //   initialState: {
-    //     id: id,
-    //   },
-    // });
-    // editMaterialDialog.content.onSave.subscribe(() => {
-    //   this.refresh();
-    // });
-
     this._router.navigate([
       "/app/settings/update-material",
       {

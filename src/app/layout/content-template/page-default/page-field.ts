@@ -15,3 +15,9 @@ export interface IEnumValue{
     text: string;
 }
 
+export interface IPageDetail {
+  label: string;
+  cssClass?: string;
+  icon?: string;
+  route: string;
+}
