@@ -5,6 +5,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CreateTransportCompanyComponent } from './create-transport-company/create-transport-company.component';
 import { EditTransportCompanyComponent } from './edit-transport-company/edit-transport-company.component';
 import { ViewTransportCompanyComponent } from './view-transport-company/view-transport-company.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: "transport-company",
@@ -46,7 +47,8 @@ export class TransportCompanyComponent
     injector: Injector,
     private _modalService: BsModalService,
     private _transportCompanyService: TransportCompanyServiceProxy,
-    public bsModalRef: BsModalRef
+    public bsModalRef: BsModalRef,
+    private _router: Router
   ) {
     super(injector);
   }
@@ -60,6 +62,15 @@ export class TransportCompanyComponent
       this.categories = result.items;
       this.showPaging(result, pageNumber);
     });
+  }
+
+  viewCashFlows(id) {
+    this._router.navigate([
+      "/app/cash-flows/transport-company-cash-flows",
+      {
+        id: id,
+      },
+    ]);
   }
 
   showAddNewModal() {

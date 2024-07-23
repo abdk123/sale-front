@@ -9,4 +9,4 @@
     [DeletePermission]="'Setting.Companies.Delete'" [fields]="fields" [data]="categories" [totalItems]="totalItems"
     [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
     (changeOrderBy)="changeOrderBy($event)" (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
-    (changePage)="pageChanged($event)"></app-page-grid>
+    (changePage)="pageChanged($event)" [cashFlowButton]="true" (ViewCashFlow)="viewCashFlows($event)"></app-page-grid>
