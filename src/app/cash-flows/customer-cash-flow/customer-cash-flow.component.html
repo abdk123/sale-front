@@ -1,1 +1,8 @@
-<p>customer-cash-flow works!</p>
+<app-page-header [title]="'CustomerCashFlow' | localize" [fields]="fields" (onChangePage)="onChangePage($event)"
+    (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [fields]="fields" [data]="cashFlows" [totalItems]="totalItems"
+    [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
+    (changeOrderBy)="changeOrderBy($event)" [actionList]="true" (changePage)="pageChanged($event)"></app-page-grid>

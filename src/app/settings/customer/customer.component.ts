@@ -6,6 +6,7 @@ import { ViewCustomerDialogComponent } from './view-customer/view-customer-dialo
 import {FilterDto, FullPagedRequestDto, CustomerDto, CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
 import { FilterCustomerDialogComponent } from './filter-customer/filter-customer-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: "customer",
@@ -19,18 +20,17 @@ export class CustomerComponent
   typeValues = [
     {
       value: 0,
-      text: this.l("Customer")
+      text: this.l("Customer"),
     },
     {
       value: 1,
-      text: this.l("Supplier")
+      text: this.l("Supplier"),
     },
     {
       value: 2,
-      text: this.l("CustomerAndSupplier")
+      text: this.l("CustomerAndSupplier"),
     },
-  ]
-
+  ];
 
   fields = [
     {
@@ -82,7 +82,8 @@ export class CustomerComponent
     injector: Injector,
     private _modalService: BsModalService,
     private _customerService: CustomerServiceProxy,
-    public bsModalRef: BsModalRef
+    public bsModalRef: BsModalRef,
+    private _router: Router
   ) {
     super(injector);
   }
@@ -93,10 +94,18 @@ export class CustomerComponent
     finishedCallback: Function
   ): void {
     this._customerService.read(request).subscribe((result) => {
-      
       this.customers = result.items;
       this.showPaging(result, pageNumber);
     });
+  }
+
+  viewCashFlows(id) {
+    this._router.navigate([
+      "/app/cash-flows/customer-cash-flows",
+      {
+        id: id,
+      },
+    ]);
   }
 
   showAddNewModal() {

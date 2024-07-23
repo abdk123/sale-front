@@ -18,7 +18,7 @@ import { TooltipModule } from "ngx-bootstrap/tooltip";
 import { CustomerCashFlowComponent } from "./customer-cash-flow/customer-cash-flow.component";
 import { TransportCompanyCashFlowComponent } from "./transport-company-cash-flow/transport-company-cash-flow.component";
 import { ClearanceCompanyCashFlowComponent } from "./clearance-company-cash-flow/clearance-company-cash-flow.component";
-import { ClearanceCompanyCashFlowServiceProxy } from "@shared/service-proxies/service-proxies";
+import { ClearanceCompanyCashFlowServiceProxy, CustomerCashFlowServiceProxy, TransportCompanyCashFlowServiceProxy } from "@shared/service-proxies/service-proxies";
 
 @NgModule({
   declarations: [
@@ -42,6 +42,10 @@ import { ClearanceCompanyCashFlowServiceProxy } from "@shared/service-proxies/se
     BsDatepickerModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  providers: [ClearanceCompanyCashFlowServiceProxy],
+  providers: [
+    ClearanceCompanyCashFlowServiceProxy,
+    TransportCompanyCashFlowServiceProxy,
+    CustomerCashFlowServiceProxy,
+  ],
 })
 export class CashFlowsModule {}
