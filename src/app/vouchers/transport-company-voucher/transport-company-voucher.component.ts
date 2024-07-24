@@ -70,6 +70,7 @@ export class TransportCompanyVoucherComponent
       name: "voucherDate",
       sortable: true,
       type: "date",
+      format:"yyyy-MM-dd"
     },
     {
       label: this.l("TransportCompany"),
