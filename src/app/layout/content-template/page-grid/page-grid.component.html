@@ -48,6 +48,12 @@
                           &nbsp;&nbsp;
                           <span>{{'CashFlow'|localize}}</span>
                         </a>
+                        <a *ngIf="PrintButton" id="button-basic" type="button" id="view" (click)="viewPrint(item.id)"
+                          class="btn btn-empty dropdown-item text-theme-1 align-self-center">
+                          <i class="text-theme-1 simple-icon-printer"></i>
+                          &nbsp;&nbsp;
+                          <span>{{'Print'|localize}}</span>
+                        </a>
                       </ul>
                       <!-- <a *ngIf="hasDetails"
                       class="pointer" (click)="getParentId(item.id)"

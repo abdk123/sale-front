@@ -22,6 +22,7 @@ import { ManageOfferItemComponent } from './offer/manage-offer/manage-offer-item
 import { InvoiceComponent } from './invoice/invoice.component';
 import { EditInvoiceComponent } from './invoice/edit-invoice/edit-invoice.component';
 import { EditInvoiceItemComponent } from './invoice/edit-invoice/update-invoice-item/edit-invoice-item.component';
+import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { EditInvoiceItemComponent } from './invoice/edit-invoice/update-invoice-
     InvoiceComponent,
     EditInvoiceComponent,
     EditInvoiceItemComponent,
+    PrintOfferComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

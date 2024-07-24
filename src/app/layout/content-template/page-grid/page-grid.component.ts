@@ -25,6 +25,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Input() DeletePermission: string = "";
   @Input() ViewButton: boolean = true;
   @Input() cashFlowButton: boolean = false;
+  @Input() PrintButton: boolean = false;
   @Output() changeOrderBy: EventEmitter<string> = new EventEmitter();
   @Output() changePage: EventEmitter<any> = new EventEmitter();
   @Output() ParentId: EventEmitter<any> = new EventEmitter();
@@ -32,6 +33,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Output() deleteItem: EventEmitter<any> = new EventEmitter();
   @Output() viewItem: EventEmitter<any> = new EventEmitter();
   @Output() ViewCashFlow: EventEmitter<any> = new EventEmitter();
+  @Output() ViewPrint: EventEmitter<any> = new EventEmitter();
   selected = {};
   constructor(
     injector: Injector,
@@ -70,6 +72,11 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   viewCashFlow(id: number) {
     this.ViewCashFlow.emit(id);
   }
+
+  viewPrint(id: number) {
+    this.ViewPrint.emit(id);
+  }
+
   getParentId(id: number) {
     if (id) {
       //make all element false except the selected one

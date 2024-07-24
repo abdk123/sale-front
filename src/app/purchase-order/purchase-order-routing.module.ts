@@ -8,6 +8,7 @@ import { EditOfferComponent } from "./offer/edit-offer/edit-offer.component";
 import { ManageOfferComponent } from "./offer/manage-offer/manage-offer.component";
 import { InvoiceComponent } from "./invoice/invoice.component";
 import { EditInvoiceComponent } from "./invoice/edit-invoice/edit-invoice.component";
+import { PrintOfferComponent } from "./offer/print-offer/print-offer.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,12 @@ const routes: Routes = [
         path: "manage-offer",
         component: ManageOfferComponent,
         data: { permission: "Setting.Offers.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "print-offer",
+        component: PrintOfferComponent,
+        // data: { permission: "PurshaseOrder.Invoices.Update" },
         canActivate: [AppRouteGuard],
       },
       {
