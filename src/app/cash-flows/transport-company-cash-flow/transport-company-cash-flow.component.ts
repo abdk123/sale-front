@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
@@ -14,6 +15,9 @@ export class TransportCompanyCashFlowComponent
 {
   cashFlows: TransportCompanyCashFlowDto[] = [];
   id: number;
+  fromDate: string;
+  toDate: string;
+
   TransactionNames = [
     {
       value: 0,
@@ -98,8 +102,18 @@ export class TransportCompanyCashFlowComponent
     pageNumber: number,
     finishedCallback: Function
   ): void {
+    let fromDate = undefined;
+    if (this.fromDate != undefined) {
+      fromDate = new DatePipe("en-US").transform(this.fromDate, "MM/dd/yyyy");
+    }
+
+    let toDate = undefined;
+    if (this.toDate != undefined) {
+      toDate = new DatePipe("en-US").transform(this.toDate, "MM/dd/yyyy");
+    }
+
     this._transportCompanyCashFlowService
-      .getAllByTransportCompanyId(this.id)
+      .getAllByTransportCompanyId(this.id, fromDate, toDate)
       .subscribe((result) => {
         this.cashFlows = result;
       });

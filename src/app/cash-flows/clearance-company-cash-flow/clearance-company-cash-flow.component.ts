@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
@@ -14,6 +15,9 @@ export class ClearanceCompanyCashFlowComponent
 {
   cashFlows: ClearanceCompanyCashFlowDto[] = [];
   id: number;
+  fromDate: string;
+  toDate: string;
+
   TransactionNames = [
     {
       value: 0,
@@ -98,9 +102,22 @@ export class ClearanceCompanyCashFlowComponent
     pageNumber: number,
     finishedCallback: Function
   ): void {
-    this._clearanceCompanyCashFlowService.getAllByClearanceCompanyId(this.id).subscribe((result) => {
-      this.cashFlows = result;
-    });
+
+    let fromDate = undefined;
+    if (this.fromDate != undefined) {
+      fromDate = new DatePipe("en-US").transform(this.fromDate, "MM/dd/yyyy");
+    }
+
+    let toDate = undefined;
+    if (this.toDate != undefined) {
+      toDate = new DatePipe("en-US").transform(this.toDate, "MM/dd/yyyy");
+    }
+
+    this._clearanceCompanyCashFlowService
+      .getAllByClearanceCompanyId(this.id, fromDate, toDate)
+      .subscribe((result) => {
+        this.cashFlows = result;
+      });
   }
 
   showViewModal(id: number) {
