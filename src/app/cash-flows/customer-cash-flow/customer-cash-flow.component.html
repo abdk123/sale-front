@@ -1,6 +1,45 @@
-<app-page-header [title]="'CustomerCashFlow' | localize" [fields]="fields" (onChangePage)="onChangePage($event)"
+<!-- <app-page-header [title]="'CustomerCashFlow' | localize" [fields]="fields" (onChangePage)="onChangePage($event)"
     (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
-</app-page-header>
+</app-page-header> -->
+
+<div class="row">
+    <div class="col-12 separator">
+        <h1>{{'CustomerCashFlow' | localize}}</h1>
+        <a class="btn btn-link btn-empty btn-lg" href="/app/settings/customer">{{'BackToCustomerList' | localize}} <i
+                class="simple-icon-arrow-right"></i></a>
+            <div class="row mb-2">
+                <div class="col-md-2">
+                    <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                        <input class="form-control" placeholder="{{'Search'|localize}}" (keyup)="searchKeyUp($event)">
+                    </div>
+                </div>
+            <div class="col-md-3">
+                <label class="search-sm has-float-label">
+                    <input class="form-control" bsDatepicker [container]="'html'"
+                        [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="fromDate"
+                        id="fromDate" [(ngModel)]="fromDate" #fromDateModel="ngModel" #fromDateEl />
+                    <abp-validation-summary [control]="fromDateModel"
+                        [controlEl]="fromDateEl"></abp-validation-summary>
+                    <span>{{ "FromDate"|localize }}</span>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <label class="search-sm has-float-label">
+                    <input class="form-control" bsDatepicker [container]="'html'"
+                        [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="toDate" id="toDate"
+                        [(ngModel)]="toDate" #toDateModel="ngModel" #toDateEl />
+                    <abp-validation-summary [control]="toDateModel" [controlEl]="toDateEl"></abp-validation-summary>
+                    <span>{{ "ToDate"|localize }}</span>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-outline-primary" [disabled]="false" (click)="list(undefined,0,undefined)">
+                    <i class="bi-search"> </i> {{ 'Search' | localize }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <app-page-grid [hasDetails]="false" [fields]="fields" [data]="cashFlows" [totalItems]="totalItems"

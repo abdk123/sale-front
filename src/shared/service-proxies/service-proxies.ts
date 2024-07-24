@@ -1203,14 +1203,24 @@ export class ClearanceCompanyCashFlowServiceProxy {
 
     /**
      * @param clearanceCompanyId (optional) 
+     * @param fromDate (optional) 
+     * @param toDate (optional) 
      * @return Success
      */
-    getAllByClearanceCompanyId(clearanceCompanyId: number | undefined): Observable<ClearanceCompanyCashFlowDto[]> {
+    getAllByClearanceCompanyId(clearanceCompanyId: number | undefined, fromDate: string | undefined, toDate: string | undefined): Observable<ClearanceCompanyCashFlowDto[]> {
         let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyCashFlow/GetAllByClearanceCompanyId?";
         if (clearanceCompanyId === null)
             throw new Error("The parameter 'clearanceCompanyId' cannot be null.");
         else if (clearanceCompanyId !== undefined)
             url_ += "clearanceCompanyId=" + encodeURIComponent("" + clearanceCompanyId) + "&";
+        if (fromDate === null)
+            throw new Error("The parameter 'fromDate' cannot be null.");
+        else if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";
+        if (toDate === null)
+            throw new Error("The parameter 'toDate' cannot be null.");
+        else if (toDate !== undefined)
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2693,14 +2703,24 @@ export class CustomerCashFlowServiceProxy {
 
     /**
      * @param customerId (optional) 
+     * @param fromDate (optional) 
+     * @param toDate (optional) 
      * @return Success
      */
-    getAllByCustomerId(customerId: number | undefined): Observable<CustomerCashFlowDto[]> {
+    getAllByCustomerId(customerId: number | undefined, fromDate: string | undefined, toDate: string | undefined): Observable<CustomerCashFlowDto[]> {
         let url_ = this.baseUrl + "/api/services/app/CustomerCashFlow/GetAllByCustomerId?";
         if (customerId === null)
             throw new Error("The parameter 'customerId' cannot be null.");
         else if (customerId !== undefined)
             url_ += "customerId=" + encodeURIComponent("" + customerId) + "&";
+        if (fromDate === null)
+            throw new Error("The parameter 'fromDate' cannot be null.");
+        else if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";
+        if (toDate === null)
+            throw new Error("The parameter 'toDate' cannot be null.");
+        else if (toDate !== undefined)
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -10067,14 +10087,24 @@ export class TransportCompanyCashFlowServiceProxy {
 
     /**
      * @param transportCompanyId (optional) 
+     * @param fromDate (optional) 
+     * @param toDate (optional) 
      * @return Success
      */
-    getAllByTransportCompanyId(transportCompanyId: number | undefined): Observable<TransportCompanyCashFlowDto[]> {
+    getAllByTransportCompanyId(transportCompanyId: number | undefined, fromDate: string | undefined, toDate: string | undefined): Observable<TransportCompanyCashFlowDto[]> {
         let url_ = this.baseUrl + "/api/services/app/TransportCompanyCashFlow/GetAllByTransportCompanyId?";
         if (transportCompanyId === null)
             throw new Error("The parameter 'transportCompanyId' cannot be null.");
         else if (transportCompanyId !== undefined)
             url_ += "transportCompanyId=" + encodeURIComponent("" + transportCompanyId) + "&";
+        if (fromDate === null)
+            throw new Error("The parameter 'fromDate' cannot be null.");
+        else if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";
+        if (toDate === null)
+            throw new Error("The parameter 'toDate' cannot be null.");
+        else if (toDate !== undefined)
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
