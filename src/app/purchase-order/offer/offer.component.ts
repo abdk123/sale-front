@@ -1,10 +1,15 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { IEnumValue } from '@app/layout/content-template/page-default/page-field';
-import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { FullPagedRequestDto, OfferDto, OfferServiceProxy } from '@shared/service-proxies/service-proxies';
-import { environment } from 'environments/environment';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Component, Injector, OnInit } from "@angular/core";
+import { Router, UrlTree } from "@angular/router";
+import { IEnumValue } from "@app/layout/content-template/page-default/page-field";
+import { FullPagedListingComponentBase } from "@shared/full-paged-listing-component-base";
+import {
+  FullPagedRequestDto,
+  OfferDto,
+  OfferServiceProxy,
+  UpdateOfferItemDto,
+} from "@shared/service-proxies/service-proxies";
+import { environment } from "environments/environment";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 
 @Component({
   selector: "offer",
@@ -16,6 +21,8 @@ export class OfferComponent
   implements OnInit
 {
   offers: OfferDto[] = [];
+  offerPrinted: OfferDto = new OfferDto();
+  offerItemsPrinted: UpdateOfferItemDto[] = [];
   status: IEnumValue[] = [
     { value: 0, text: this.l("Pending") },
     { value: 1, text: this.l("Approved") },
@@ -138,18 +145,23 @@ export class OfferComponent
     );
   }
 
-  viewPrintPage(id: number){
-    this._router.navigate([
-      "/app/orders/print-offer",
-      {
-        id: id,
-      },
-    ]);
-    
+  viewPrintPage(id: number) {
+    this.offerService.getOfferWithDetailId(id).subscribe((result) => {
+      this.offerPrinted = result;
+      const url = this._router.serializeUrl(
+        this._router.createUrlTree(
+          ["/print-offer"],
+          new UrlTree(undefined, [
+            JSON.stringify(this.offerPrinted),
+            JSON.stringify(this.offerItemsPrinted),
+          ])
+        )
+      );
+      window.open(url, "_blank");
+    });
   }
 
   showViewModal(id: number) {}
 
   showFilterDialog(status) {}
 }
-

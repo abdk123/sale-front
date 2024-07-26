@@ -21,7 +21,6 @@ import { RootComponent } from './root.component';
 import { AppInitializer } from './app-initializer';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 export function getCurrentLanguage(): string {
   if (abp.localization.currentLanguage.name) {
