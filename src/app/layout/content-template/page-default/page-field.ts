@@ -21,3 +21,12 @@ export interface IPageDetail {
   icon?: string;
   route: string;
 }
+
+
+export interface IPageMenu {
+  label: string;
+  cssClass?: string;
+  icon?: string;
+  name: string;
+  permission?: string;
+}

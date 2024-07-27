@@ -36,6 +36,7 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
     private router: Router,
     private customerService: CustomerServiceProxy,
     private offerService: OfferServiceProxy,
+    private invoiceService: InvoiceServiceProxy,
     
     private route: ActivatedRoute
   ) {
@@ -48,8 +49,6 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
     this.initialCustomers();
   }
 
-  
-  
   initialOffer() {
     this.offerService
       .getForEdit(this.offerId)
@@ -59,7 +58,18 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
           this.offer.offerEndDate,
           "dd-MM-yyyy"
         );
+        this.initialInvoice();
       });
+  }
+
+  initialInvoice(){
+    // this.invoiceService.getByOfferId(this.offerId)
+    // .subscribe(result=>{
+      
+    //   this.invoice = result;
+    // });
+    this.invoice.id = this.invoiceId;
+    this.invoice.offerId = this.offerId;
   }
 
   initialCustomers() {
@@ -100,7 +110,7 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
           finalize(() => {
             this.saving = false;
             this.notify.info(this.l("SavedSuccessfully"));
-            this.router.navigate(["/app/orders/offers"]);
+            this.router.navigate(["/app/orders/invoices"]);
           })
         )
         .subscribe((result) => {});
@@ -108,7 +118,10 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   }
 
   saveInvoiceDetail(){
-    
+    this.invoiceService.saveInvoiceDetail(this.invoice)
+    .subscribe((result)=>{
+
+    });
   }
 
   onSaveOfferItem(items: UpdateOfferItemDto[]) {

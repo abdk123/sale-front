@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output, QueryList, Renderer2, SimpleChanges, ViewChildren } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { BtSortableHeader, SortEvent } from '@shared/directives/bt-sortable-header.directive';
-import { IPageField } from '../page-default/page-field';
+import { IPageField, IPageMenu } from '../page-default/page-field';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -26,6 +26,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Input() ViewButton: boolean = true;
   @Input() cashFlowButton: boolean = false;
   @Input() PrintButton: boolean = false;
+  @Input() menuItems: IPageMenu[] = [];
   @Output() changeOrderBy: EventEmitter<string> = new EventEmitter();
   @Output() changePage: EventEmitter<any> = new EventEmitter();
   @Output() ParentId: EventEmitter<any> = new EventEmitter();
@@ -34,6 +35,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Output() viewItem: EventEmitter<any> = new EventEmitter();
   @Output() ViewCashFlow: EventEmitter<any> = new EventEmitter();
   @Output() ViewPrint: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectMenuItem: EventEmitter<any> = new EventEmitter();
   selected = {};
   constructor(
     injector: Injector,
@@ -42,7 +44,9 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   ) {
     super(injector);
   }
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.menuItems);
+  }
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {
@@ -175,5 +179,9 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
 
   getClassForRow(index: number): string {
     return this.selected[index] ? "highlighted-row" : "";
+  }
+
+  selectMenuItem(id:number,name:string){
+    this.onSelectMenuItem.emit({id:id,name:name});
   }
 }

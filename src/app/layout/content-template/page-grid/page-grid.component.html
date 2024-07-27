@@ -54,6 +54,14 @@
                           &nbsp;&nbsp;
                           <span>{{'Print'|localize}}</span>
                         </a>
+                        <ng-container *ngIf="menuItems?.length > 0">
+                          <a *ngFor="let menuItem of menuItems" id="button-basic" type="button" id="view" (click)="selectMenuItem(item.id,menuItem.name)"
+                          [class]="item.cssClass" class="btn btn-empty dropdown-item text-theme-1 align-self-center">
+                          <i class="text-theme-1" [class]="menuItem.icon"></i>
+                          &nbsp;&nbsp;
+                          <span>{{menuItem.label | localize}}</span>
+                        </a>
+                        </ng-container>
                       </ul>
                       <!-- <a *ngIf="hasDetails"
                       class="pointer" (click)="getParentId(item.id)"

@@ -1,16 +1,16 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEnumValue } from '@app/layout/content-template/page-default/page-field';
+import { IEnumValue, IPageMenu } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
 import { FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'invoice',
-  templateUrl: './invoice.component.html',
-  styleUrls: ['./invoice.component.scss']
+  selector: 'receiving',
+  templateUrl: './receiving.component.html',
+  styleUrls: ['./receiving.component.scss']
 })
-export class InvoiceComponent extends FullPagedListingComponentBase<InvoiceDto> implements OnInit {
+export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto> implements OnInit {
   
   invoices: InvoiceDto[] = [];
   status:IEnumValue[]=[
@@ -24,15 +24,22 @@ export class InvoiceComponent extends FullPagedListingComponentBase<InvoiceDto> 
     {value:1,text:this.l("Dinar")},
   ];
   
+  menuItems: IPageMenu[] = [
+    {
+      name:'receive',
+      label:'Receive',
+      icon:'simple-icon-settings',
+    }
+  ]
+  
   fields = [
+    { label: this.l('PoNumber'), name: 'poNumber', sortable: false, type: 'string' },
     { label: this.l('Status'), name: 'status',  type: 'enum' , enumValue: this.status ,sortable: true },
     { label: this.l('Supplier'), name: 'supplierName', sortable: false, type: 'string' },
     { label: this.l('InvoiceNumber'), name: 'id', sortable: true, type: 'number' },
     { label: this.l('TotalQuantity'), name: 'totalQuantity', sortable: true, type: 'number' },
+    { label: this.l('NotReceivedQuantity'), name: 'totalNotReceivedQuantity', sortable: true, type: 'number' },
     { label: this.l('Currency'), name: 'currency',  type: 'enum' , enumValue: this.currency ,sortable: true },
-    { label: this.l('TotalPrice'), name: 'totalPrice', sortable: true, type: 'number' },
-    { label: this.l('OfferDate'), name: 'creationTime', sortable: false, type: 'date',format:"yyyy-MM-dd" },
-    { label: this.l('PoNumber'), name: 'poNumber', sortable: false, type: 'string' },
   ];
   
   constructor(injector: Injector,
@@ -87,6 +94,16 @@ export class InvoiceComponent extends FullPagedListingComponentBase<InvoiceDto> 
   
     showFilterDialog(status) {
  
+    }
+
+    onSelectMenuItem(args){
+      if(args.name == "receive"){
+        this.addOrEditReceive(args.id);
+      }
+    }
+
+    addOrEditReceive(invoiceId){
+
     }
 }
 

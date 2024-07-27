@@ -23,6 +23,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import { EditInvoiceComponent } from './invoice/edit-invoice/edit-invoice.component';
 import { EditInvoiceItemComponent } from './invoice/edit-invoice/update-invoice-item/edit-invoice-item.component';
 import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
+import { ReceivingComponent } from './receiving/receiving.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
     EditInvoiceComponent,
     EditInvoiceItemComponent,
     PrintOfferComponent,
+    ReceivingComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
