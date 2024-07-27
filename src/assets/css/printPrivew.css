@@ -1,0 +1,79 @@
+﻿
+
+
+@media print {
+    body {
+        margin-right: -24px;
+        margin-top:-50px;
+    }
+    .thanktemplate {
+        font-size: 10px
+    }
+
+  
+
+    @page {
+        size: A4;
+    }
+    .mediaprint {
+        width: 200mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+    }
+    .invoiceheader {
+        width: 190mm;
+        height: 50mm;
+        margin: 5px;
+    }
+    .container {
+        max-width: 1000px;
+        margin-right: auto;
+        margin-left: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .wrapper .aside-container {
+        display: none;
+    }
+    .title {
+        display:none !important;
+    }
+
+
+    #itemstable thead #rowforcustomerdetails th {
+        font-size: 20px !important;
+        color: #1D6375 !important;
+        text-decoration: underline !important;
+    }
+
+    #itemsSalestable thead .theaddesgin th {
+        color: white !important;
+        background-color: #1E6275 !important;
+        font-size: 15px !important;
+    }
+    #itemsSalestable tbody tr td {
+        background-color: #CDD9DE !important;
+        border: 3px solid #ffffff !important;
+    }
+    #itemsSalestable tfoot tr th {
+        color: white !important;
+        background-color: #1E6275 !important;
+        font-size: 15px !important;
+    }
+
+    #paymentInfo thead tr th {
+        background-color: #BB9767 !important;
+    }
+
+    #paymentInfo tbody tr .special {
+        background-color: #CDD9DE !important; /* Change this color to your desired background color */
+    }
+
+    #paymentInfo tbody tr .another {
+        background-color: #E8EDEF !important;
+    }
+}

@@ -1,0 +1,205 @@
+﻿
+
+@page {
+    size: A4;
+}
+.wrapper .aside-container {
+    position: absolute;
+    display: none;
+}
+/* Set A4 paper size */
+.mediaprint {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+#timetodayhourse {
+    display: none;
+}
+
+button, sidebar, footer {
+    display: none;
+}
+
+#itemstable {
+    margin-top: 10px;
+}
+
+ 
+
+@media (min-width: 768px) {
+    .content-wrapper {
+        padding: 0px;
+    }
+}
+
+.invoiceheader {
+    width: 200mm;
+    height: 50mm;
+    margin: 5px;
+}
+
+.container {
+    max-width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.tableDesginInvoice {
+    width: 95%;
+    text-align: left;
+    float: left;
+    margin-left: 25px;
+    color: white;
+}
+
+
+.Item_Description {
+    color: white;
+    text-align: left;
+    /* width: 95%; */
+    margin-right: 15px
+
+}
+
+.table > thead > tr > th {
+    
+    color: #fff;
+    text-align: center;
+}
+
+p {
+    font-size: 14px;
+}
+
+.headerInvoice {
+    color: black;
+    height: 35px;
+
+}
+
+th, td {
+    border: 1px solid black;
+    border-color: #BEBEBE;
+    color: dimgray;
+}
+
+.theaddesgin {
+    background-color: #1E6275 !important;
+    color: black;
+}
+
+th {
+    line-height: 2px;
+}
+
+.thanktemplate {
+    text-align: center;
+    margin-top: 180px;
+    font-size: 10px
+}
+
+#itemstable {
+    border: none !important; /* Change the border width and color as needed */
+    border-collapse: collapse !important; /* Optional: to collapse the border */
+}
+tr, td , th{
+    border-collapse: collapse !important; /* Optional: to collapse the border */
+    border: none !important; /* Change the border width and color as needed */
+}
+
+
+td {
+    position: relative;
+}
+
+td {
+    border-right: 1px solid black; /* Show border on the right side of each td */
+    padding: 8px; /* Add padding for better appearance */
+    text-align: left; /* Align text to the left */
+}
+
+    td:last-child {
+        border-right: none; /* Remove border from the last td in each row */
+    }
+
+
+/*this for recpit Print*/
+
+.information > thead > tr > th {
+    float: right;
+    width: 50%;
+    color: black;
+    
+}
+    .information > thead > tr > th.Hedartitle{
+        background-color:aquamarine;
+    }
+
+    
+/* Set a fixed height for all rows */
+.borderless-table {
+    border-collapse: collapse !important;
+}
+
+    .borderless-table  td, .borderless-table th {
+        border: none !important;
+        padding: 8px !important;
+        text-align: left !important; /* Center the text */
+        /* Adjust padding as needed */
+    }
+
+
+.borderless-table-items {
+    border-collapse: collapse;
+}
+
+    .borderless-table-items tbody th,
+    .borderless-table-items tbody td {
+        border: 1px solid white !important; /* Add border with white color */
+        padding: 8px !important; /* Adjust padding as needed */
+        text-align: center !important; /* Center the text */
+    }
+
+.green-row {
+    background-color: #CDD9DE !important;
+}
+
+.red-row {
+    background-color: #E8EDEF !important;
+}
+
+/* CSS to center the contact information */
+.contact-info-container {
+    position: absolute;
+    top: 90%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.contact-info p {
+    white-space: nowrap;
+    margin: 0;
+}
+
+.headerOverinfo {
+    font-size: 25px !important;
+    color: #1D6375 !important;
+    text-decoration: underline !important;
+}
+#paymentInfo thead tr {
+    background-color: #BB9767 !important;
+}
+.special {
+    background-color: #CDD9DE; /* Change this color to your desired background color */
+}
+.another {
+    background-color: #E8EDEF;
+}

@@ -37,7 +37,7 @@ import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
     InvoiceComponent,
     EditInvoiceComponent,
     EditInvoiceItemComponent,
-    PrintOfferComponent,
+    // PrintOfferComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

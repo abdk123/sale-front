@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>A4 Paper Size</title>
-</head>
-<body>
-    <div class="mediaprint">
-        <img src="/assets/img/printImages/hader.JPG" class="invoiceheader" alt="Image Description" />
-        <br />
-        <table id="itemstable" class="table rtl Item_Description borderless-table ml-4">
+<div class="page">
+    <div class="flex flex-nowrap">
+        <img src="/assets/img/printImages/hader.JPG" class="w-100" alt="Image Description" />
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-3" style="text-align: -webkit-center;">
+        <table id="itemstable" style="width: 95%;" class="table rtl Item_Description borderless-table ml-5">
             <thead>
                 <tr id="rowforcustomerdetails">
+                    <!-- <th></th> -->
                     <th class="headerOverinfo">OFFER TO</th>
                     <th class="headerOverinfo">OFFER</th>
+                    <!-- <th></th> -->
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td rowspan="4" class="data" style="color:black ; ">
+                    <!-- <td ></td> -->
+                    <td style="color:black ; ">
                         {{offer.customer?.fullName}} : TO ❖
                         <br />
                         {{offer.customer?.address}} : ❖
@@ -29,10 +28,13 @@
                         <strong>{{offer.id}}</strong>: Over Number ❖
                         <br />
                     </td>
+                    <!-- <td ></td> -->
                 </tr>
             </tbody>
         </table>
-        <table id="itemsSalestable" class="table rtl Item_Description borderless-table-items">
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-5" style="text-align: -webkit-center; padding-left: 18px;">
+        <table id="itemsSalestable" style="width: 98%;" class="table rtl Item_Description borderless-table-items">
             <thead>
                 <tr class="theaddesgin">
                     <th style="font-size:11px;color:white">Line Price</th>
@@ -45,7 +47,7 @@
             <tbody id="Itemslist">
                 <tr *ngFor="let item of offerItems; let i = index" [ngClass]=" i % 2 == 0 ? 'green-row' : 'red-row'">
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
-                        <strong>{{Calculate(item.quantity,item.unitPrice)}}</strong>                        
+                        <strong>{{Calculate(item.quantity,item.unitPrice)}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
                         <strong>{{item.unitPrice}}</strong>
@@ -54,7 +56,7 @@
                         <strong *ngIf="item.unitId != undefined">{{item.unit?.name}}</strong>
                         <strong *ngIf="item.sizeId != undefined">{{item.size?.name}}</strong>
                     </td>
-                    <td style="text-align: center; font-weight: bold ; color:black ; ">                        
+                    <td style="text-align: center; font-weight: bold ; color:black ; ">
                         <strong>{{item.quantity}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
@@ -64,7 +66,7 @@
             </tbody>
             <tfoot>
                 <tr class="theaddesgin">
-            
+
                     <th style="color:white ; text-align:right">
                         {{calculateTotalQuantity()}}
                     </th>
@@ -73,9 +75,9 @@
                     </th>
                 </tr>
                 <tr class="theaddesgin">
-            
+
                     <th style="color:white ; text-align:right">
-                        {{calculateTotalPrice()}}            
+                        {{calculateTotalPrice()}}
                     </th>
                     <th *ngIf="offer.currency == 0" colspan="8" style="color:white ; text-align:left">
                         Total USD
@@ -86,68 +88,56 @@
                 </tr>
             </tfoot>
         </table>
-        <div style="display: inline-block; width: 55%; margin-left: 3%; float:left">
-            <table id="itemstable" class="table  Item_Description borderless-table">
-                <thead>
-                    <tr>
-                        <th style="font-size:20px;color:#1D6375 ;text-decoration: underline;"> Payment Info</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="rowforcustomerdetails">
-                        <td style="text-align:left;color:black" class="data">
-                            . Account Name : Ser AI Tatower Co ❖<br />
-                            . <span style="padding-left:20px">For General Contractor & Equipment</span><br />
-                            Swift Code : TRIQIQBAXXX ❖<br />
-                            IBAN : IQ64 TRIQ 9940 0500 8056 001 ❖<br />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div style="display: inline-block; width: 55%; float:left;margin-left:3%">
-            <table id="bankTransferTable" class="table  Item_Description borderless-table">
-                <thead>
-                    <tr>
-                        <th style="font-size:20px;color:#1D6375 ;text-decoration: underline;">
-                            Bank Transfer to Trade Bank of Iraq
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="rowforcustomerdetails">
-                        <td style="text-align:left;color:black" class="data">
-                            Bank Address : Iraq-Baghdad-609 AL-Mansour❖<br />
-                            <span style="padding-left:20px">district , street 16, building 22</span><br />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <br />
-            <strong style="font-size:25px;color:#1D6375;text-decoration: underline;float:left;margin-left:3%">
-                : Signature ▪
-            </strong>
-            <br />
-            <br />
-            <br />
-            <br />
-        </div>
-        <div class="contact-info-container">
-            <p style="font-size:14px">. Thank you for your interest</p>
-            <p style="font-size:12px"><a style="color:black" href="https://www.isnetworld.com/what-we-do"> · More
-                    Information</a> <a style="color:black" href="https://www.isnetworld.com/en/contact-us"> · Contact
-                    SAT</a></p>
-            <div class="contact-info">
-                <p style="font-size:12px"> Contact us: Phone: +964 783 8660 882 • Website: <a
-                        href="http://www.seraltatower.com">www.seraltatower.com</a> • Email: <a
-                        href="mailto:Finance@seraltatower.com">Finance@seraltatower.com</a></p>
-            </div>
-            <p style="font-size:10px">You acknowledge and agree that, notwithstanding the terms of any purchase order or
-                other terms and conditions, Subject of this invoice is governed solely by the standard User Agreement
-                for Ser Al Tatower’s Contractors.</p>
-        </div>
-        <img style="  top: 85%;left: 54%;transform: translate(-50%, -50%);text-align: center;   position: absolute;"
-            src="/assets/img/printImages/foter.JPG" class="invoiceheader" alt="Image footer" />
     </div>
-</body>
-</html>
+    <div class="flex flex-nowrap justify-content-center mt-5" style="text-align: -webkit-center; padding-left: 40px;">
+        <table id="itemstable" style="width: 95%;" class="table rtl Item_Description borderless-table">
+            <thead>
+                <tr>
+                    <th style="font-size:20px;color:#1D6375 ;text-decoration: underline;">
+                        Bank Transfer to Trade Bank of Iraq
+                    </th>
+                    <th style="font-size:20px;color:#1D6375 ;text-decoration: underline;"> Payment Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="rowforcustomerdetails">
+                    <td style="text-align:left;color:black" class="data">
+                        Bank Address : Iraq-Baghdad-609 AL-Mansour❖<br />
+                        <span style="padding-left:20px">district , street 16, building 22</span><br />
+                    </td>
+                    <td style="text-align:left;color:black" class="data">
+                        . Account Name : Ser AI Tatower Co ❖<br />
+                        . <span style="padding-left:20px">For General Contractor & Equipment</span><br />
+                        Swift Code : TRIQIQBAXXX ❖<br />
+                        IBAN : IQ64 TRIQ 9940 0500 8056 001 ❖<br />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-4" style="text-align: -webkit-center; padding-left: 40px;">
+        <strong class="rtl" style="font-size:25px;color:#1D6375;text-decoration: underline;float:left;margin-left:3%">
+            : Signature ▪
+        </strong>
+    </div>
+    <div style="margin-top: 15%; text-align: center;">
+        <p style="font-size:14px; font-weight: bold;">. Thank you for your interest</p>
+        <p style="font-size:12px;  font-weight: bold;"><a style="color:blue" href="https://www.isnetworld.com/what-we-do"> · More
+                Information</a> <a style="color:blue" href="https://www.isnetworld.com/en/contact-us"> ·
+                Contact
+                SAT</a></p>
+        <div class="contact-info">
+            <p style="font-size:12px"> Contact us: Phone: +964 783 8660 882 • Website: <a style="color:blue"
+                    href="http://www.seraltatower.com">www.seraltatower.com</a> • Email: <a style="color:blue"
+                    href="mailto:Finance@seraltatower.com">Finance@seraltatower.com</a></p>
+        </div>
+        <p style="font-size:10px">You acknowledge and agree that, notwithstanding the terms of any purchase
+            order or
+            other terms and conditions, Subject of this invoice is governed solely by the standard User
+            Agreement
+            for Ser Al Tatower’s Contractors.</p>
+    </div>
+    <div class="flex flex-nowrap">
+        <img src="/assets/img/printImages/foter.JPG" class="w-100" alt="Image Description" />
+    </div>
+</div>
