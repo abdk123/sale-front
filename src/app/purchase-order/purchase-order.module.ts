@@ -38,7 +38,7 @@ import { ReceivingComponent } from './receiving/receiving.component';
     InvoiceComponent,
     EditInvoiceComponent,
     EditInvoiceItemComponent,
-    PrintOfferComponent,
+    // PrintOfferComponent,
     ReceivingComponent,
   ],
   imports: [

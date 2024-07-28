@@ -21,6 +21,7 @@ import { RootComponent } from './root.component';
 import { AppInitializer } from './app-initializer';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PrintOfferComponent } from '@app/purchase-order/offer/print-offer/print-offer.component';
 
 export function getCurrentLanguage(): string {
   if (abp.localization.currentLanguage.name) {
@@ -47,7 +48,7 @@ export function getCurrentLanguage(): string {
     TooltipModule.forRoot(),
   
   ],
-  declarations: [RootComponent],
+  declarations: [RootComponent, PrintOfferComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
     {
