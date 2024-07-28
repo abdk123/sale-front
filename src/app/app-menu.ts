@@ -116,7 +116,7 @@ const data: IMenuItem[] = [
         permissions: permissionsSetting,
       },
       {
-        label: "Invoices",
+        label: "PurchaseInvoices",
         to: `${adminRoot}/orders/invoices`,
         icon: "iconsminds-calendar-4",
         permissions: permissionsSetting,

@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from "@angular/core";
 import { Router, UrlTree } from "@angular/router";
-import { IEnumValue } from "@app/layout/content-template/page-default/page-field";
+import { IEnumValue, IPageMenu } from "@app/layout/content-template/page-default/page-field";
 import { FullPagedListingComponentBase } from "@shared/full-paged-listing-component-base";
 import {
   FullPagedRequestDto,
@@ -34,6 +34,13 @@ export class OfferComponent
     { value: 0, text: this.l("Dollar") },
     { value: 1, text: this.l("Dinar") },
   ];
+  menuItems: IPageMenu[] = [
+    {
+      name:'manageOffer',
+      label:'ManageOffer',
+      icon:'simple-icon-settings',
+    }
+  ]
   fields = [
     {
       label: this.l("Customer"),
@@ -164,4 +171,19 @@ export class OfferComponent
   showViewModal(id: number) {}
 
   showFilterDialog(status) {}
+
+  onSelectMenuItem(args){
+    if(args.name == "manageOffer"){
+      this.mangeOffer(args.id);
+    }
+  }
+
+  mangeOffer(id: any) {
+    this._router.navigate([
+      "/app/orders/manage-offer",
+      {
+        id: id,
+      },
+    ]);
+  }
 }

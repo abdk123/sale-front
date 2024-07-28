@@ -11,4 +11,5 @@
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
 (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
-(changePage)="pageChanged($event)" [PrintButton]="true" (ViewPrint)="viewPrintPage($event)"></app-page-grid>
+(changePage)="pageChanged($event)" [PrintButton]="true" (ViewPrint)="viewPrintPage($event)"
+[menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

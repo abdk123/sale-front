@@ -9,6 +9,7 @@ import { ManageOfferComponent } from "./offer/manage-offer/manage-offer.componen
 import { InvoiceComponent } from "./invoice/invoice.component";
 import { EditInvoiceComponent } from "./invoice/edit-invoice/edit-invoice.component";
 import { PrintOfferComponent } from "./offer/print-offer/print-offer.component";
+import { ReceivingComponent } from "./receiving/receiving.component";
 
 const routes: Routes = [
   {
@@ -55,6 +56,12 @@ const routes: Routes = [
         path: "edit-invoice",
         component: EditInvoiceComponent,
         data: { permission: "PurshaseOrder.Invoices.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "receives",
+        component: ReceivingComponent,
+        //data: { permission: "PurshaseOrder.Invoices.Update" },
         canActivate: [AppRouteGuard],
       },
     ],
