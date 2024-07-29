@@ -103,7 +103,12 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
     }
 
     addOrEditReceive(invoiceId){
-
+      this._router.navigate([
+        "/app/orders/edit-receive",
+        {
+          invoiceId: invoiceId,
+        },
+      ]);
     }
 }
 

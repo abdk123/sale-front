@@ -121,6 +121,12 @@ const data: IMenuItem[] = [
         icon: "iconsminds-calendar-4",
         permissions: permissionsSetting,
       },
+      {
+        label: "ReveivingMaterials",
+        to: `${adminRoot}/orders/receives`,
+        icon: "iconsminds-jeep",
+        permissions: permissionsSetting,
+      },
     ],
   },
   //Security
