@@ -10,6 +10,7 @@ import { InvoiceComponent } from "./invoice/invoice.component";
 import { EditInvoiceComponent } from "./invoice/edit-invoice/edit-invoice.component";
 import { PrintOfferComponent } from "./offer/print-offer/print-offer.component";
 import { ReceivingComponent } from "./receiving/receiving.component";
+import { DeliveryComponent } from "./delivery/delivery.component";
 
 const routes: Routes = [
   {
@@ -61,6 +62,12 @@ const routes: Routes = [
       {
         path: "receives",
         component: ReceivingComponent,
+        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "deliveries",
+        component: DeliveryComponent,
         //data: { permission: "PurshaseOrder.Invoices.Update" },
         canActivate: [AppRouteGuard],
       },
