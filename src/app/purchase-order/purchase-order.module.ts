@@ -39,7 +39,7 @@ import { EditReceiveComponent } from './receiving/edit-receive/edit-receive.comp
     InvoiceComponent,
     EditInvoiceComponent,
     EditInvoiceItemComponent,
-    PrintOfferComponent,
+    // PrintOfferComponent,
     ReceivingComponent,
     EditReceiveComponent,
   ],
