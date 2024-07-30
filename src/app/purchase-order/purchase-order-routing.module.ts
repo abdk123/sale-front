@@ -10,6 +10,7 @@ import { InvoiceComponent } from "./invoice/invoice.component";
 import { EditInvoiceComponent } from "./invoice/edit-invoice/edit-invoice.component";
 import { ReceivingComponent } from "./receiving/receiving.component";
 import { EditReceiveComponent } from "./receiving/edit-receive/edit-receive.component";
+import { CreateReceiveComponent } from "./receiving/create-receive/create-receive.component";
 
 const routes: Routes = [
   {
@@ -61,13 +62,19 @@ const routes: Routes = [
       {
         path: "receives",
         component: ReceivingComponent,
-        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        data: { permission: "PurshaseOrder.Receivings" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "create-receive",
+        component: CreateReceiveComponent,
+        data: { permission: "PurshaseOrder.Receivings.Create" },
         canActivate: [AppRouteGuard],
       },
       {
         path: "edit-receive",
         component: EditReceiveComponent,
-        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        data: { permission: "PurshaseOrder.Receivings.Update" },
         canActivate: [AppRouteGuard],
       },
     ],

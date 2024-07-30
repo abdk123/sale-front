@@ -14,8 +14,13 @@ export class EditReceiveComponent extends AppComponentBase implements OnInit {
   receiveDto:ReceivingDto = new ReceivingDto();
   invoiceId: number;
   saving:boolean;
+  date:Date = new Date();
   transportCompanies:DropdownDto[]=[];
   clearanceCompanies:DropdownDto[]=[];
+  currencies = [
+    { id: 0, name: this.l("Dollar") },
+    { id: 1, name: this.l("Dinar") },
+  ];
 
   constructor(
     injector: Injector,
@@ -53,6 +58,7 @@ export class EditReceiveComponent extends AppComponentBase implements OnInit {
   }
 
   save(){
-
+    this.receiveDto.creationTime = this.date.toISOString();
+    
   }
 }

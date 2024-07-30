@@ -19,6 +19,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Input() totalItems: number;
   @Input() pageNumber: number;
   @Input() pageSize: number;
+  @Input() coloredBy: string;
   @Input() hasDetails: boolean = false;
   @Input() IsOutputRequest: boolean = false;
   @Input() EditPermission: string = "";
@@ -36,6 +37,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Output() ViewCashFlow: EventEmitter<any> = new EventEmitter();
   @Output() ViewPrint: EventEmitter<any> = new EventEmitter();
   @Output() onSelectMenuItem: EventEmitter<any> = new EventEmitter();
+  
   selected = {};
   constructor(
     injector: Injector,
@@ -45,7 +47,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
     super(injector);
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.menuItems);
+    
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -177,11 +179,25 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
     return value;
   }
 
-  getClassForRow(index: number): string {
-    return this.selected[index] ? "highlighted-row" : "";
+  colors = ['table-primary','table-secondary','table-success'];
+  getClassForRow(item): string {
+    let classes = this.selected[item.index] ? "highlighted-row" : "";
+    if(this.coloredBy){
+      var index = item[this.coloredBy];
+      if(index > -1)
+        classes = classes + ' ' + this.colors[index];
+    }
+    return classes;
   }
 
   selectMenuItem(id:number,name:string){
     this.onSelectMenuItem.emit({id:id,name:name});
+  }
+
+  initialColor(item): string{
+    debugger;
+    
+
+    return '';
   }
 }
