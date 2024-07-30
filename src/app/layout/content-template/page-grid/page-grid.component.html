@@ -14,7 +14,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of data; index as i" (click)="getParentId(item.id)" [class]="'pointer pt-5  '+getClassForRow(item.id)" >
+              <tr *ngFor="let item of data; index as i" (click)="getParentId(item.id)" [class]="'pointer pt-5  '+getClassForRow(item)" >
                 <td >
                   <span id="anchorDropdownContainer">
                     <span dropdown container="#anchorDropdownContainer">

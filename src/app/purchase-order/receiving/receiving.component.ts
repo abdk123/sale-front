@@ -32,6 +32,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
     }
   ]
   
+  
   fields = [
     { label: this.l('PoNumber'), name: 'poNumber', sortable: false, type: 'string' },
     { label: this.l('Status'), name: 'status',  type: 'enum' , enumValue: this.status ,sortable: true },
@@ -104,7 +105,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
 
     addOrEditReceive(invoiceId){
       this._router.navigate([
-        "/app/orders/edit-receive",
+        "/app/orders/create-receive",
         {
           invoiceId: invoiceId,
         },

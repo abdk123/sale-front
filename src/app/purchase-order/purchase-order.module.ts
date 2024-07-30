@@ -10,6 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
+import { CustomerServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -25,6 +26,10 @@ import { EditInvoiceItemComponent } from './invoice/edit-invoice/update-invoice-
 import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
 import { ReceivingComponent } from './receiving/receiving.component';
 import { EditReceiveComponent } from './receiving/edit-receive/edit-receive.component';
+import { EditReceiveItemComponent } from './receiving/edit-receive/edit-receive-item/edit-receive-item.component';
+import { CreateReceiveComponent } from './receiving/create-receive/create-receive.component';
+import { CreateReceiveItemComponent } from './receiving/create-receive/create-receive-item/create-receive-item.component';
+import { ReceiveListComponent } from './receiving/receive-list/receive-list.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { SendDeliveryComponent } from './delivery/send-delivery/send-delivery.component';
 
@@ -44,6 +49,10 @@ import { SendDeliveryComponent } from './delivery/send-delivery/send-delivery.co
     // PrintOfferComponent,
     ReceivingComponent,
     EditReceiveComponent,
+    EditReceiveItemComponent,
+    CreateReceiveComponent,
+    CreateReceiveItemComponent,
+    ReceiveListComponent,
     DeliveryComponent,
     SendDeliveryComponent,
   ],
@@ -68,6 +77,7 @@ import { SendDeliveryComponent } from './delivery/send-delivery/send-delivery.co
     StockServiceProxy,
     MaterialServiceProxy,
     InvoiceServiceProxy,
+    ReceivingServiceProxy
     DeliveryServiceProxy,
   ],
 })

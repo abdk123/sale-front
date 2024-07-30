@@ -1,0 +1,33 @@
+<div class="card mt-2">
+    <div class="card-body">
+        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
+        <div *ngIf="invoiceItems?.length > 0" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'Material' | localize}}</th>
+                        <th>{{'Unit' | localize}}</th>
+                        <th>{{'Quantity' | localize}}</th>
+                        <th>{{'ReceivedQuantity' | localize}}</th>
+                        <th>{{'NotReceivedQuantity' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                        <th>{{'EnteredQuantity' | localize}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of invoiceItems; index as i">
+                        <td>{{item.offerItem?.material?.name}}</td>
+                        <td>{{item.offerItem?.size?.name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.receivedQuantity}}</td>
+                        <td>{{item.quantity - item.receivedQuantity}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                        <td>
+                            <input type="number" class="form-control" (keyup)="updateInvoiceQuantity($event,item.id)" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

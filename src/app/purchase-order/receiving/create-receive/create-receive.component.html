@@ -41,7 +41,7 @@
                         <ng-select [items]="transportCompanies" required bindLabel="name" bindValue="id"
                             name="transportCompanyId" [(ngModel)]="receiveDto.transportCompanyId">
                         </ng-select>
-                        <span>{{ 'TransportCompany'| localize }}</span>
+                        <span>{{ 'TransportCompany' | localize }}</span>
                     </label>
                 </div>
                 
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="driverPhoneNumber"
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="receiveDto.driverName" #driverNameModel="ngModel" #driverNameEl />
                         <span>{{ 'DriverName' | localize }}</span>
                     </label>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="driverPhoneNumber"
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="receiveDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
                         <span>{{ 'DriverPhoneNumber' | localize }}</span>
                     </label>
@@ -103,7 +103,7 @@
                         <ng-select [items]="clearanceCompanies" required bindLabel="name" bindValue="id"
                             name="clearanceCompanyId" [(ngModel)]="receiveDto.clearanceCompanyId">
                         </ng-select>
-                        <span>{{ 'TransportCompany'| localize }}</span>
+                        <span>{{ 'TransportCompany' | localize }}</span>
                     </label>
                 </div>
                 
@@ -116,17 +116,9 @@
                     <abp-validation-summary [control]="clearanceCostModel" [controlEl]="clearanceCostEl">
                     </abp-validation-summary>
                 </div>
-                
-                
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="clearanceCostCurrency" [(ngModel)]="receiveDto.clearanceCostCurrency">
-                        </ng-select>
-                        <span>{{ 'ClearanceCostCurrency' | localize }}</span>
-                    </label>
-                </div>
-                
             </div>
         </div>
     </div>
 </form>
+<create-receive-item [invoiceId]="invoiceId" [(items)]="receiveDto.receivingItems"></create-receive-item>
+<receive-list [invoiceId]="invoiceId"></receive-list>

@@ -1,0 +1,44 @@
+<div class="card mt-2" *ngIf="receives?.length > 0">
+    <div class="card-body">
+        <h5 class="card-title separator pb-2 mb-3">{{ 'PreviousTransfers' | localize }}</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'TransportCompany' | localize}}</th>
+                        <th>{{'DriverName' | localize}}</th>
+                        <th>{{'DriverPhoneNumber' | localize}}</th>
+                        <th>{{'ReceivedQuantity' | localize}}</th>
+                        <th>{{'TransportCost' | localize}}</th>
+                        <th>{{'ClearanceCompany' | localize}}</th>
+                        <th>{{'Currency' | localize}}</th>
+                        <th>{{'ClearanceCost' | localize}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of receives; index as i">
+                        <td>{{item.transportCompany.name}}</td>
+                        <td>{{item.driverName}}</td>
+                        <td>{{item.driverPhoneNumber }}</td>
+                        <td>{{item.totalReceivedQuantity}}</td>
+                        <td>{{item.transportCost}}</td>
+                        <td>{{currencies[item.transportCostCurrency].name}}</td>
+                        <td>{{item.clearanceCompany.name}}</td>
+                        <td>{{item.clearanceCost}}</td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <button type="button" (click)="navigateToEditPage(item)" class="btn btn-xs btn-outline-success mx-1">
+                                    <i class="bi bi-pencil-square"></i> {{'Edit' | localize}}
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-xs">
+                                    <i class="bi bi-trash"></i> {{'Delete' | localize}}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
