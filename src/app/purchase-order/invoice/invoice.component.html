@@ -11,4 +11,4 @@
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
 (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
-(changePage)="pageChanged($event)" ></app-page-grid>
+(changePage)="pageChanged($event)" [menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>
