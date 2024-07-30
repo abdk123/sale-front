@@ -10,8 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -77,7 +76,7 @@ import { SendDeliveryComponent } from './delivery/send-delivery/send-delivery.co
     StockServiceProxy,
     MaterialServiceProxy,
     InvoiceServiceProxy,
-    ReceivingServiceProxy
+    ReceivingServiceProxy,
     DeliveryServiceProxy,
   ],
 })
