@@ -26,6 +26,7 @@ import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
 import { ReceivingComponent } from './receiving/receiving.component';
 import { EditReceiveComponent } from './receiving/edit-receive/edit-receive.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { SendDeliveryComponent } from './delivery/send-delivery/send-delivery.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
     ReceivingComponent,
     EditReceiveComponent,
     DeliveryComponent,
+    SendDeliveryComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

@@ -11,6 +11,7 @@ import { EditInvoiceComponent } from "./invoice/edit-invoice/edit-invoice.compon
 import { ReceivingComponent } from "./receiving/receiving.component";
 import { DeliveryComponent } from "./delivery/delivery.component";
 import { EditReceiveComponent } from "./receiving/edit-receive/edit-receive.component";
+import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.component";
 
 const routes: Routes = [
   {
@@ -68,6 +69,12 @@ const routes: Routes = [
       {
         path: "deliveries",
         component: DeliveryComponent,
+        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "send-delivery",
+        component: SendDeliveryComponent,
         //data: { permission: "PurshaseOrder.Invoices.Update" },
         canActivate: [AppRouteGuard],
       },

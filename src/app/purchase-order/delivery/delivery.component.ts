@@ -15,10 +15,10 @@ export class DeliveryComponent
 {
   deliveries: DeliveryDto[] = [];
   status: IEnumValue[] = [
-    { value: 0, text: this.l("NotPriced") },
-    { value: 1, text: this.l("PendingReceived") },
-    { value: 2, text: this.l("PartialRecieved") },
-    { value: 3, text: this.l("Received") },
+    { value: 0, text: this.l("Shipped") },
+    { value: 1, text: this.l("Delivered") },
+    { value: 2, text: this.l("Returend") },
+    { value: 3, text: this.l("PartialReturned") },
   ];
   currency: IEnumValue[] = [
     { value: 0, text: this.l("Dollar") },
@@ -27,19 +27,13 @@ export class DeliveryComponent
 
   menuItems: IPageMenu[] = [
     {
-      name: "receive",
-      label: "Receive",
+      name: "AddDeliveryReport",
+      label: "AddDeliveryReport",
       icon: "simple-icon-settings",
     },
   ];
 
   fields = [
-    {
-      label: this.l("PoNumber"),
-      name: "poNumber",
-      sortable: false,
-      type: "string",
-    },
     {
       label: this.l("Status"),
       name: "status",
@@ -48,8 +42,20 @@ export class DeliveryComponent
       sortable: true,
     },
     {
-      label: this.l("Supplier"),
-      name: "supplierName",
+      label: this.l("customer"),
+      name: "customerId",
+      sortable: false,
+      type: "number",
+    },
+    {
+      label: this.l("PoNumber"),
+      name: "poNumber",
+      sortable: false,
+      type: "string",
+    },
+    {
+      label: this.l("GRCode"),
+      name: "grCode",
       sortable: false,
       type: "string",
     },
@@ -60,22 +66,40 @@ export class DeliveryComponent
       type: "number",
     },
     {
-      label: this.l("TotalQuantity"),
-      name: "totalQuantity",
+      label: this.l("DriverName"),
+      name: "driverName",
+      sortable: true,
+      type: "string",
+    },
+    {
+      label: this.l("DriverPhoneNumber"),
+      name: "driverPhoneNumber",
+      sortable: true,
+      type: "string",
+    },
+    {
+      label: this.l("VehicleNumber"),
+      name: "vehicleNumber",
       sortable: true,
       type: "number",
     },
     {
-      label: this.l("NotReceivedQuantity"),
-      name: "totalNotReceivedQuantity",
+      label: this.l("TransportedQuantity"),
+      name: "transportedQuantity",
       sortable: true,
       type: "number",
     },
     {
       label: this.l("Currency"),
-      name: "currency",
+      name: "transportCostCurrency",
       type: "enum",
       enumValue: this.currency,
+      sortable: true,
+    },
+    {
+      label: this.l("TransportCost"),
+      name: "transportCost",
+      type: "number",
       sortable: true,
     },
   ];
