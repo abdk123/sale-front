@@ -45,7 +45,8 @@ export class ReceiveListComponent extends AppComponentBase implements OnInit {
       "/app/orders/edit-receive",
       {
         receivingId: item.id,
-        invoiceId: item.invoiceId
+        invoiceId: item.invoiceId,
+        totalReceivedQuantity: item.totalReceivedQuantity,
       },
     ]);
   }

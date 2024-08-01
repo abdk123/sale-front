@@ -6782,6 +6782,62 @@ export class ReceivingServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    update(body: UpdateReceivingDto | undefined): Observable<ReceivingDto> {
+        let url_ = this.baseUrl + "/api/services/app/Receiving/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReceivingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReceivingDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<ReceivingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceivingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -7030,62 +7086,6 @@ export class ReceivingServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = ReceivingDtoPagedResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    update(body: UpdateReceivingDto | undefined): Observable<ReceivingDto> {
-        let url_ = this.baseUrl + "/api/services/app/Receiving/Update";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReceivingDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReceivingDto>;
-        }));
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<ReceivingDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceivingDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -24319,6 +24319,7 @@ export class UpdateReceivingDto implements IUpdateReceivingDto {
     clearanceCompanyId: number | undefined;
     invoiceId: number | undefined;
     supplierId: number | undefined;
+    receivingItems: UpdateReceivingItemDto[] | undefined;
 
     constructor(data?: IUpdateReceivingDto) {
         if (data) {
@@ -24342,6 +24343,11 @@ export class UpdateReceivingDto implements IUpdateReceivingDto {
             this.clearanceCompanyId = _data["clearanceCompanyId"];
             this.invoiceId = _data["invoiceId"];
             this.supplierId = _data["supplierId"];
+            if (Array.isArray(_data["receivingItems"])) {
+                this.receivingItems = [] as any;
+                for (let item of _data["receivingItems"])
+                    this.receivingItems.push(UpdateReceivingItemDto.fromJS(item));
+            }
         }
     }
 
@@ -24365,6 +24371,11 @@ export class UpdateReceivingDto implements IUpdateReceivingDto {
         data["clearanceCompanyId"] = this.clearanceCompanyId;
         data["invoiceId"] = this.invoiceId;
         data["supplierId"] = this.supplierId;
+        if (Array.isArray(this.receivingItems)) {
+            data["receivingItems"] = [];
+            for (let item of this.receivingItems)
+                data["receivingItems"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -24388,6 +24399,58 @@ export interface IUpdateReceivingDto {
     clearanceCompanyId: number | undefined;
     invoiceId: number | undefined;
     supplierId: number | undefined;
+    receivingItems: UpdateReceivingItemDto[] | undefined;
+}
+
+export class UpdateReceivingItemDto implements IUpdateReceivingItemDto {
+    id: number;
+    receivedQuantity: number;
+    invoiceItemId: number | undefined;
+
+    constructor(data?: IUpdateReceivingItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.receivedQuantity = _data["receivedQuantity"];
+            this.invoiceItemId = _data["invoiceItemId"];
+        }
+    }
+
+    static fromJS(data: any): UpdateReceivingItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateReceivingItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["receivedQuantity"] = this.receivedQuantity;
+        data["invoiceItemId"] = this.invoiceItemId;
+        return data;
+    }
+
+    clone(): UpdateReceivingItemDto {
+        const json = this.toJSON();
+        let result = new UpdateReceivingItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateReceivingItemDto {
+    id: number;
+    receivedQuantity: number;
+    invoiceItemId: number | undefined;
 }
 
 export class UpdateSizeDto implements IUpdateSizeDto {
