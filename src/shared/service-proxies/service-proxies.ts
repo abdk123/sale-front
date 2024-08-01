@@ -4683,6 +4683,69 @@ export class InvoiceServiceProxy {
     }
 
     /**
+     * @param customerId (optional) 
+     * @return Success
+     */
+    getForDelivery(customerId: number | undefined): Observable<InvoiceItemForDeliveryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Invoice/GetForDelivery?";
+        if (customerId === null)
+            throw new Error("The parameter 'customerId' cannot be null.");
+        else if (customerId !== undefined)
+            url_ += "customerId=" + encodeURIComponent("" + customerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForDelivery(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForDelivery(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InvoiceItemForDeliveryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InvoiceItemForDeliveryDto[]>;
+        }));
+    }
+
+    protected processGetForDelivery(response: HttpResponseBase): Observable<InvoiceItemForDeliveryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(InvoiceItemForDeliveryDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -6663,6 +6726,62 @@ export class ReceivingServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateReceivingDto | undefined): Observable<ReceivingDto> {
+        let url_ = this.baseUrl + "/api/services/app/Receiving/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReceivingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReceivingDto>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<ReceivingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceivingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -6911,62 +7030,6 @@ export class ReceivingServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = ReceivingDtoPagedResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    create(body: CreateReceivingDto | undefined): Observable<ReceivingDto> {
-        let url_ = this.baseUrl + "/api/services/app/Receiving/Create";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReceivingDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReceivingDto>;
-        }));
-    }
-
-    protected processCreate(response: HttpResponseBase): Observable<ReceivingDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceivingDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -15353,6 +15416,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
     status: number;
     transportedQuantity: number;
     customerId: number | undefined;
+    deliveryItems: CreateDeliveryItemDto[] | undefined;
 
     constructor(data?: ICreateDeliveryDto) {
         if (data) {
@@ -15374,6 +15438,11 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
             this.status = _data["status"];
             this.transportedQuantity = _data["transportedQuantity"];
             this.customerId = _data["customerId"];
+            if (Array.isArray(_data["deliveryItems"])) {
+                this.deliveryItems = [] as any;
+                for (let item of _data["deliveryItems"])
+                    this.deliveryItems.push(CreateDeliveryItemDto.fromJS(item));
+            }
         }
     }
 
@@ -15395,6 +15464,11 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
         data["customerId"] = this.customerId;
+        if (Array.isArray(this.deliveryItems)) {
+            data["deliveryItems"] = [];
+            for (let item of this.deliveryItems)
+                data["deliveryItems"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -15416,6 +15490,58 @@ export interface ICreateDeliveryDto {
     status: number;
     transportedQuantity: number;
     customerId: number | undefined;
+    deliveryItems: CreateDeliveryItemDto[] | undefined;
+}
+
+export class CreateDeliveryItemDto implements ICreateDeliveryItemDto {
+    batchNumber: string | undefined;
+    invoiceItemId: number | undefined;
+    deliveredQuantity: number;
+
+    constructor(data?: ICreateDeliveryItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.batchNumber = _data["batchNumber"];
+            this.invoiceItemId = _data["invoiceItemId"];
+            this.deliveredQuantity = _data["deliveredQuantity"];
+        }
+    }
+
+    static fromJS(data: any): CreateDeliveryItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateDeliveryItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["batchNumber"] = this.batchNumber;
+        data["invoiceItemId"] = this.invoiceItemId;
+        data["deliveredQuantity"] = this.deliveredQuantity;
+        return data;
+    }
+
+    clone(): CreateDeliveryItemDto {
+        const json = this.toJSON();
+        let result = new CreateDeliveryItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateDeliveryItemDto {
+    batchNumber: string | undefined;
+    invoiceItemId: number | undefined;
+    deliveredQuantity: number;
 }
 
 export class CreateEmployeeDto implements ICreateEmployeeDto {
@@ -18681,6 +18807,93 @@ export interface IInvoiceItemDto {
     numberInSmallUnit: number;
     offerItem: OfferItemDto;
     offerItemId: number | undefined;
+}
+
+export class InvoiceItemForDeliveryDto implements IInvoiceItemForDeliveryDto {
+    invoiceId: number;
+    invoiceItemId: number;
+    materialName: string | undefined;
+    requiredQuantity: number;
+    totalMaterilPrice: number;
+    receivedQuantity: number;
+    deliveredQuantity: number;
+    numberInSmallUnit: number;
+    addedBySmallUnit: boolean;
+    unit: string | undefined;
+    smallUnit: string | undefined;
+    poNumber: string | undefined;
+
+    constructor(data?: IInvoiceItemForDeliveryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.invoiceId = _data["invoiceId"];
+            this.invoiceItemId = _data["invoiceItemId"];
+            this.materialName = _data["materialName"];
+            this.requiredQuantity = _data["requiredQuantity"];
+            this.totalMaterilPrice = _data["totalMaterilPrice"];
+            this.receivedQuantity = _data["receivedQuantity"];
+            this.deliveredQuantity = _data["deliveredQuantity"];
+            this.numberInSmallUnit = _data["numberInSmallUnit"];
+            this.addedBySmallUnit = _data["addedBySmallUnit"];
+            this.unit = _data["unit"];
+            this.smallUnit = _data["smallUnit"];
+            this.poNumber = _data["poNumber"];
+        }
+    }
+
+    static fromJS(data: any): InvoiceItemForDeliveryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InvoiceItemForDeliveryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["invoiceId"] = this.invoiceId;
+        data["invoiceItemId"] = this.invoiceItemId;
+        data["materialName"] = this.materialName;
+        data["requiredQuantity"] = this.requiredQuantity;
+        data["totalMaterilPrice"] = this.totalMaterilPrice;
+        data["receivedQuantity"] = this.receivedQuantity;
+        data["deliveredQuantity"] = this.deliveredQuantity;
+        data["numberInSmallUnit"] = this.numberInSmallUnit;
+        data["addedBySmallUnit"] = this.addedBySmallUnit;
+        data["unit"] = this.unit;
+        data["smallUnit"] = this.smallUnit;
+        data["poNumber"] = this.poNumber;
+        return data;
+    }
+
+    clone(): InvoiceItemForDeliveryDto {
+        const json = this.toJSON();
+        let result = new InvoiceItemForDeliveryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInvoiceItemForDeliveryDto {
+    invoiceId: number;
+    invoiceItemId: number;
+    materialName: string | undefined;
+    requiredQuantity: number;
+    totalMaterilPrice: number;
+    receivedQuantity: number;
+    deliveredQuantity: number;
+    numberInSmallUnit: number;
+    addedBySmallUnit: boolean;
+    unit: string | undefined;
+    smallUnit: string | undefined;
+    poNumber: string | undefined;
 }
 
 export class IsTenantAvailableInput implements IIsTenantAvailableInput {

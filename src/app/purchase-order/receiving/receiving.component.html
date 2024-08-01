@@ -1,13 +1,13 @@
-<app-page-header [title]="'Invoices' | localize"  [fields]="fields"
- [CreatePermission]="'PurshaseOrder.Invoices.Create333'" (addNewItem)="showAddNewModal()"
+<app-page-header [title]="'Receivings' | localize"  [fields]="fields"
+ [CreatePermission]="'PurshaseOrder.Receivings.Create333'" (addNewItem)="showAddNewModal()"
   (advanceFilter)="showFilterDialog($event)" 
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
   (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
 </app-page-header>
 
 
-<app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.Invoices.Update333'" 
-[DeletePermission]="'PurshaseOrder.Invoices.Delete333'" [fields]="fields" [data]="invoices" 
+<app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.Receivings.Update333'" 
+[DeletePermission]="'PurshaseOrder.Receivings.Delete333'" [fields]="fields" [data]="invoices" 
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
 (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'"
