@@ -1,0 +1,50 @@
+<div class="card mt-2" *ngIf="this.items?.length > 0">
+    <div class="card-body">
+        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterial' | localize }}</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{'PoNumber' | localize}}</th>
+                        <th>{{'Material' | localize}}</th>
+                        <th>{{'Unit' | localize}}</th>
+                        <th>{{'InvoiceNumber' | localize}}</th>
+                        <th>{{'RequiredQuantity' | localize}}</th>
+                        <th>{{'TotalPrice' | localize}}</th>
+                        <th>{{'NumberInSmallUnit' | localize}}</th>
+                        <th>{{'ReceivedQuantity' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                        <th>{{'DeliveredQuantity' | localize}}</th>
+                        <th>{{'Batch Number' | localize}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; index as i">
+                        <td>
+                            <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                                <input type="checkbox" class="custom-control-input" (change)="onCheck($event,item.invoiceItemId,item.receivedQuantity)">
+                                <span class="custom-control-label">&nbsp;</span>
+                              </label>
+                        </td>
+                        <td>{{item.poNumber}}</td>
+                        <td>{{item.materialName}}</td>
+                        <td>{{item.addedBySmallUnit ? item.smallUnit : item.unit}}</td>
+                        <td>{{item.invoiceId}}</td>
+                        <td>{{item.requiredQuantity}}</td>
+                        <td>{{item.totalMaterilPrice}}</td>
+                        <td>{{item.numberInSmallUnit}}</td>
+                        <td>{{item.receivedQuantity}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                        <td>
+                            <input type="number" class="form-control" (keyup)="updateQuantity($event,item.invoiceItemId)" />
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Batch Number" class="form-control" (keyup)="updateBatchNumber($event,item.invoiceItemId)" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

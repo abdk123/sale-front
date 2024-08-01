@@ -1,8 +1,8 @@
 <form class="form-horizontal " autocomplete="off" #updateOfferForm="ngForm" (ngSubmit)="save()">
     <div class="row">
         <div class="col-12 separator">
-            <h1>{{'ManageOffer' | localize}}</h1>
-            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToReceivingList' | localize}} <i
+            <h1>{{'SendDelivery' | localize}}</h1>
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToDeliveriesManagerList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
@@ -12,54 +12,60 @@
     </div>
     <div class="card mt-2">
         <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
-            <div class="row">
-                <div class="col-md-3">
-                    <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="Currency" value="{{invoice.currency == 1 ? 'Dollar' : 'Dinar'}}"
-                        icon="bi bi-cash-stack"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="InvoiceDate" *ngIf="invoice.offerDate"
-                        value="{{invoice.offerDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mt-2">
-        <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
+            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterials' | localize }}</h5>
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="transportCompanies" required bindLabel="name" bindValue="id"
-                            name="transportCompanyId" [(ngModel)]="receiveDto.transportCompanyId">
+                        <ng-select [items]="customers" required bindLabel="name" bindValue="id" (change)="onSelectCustomer($event)" name="customerId" [(ngModel)]="deliveryDto.customerId">
                         </ng-select>
-                        <span>{{ 'TransportCompany| localize }}</span>
+                        <span>{{ 'Customer' | localize }}</span>
                     </label>
                 </div>
                 <div class="col-md-3">
-                    <!-- Date -->
+                    <label class="form-group has-float-label">
+                        <input type="text" required class="form-control" name="driverName"
+                            [(ngModel)]="deliveryDto.driverName" #driverNameModel="ngModel" #driverNameEl />
+                        <span>{{ 'DriverName' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="driverNameModel" [controlEl]="driverNameEl">
+                    </abp-validation-summary>
                 </div>
                 <div class="col-md-3">
-                    <!-- Transport Cost -->
+                    <label class="form-group has-float-label">
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                            [(ngModel)]="deliveryDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
+                        <span>{{ 'DriverPhoneNumber' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="driverPhoneNumberModel" [controlEl]="driverPhoneNumberEl">
+                    </abp-validation-summary>
                 </div>
                 <div class="col-md-3">
-                    <!-- DriverName -->
+                    <label class="form-group has-float-label">
+                        <input type="text" required class="form-control" name="vehicleNumber"
+                            [(ngModel)]="deliveryDto.vehicleNumber" #vehicleNumberModel="ngModel" #vehicleNumberEl />
+                        <span>{{ 'VehicleNumber' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="vehicleNumberModel" [controlEl]="vehicleNumberEl">
+                    </abp-validation-summary>
                 </div>
                 <div class="col-md-3">
-                    <!-- DriverPhone -->
+                    <label class="form-group has-float-label">
+                        <input type="number" required class="form-control" name="transportCost"
+                            [(ngModel)]="deliveryDto.transportCost" #transportCostModel="ngModel" #transportCostEl />
+                        <span>{{ 'TransportCost' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="transportCostModel" [controlEl]="transportCostEl">
+                    </abp-validation-summary>
                 </div>
                 <div class="col-md-3">
-                    <!-- Currency -->
+                    <label class=" has-float-label">
+                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="deliveryDto.transportCostCurrency">
+                        </ng-select>
+                        <span>{{ 'TransportCostCurrency' | localize }}</span>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
 </form>
+<send-delivery-item [customerId]="customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>

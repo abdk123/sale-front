@@ -131,5 +131,7 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   onSaveInvoiceItem(args: InvoiceItemDto[]){
     this.invoice.invoiseDetails = args;
   }
+
+  
 }
 
