@@ -10,12 +10,12 @@
                         <th>{{'Material' | localize}}</th>
                         <th>{{'Unit' | localize}}</th>
                         <th>{{'InvoiceNumber' | localize}}</th>
-                        <th>{{'RequiredQuantity' | localize}}</th>
+                        <th>{{'Quantity' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'NumberInSmallUnit' | localize}}</th>
-                        <th>{{'ReceivedQuantity' | localize}}</th>
-                        <th>{{'SaleType' | localize}}</th>
                         <th>{{'DeliveredQuantity' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                        <th>{{'EnteredQuantity' | localize}}</th>
                         <th>{{'Batch Number' | localize}}</th>
                     </tr>
                 </thead>
@@ -34,13 +34,13 @@
                         <td>{{item.requiredQuantity}}</td>
                         <td>{{item.totalMaterilPrice}}</td>
                         <td>{{item.numberInSmallUnit}}</td>
-                        <td>{{item.receivedQuantity}}</td>
+                        <td>{{item.deliveredQuantity}}</td>
                         <td>{{getSaleType(item.addedBySmallUnit)}}</td>
                         <td>
-                            <input type="number" class="form-control" (keyup)="updateQuantity($event,item.invoiceItemId)" />
+                            <input type="number" class="form-control" [disabled]="checkDisabled(item.invoiceItemId)" (keyup)="updateQuantity($event,item.invoiceItemId)" />
                         </td>
                         <td>
-                            <input type="text" placeholder="Batch Number" class="form-control" (keyup)="updateBatchNumber($event,item.invoiceItemId)" />
+                            <input type="text" placeholder="Batch Number" [disabled]="checkDisabled(item.invoiceItemId)" class="form-control" (keyup)="updateBatchNumber($event,item.invoiceItemId)" />
                         </td>
                     </tr>
                 </tbody>

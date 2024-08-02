@@ -22,7 +22,6 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   invoice: InvoiceDto = new InvoiceDto();
   deliveryDto: CreateDeliveryDto = new CreateDeliveryDto();
   invoiceId: number;
-  customerId: number;
   saving: boolean;
   customers: DropdownDto[] = [];
   currencies = [
@@ -35,34 +34,26 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
     private router: Router,
     private invoiceService: InvoiceServiceProxy,
     private deliveryService: DeliveryServiceProxy,
-    private customerService: CustomerServiceProxy,
     private route: ActivatedRoute
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    //this.invoiceId = this.route.snapshot?.params?.invoiceId;
-    this.initialCustomers();
-    //this.initialInvoice();
-  }
-
-  initialCustomers() {
-    this.customerService.getForDropdown().subscribe(result=>this.customers = result);
+    this.invoiceId = this.route.snapshot?.params?.invoiceId;
+    this.initialInvoice();
   }
 
   initialInvoice() {
     this.invoiceService.getWithDetail(this.invoiceId).subscribe((result) => {
+      console.log(result);
       this.invoice = result;
     });
   }
 
-  onSelectCustomer(customer:DropdownDto){
-    this.customerId = customer.id;
-  }
-
   save() {
     this.saving = true;
+    this.deliveryDto.customerId = this.invoice.customerId;
     this.deliveryService
       .create(this.deliveryDto)
       .pipe(

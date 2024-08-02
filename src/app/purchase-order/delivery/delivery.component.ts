@@ -63,7 +63,7 @@ export class DeliveryComponent extends FullPagedListingComponentBase<InvoiceDto>
   showEditModal(id: any){
     var orderId = this.invoices.find(x=>x.id == id)?.offerId;
     this._router.navigate([
-      "/app/orders/edit-invoice",
+      "/app/orders/edit-delivery",
       {
         invoiceId: id,
         offerId: orderId
@@ -95,14 +95,14 @@ export class DeliveryComponent extends FullPagedListingComponentBase<InvoiceDto>
     }
 
     onSelectMenuItem(args){
-      if(args.name == "receive"){
+      if(args.name == "sendDelivery"){
         this.addOrEditDelivery(args.id);
       }
     }
 
     addOrEditDelivery(invoiceId){
       this._router.navigate([
-        "/app/orders/create-receive",
+        "/app/orders/send-delivery",
         {
           invoiceId: invoiceId,
         },

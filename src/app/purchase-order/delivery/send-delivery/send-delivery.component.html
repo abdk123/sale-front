@@ -2,11 +2,39 @@
     <div class="row">
         <div class="col-12 separator">
             <h1>{{'SendDelivery' | localize}}</h1>
-            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToDeliveriesManagerList' | localize}} <i
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/deliverys">{{'BackToDeliveriesList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
-                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' | localize}}</button>
+                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'SendDelivery' | localize}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-body">
+            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
+            <div class="row">
+                <div class="col-md-2">
+                    <item-info title="Customer" [value]="invoice.customerName" icon="bi bi-person"></item-info>
+                </div>
+                <div class="col-md-2">
+                    <item-info title="PoNumber" [value]="invoice.poNumber" icon=""></item-info>
+                </div>
+                
+                <div class="col-md-2">
+                    <item-info title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
+                </div>
+                <div class="col-md-2">
+                    <item-info title="Currency" value="{{invoice.currency == 1 ? 'Dollar' : 'Dinar'}}"
+                        icon="bi bi-cash-stack"></item-info>
+                </div>
+                <div class="col-md-2">
+                    <item-info title="ApproveDate" *ngIf="invoice.approveDate"
+                        value="{{invoice.approveDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+                </div>
+                <div class="col-md-2">
+                    <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
+                </div>
             </div>
         </div>
     </div>
@@ -14,13 +42,6 @@
         <div class="card-body">
             <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterials' | localize }}</h5>
             <div class="row">
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="customers" required bindLabel="name" bindValue="id" (change)="onSelectCustomer($event)" name="customerId" [(ngModel)]="deliveryDto.customerId">
-                        </ng-select>
-                        <span>{{ 'Customer' | localize }}</span>
-                    </label>
-                </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="driverName"
@@ -68,4 +89,5 @@
         </div>
     </div>
 </form>
-<send-delivery-item [customerId]="customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+<send-delivery-item [invoiceId]="invoiceId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+<delivery-list [invoiceId]="invoiceId"></delivery-list>

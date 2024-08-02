@@ -24,7 +24,7 @@ export class SendDeliveryItemComponent
   extends AppComponentBase
   implements OnInit, OnChanges
 {
-  @Input() customerId: number;
+  @Input() invoiceId: number;
   @Input() deliveryItems: CreateDeliveryItemDto[] = [];
   @Output() deliveryItemsChange = new EventEmitter<CreateDeliveryItemDto[]>();
   items: InvoiceItemForDeliveryDto[] = [];
@@ -38,8 +38,8 @@ export class SendDeliveryItemComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.customerId) {
-      this.invoiceService.getForDelivery(this.customerId)
+    if (this.invoiceId) {
+      this.invoiceService.getForDelivery(this.invoiceId)
       .subscribe(result => this.items = result);
     }
   }
@@ -69,7 +69,7 @@ export class SendDeliveryItemComponent
         batchNumber:''
       });
 
-      this.deliveryItems.push
+      this.deliveryItems.push(item);
     }
   }
 
@@ -96,5 +96,12 @@ export class SendDeliveryItemComponent
     } 
     
     this.deliveryItemsChange.emit(this.deliveryItems);
+  }
+
+  checkDisabled(invoiceItemId:number){
+    
+    if(this.deliveryItems == undefined)
+      return true;
+    return !this.deliveryItems.some(x=>x.invoiceItemId === invoiceItemId);
   }
 }
