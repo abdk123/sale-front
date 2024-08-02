@@ -64,7 +64,6 @@ export class CreateReceiveItemComponent
 
   updateInvoiceQuantity(args, invoiceItemId) {
     var value = Number(args.target.value);
-    debugger;
       //return;
     const index = this.items ? this.items.findIndex((x) => x.invoiceItemId == invoiceItemId) : -1;
     if (index > -1) {

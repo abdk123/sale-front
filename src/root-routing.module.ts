@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { PrintDeliveryComponent } from '@app/purchase-order/delivery/print-delivery/print-delivery.component';
 import { PrintOfferComponent } from '@app/purchase-order/offer/print-offer/print-offer.component';
 
 const routes: Routes = [
   {
     path: "print-offer",
     component: PrintOfferComponent,
+  },
+  {
+    path: "print-delivery",
+    component: PrintDeliveryComponent,
   },
   { path: "", redirectTo: "/app/home", pathMatch: "full" },
   {
