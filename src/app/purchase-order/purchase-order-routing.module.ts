@@ -13,6 +13,7 @@ import { DeliveryComponent } from "./delivery/delivery.component";
 import { EditReceiveComponent } from "./receiving/edit-receive/edit-receive.component";
 import { CreateReceiveComponent } from "./receiving/create-receive/create-receive.component";
 import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.component";
+import { PrintDeliveryComponent } from "./delivery/print-delivery/print-delivery.component";
 
 const routes: Routes = [
   {
@@ -88,6 +89,12 @@ const routes: Routes = [
       {
         path: "send-delivery",
         component: SendDeliveryComponent,
+        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "print-delivery",
+        component: PrintDeliveryComponent,
         //data: { permission: "PurshaseOrder.Invoices.Update" },
         canActivate: [AppRouteGuard],
       },

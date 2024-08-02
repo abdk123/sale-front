@@ -148,12 +148,23 @@ export class DeliveryComponent
     onSelectMenuItem(args){
       if(args.name == "sendDelivery"){
         this.addOrEditDelivery(args.id);
+      }else if(args.name == "printDelivery"){
+        this.printDelivery(args.id);
       }
     }
 
     addOrEditDelivery(invoiceId){
       this._router.navigate([
         "/app/orders/send-delivery",
+        {
+          invoiceId: invoiceId,
+        },
+      ]);
+    }
+
+    printDelivery(invoiceId){
+      this._router.navigate([
+        "/app/orders/print-delivery",
         {
           invoiceId: invoiceId,
         },

@@ -6460,63 +6460,6 @@ export class OfferServiceProxy {
     }
 
     /**
-     * @param offerItemId (optional) 
-     * @return Success
-     */
-    getPoForByOfferItemId(offerItemId: number | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/Offer/GetPoForByOfferItemId?";
-        if (offerItemId === null)
-            throw new Error("The parameter 'offerItemId' cannot be null.");
-        else if (offerItemId !== undefined)
-            url_ += "offerItemId=" + encodeURIComponent("" + offerItemId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPoForByOfferItemId(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPoForByOfferItemId(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<string>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<string>;
-        }));
-    }
-
-    protected processGetPoForByOfferItemId(response: HttpResponseBase): Observable<string> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @param id (optional) 
      * @return Success
      */
@@ -6993,62 +6936,6 @@ export class ReceivingServiceProxy {
     }
 
     protected processCreate(response: HttpResponseBase): Observable<ReceivingDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceivingDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    update(body: UpdateReceivingDto | undefined): Observable<ReceivingDto> {
-        let url_ = this.baseUrl + "/api/services/app/Receiving/Update";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReceivingDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ReceivingDto>;
-        }));
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<ReceivingDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -17684,7 +17571,6 @@ export interface ICustomerVoucherDtoPagedResultDto {
 export class DeliveryDto implements IDeliveryDto {
     id: number;
     creationTime: string | undefined;
-    creationTime: string | undefined;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;
@@ -17708,7 +17594,6 @@ export class DeliveryDto implements IDeliveryDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.creationTime = _data["creationTime"];
             this.creationTime = _data["creationTime"];
             this.transportCost = _data["transportCost"];
             this.transportCostCurrency = _data["transportCostCurrency"];
@@ -17738,7 +17623,6 @@ export class DeliveryDto implements IDeliveryDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["creationTime"] = this.creationTime;
-        data["creationTime"] = this.creationTime;
         data["transportCost"] = this.transportCost;
         data["transportCostCurrency"] = this.transportCostCurrency;
         data["driverName"] = this.driverName;
@@ -17766,7 +17650,6 @@ export class DeliveryDto implements IDeliveryDto {
 
 export interface IDeliveryDto {
     id: number;
-    creationTime: string | undefined;
     creationTime: string | undefined;
     transportCost: number;
     transportCostCurrency: number;
@@ -17833,73 +17716,6 @@ export class DeliveryDtoPagedResultDto implements IDeliveryDtoPagedResultDto {
 export interface IDeliveryDtoPagedResultDto {
     items: DeliveryDto[] | undefined;
     totalCount: number;
-}
-
-export class DeliveryItemDto implements IDeliveryItemDto {
-    id: number;
-    batchNumber: string | undefined;
-    deliveredQuantity: number;
-    transportedQuantity: number;
-    approvedQuantity: number;
-    rejectedQuantity: number;
-    invoiceItem: InvoiceItemDto;
-
-    constructor(data?: IDeliveryItemDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.batchNumber = _data["batchNumber"];
-            this.deliveredQuantity = _data["deliveredQuantity"];
-            this.transportedQuantity = _data["transportedQuantity"];
-            this.approvedQuantity = _data["approvedQuantity"];
-            this.rejectedQuantity = _data["rejectedQuantity"];
-            this.invoiceItem = _data["invoiceItem"] ? InvoiceItemDto.fromJS(_data["invoiceItem"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): DeliveryItemDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DeliveryItemDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["batchNumber"] = this.batchNumber;
-        data["deliveredQuantity"] = this.deliveredQuantity;
-        data["transportedQuantity"] = this.transportedQuantity;
-        data["approvedQuantity"] = this.approvedQuantity;
-        data["rejectedQuantity"] = this.rejectedQuantity;
-        data["invoiceItem"] = this.invoiceItem ? this.invoiceItem.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): DeliveryItemDto {
-        const json = this.toJSON();
-        let result = new DeliveryItemDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IDeliveryItemDto {
-    id: number;
-    batchNumber: string | undefined;
-    deliveredQuantity: number;
-    transportedQuantity: number;
-    approvedQuantity: number;
-    rejectedQuantity: number;
-    invoiceItem: InvoiceItemDto;
 }
 
 export class DeliveryItemDto implements IDeliveryItemDto {
@@ -20589,7 +20405,6 @@ export class OfferItemDto implements IOfferItemDto {
     material: MaterialDto;
     unit: UnitDto;
     offer: PoOfferDto;
-    offer: PoOfferDto;
 
     constructor(data?: IOfferItemDto) {
         if (data) {
@@ -20613,7 +20428,6 @@ export class OfferItemDto implements IOfferItemDto {
             this.size = _data["size"] ? SizeDto.fromJS(_data["size"]) : <any>undefined;
             this.material = _data["material"] ? MaterialDto.fromJS(_data["material"]) : <any>undefined;
             this.unit = _data["unit"] ? UnitDto.fromJS(_data["unit"]) : <any>undefined;
-            this.offer = _data["offer"] ? PoOfferDto.fromJS(_data["offer"]) : <any>undefined;
             this.offer = _data["offer"] ? PoOfferDto.fromJS(_data["offer"]) : <any>undefined;
         }
     }
@@ -20639,7 +20453,6 @@ export class OfferItemDto implements IOfferItemDto {
         data["material"] = this.material ? this.material.toJSON() : <any>undefined;
         data["unit"] = this.unit ? this.unit.toJSON() : <any>undefined;
         data["offer"] = this.offer ? this.offer.toJSON() : <any>undefined;
-        data["offer"] = this.offer ? this.offer.toJSON() : <any>undefined;
         return data;
     }
 
@@ -20663,7 +20476,6 @@ export interface IOfferItemDto {
     size: SizeDto;
     material: MaterialDto;
     unit: UnitDto;
-    offer: PoOfferDto;
     offer: PoOfferDto;
 }
 
@@ -20892,53 +20704,6 @@ export class PermissionDtoListResultDto implements IPermissionDtoListResultDto {
 
 export interface IPermissionDtoListResultDto {
     items: PermissionDto[] | undefined;
-}
-
-export class PoOfferDto implements IPoOfferDto {
-    id: number;
-    porchaseOrderId: string | undefined;
-
-    constructor(data?: IPoOfferDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.porchaseOrderId = _data["porchaseOrderId"];
-        }
-    }
-
-    static fromJS(data: any): PoOfferDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PoOfferDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["porchaseOrderId"] = this.porchaseOrderId;
-        return data;
-    }
-
-    clone(): PoOfferDto {
-        const json = this.toJSON();
-        let result = new PoOfferDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPoOfferDto {
-    id: number;
-    porchaseOrderId: string | undefined;
 }
 
 export class PoOfferDto implements IPoOfferDto {
@@ -24889,7 +24654,6 @@ export class UpdateReceivingDto implements IUpdateReceivingDto {
     invoiceId: number | undefined;
     supplierId: number | undefined;
     receivingItems: UpdateReceivingItemDto[] | undefined;
-    receivingItems: UpdateReceivingItemDto[] | undefined;
 
     constructor(data?: IUpdateReceivingDto) {
         if (data) {
@@ -24913,11 +24677,6 @@ export class UpdateReceivingDto implements IUpdateReceivingDto {
             this.clearanceCompanyId = _data["clearanceCompanyId"];
             this.invoiceId = _data["invoiceId"];
             this.supplierId = _data["supplierId"];
-            if (Array.isArray(_data["receivingItems"])) {
-                this.receivingItems = [] as any;
-                for (let item of _data["receivingItems"])
-                    this.receivingItems.push(UpdateReceivingItemDto.fromJS(item));
-            }
             if (Array.isArray(_data["receivingItems"])) {
                 this.receivingItems = [] as any;
                 for (let item of _data["receivingItems"])
@@ -24951,11 +24710,6 @@ export class UpdateReceivingDto implements IUpdateReceivingDto {
             for (let item of this.receivingItems)
                 data["receivingItems"].push(item.toJSON());
         }
-        if (Array.isArray(this.receivingItems)) {
-            data["receivingItems"] = [];
-            for (let item of this.receivingItems)
-                data["receivingItems"].push(item.toJSON());
-        }
         return data;
     }
 
@@ -24979,58 +24733,6 @@ export interface IUpdateReceivingDto {
     clearanceCompanyId: number | undefined;
     invoiceId: number | undefined;
     supplierId: number | undefined;
-    receivingItems: UpdateReceivingItemDto[] | undefined;
-}
-
-export class UpdateReceivingItemDto implements IUpdateReceivingItemDto {
-    id: number;
-    receivedQuantity: number;
-    invoiceItemId: number | undefined;
-
-    constructor(data?: IUpdateReceivingItemDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.receivedQuantity = _data["receivedQuantity"];
-            this.invoiceItemId = _data["invoiceItemId"];
-        }
-    }
-
-    static fromJS(data: any): UpdateReceivingItemDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateReceivingItemDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["receivedQuantity"] = this.receivedQuantity;
-        data["invoiceItemId"] = this.invoiceItemId;
-        return data;
-    }
-
-    clone(): UpdateReceivingItemDto {
-        const json = this.toJSON();
-        let result = new UpdateReceivingItemDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUpdateReceivingItemDto {
-    id: number;
-    receivedQuantity: number;
-    invoiceItemId: number | undefined;
     receivingItems: UpdateReceivingItemDto[] | undefined;
 }
 
