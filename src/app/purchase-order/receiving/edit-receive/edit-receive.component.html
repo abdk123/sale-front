@@ -1,7 +1,7 @@
 <form class="form-horizontal " autocomplete="off" #updateOfferForm="ngForm" (ngSubmit)="save()">
     <div class="row">
         <div class="col-12 separator">
-            <h1>{{'ReveivingMaterials' | localize}}</h1>
+            <h1>{{'EditReveivingMaterials' | localize}}</h1>
             <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives">{{'BackToReceivingList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
@@ -130,3 +130,4 @@
         </div>
     </div>
 </form>
+<edit-receive-item [invoiceId]="invoiceId" [(items)]="receiveDto.receivingItems"></edit-receive-item>

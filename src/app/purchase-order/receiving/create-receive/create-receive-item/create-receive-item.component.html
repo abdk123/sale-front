@@ -17,7 +17,8 @@
                 <tbody>
                     <tr *ngFor="let item of invoiceItems; index as i">
                         <td>{{item.offerItem?.material?.name}}</td>
-                        <td>{{item.offerItem?.size?.name}}</td>
+                        <td *ngIf="item.offerItem?.sizeId !== null">{{item.offerItem?.size?.name}}</td>
+                        <td *ngIf="item.offerItem?.unitId !== null">{{item.offerItem?.unit?.name}}</td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.receivedQuantity}}</td>
                         <td>{{item.quantity - item.receivedQuantity}}</td>

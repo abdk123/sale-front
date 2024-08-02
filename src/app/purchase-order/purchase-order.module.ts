@@ -32,6 +32,7 @@ import { ReceiveListComponent } from './receiving/receive-list/receive-list.comp
 import { DeliveryComponent } from './delivery/delivery.component';
 import { SendDeliveryComponent } from './delivery/send-delivery/send-delivery.component';
 import { SendDeliveryItemComponent } from './delivery/send-delivery/send-delivery-item/send-delivery-item.component';
+import { PrintDeliveryComponent } from './delivery/print-delivery/print-delivery.component';
 import { DeliveryListComponent } from './delivery/delivery-list/delivery-list.component';
 
 @NgModule({
@@ -58,6 +59,7 @@ import { DeliveryListComponent } from './delivery/delivery-list/delivery-list.co
     SendDeliveryComponent,
     SendDeliveryItemComponent,
     DeliveryListComponent,
+    PrintDeliveryComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

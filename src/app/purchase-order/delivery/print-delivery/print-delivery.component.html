@@ -1,0 +1,147 @@
+<div class="page">
+    <div class="flex flex-nowrap">
+        <img src="/assets/img/printImages/hader.JPG" class="w-100" alt="Image Description" />
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-3" style="text-align: -webkit-center;">
+        <table id="itemstable" style="width: 95%;" class="table rtl Item_Description borderless-table ml-5">
+            <thead>
+                <tr id="rowforcustomerdetails">
+                    <!-- <th></th> -->
+                    <th class="headerOverinfo">Deliver TO</th>
+                    <th class="headerOverinfo">Delivery Ticket</th>
+                    <!-- <th></th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <!-- <td ></td> -->
+                    <td style="color:black ; ">
+                        {{customer.fullName}} : TO ❖
+                        <br />
+                        {{customer.address}} : ❖
+                        <br />
+                        <strong>{{delivery.customerId}}</strong>: Customer ID ❖
+                    </td>
+                    <td style="color:black ; ">
+                        <strong>{{delivery.creationTime | format:'DD/MM/yyyy'}}</strong>: Delivery Date ❖
+                        <br />
+                        <strong>{{delivery.id}}</strong>: Delivery Number ❖
+                        <br />
+                    </td>
+                    <!-- <td ></td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-5" style="text-align: -webkit-center; padding-left: 18px;">
+        <table id="itemsSalestable" style="width: 98%;" class="table rtl Item_Description borderless-table-items">
+            <thead>
+                <tr class="theaddesgin">
+                    <th style="font-size:11px;color:white">PO Number</th>
+                    <th style="font-size:11px;color:white">Batch Number</th>
+                    <th style="font-size:11px;color:white">Unit</th>
+                    <th style="font-size:11px;color:white">Quantity</th>
+                    <th style="font-size:11px;color:white;" colspan="3">Item name</th>
+                </tr>
+            </thead>
+            <tbody id="Itemslist">
+                <tr *ngFor="let item of deliveryItems; let i = index" [ngClass]=" i % 2 == 0 ? 'green-row' : 'red-row'">
+                    <td style="text-align: center; font-weight: bold ; color:black ; ">
+                        <strong>{{item.invoiceItem?.offerItem?.offer?.porchaseOrderId}}</strong>
+                    </td>
+                    <td style="text-align: center; font-weight: bold ; color:black ; ">
+                        <strong>{{item.batchNumber}}</strong>
+                    </td>
+                    <td style="text-align: center; font-weight: bold; margin-top: 30px ; color:black ; ">
+                        <!-- <strong *ngIf="item.unitId != undefined">{{item.unit?.name}}</strong> -->
+                        <strong>{{item.invoiceItem?.offerItem?.unit?.name}}</strong>
+                    </td>
+                    <td style="text-align: center; font-weight: bold ; color:black ; ">
+                        <strong>{{item.deliveredQuantity}}</strong>
+                    </td>
+                    <td style="text-align: center; font-weight: bold ; color:black ; ">
+                        <strong>{{item.invoiceItem?.offerItem?.material?.name}}</strong>
+                    </td>
+                </tr>
+            </tbody>            
+        </table>
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-5" style="text-align: -webkit-center; padding-left: 18px;">
+        <table id="paymentInfo" style="width: 98%;" class="table rtl Item_Description ">
+            <thead>
+                <tr>
+                    <th style="color:black; ">المـــــــــــواد اســتلمت بواسطة</th>
+                    <th style="color:black"> تفاصيــــــــــــــــل المســــــــــــــتلم</th>            
+                </tr>
+            </thead>
+            <tbody>            
+                <tr>
+                    <td style="text-align:right" class="special">
+                        <p>
+                            اسـم الســـائق :- {{delivery.driverName}}           
+                        </p>            
+                    </td>
+                    <td style="text-align:right" class="special">
+                        <p>
+                            تاريـخ الاســتــلام :- <br />            
+                        </p>            
+                    </td>           
+                </tr>           
+                <tr>
+                    <td style="text-align:right" class="another">
+                        <p>            
+                            رقـم الــســيارة :- {{delivery.vehicleNumber}}<br />
+                        </p>           
+                    </td>
+                    <td style="text-align:right" class="another">
+                        <p>
+                            اســم المســتـلم :- <br />
+                        </p>            
+                    </td>            
+                </tr>           
+                <tr>
+                    <td style="text-align:right" class="special">
+                        <p>            
+                            رقـم الهــــاتف :- {{delivery.driverPhoneNumber}}
+                        </p>            
+                    </td>
+                    <td style="text-align:right" class="special">
+                        <p>            
+                            رقـــم الهــــاتف :- <br />
+                        </p>            
+                    </td>            
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex flex-nowrap justify-content-center mt-4" style="text-align: -webkit-center; padding-left: 40px;">
+        <table class="table rtl Item_Description">
+            <thead>
+                <tr>
+                    <th style="color:black; text-decoration:underline">
+                        : Signature Sender ❖
+                    </th>
+                    <th style="color:black; text-decoration:underline">
+                        : Signature Receiver ❖
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="margin-top: 15%; text-align: center;">
+        <p id="aboutInfoP" class="thanktemplate" style="color:#BB9767;font-size:15px">
+            . Thank you for your interest in SER AL TATOWER CO
+        </p>
+        <h6> •For More Information Please Connect SAT - Phone: +964 783 886 0883 
+            <a style="color: blue;" href="http://www.seraltatower.com"> •
+                Website: www.seraltatower.com
+            </a>
+        </h6>
+        <u style="text-align:center; font-size:12px; margin-top:220px;">
+            • Email : Info@seraltatower.com
+        </u>
+    </div>
+    <div class="flex flex-nowrap">
+        <img src="/assets/img/printImages/foter.JPG" class="w-100" alt="Image Description" />
+    </div>
+</div>

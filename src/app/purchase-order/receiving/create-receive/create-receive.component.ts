@@ -70,7 +70,6 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
   }
 
   save() {
-    debugger;
     const invalidMaterial = this.checkEnteredQuantities();
     if(invalidMaterial == ''){
       this.receiveDto.creationTime = this.date.toISOString();
