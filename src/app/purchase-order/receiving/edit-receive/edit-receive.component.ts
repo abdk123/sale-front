@@ -69,7 +69,6 @@ export class EditReceiveComponent extends AppComponentBase implements OnInit {
   }
 
   save() {
-    debugger;
     const invalidMaterial = this.checkEnteredQuantities();
     if (invalidMaterial == "") {
       this.receiveDto.creationTime = this.date.toISOString();
@@ -98,7 +97,6 @@ export class EditReceiveComponent extends AppComponentBase implements OnInit {
     this.receiveDto.receivingItems.forEach((item) => {
       var invoiceItem = invoiceItems.find((x) => x.id == item.invoiceItemId);
       if (invoiceItem) {
-        debugger;
         var notReceivedQuantity =
           invoiceItem.quantity - invoiceItem.receivedQuantity + this.enteredQ(invoiceItem.id);
         if (item.receivedQuantity > notReceivedQuantity) {

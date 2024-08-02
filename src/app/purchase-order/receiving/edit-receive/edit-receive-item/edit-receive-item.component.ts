@@ -32,7 +32,6 @@ export class EditReceiveItemComponent
   initialInvoice() {
     this.invoiceService.getWithDetail(this.invoiceId).subscribe((result) => {
       this.invoiceItems = result?.invoiseDetails;
-      debugger;
     });
   }
 
@@ -50,7 +49,6 @@ export class EditReceiveItemComponent
   }
 
   updateInvoiceQuantity(args, invoiceItemId) {
-    debugger;
     var value = Number(args.target.value);
 
     //return;

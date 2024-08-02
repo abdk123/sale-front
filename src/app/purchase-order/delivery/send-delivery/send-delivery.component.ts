@@ -69,7 +69,7 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
         finalize(() => {
           this.saving = false;
           this.notify.info(this.l("SavedSuccessfully"));
-          this.router.navigate(["/app/orders/deliverys"]);
+          this.router.navigate(["/app/orders/deliveries"]);
         })
       )
       .subscribe((result) => {});
