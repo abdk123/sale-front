@@ -15,6 +15,7 @@ import { CreateReceiveComponent } from "./receiving/create-receive/create-receiv
 import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.component";
 import { PrintDeliveryComponent } from "./delivery/print-delivery/print-delivery.component";
 import { ManageDeliveryListComponent } from "./delivery/manage-delivery-list/manage-delivery-list.component";
+import { DeliveryReportComponent } from "./delivery/manage-delivery-list/delivery-report/delivery-report.component";
 
 const routes: Routes = [
   {
@@ -103,6 +104,12 @@ const routes: Routes = [
         path: "manage-delivery",
         component: ManageDeliveryListComponent,
         //data: { permission: "PurshaseOrder.Deliveries.Manage" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "delivery-report",
+        component: DeliveryReportComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
         canActivate: [AppRouteGuard],
       },
     ],

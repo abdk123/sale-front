@@ -161,8 +161,7 @@ showFilterDialog(status) {}
 
   addDeliveryReport(id){
     this._router.navigate([
-      "/app/orders/add-delivery-report",
-      
+      "/app/orders/delivery-report",
       {
         deliveryId: id,
       },
