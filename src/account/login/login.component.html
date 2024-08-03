@@ -5,18 +5,15 @@
       <div class="col-12 col-md-10 mx-auto my-auto">
         <div class="card auth-card">
           <div class="position-relative image-side" [ngClass]="{'text-center': innerWidth <= 992}">
-            <p class=" text-white h1 font-weight-semibold">SAT</p>
-            <p class="white mb-0">
-              SER ALTATOWER COMPANY
-              <!-- <a *ngIf="isSelfRegistrationAllowed" routerLink="/user/register" class="white white-underline-link">To
-                Create A
-                New Account Register Here!</a>.
-            </p> -->
+            
           </div>
           <div class="form-side">
-            <a class="c-pointer">
-              <span class="logo-single"></span>
-            </a>
+            <div class="d-flex flex-column mb-2">
+              <h1 class="font-weight-bold mb-0" style="font-size: xxx-large;">SAT</h1>
+              <p class="">
+                SER ALTATOWER COMPANY
+              </p> 
+            </div>
             <h6 class="mb-4">{{'Login'|localize}}</h6>
 
             <form novalidate autocomplete="off" #loginForm="ngForm" (ngSubmit)="login()">

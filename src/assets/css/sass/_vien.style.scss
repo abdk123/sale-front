@@ -6405,8 +6405,8 @@ rating span {
   @include depth(1);
 
   .image-side {
-    width: 40%;
-    background: url("../../img/login/balloon.jpg") no-repeat center top;
+    width: 50%;
+    background: url("../../img/login/balloon.jpg") no-repeat center center;
     background-size: cover;
     padding: 80px 40px;
 

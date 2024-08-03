@@ -156,6 +156,7 @@ export class DeliveryComponent
     addOrEditDelivery(invoiceId){
       this._router.navigate([
         "/app/orders/send-delivery",
+        
         {
           invoiceId: invoiceId,
         },
