@@ -17579,7 +17579,9 @@ export class DeliveryDto implements IDeliveryDto {
     status: number;
     transportedQuantity: number;
     customerId: number | undefined;
+    customer: CustomerDto;
     invoiceId: number | undefined;
+    invoice: InvoiceDto;
     deliveryItems: DeliveryItemDto[] | undefined;
 
     constructor(data?: IDeliveryDto) {
@@ -17603,7 +17605,9 @@ export class DeliveryDto implements IDeliveryDto {
             this.status = _data["status"];
             this.transportedQuantity = _data["transportedQuantity"];
             this.customerId = _data["customerId"];
+            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
             this.invoiceId = _data["invoiceId"];
+            this.invoice = _data["invoice"] ? InvoiceDto.fromJS(_data["invoice"]) : <any>undefined;
             if (Array.isArray(_data["deliveryItems"])) {
                 this.deliveryItems = [] as any;
                 for (let item of _data["deliveryItems"])
@@ -17631,7 +17635,9 @@ export class DeliveryDto implements IDeliveryDto {
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
         data["customerId"] = this.customerId;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         data["invoiceId"] = this.invoiceId;
+        data["invoice"] = this.invoice ? this.invoice.toJSON() : <any>undefined;
         if (Array.isArray(this.deliveryItems)) {
             data["deliveryItems"] = [];
             for (let item of this.deliveryItems)
@@ -17659,7 +17665,9 @@ export interface IDeliveryDto {
     status: number;
     transportedQuantity: number;
     customerId: number | undefined;
+    customer: CustomerDto;
     invoiceId: number | undefined;
+    invoice: InvoiceDto;
     deliveryItems: DeliveryItemDto[] | undefined;
 }
 
@@ -24199,6 +24207,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
     transportedQuantity: number;
     customerId: number | undefined;
     invoiceId: number | undefined;
+    deliveryItems: UpdateDeliveryItemDto[] | undefined;
 
     constructor(data?: IUpdateDeliveryDto) {
         if (data) {
@@ -24221,6 +24230,11 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
             this.transportedQuantity = _data["transportedQuantity"];
             this.customerId = _data["customerId"];
             this.invoiceId = _data["invoiceId"];
+            if (Array.isArray(_data["deliveryItems"])) {
+                this.deliveryItems = [] as any;
+                for (let item of _data["deliveryItems"])
+                    this.deliveryItems.push(UpdateDeliveryItemDto.fromJS(item));
+            }
         }
     }
 
@@ -24243,6 +24257,11 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
         data["transportedQuantity"] = this.transportedQuantity;
         data["customerId"] = this.customerId;
         data["invoiceId"] = this.invoiceId;
+        if (Array.isArray(this.deliveryItems)) {
+            data["deliveryItems"] = [];
+            for (let item of this.deliveryItems)
+                data["deliveryItems"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -24265,6 +24284,62 @@ export interface IUpdateDeliveryDto {
     transportedQuantity: number;
     customerId: number | undefined;
     invoiceId: number | undefined;
+    deliveryItems: UpdateDeliveryItemDto[] | undefined;
+}
+
+export class UpdateDeliveryItemDto implements IUpdateDeliveryItemDto {
+    id: number;
+    batchNumber: string | undefined;
+    invoiceItemId: number | undefined;
+    deliveredQuantity: number;
+
+    constructor(data?: IUpdateDeliveryItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.batchNumber = _data["batchNumber"];
+            this.invoiceItemId = _data["invoiceItemId"];
+            this.deliveredQuantity = _data["deliveredQuantity"];
+        }
+    }
+
+    static fromJS(data: any): UpdateDeliveryItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateDeliveryItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["batchNumber"] = this.batchNumber;
+        data["invoiceItemId"] = this.invoiceItemId;
+        data["deliveredQuantity"] = this.deliveredQuantity;
+        return data;
+    }
+
+    clone(): UpdateDeliveryItemDto {
+        const json = this.toJSON();
+        let result = new UpdateDeliveryItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateDeliveryItemDto {
+    id: number;
+    batchNumber: string | undefined;
+    invoiceItemId: number | undefined;
+    deliveredQuantity: number;
 }
 
 export class UpdateEmployeeDto implements IUpdateEmployeeDto {

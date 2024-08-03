@@ -141,7 +141,8 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
     }
     var referenceItem = item[field.name];
     var textField = field.referenceTextField;
-    return referenceItem[textField];
+    var value = referenceItem[textField];
+    return value;
   }
   getEnumValue(item, field: IPageField) {
     var index = item[field.name];
