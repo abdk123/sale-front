@@ -54,6 +54,7 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   save() {
     this.saving = true;
     this.deliveryDto.customerId = this.invoice.customerId;
+    this.deliveryDto.invoiceId = this.invoice.id;
     this.deliveryService
       .create(this.deliveryDto)
       .pipe(

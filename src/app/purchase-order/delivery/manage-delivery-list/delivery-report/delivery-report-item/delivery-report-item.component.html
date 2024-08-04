@@ -1,0 +1,37 @@
+<div class="card mt-2" *ngIf="this.items?.length > 0">
+    <div class="card-body">
+        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterial' | localize }}</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'PoNumber' | localize}}</th>
+                        <th>{{'Material' | localize}}</th>
+                        <th>{{'Unit' | localize}}</th>
+                        <th>{{'Quantity' | localize}}</th>
+                        <th>{{'TotalPrice' | localize}}</th>
+                        <th>{{'NumberInSmallUnit' | localize}}</th>
+                        <th>{{'DeliveredQuantity' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                        <th>{{'SendedQuantity' | localize}}</th>
+                        <th>{{'Batch Number' | localize}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; index as i">
+                        <td>{{item.poNumber}}</td>
+                        <td>{{item.materialName}}</td>
+                        <td>{{item.addedBySmallUnit ? item.smallUnit : item.unit}}</td>
+                        <td>{{item.requiredQuantity}}</td>
+                        <td>{{item.totalMaterilPrice}}</td>
+                        <td>{{item.numberInSmallUnit}}</td>
+                        <td>{{item.deliveredQuantity}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                        <td>{{getQuantity(item.invoiceId)}}</td>
+                        <td>{{getBatchNumber(item.invoiceId)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

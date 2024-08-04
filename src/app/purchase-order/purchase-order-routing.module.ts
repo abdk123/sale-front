@@ -15,6 +15,8 @@ import { CreateReceiveComponent } from "./receiving/create-receive/create-receiv
 import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.component";
 import { SaleInvoiceComponent } from "./sale-invoice/sale-invoice.component";
 import { ConvertSaleInvoiceComponent } from "./sale-invoice/convert-sale-invoice/convert-sale-invoice.component";
+import { ManageDeliveryListComponent } from "./delivery/manage-delivery-list/manage-delivery-list.component";
+import { DeliveryReportComponent } from "./delivery/manage-delivery-list/delivery-report/delivery-report.component";
 
 const routes: Routes = [
   {
@@ -90,7 +92,7 @@ const routes: Routes = [
       {
         path: "send-delivery",
         component: SendDeliveryComponent,
-        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        //data: { permission: "PurshaseOrder.Deliveries.Create" },
         canActivate: [AppRouteGuard],
       },
       {
@@ -102,7 +104,19 @@ const routes: Routes = [
       {
         path: "convert-sale-invoices",
         component: ConvertSaleInvoiceComponent,
-        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        //data: { permission: "PurshaseOrder.Deliveries.Print" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "manage-delivery",
+        component: ManageDeliveryListComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.Manage" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "delivery-report",
+        component: DeliveryReportComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
         canActivate: [AppRouteGuard],
       },
     ],

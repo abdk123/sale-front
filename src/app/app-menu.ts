@@ -122,17 +122,32 @@ const data: IMenuItem[] = [
         permissions: permissionsSetting,
       },
       {
-        label: "Deliveries",
-        to: `${adminRoot}/orders/deliveries`,
-        icon: "bi bi-truck",
-        permissions: permissionsSetting,
-      },
-      {
         label: "ReveivingMaterials",
         to: `${adminRoot}/orders/receives`,
         icon: "bi bi-box-arrow-in-down",
         permissions: permissionsSetting,
       },
+      {
+        label: "Deliveries",
+        icon: "bi bi-truck",
+        permissions: permissionsSetting,
+        to: ``,
+        subs:[
+          {
+            label: "DeliveriesList",
+            to: `${adminRoot}/orders/deliveries`,
+            icon: "",
+            permissions: permissionsSetting,
+          },
+          {
+            label: "DeliveryManagement",
+            to: `${adminRoot}/orders/manage-delivery`,
+            icon: "",
+            permissions: permissionsSetting,
+          }
+        ]
+      },
+      
       {
         label: "saleInvoices",
         to: `${adminRoot}/orders/sale-invoices`,
