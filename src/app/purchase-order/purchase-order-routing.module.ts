@@ -13,7 +13,8 @@ import { DeliveryComponent } from "./delivery/delivery.component";
 import { EditReceiveComponent } from "./receiving/edit-receive/edit-receive.component";
 import { CreateReceiveComponent } from "./receiving/create-receive/create-receive.component";
 import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.component";
-import { PrintDeliveryComponent } from "./delivery/print-delivery/print-delivery.component";
+import { SaleInvoiceComponent } from "./sale-invoice/sale-invoice.component";
+import { ConvertSaleInvoiceComponent } from "./sale-invoice/convert-sale-invoice/convert-sale-invoice.component";
 
 const routes: Routes = [
   {
@@ -93,8 +94,14 @@ const routes: Routes = [
         canActivate: [AppRouteGuard],
       },
       {
-        path: "print-delivery",
-        component: PrintDeliveryComponent,
+        path: "sale-invoices",
+        component: SaleInvoiceComponent,
+        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "convert-sale-invoices",
+        component: ConvertSaleInvoiceComponent,
         //data: { permission: "PurshaseOrder.Invoices.Update" },
         canActivate: [AppRouteGuard],
       },
