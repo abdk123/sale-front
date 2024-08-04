@@ -47,12 +47,6 @@ const routes: Routes = [
         data: { permission: "Setting.Offers.Update" },
         canActivate: [AppRouteGuard],
       },
-      // {
-      //   path: "print-offer",
-      //   component: PrintOfferComponent,
-      //   // data: { permission: "PurshaseOrder.Invoices.Update" },
-      //   canActivate: [AppRouteGuard],
-      // },
       {
         path: "invoices",
         component: InvoiceComponent,
