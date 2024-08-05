@@ -10,7 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -35,6 +35,8 @@ import { SendDeliveryItemComponent } from './delivery/send-delivery/send-deliver
 import { PrintDeliveryComponent } from './delivery/print-delivery/print-delivery.component';
 import { DeliveryListComponent } from './delivery/delivery-list/delivery-list.component';
 import { ManageDeliveryListComponent } from './delivery/manage-delivery-list/manage-delivery-list.component';
+import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
+import { ConvertSaleInvoiceComponent } from './sale-invoice/convert-sale-invoice/convert-sale-invoice.component';
 import { DeliveryReportComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report.component';
 import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/delivery-report-item.component';
 
@@ -64,6 +66,8 @@ import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/del
     DeliveryListComponent,
     PrintDeliveryComponent,
     ManageDeliveryListComponent,
+    SaleInvoiceComponent,
+    ConvertSaleInvoiceComponent,
     DeliveryReportComponent,
     DeliveryReportItemComponent,
   ],
@@ -90,6 +94,7 @@ import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/del
     InvoiceServiceProxy,
     ReceivingServiceProxy,
     DeliveryServiceProxy,
+    SaleInvoiceServiceProxy,
   ],
 })
 export class PurchaseOrderModule {}

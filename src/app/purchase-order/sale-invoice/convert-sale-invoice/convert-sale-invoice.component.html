@@ -1,0 +1,80 @@
+<form class="form-horizontal " autocomplete="off" #convertSaleInvoiceModal="ngForm">
+    <div class="row">
+        <div class="col-12 separator">
+            <h1>{{'ConvertSaleInvoice' | localize}}</h1>
+            <a class="btn btn-link btn-empty btn-lg" href="/app/order/sale-invoices">{{'BackToSaleInvoices' | localize}}
+                <i class="simple-icon-arrow-right"></i></a>
+            <div class="top-right-button-container text-zero">
+                <button type="button" [disabled]="!convertSaleInvoiceModal.form.valid || saving"
+                    class="top-right-button btn btn-primary  mb-3 mr-2" (click)="save()">{{ 'ConvertSaleInvoice' |
+                    localize}}
+                </button>
+            </div>
+        </div>
+        <div class="col-3 mt-2">
+            <label class=" has-float-label">
+                <ng-select [items]="customers" bindLabel="name" name="customer" bindValue="id" [(ngModel)]="customerId">
+                </ng-select>
+                <span>{{ 'Customer' | localize }}</span>
+            </label>
+        </div>
+        <div class="col-md-3 mt-2">
+            <label class=" has-float-label">
+                <input type="text" class="form-control" id="daysForPaid" name="daysForPaid" [(ngModel)]="daysForPaid"
+                    #daysForPaidModel="ngModel" #daysForPaidEl />
+                <abp-validation-summary [control]="daysForPaidModel" [controlEl]="daysForPaidEl"></abp-validation-summary>
+                <span>{{ "DaysForPaid"|localize }}</span>
+            </label>
+        </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'Status' | localize}}</th>
+                            <th>{{'Customer' | localize}}</th>
+                            <th>{{'PoNumber' | localize}}</th>
+                            <th>{{'GrCode' | localize}}</th>
+                            <th>{{'Number' | localize}}</th>
+                            <th>{{'DriverName' | localize}}</th>
+                            <th>{{'DriverPhoneNumber' | localize}}</th>
+                            <th>{{'VehicleNumber' | localize}}</th>
+                            <th>{{'TotalQuantity' | localize}}</th>
+                            <th>{{'Date' | localize}}</th>
+                            <th>{{'TotalPrice' | localize}}</th>
+                            <th>{{'Currency' | localize}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let delivery of deliveries; index as i">
+                            <td>
+                                <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                                    <input type="checkbox" class="custom-control-input"
+                                        (change)="onCheck(delivery)">
+                                    <span class="custom-control-label">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td *ngIf="delivery.status === 1">{{'Delivered' | localize}}</td>
+                            <td>{{delivery.customer?.name}}</td>
+                            <td>PO</td>
+                            <td>GR</td>
+                            <td>{{delivery.id}}</td>
+                            <td>{{delivery.driverName}}</td>
+                            <td>{{delivery.driverPhoneNumber}}</td>
+                            <td>{{delivery.vehicleNumber}}</td>
+                            <td>{{delivery.totalTransportedQuantity}}</td>
+                            <td>{{delivery.creationTime | date:'yyyy-MM-dd'}}</td>
+                            <td>{{delivery.transportCost}}</td>
+                            <td *ngIf="delivery.transportCostCurrency === 0">{{'Dinar' | localize}}</td>
+                            <td *ngIf="delivery.transportCostCurrency === 1">{{'Dollar' | localize}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

@@ -148,6 +148,18 @@ const data: IMenuItem[] = [
         ]
       },
       
+      {
+        label: "saleInvoices",
+        to: `${adminRoot}/orders/sale-invoices`,
+        icon: "bi bi-receipt",
+        permissions: permissionsSetting,
+      },
+      {
+        label: "convertSaleInvoices",
+        to: `${adminRoot}/orders/convert-sale-invoices`,
+        icon: "bi bi-receipt",
+        permissions: permissionsSetting,
+      },
     ],
   },
   //Security

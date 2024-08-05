@@ -1,9 +1,19 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { Router, UrlTree } from '@angular/router';
-import { IEnumValue, IPageMenu } from '@app/layout/content-template/page-default/page-field';
-import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { CreateDeliveryItemDto, DeliveryDto, DeliveryServiceProxy, FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy } from '@shared/service-proxies/service-proxies';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Component, Injector, OnInit } from "@angular/core";
+import { Router, UrlTree } from "@angular/router";
+import {
+  IEnumValue,
+  IPageMenu,
+} from "@app/layout/content-template/page-default/page-field";
+import { FullPagedListingComponentBase } from "@shared/full-paged-listing-component-base";
+import {
+  CreateDeliveryItemDto,
+  DeliveryDto,
+  DeliveryServiceProxy,
+  FullPagedRequestDto,
+  InvoiceDto,
+  InvoiceServiceProxy,
+} from "@shared/service-proxies/service-proxies";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 
 @Component({
   selector: "delivery",
@@ -145,30 +155,21 @@ export class DeliveryComponent
 
   showFilterDialog(status) {}
 
-    onSelectMenuItem(args){
-      if(args.name == "sendDelivery"){
-        this.addOrEditDelivery(args.id);
-      }else if(args.name == "printDelivery"){
-        this.printDelivery(args.id);
-      }
+  onSelectMenuItem(args) {
+    if (args.name == "sendDelivery") {
+      this.addOrEditDelivery(args.id);
+    } else if (args.name == "printDelivery") {
+      // this.viewPrintPage(args.id);
     }
+  }
 
-    addOrEditDelivery(invoiceId){
-      this._router.navigate([
-        "/app/orders/send-delivery",
-        
-        {
-          invoiceId: invoiceId,
-        },
-      ]);
-    }
+  addOrEditDelivery(invoiceId) {
+    this._router.navigate([
+      "/app/orders/send-delivery",
 
-    printDelivery(invoiceId){
-      this._router.navigate([
-        "/app/orders/print-delivery",
-        {
-          invoiceId: invoiceId,
-        },
-      ]);
-    }
+      {
+        invoiceId: invoiceId,
+      },
+    ]);
+  }
 }
