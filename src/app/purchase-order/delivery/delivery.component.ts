@@ -44,11 +44,6 @@ export class DeliveryComponent
       label: "SendDelivery",
       icon: "bi bi-truck",
     },
-    {
-      name: "printDelivery",
-      label: "PrintDelivery",
-      icon: "bi bi-printer",
-    },
   ];
 
   fields = [
@@ -105,19 +100,6 @@ export class DeliveryComponent
     this.invoiceService.read(request).subscribe((result) => {
       this.invoices = result.items;
       this.showPaging(result, pageNumber);
-    });
-  }
-
-  viewPrintPage(id: number) {
-    this.deliveryService.getWithDetailsById(id).subscribe((result) => {
-      this.deliveryPrinted = result;
-      const url = this._router.serializeUrl(
-        this._router.createUrlTree(
-          ["/print-delivery"],
-          new UrlTree(undefined, [JSON.stringify(this.deliveryPrinted)])
-        )
-      );
-      window.open(url, "_blank");
     });
   }
 

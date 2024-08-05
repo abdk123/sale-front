@@ -1,5 +1,4 @@
-import { environment } from 'environments/environment';
-
+import { environment } from "environments/environment";
 
 const adminRoot = environment.adminRoot;
 const permissionsWorkflow = environment.permissionsWorkflow;
@@ -15,7 +14,6 @@ export interface IMenuItem {
   newWindow?: boolean;
   permissions?: string[];
   subs?: IMenuItem[];
-
 }
 
 const data: IMenuItem[] = [
@@ -74,7 +72,6 @@ const data: IMenuItem[] = [
       },
     ],
   },
-
   //Vouchers
   {
     icon: "simple-icon-book-open",
@@ -132,7 +129,7 @@ const data: IMenuItem[] = [
         icon: "bi bi-truck",
         permissions: permissionsSetting,
         to: ``,
-        subs:[
+        subs: [
           {
             label: "DeliveriesList",
             to: `${adminRoot}/orders/deliveries`,
@@ -144,21 +141,29 @@ const data: IMenuItem[] = [
             to: `${adminRoot}/orders/manage-delivery`,
             icon: "",
             permissions: permissionsSetting,
-          }
-        ]
+          },
+        ],
       },
-      
+
       {
         label: "saleInvoices",
-        to: `${adminRoot}/orders/sale-invoices`,
-        icon: "bi bi-receipt",
+        icon: "bi bi-truck",
         permissions: permissionsSetting,
-      },
-      {
-        label: "convertSaleInvoices",
-        to: `${adminRoot}/orders/convert-sale-invoices`,
-        icon: "bi bi-receipt",
-        permissions: permissionsSetting,
+        to: `1`,
+        subs: [
+          {
+            label: "saleInvoiceList",
+            to: `${adminRoot}/orders/sale-invoices`,
+            icon: "bi bi-receipt",
+            permissions: permissionsSetting,
+          },
+          {
+            label: "convertSaleInvoices",
+            to: `${adminRoot}/orders/convert-sale-invoices`,
+            icon: "bi bi-receipt",
+            permissions: permissionsSetting,
+          },
+        ],
       },
     ],
   },
