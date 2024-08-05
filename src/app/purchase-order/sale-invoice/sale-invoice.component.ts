@@ -15,7 +15,6 @@ export class SaleInvoiceComponent
 {
   saleInvoices: SaleInvoiceDto[] = [];
   saleInvoicePrinted: SaleInvoiceDto = new SaleInvoiceDto();
-  saleInvoiceItemsPrinted: CreateSaleInvoiceItemDto[] = [];
 
   status: IEnumValue[] = [{ value: 0, text: this.l("UnpaidSalesInvoice") }];
   paidType: IEnumValue[] = [
@@ -125,6 +124,7 @@ export class SaleInvoiceComponent
   ) {
     super(injector);
   }
+
   protected list(
     request: FullPagedRequestDto,
     pageNumber: number,
@@ -138,16 +138,16 @@ export class SaleInvoiceComponent
   }
 
   viewPrintPage(id: number) {
-    // this.saleInvoiceService.getWithDetailsById(id).subscribe((result) => {
-    //   this.saleInvoicePrinted = result;
-    //   const url = this._router.serializeUrl(
-    //     this._router.createUrlTree(
-    //       ["/print-saleInvoice"],
-    //       new UrlTree(undefined, [JSON.stringify(this.saleInvoicePrinted)])
-    //     )
-    //   );
-    //   window.open(url, "_blank");
-    // });
+    this.saleInvoiceService.getWithDetailsById(id).subscribe((result) => {
+      this.saleInvoicePrinted = result;
+      const url = this._router.serializeUrl(
+        this._router.createUrlTree(
+          ["/print-saleInvoice"],
+          new UrlTree(undefined, [JSON.stringify(this.saleInvoicePrinted)])
+        )
+      );
+      window.open(url, "_blank");
+    });
   }
 
   showViewModal(id: number) {}

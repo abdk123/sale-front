@@ -7,7 +7,6 @@ import {
 import { Component, Injector } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import {
-  CustomerForDropdownDto,
   CustomerServiceProxy,
   DeliveryDto,
   DeliveryServiceProxy,
