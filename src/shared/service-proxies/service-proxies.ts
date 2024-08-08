@@ -8026,6 +8026,62 @@ export class SaleInvoiceServiceProxy {
     }
 
     /**
+     * @param saleInvoiceId (optional) 
+     * @return Success
+     */
+    getWithDetailsById(saleInvoiceId: number | undefined): Observable<SaleInvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetWithDetailsById?";
+        if (saleInvoiceId === null)
+            throw new Error("The parameter 'saleInvoiceId' cannot be null.");
+        else if (saleInvoiceId !== undefined)
+            url_ += "saleInvoiceId=" + encodeURIComponent("" + saleInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetWithDetailsById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWithDetailsById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SaleInvoiceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SaleInvoiceDto>;
+        }));
+    }
+
+    protected processGetWithDetailsById(response: HttpResponseBase): Observable<SaleInvoiceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SaleInvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -18090,53 +18146,6 @@ export interface ICustomerDtoPagedResultDto {
     totalCount: number;
 }
 
-export class CustomerForDropdownDto implements ICustomerForDropdownDto {
-    id: number;
-    fullName: string | undefined;
-
-    constructor(data?: ICustomerForDropdownDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.fullName = _data["fullName"];
-        }
-    }
-
-    static fromJS(data: any): CustomerForDropdownDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CustomerForDropdownDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["fullName"] = this.fullName;
-        return data;
-    }
-
-    clone(): CustomerForDropdownDto {
-        const json = this.toJSON();
-        let result = new CustomerForDropdownDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICustomerForDropdownDto {
-    id: number;
-    fullName: string | undefined;
-}
-
 export class CustomerVoucherDto implements ICustomerVoucherDto {
     id: number;
     voucherType: number;
@@ -22500,7 +22509,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
     pdfFilePath: string | undefined;
     pillURN: string | undefined;
     customerId: number | undefined;
-    customer: CustomerForDropdownDto;
+    customer: CustomerDto;
     saleInvoiceItems: SaleInvoiceItemDto[] | undefined;
 
     constructor(data?: ISaleInvoiceDto) {
@@ -22530,7 +22539,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
             this.pdfFilePath = _data["pdfFilePath"];
             this.pillURN = _data["pillURN"];
             this.customerId = _data["customerId"];
-            this.customer = _data["customer"] ? CustomerForDropdownDto.fromJS(_data["customer"]) : <any>undefined;
+            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
             if (Array.isArray(_data["saleInvoiceItems"])) {
                 this.saleInvoiceItems = [] as any;
                 for (let item of _data["saleInvoiceItems"])
@@ -22598,7 +22607,7 @@ export interface ISaleInvoiceDto {
     pdfFilePath: string | undefined;
     pillURN: string | undefined;
     customerId: number | undefined;
-    customer: CustomerForDropdownDto;
+    customer: CustomerDto;
     saleInvoiceItems: SaleInvoiceItemDto[] | undefined;
 }
 

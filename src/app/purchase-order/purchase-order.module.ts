@@ -39,6 +39,8 @@ import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { ConvertSaleInvoiceComponent } from './sale-invoice/convert-sale-invoice/convert-sale-invoice.component';
 import { DeliveryReportComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report.component';
 import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/delivery-report-item.component';
+import { PrintSaleInvoiceComponent } from './sale-invoice/print-sale-invoice/print-sale-invoice.component';
+import { ViewSaleInvoiceComponent } from './sale-invoice/view-sale-invoice/view-sale-invoice.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/del
     ConvertSaleInvoiceComponent,
     DeliveryReportComponent,
     DeliveryReportItemComponent,
+    PrintSaleInvoiceComponent,
+    ViewSaleInvoiceComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
