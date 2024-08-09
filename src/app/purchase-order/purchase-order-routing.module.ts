@@ -17,6 +17,8 @@ import { SaleInvoiceComponent } from "./sale-invoice/sale-invoice.component";
 import { ConvertSaleInvoiceComponent } from "./sale-invoice/convert-sale-invoice/convert-sale-invoice.component";
 import { ManageDeliveryListComponent } from "./delivery/manage-delivery-list/manage-delivery-list.component";
 import { DeliveryReportComponent } from "./delivery/manage-delivery-list/delivery-report/delivery-report.component";
+import { ReturnedDeliveriesComponent } from "./returned-deliveries/returned-deliveries.component";
+import { RejectedDeliveriesComponent } from "./rejected-deliveries/rejected-deliveries.component";
 
 const routes: Routes = [
   {
@@ -110,6 +112,18 @@ const routes: Routes = [
       {
         path: "delivery-report",
         component: DeliveryReportComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "returned-deliveries",
+        component: ReturnedDeliveriesComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "rejected-deliveries",
+        component: RejectedDeliveriesComponent,
         //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
         canActivate: [AppRouteGuard],
       },
