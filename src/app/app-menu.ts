@@ -144,7 +144,6 @@ const data: IMenuItem[] = [
           },
         ],
       },
-
       {
         label: "saleInvoices",
         icon: "bi bi-truck",
@@ -164,6 +163,18 @@ const data: IMenuItem[] = [
             permissions: permissionsSetting,
           },
         ],
+      },
+      {
+        label: "ReturnedDeliveries",
+        to: `${adminRoot}/orders/returned-deliveries`,
+        icon: "bi bi-receipt",
+        permissions: permissionsSetting,
+      },
+      {
+        label: "RejectedDeliveries",
+        to: `${adminRoot}/orders/rejected-deliveries`,
+        icon: "bi bi-receipt",
+        permissions: permissionsSetting,
       },
     ],
   },
