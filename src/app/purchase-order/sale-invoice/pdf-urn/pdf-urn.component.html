@@ -1,0 +1,101 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="container">
+            <h1 style="font-family:Cairo;color:black"> عرض ورفع ملفات </h1><h1>PDF</h1>
+            <h2 style="font-family:Cairo;color:black">رقم الفاتورة: {{pdfAndUrn.id}}</h2>
+            <input type="hidden" name="id" value="{{pdfAndUrn.id}}" />
+            <input type="file" id="fileInput" name="pdfFile" accept="application/pdf"
+            (change)="uploadFile(file.files)" #file />
+            <label for="fileInput" style="font-family:Cairo">PDF اختر ملف</label>
+            <input type="submit" value="PDF حفظ" style="font-family:Cairo" (click)="saveFile()"/>
+            <div class="pdf-preview" id="pdfPreview"></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="container background-div">
+            <h1 style="font-family:Cairo ;color:black">URN اضافة رقم </h1>
+            <div>
+                <div class="login__form">
+                    <!-- START card-->
+                    <div class="login__inputs">
+                        <div class="card-body" style="margin-top:50px">
+                            <div class="form-group">
+                                <div class="login__box with-focus input-group">
+                                    <div class="input-group-append">
+                                        <i class="ui-icon-key"></i>
+                                    </div>
+                                    <input style=" background-color: transparent;padding: 5px;" class="login__input"
+                                        id="urnId" name="urn" type="text" placeholder="ادخل الرقم" autocomplete="off"
+                                        required [(ngModel)]="pdfAndUrn.pillURN"/>
+                                </div>
+                            </div>
+                            <input class="btn btn-block bg-danger mt-3" type="submit" value="حفظ URN" (click)="saveUrn()"/>
+                        </div>
+                    </div>
+                    <!-- END card-->
+                </div>
+            </div>
+            <div class="pdf-preview" id="pdfPreview"></div>
+        </div>
+    </div>
+</div>
+<!-- <row class="form-inline"> -->
+    <!-- <div class="container">
+        <h1 style="font-family:Cairo;color:black">PDF عرض ورفع ملفات </h1>
+        <h2 style="font-family:Cairo;color:black">رقم الفاتورة: {{pdfAndUrn.id}}</h2>
+        <input type="hidden" name="id" value="{{pdfAndUrn.id}}" />
+        <input type="file" id="fileInput" name="pdfFile" accept="application/pdf"/>
+        <label for="fileInput" style="font-family:Cairo">PDF اختر ملف</label>
+        <input type="submit" value="PDF حفظ" style="font-family:Cairo" />
+        <div class="pdf-preview" id="pdfPreview"></div>
+    </div> -->
+    <!-- <div class="container background-div">
+        <h1 style="font-family:Cairo ;color:black">URN اضافة رقم </h1>
+        <div>
+            <div class="login__form">
+                <div class="login__inputs">
+                    <div class="card-body" style="margin-top:50px">
+                        <div class="form-group">
+                            <div class="login__box with-focus input-group">
+                                <div class="input-group-append">
+                                    <i class="ui-icon-key"></i>
+                                </div>
+                                <input
+                                    style=" background-color: transparent;padding: 5px;"
+                                    class="login__input" id="userName" name="userName" type="text"
+                                    placeholder="ادخل الرقم" autocomplete="off" required
+                                    >
+                            </div>
+                        </div>
+                        <input class="btn btn-block bg-danger mt-3" type="submit" value="حفظ URN" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pdf-preview" id="pdfPreview"></div>
+    </div> -->
+<!-- </row> -->
+<!-- <div class="container">
+    <h1 style="color:black">PDF عرض ملف</h1>
+    @if (!string.IsNullOrEmpty(ViewBag.PdfUri))
+    {
+    <embed src="@Url.Content(ViewBag.PdfUri)" type="application/pdf" width="100%" height="170" />
+    <p style="color:black">Your browser does not support PDFs. <a href="@Url.Content(ViewBag.PdfUri)">Download the
+            PDF</a> instead.</p>
+    <label>رقم ملف URN المدرج @ViewBag.urn</label>
+    }
+    else
+    {
+    <p style="position: absolute; /* Position absolute for centering */
+        top: 20%; /* Move the top of the message to the center */
+        left: 50%; /* Move the left of the message to the center */
+        transform: translate(-50%, -50%); /* Center the message horizontally and vertically */
+        background-color: darkred; /* Red color */
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top:25px;">لم يتم رفع ملفات سابقا</p>
+    }
+
+    <p style="color:black">ID: @ViewBag.Id</p>
+</div> -->

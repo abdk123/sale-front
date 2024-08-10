@@ -32,6 +32,11 @@ export class SaleInvoiceComponent
       label: "PrintSaleInvoice",
       icon: "bi bi-printer",
     },
+    {
+      name: "Pdf+Urn",
+      label: "Pdf+Urn",
+      icon: "bi bi-printer",
+    },
   ];
 
   fields = [
@@ -157,6 +162,17 @@ export class SaleInvoiceComponent
   onSelectMenuItem(args) {
     if (args.name == "printSaleInvoice") {
       this.viewPrintPage(args.id);
+    } else if (args.name === "Pdf+Urn") {
+      this.viewPdfAndUrnPage(args.id);
     }
+  }
+
+  viewPdfAndUrnPage(id: number){
+    this._router.navigate([
+      "/app/orders/pdf-urn",
+      {
+        id: id,
+      },
+    ]);
   }
 }
