@@ -16137,6 +16137,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
+    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
@@ -16160,6 +16161,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
             this.vehicleNumber = _data["vehicleNumber"];
+            this.grNumber = _data["grNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
             this.transportedQuantity = _data["transportedQuantity"];
@@ -16187,6 +16189,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
         data["transportCostCurrency"] = this.transportCostCurrency;
         data["driverName"] = this.driverName;
         data["vehicleNumber"] = this.vehicleNumber;
+        data["grNumber"] = this.grNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
@@ -16214,6 +16217,7 @@ export interface ICreateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
+    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
@@ -18438,6 +18442,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
     approvedQuantity: number;
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
+    deliveryItemStatus: DeliveryItemStatus;
 
     constructor(data?: IDeliveryItemDto) {
         if (data) {
@@ -18457,6 +18462,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
             this.approvedQuantity = _data["approvedQuantity"];
             this.rejectedQuantity = _data["rejectedQuantity"];
             this.invoiceItem = _data["invoiceItem"] ? InvoiceItemDto.fromJS(_data["invoiceItem"]) : <any>undefined;
+            this.deliveryItemStatus = _data["deliveryItemStatus"];
         }
     }
 
@@ -18476,6 +18482,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
         data["approvedQuantity"] = this.approvedQuantity;
         data["rejectedQuantity"] = this.rejectedQuantity;
         data["invoiceItem"] = this.invoiceItem ? this.invoiceItem.toJSON() : <any>undefined;
+        data["deliveryItemStatus"] = this.deliveryItemStatus;
         return data;
     }
 
@@ -18495,6 +18502,14 @@ export interface IDeliveryItemDto {
     approvedQuantity: number;
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
+    deliveryItemStatus: DeliveryItemStatus;
+}
+
+export enum DeliveryItemStatus {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
 }
 
 export class DropdownDto implements IDropdownDto {
@@ -25152,6 +25167,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
+    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
@@ -25175,6 +25191,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
             this.vehicleNumber = _data["vehicleNumber"];
+            this.grNumber = _data["grNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
             this.transportedQuantity = _data["transportedQuantity"];
@@ -25202,6 +25219,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
         data["transportCostCurrency"] = this.transportCostCurrency;
         data["driverName"] = this.driverName;
         data["vehicleNumber"] = this.vehicleNumber;
+        data["grNumber"] = this.grNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
@@ -25229,6 +25247,7 @@ export interface IUpdateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
+    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
