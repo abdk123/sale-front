@@ -19,6 +19,7 @@ import { ManageDeliveryListComponent } from "./delivery/manage-delivery-list/man
 import { DeliveryReportComponent } from "./delivery/manage-delivery-list/delivery-report/delivery-report.component";
 import { ReturnedDeliveriesComponent } from "./returned-deliveries/returned-deliveries.component";
 import { RejectedDeliveriesComponent } from "./rejected-deliveries/rejected-deliveries.component";
+import { PdfUrnComponent } from "./sale-invoice/pdf-urn/pdf-urn.component";
 
 const routes: Routes = [
   {
@@ -124,6 +125,12 @@ const routes: Routes = [
       {
         path: "rejected-deliveries",
         component: RejectedDeliveriesComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "pdf-urn",
+        component: PdfUrnComponent,
         //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
         canActivate: [AppRouteGuard],
       },

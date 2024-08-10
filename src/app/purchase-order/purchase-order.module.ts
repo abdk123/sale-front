@@ -43,6 +43,7 @@ import { PrintSaleInvoiceComponent } from './sale-invoice/print-sale-invoice/pri
 import { ViewSaleInvoiceComponent } from './sale-invoice/view-sale-invoice/view-sale-invoice.component';
 import { ReturnedDeliveriesComponent } from './returned-deliveries/returned-deliveries.component';
 import { RejectedDeliveriesComponent } from './rejected-deliveries/rejected-deliveries.component';
+import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { RejectedDeliveriesComponent } from './rejected-deliveries/rejected-deli
     ViewSaleInvoiceComponent,
     ReturnedDeliveriesComponent,
     RejectedDeliveriesComponent,
+    PdfUrnComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

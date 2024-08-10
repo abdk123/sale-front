@@ -111,7 +111,7 @@ const data: IMenuItem[] = [
     label: "Orders",
     to: `${adminRoot}/orders`,
     permissions: permissionsSetting,
-    subs: [
+    subs: [ 
       {
         label: "Offers",
         to: `${adminRoot}/orders/offers`,
@@ -151,19 +151,19 @@ const data: IMenuItem[] = [
         ],
       },
       {
-        label: "saleInvoices",
+        label: "SaleInvoices",
         icon: "bi bi-truck",
         permissions: permissionsSetting,
         to: `1`,
         subs: [
           {
-            label: "saleInvoiceList",
+            label: "SaleInvoiceList",
             to: `${adminRoot}/orders/sale-invoices`,
             icon: "bi bi-receipt",
             permissions: permissionsSetting,
           },
           {
-            label: "convertSaleInvoices",
+            label: "ConvertSaleInvoices",
             to: `${adminRoot}/orders/convert-sale-invoices`,
             icon: "bi bi-receipt",
             permissions: permissionsSetting,

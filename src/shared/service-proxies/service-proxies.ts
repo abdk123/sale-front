@@ -8029,6 +8029,62 @@ export class SaleInvoiceServiceProxy {
      * @param saleInvoiceId (optional) 
      * @return Success
      */
+    getPdfAndUrnById(saleInvoiceId: number | undefined): Observable<PdfAndUrnDto> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetPdfAndUrnById?";
+        if (saleInvoiceId === null)
+            throw new Error("The parameter 'saleInvoiceId' cannot be null.");
+        else if (saleInvoiceId !== undefined)
+            url_ += "saleInvoiceId=" + encodeURIComponent("" + saleInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPdfAndUrnById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPdfAndUrnById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PdfAndUrnDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PdfAndUrnDto>;
+        }));
+    }
+
+    protected processGetPdfAndUrnById(response: HttpResponseBase): Observable<PdfAndUrnDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PdfAndUrnDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param saleInvoiceId (optional) 
+     * @return Success
+     */
     getWithDetailsById(saleInvoiceId: number | undefined): Observable<SaleInvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetWithDetailsById?";
         if (saleInvoiceId === null)
@@ -8060,6 +8116,126 @@ export class SaleInvoiceServiceProxy {
     }
 
     protected processGetWithDetailsById(response: HttpResponseBase): Observable<SaleInvoiceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SaleInvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param saleInvoiceId (optional) 
+     * @param file (optional) 
+     * @return Success
+     */
+    uploadFile(saleInvoiceId: number | undefined, file: FileParameter | undefined): Observable<FileUploadOutputModel> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/UploadFile?";
+        if (saleInvoiceId === null)
+            throw new Error("The parameter 'saleInvoiceId' cannot be null.");
+        else if (saleInvoiceId !== undefined)
+            url_ += "saleInvoiceId=" + encodeURIComponent("" + saleInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadFile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileUploadOutputModel>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileUploadOutputModel>;
+        }));
+    }
+
+    protected processUploadFile(response: HttpResponseBase): Observable<FileUploadOutputModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileUploadOutputModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addOrEditUrnNumber(body: PdfAndUrnDto | undefined): Observable<SaleInvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/AddOrEditUrnNumber";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrEditUrnNumber(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrEditUrnNumber(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SaleInvoiceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SaleInvoiceDto>;
+        }));
+    }
+
+    protected processAddOrEditUrnNumber(response: HttpResponseBase): Observable<SaleInvoiceDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -18963,6 +19139,108 @@ export interface IFieldInfo {
     fieldHandle: RuntimeFieldHandle;
 }
 
+export class FileOutputModel implements IFileOutputModel {
+    path: string | undefined;
+    fileType: string | undefined;
+    fileName: string | undefined;
+
+    constructor(data?: IFileOutputModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.path = _data["path"];
+            this.fileType = _data["fileType"];
+            this.fileName = _data["fileName"];
+        }
+    }
+
+    static fromJS(data: any): FileOutputModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileOutputModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["path"] = this.path;
+        data["fileType"] = this.fileType;
+        data["fileName"] = this.fileName;
+        return data;
+    }
+
+    clone(): FileOutputModel {
+        const json = this.toJSON();
+        let result = new FileOutputModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFileOutputModel {
+    path: string | undefined;
+    fileType: string | undefined;
+    fileName: string | undefined;
+}
+
+export class FileUploadOutputModel implements IFileUploadOutputModel {
+    success: boolean;
+    message: string | undefined;
+    file: FileOutputModel;
+
+    constructor(data?: IFileUploadOutputModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"];
+            this.message = _data["message"];
+            this.file = _data["file"] ? FileOutputModel.fromJS(_data["file"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): FileUploadOutputModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileUploadOutputModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success;
+        data["message"] = this.message;
+        data["file"] = this.file ? this.file.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): FileUploadOutputModel {
+        const json = this.toJSON();
+        let result = new FileUploadOutputModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFileUploadOutputModel {
+    success: boolean;
+    message: string | undefined;
+    file: FileOutputModel;
+}
+
 export class FilterDto implements IFilterDto {
     condition: string | undefined;
     rules: FilterRuleDto[] | undefined;
@@ -21330,6 +21608,57 @@ export interface IParameterInfo {
     hasDefaultValue: boolean;
     customAttributes: CustomAttributeData[] | undefined;
     metadataToken: number;
+}
+
+export class PdfAndUrnDto implements IPdfAndUrnDto {
+    id: number;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+
+    constructor(data?: IPdfAndUrnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.pdfFilePath = _data["pdfFilePath"];
+            this.pillURN = _data["pillURN"];
+        }
+    }
+
+    static fromJS(data: any): PdfAndUrnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PdfAndUrnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["pdfFilePath"] = this.pdfFilePath;
+        data["pillURN"] = this.pillURN;
+        return data;
+    }
+
+    clone(): PdfAndUrnDto {
+        const json = this.toJSON();
+        let result = new PdfAndUrnDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPdfAndUrnDto {
+    id: number;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
 }
 
 export class PermissionDto implements IPermissionDto {
@@ -27547,6 +27876,11 @@ export interface IWorkflowStepIndexForDropdownDto {
 export enum WorkflowStepStatus {
     _0 = 0,
     _1 = 1,
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {
