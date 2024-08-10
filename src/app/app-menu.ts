@@ -70,6 +70,12 @@ const data: IMenuItem[] = [
         icon: "iconsminds-scale",
         permissions: permissionsSetting,
       },
+      {
+        label: "Employees",
+        to: `${adminRoot}/hr/employees`,
+        icon: "simple-icon-user",
+        permissions: permissionsSetting,
+      },
     ],
   },
   //Vouchers

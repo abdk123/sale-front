@@ -18,7 +18,7 @@
             </label>
             <div class="col-md-9">
                 <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
-                    [(ngModel)]="transportCompany.phoneNumber" #phoneNumberModel="ngModel" #phoneNumberEl />
+                    [(ngModel)]="transportCompany.phoneNumber" #phoneNumberModel="ngModel" #phoneNumberEl pattern="[0-9]{8,10}"/>
     
                 <abp-validation-summary [control]="phoneNumberModel" [controlEl]="phoneNumberEl"></abp-validation-summary>
             </div>

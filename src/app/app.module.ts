@@ -1,3 +1,4 @@
+import { HrModule } from './hr/hr.module';
 import { CashFlowsModule } from './cash-flows/cash-flows.module';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -75,7 +76,8 @@ import { VouchersModule } from './vouchers/vouchers.module';
     ReportsModule,
     PurchaseOrderModule,
     VouchersModule,
-    CashFlowsModule
+    CashFlowsModule,
+    HrModule
   ],
 
   schemas: [
