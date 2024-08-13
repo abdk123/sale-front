@@ -16,7 +16,7 @@ implements OnInit
 deliveries: DeliveryDto[] = [];
 
 status: IEnumValue[] = [
-  { value: 0, text: this.l("WaitingApproved") },
+  { value: 0, text: this.l("WaitingApprove") },
   { value: 1, text: this.l("Approved") },
   { value: 2, text: this.l("Shipped") },
   { value: 3, text: this.l("Delivered") },
@@ -37,13 +37,13 @@ menuItems: IPageMenu[] = [
 ];
 
 fields = [
-  {
-    label: this.l("PoNumber"),
-    name: "invoice",
-    sortable: false,
-    type: "reference",
-    referenceTextField: "poNumber",
-  },
+  // {
+  //   label: this.l("PoNumber"),
+  //   name: "invoice",
+  //   sortable: false,
+  //   type: "reference",
+  //   referenceTextField: "poNumber",
+  // },
   {
     label: this.l("Status"),
     name: "status",
@@ -58,13 +58,13 @@ fields = [
     type: "reference",
     referenceTextField: "fullName",
   },
-  {
-    label: this.l("InvoiceNumber"),
-    name: "invoice",
-    sortable: true,
-    type: "reference",
-    referenceTextField: "id",
-  },
+  // {
+  //   label: this.l("InvoiceNumber"),
+  //   name: "invoice",
+  //   sortable: true,
+  //   type: "reference",
+  //   referenceTextField: "id",
+  // },
   {
     label: this.l("DriverName"),
     name: "driverName",

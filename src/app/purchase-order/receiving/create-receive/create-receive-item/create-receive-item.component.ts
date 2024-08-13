@@ -56,8 +56,8 @@ export class CreateReceiveItemComponent
     return item.offerItem?.material?.stocks[0]?.init?.name
   }
 
-  getSaleType(addedBySmallUnit) {
-    return addedBySmallUnit
+  getSaleType(item: InvoiceItemDto) {
+    return item?.offerItem?.addedBySmallUnit === true
       ? `${this.l("SmallUnit")}`
       : `${this.l("LargeUnit")}`;
   }

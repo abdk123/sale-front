@@ -24,7 +24,7 @@ export class SendDeliveryItemComponent
   extends AppComponentBase
   implements OnInit, OnChanges
 {
-  @Input() invoiceId: number;
+  @Input() customerId: number;
   @Input() deliveryItems: CreateDeliveryItemDto[] = [];
   @Output() deliveryItemsChange = new EventEmitter<CreateDeliveryItemDto[]>();
   items: InvoiceItemForDeliveryDto[] = [];
@@ -38,8 +38,8 @@ export class SendDeliveryItemComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.invoiceId) {
-      this.invoiceService.getForDelivery(this.invoiceId)
+      if (this.customerId) {
+          this.invoiceService.getForDelivery(this.customerId)
       .subscribe(result => this.items = result);
     }
   }

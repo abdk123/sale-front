@@ -1,58 +1,129 @@
-import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AppComponentBase } from '@shared/app-component-base';
-import { CreateDeliveryItemDto, InvoiceItemForDeliveryDto, InvoiceServiceProxy, UpdateDeliveryItemDto } from '@shared/service-proxies/service-proxies';
+import {
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
+import { AppComponentBase } from "@shared/app-component-base";
+import {
+  ChangeItemStatusInputDto,
+  CreateDeliveryItemDto,
+  DeliveryItemDto,
+  DeliveryServiceProxy,
+  InvoiceItemForDeliveryDto,
+  InvoiceServiceProxy,
+  UpdateDeliveryItemDto,
+} from "@shared/service-proxies/service-proxies";
+import { forEach } from "lodash-es";
 
 @Component({
-  selector: 'delivery-report-item',
-  templateUrl: './delivery-report-item.component.html',
-  styleUrls: ['./delivery-report-item.component.scss']
+  selector: "delivery-report-item",
+  templateUrl: "./delivery-report-item.component.html",
+  styleUrls: ["./delivery-report-item.component.scss"],
 })
-export class DeliveryReportItemComponent extends AppComponentBase
-implements OnInit, OnChanges
+export class DeliveryReportItemComponent
+  extends AppComponentBase
+  implements OnInit, OnChanges
 {
-@Input() invoiceId: number;
-@Input() deliveryItems: UpdateDeliveryItemDto[] = [];
-@Output() deliveryItemsChange = new EventEmitter<UpdateDeliveryItemDto[]>();
-items: InvoiceItemForDeliveryDto[] = [];
-currencies = [
-  { id: 0, name: this.l("Dollar") },
-  { id: 1, name: this.l("Dinar") },
-];
+  @Input() deliveryId: number;
+  @Input() deliveryItems: UpdateDeliveryItemDto[] = [];
+  @Output() deliveryItemsChange = new EventEmitter<UpdateDeliveryItemDto[]>();
+  items: DeliveryItemDto[] = [];
+  currencies = [
+    { id: 0, name: this.l("Dollar") },
+    { id: 1, name: this.l("Dinar") },
+  ];
 
-constructor(injector: Injector, private invoiceService: InvoiceServiceProxy) {
-  super(injector);
-}
-
-ngOnChanges(changes: SimpleChanges): void {
-  if (this.invoiceId) {
-    this.invoiceService.getForDelivery(this.invoiceId)
-    .subscribe(result => this.items = result);
+  constructor(
+    injector: Injector,
+    private deliveryService: DeliveryServiceProxy
+  ) {
+    super(injector);
   }
-}
 
-ngOnInit(): void {
-  //this.invoiceId = this.route.snapshot?.params?.invoiceId;
-}
+  ngOnInit(): void {}
 
-getSaleType(addedBySmallUnit) {
-  return addedBySmallUnit
-    ? `${this.l("SmallUnit")}`
-    : `${this.l("LargeUnit")}`;
-}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.deliveryId) {
+      this.initialItems();
+    }
+  }
 
+  initialItems() {
+    this.deliveryService
+      .getWithDetailsById(this.deliveryId)
+      .subscribe((result) => {
+        this.items = result.deliveryItems;
+      });
+  }
 
-checkIfItemExist(invoiceItemId){
-  const index = this.deliveryItems.findIndex(x=>x.invoiceItemId == invoiceItemId);
-  return index;
-}
+  getSaleType(item: DeliveryItemDto) {
+    return item.invoiceItem.offerItem.addedBySmallUnit == true
+      ? `${this.l("SmallUnit")}`
+      : `${this.l("LargeUnit")}`;
+  }
 
-getQuantity(invoiceItemId) {
-  return this.deliveryItems.find((x) => x.invoiceItemId == invoiceItemId)?.deliveredQuantity;
-}
+  checkIfItemExist(invoiceItemId) {
+    const index = this.deliveryItems.findIndex(
+      (x) => x.invoiceItemId == invoiceItemId
+    );
+    return index > -1;
+  }
 
-getBatchNumber(invoiceItemId){
-  return this.deliveryItems.find((x) => x.invoiceItemId == invoiceItemId)?.batchNumber;
-}
+  getQuantity(invoiceItemId) {
+    return this.deliveryItems.find((x) => x.invoiceItemId == invoiceItemId)
+      ?.deliveredQuantity;
+  }
 
+  getBatchNumber(invoiceItemId) {
+    return this.deliveryItems.find((x) => x.invoiceItemId == invoiceItemId)
+      ?.batchNumber;
+  }
 
+  changeDeliveryStatus(status: number, id: number) {
+    this.removeFromDeliveryItems(id);
+    let input = new ChangeItemStatusInputDto();
+    input.init({ id: id, status: status });
+    this.deliveryService.changeItemStatus(input).subscribe((result) => {
+      this.deliveryItems.find((x) => x.id == result.id).status = status;
+    });
+  }
+
+  removeFromDeliveryItems(id: number) {
+    const index = this.deliveryItems.findIndex((x) => x.id == id);
+    if (index > -1) {
+      this.deliveryItems.splice(index, 1);
+    }
+    this.deliveryItemsChange.emit(this.deliveryItems);
+  }
+
+  onCheck(checked: boolean, item: DeliveryItemDto) {
+    if (checked) {
+      let index = this.deliveryItems.findIndex((x) => x.id == item.id);
+      if (index == -1) {
+        let deliveryItem = new UpdateDeliveryItemDto();
+        deliveryItem.init({
+          id: item.id,
+          deliveryItemStatus: item.deliveryItemStatus,
+          deliveredQuantity: item.deliveredQuantity,
+          invoiceItemId: item.invoiceItem.id,
+          batchNumber: item.batchNumber,
+        });
+        this.deliveryItems.push(deliveryItem);
+      }
+      this.deliveryItemsChange.emit(this.deliveryItems);
+    } else {
+      this.removeFromDeliveryItems(item.id);
+    }
+  }
+
+  checkIfSelected(id: number) {
+    if (this.deliveryItems)
+      return this.deliveryItems.findIndex((x) => x.id == id) > -1;
+    return false;
+  }
 }

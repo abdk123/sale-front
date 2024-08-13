@@ -56,4 +56,21 @@ export abstract class AppComponentBase {
     isGranted(permissionName: string): boolean {
         return this.permission.isGranted(permissionName);
     }
+    
+    getDateFromString(str: string){
+      const array = str.split(' ');
+      if(array && array.length == 2){
+          const dateArray = array[0].split('-');
+          const day = +dateArray[0];
+          const month = +dateArray[1];
+          const year = +(dateArray[2]);
+          const timeArray = array[1].split(':');
+          let hour = +timeArray[0];
+          const minute = +timeArray[1];
+          const second = +timeArray[2];
+          
+          return new Date(year, month - 1, day, hour, minute, second, 0);
+      }
+      return null;
+  }
 }

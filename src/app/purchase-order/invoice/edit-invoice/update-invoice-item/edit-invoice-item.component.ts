@@ -259,7 +259,7 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
     let total = 0;
     const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
     if(invoiceItem && invoiceItem.quantity && invoiceItem.totalMaterilPrice){
-      total = Number(invoiceItem.quantity) + Number(invoiceItem.totalMaterilPrice);
+      total = Number(invoiceItem.quantity) * Number(invoiceItem.totalMaterilPrice);
     }
     return total;
   }

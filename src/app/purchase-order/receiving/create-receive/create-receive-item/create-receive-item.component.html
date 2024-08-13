@@ -22,7 +22,7 @@
                         <td>{{item.quantity}}</td>
                         <td>{{item.receivedQuantity}}</td>
                         <td>{{item.quantity - item.receivedQuantity}}</td>
-                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                        <td>{{getSaleType(item)}}</td>
                         <td>
                             <input type="number" class="form-control" (keyup)="updateInvoiceQuantity($event,item.id)" />
                         </td>

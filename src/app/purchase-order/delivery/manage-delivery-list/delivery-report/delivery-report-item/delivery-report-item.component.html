@@ -1,34 +1,54 @@
 <div class="card mt-2" *ngIf="this.items?.length > 0">
     <div class="card-body">
-        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterial' | localize }}</h5>
+        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterials' | localize }}</h5>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>{{'PoNumber' | localize}}</th>
+                        <th>{{'BatchNumber' | localize}}</th>
                         <th>{{'Material' | localize}}</th>
                         <th>{{'Unit' | localize}}</th>
-                        <th>{{'Quantity' | localize}}</th>
+                        <th>{{'ReceivedQuantity' | localize}}</th>
+                        <th>{{'RequiredQuantity' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'NumberInSmallUnit' | localize}}</th>
-                        <th>{{'DeliveredQuantity' | localize}}</th>
                         <th>{{'SaleType' | localize}}</th>
-                        <th>{{'SendedQuantity' | localize}}</th>
-                        <th>{{'Batch Number' | localize}}</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of items; index as i">
-                        <td>{{item.poNumber}}</td>
-                        <td>{{item.materialName}}</td>
-                        <td>{{item.addedBySmallUnit ? item.smallUnit : item.unit}}</td>
-                        <td>{{item.requiredQuantity}}</td>
-                        <td>{{item.totalMaterilPrice}}</td>
-                        <td>{{item.numberInSmallUnit}}</td>
-                        <td>{{item.deliveredQuantity}}</td>
-                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
-                        <td>{{getQuantity(item.invoiceId)}}</td>
-                        <td>{{getBatchNumber(item.invoiceId)}}</td>
+                        <td>
+                            <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                                <input type="checkbox" class="custom-control-input" [checked]="checkIfSelected(item.id)" (change)="onCheck($event.target.checked, item)"
+                                [disabled]="item.deliveryItemStatus == 2 || item.deliveryItemStatus == 3">
+                                <span class="custom-control-label">&nbsp;</span>
+                            </label>
+                        </td>
+                        <td>{{item.invoiceItem?.offerItem?.offer?.porchaseOrderId}}</td>
+                        <td>{{item.batchNumber}}</td>
+                        <td>{{item.invoiceItem?.offerItem?.material?.name}}</td>
+                        <td>{{item.invoiceItem?.offerItem?.addedBySmallUnit ? item?.invoiceItem?.offerItem?.size?.name : item?.invoiceItem?.offerItem?.unit?.name}}</td>
+                        <td>{{item.invoiceItem?.receivedQuantity | commaNumber}}</td>
+                        <td><span class="text-success">{{item.deliveredQuantity | commaNumber}}</span></td>
+                        <td>{{(item.invoiceItem?.totalMaterilPrice * item.deliveredQuantity) | commaNumber}}</td>
+                        <td>{{item.invoiceItem?.numberInSmallUnit}}</td>
+                        <td>{{getSaleType(item)}}</td>
+                        <td>
+                            <div class="d-flex flex-column" *ngIf="item.deliveryItemStatus == 0 ">
+                                <button type="button" (click)="changeDeliveryStatus(2, item.id)" class="btn btn-xs btn-outline-warning">
+                                    {{'RejectAndReturnToSupplier' | localize}}
+                                </button>
+                                <button type="button" (click)="changeDeliveryStatus(3, item.id)" class="btn btn-outline-danger btn-xs my-1">
+                                    {{'RejectAndRecordAsDamaged' | localize}}
+                                </button>
+                            </div>
+                            <span *ngIf="item.deliveryItemStatus == 2" class="badge badge-pill badge-outline-danger">{{'RejectAndReturnToSupplier' | localize}}</span>
+                            <span *ngIf="item.deliveryItemStatus == 3" class="badge badge-pill badge-outline-danger">{{'RejectAndRecordAsDamaged' | localize}}</span>
+                            <span *ngIf="item.deliveryItemStatus == 1" class="badge badge-pill badge-outline-success">{{'Approved' | localize}}</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -20,7 +20,7 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
   endDate: string;
   approveDate:Date = new Date();
   status = [
-    { id: 0, name: this.l("WaitingApproved") },
+    { id: 0, name: this.l("WaitingApprove") },
     { id: 1, name: this.l("Approved") },
   ];
   constructor(

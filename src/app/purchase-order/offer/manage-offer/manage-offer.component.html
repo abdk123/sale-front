@@ -45,7 +45,7 @@
                         <input class="form-control" required [(ngModel)]="approveDate" name="approveDate" bsDatepicker
                             [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
                             #approveDateModel="ngModel" #approveDateEl>
-                        <span>{{ 'approveDate' | localize }} <span class="text-danger">*</span></span>
+                        <span>{{ 'ApproveDate' | localize }} <span class="text-danger">*</span></span>
                     </label>
                     <abp-validation-summary [control]="approveDateModel" [controlEl]="approveDateEl">
                     </abp-validation-summary>
@@ -80,11 +80,11 @@
             </div>
             <div class="col-md-3">
                 <item-info title="StartDate" *ngIf="offer.creationTime"
-                    value="{{offer.creationTime.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+                    value="{{offer.creationTime.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
             </div>
             <div class="col-md-3">
                 <item-info title="OfferEndDate" *ngIf="offer.offerEndDate"
-                    value="{{offer.offerEndDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+                    value="{{offer.offerEndDate.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
             </div>
             <div class="col-md-3">
                 <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>

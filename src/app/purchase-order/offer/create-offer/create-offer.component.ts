@@ -30,7 +30,7 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
     { id: 1, name: this.l("Dinar") },
   ];
   status = [
-    { id: 0, name: this.l("WaitingApproved") },
+    { id: 0, name: this.l("WaitingApprove") },
     { id: 1, name: this.l("Approved") },
   ];
   constructor(

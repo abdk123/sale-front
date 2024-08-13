@@ -1,6 +1,6 @@
 <div class="card mt-2" *ngIf="this.items?.length > 0">
     <div class="card-body">
-        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterial' | localize }}</h5>
+        <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterials' | localize }}</h5>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -16,7 +16,7 @@
                         <th>{{'DeliveredQuantity' | localize}}</th>
                         <th>{{'SaleType' | localize}}</th>
                         <th>{{'EnteredQuantity' | localize}}</th>
-                        <th>{{'Batch Number' | localize}}</th>
+                        <th>{{'BatchNumber' | localize}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,7 @@
                             <input type="number" class="form-control" [disabled]="checkDisabled(item.invoiceItemId)" (keyup)="updateQuantity($event,item.invoiceItemId)" />
                         </td>
                         <td>
-                            <input type="text" placeholder="Batch Number" [disabled]="checkDisabled(item.invoiceItemId)" class="form-control" (keyup)="updateBatchNumber($event,item.invoiceItemId)" />
+                            <input type="text"  [disabled]="checkDisabled(item.invoiceItemId)" class="form-control" (keyup)="updateBatchNumber($event,item.invoiceItemId)" />
                         </td>
                     </tr>
                 </tbody>

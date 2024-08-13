@@ -22,13 +22,13 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   showPorchaseOrder = false;
   customers: DropdownDto[] = [];
   itemIndex: number;
-  endDate: string;
+  endDate: Date;
   currencies = [
     { id: 0, name: this.l("Dollar") },
     { id: 1, name: this.l("Dinar") },
   ];
   status = [
-    { id: 0, name: this.l("WaitingApproved") },
+    { id: 0, name: this.l("WaitingApprove") },
     { id: 1, name: this.l("Approved") },
   ];
   constructor(
@@ -54,10 +54,8 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
       .getForEdit(this.offerId)
       .subscribe((result: UpdateOfferDto) => {
         this.offer = result;
-        this.endDate = new DatePipe("en-US").transform(
-          this.offer.offerEndDate,
-          "dd-MM-yyyy"
-        );
+        console.log(result);
+        this.endDate = this.getDateFromString(this.offer.offerEndDate);
         this.initialInvoice();
       });
   }
@@ -103,7 +101,7 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
         abp.message.warn(this.l("PoNumberIsRequired"));
       }
       this.saving = true;
-      this.offer.offerEndDate = this.endDate;
+      this.offer.offerEndDate = this.endDate.toISOString();
       this.offerService
         .update(this.offer)
         .pipe(

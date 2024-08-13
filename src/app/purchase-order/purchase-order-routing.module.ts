@@ -16,6 +16,7 @@ import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.co
 import { PrintDeliveryComponent } from "./delivery/print-delivery/print-delivery.component";
 import { ManageDeliveryListComponent } from "./delivery/manage-delivery-list/manage-delivery-list.component";
 import { DeliveryReportComponent } from "./delivery/manage-delivery-list/delivery-report/delivery-report.component";
+import { MonitorPurchaseOrderComponent } from "./monitor-purchase-order/monitor-purchase-order.component";
 
 const routes: Routes = [
   {
@@ -110,6 +111,12 @@ const routes: Routes = [
         path: "delivery-report",
         component: DeliveryReportComponent,
         //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "monitor-po",
+        component: MonitorPurchaseOrderComponent,
+        //data: { permission: "PurshaseOrder.Deliveries." },
         canActivate: [AppRouteGuard],
       },
     ],

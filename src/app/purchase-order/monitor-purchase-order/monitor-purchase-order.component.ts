@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { IEnumValue, IPageMenu } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
 import { FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: "invoice",
-  templateUrl: "./invoice.component.html",
-  styleUrls: ["./invoice.component.scss"],
+  selector: 'monitor-purchase-order',
+  templateUrl: './monitor-purchase-order.component.html',
+  styleUrls: ['./monitor-purchase-order.component.scss']
 })
-export class InvoiceComponent
-  extends FullPagedListingComponentBase<InvoiceDto>
-  implements OnInit
+export class MonitorPurchaseOrderComponent
+extends FullPagedListingComponentBase<InvoiceDto>
+implements OnInit
 {
   invoices: InvoiceDto[] = [];
   status: IEnumValue[] = [
@@ -67,10 +67,10 @@ export class InvoiceComponent
     },
     {
       label: this.l("OfferDate"),
-      name: "offerDate",
+      name: "creationTime",
       sortable: false,
       type: "date",
-      format: "dd-MM-yyyy",
+      format: "yyyy-MM-dd",
     },
     {
       label: this.l("PoNumber"),

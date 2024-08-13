@@ -25,8 +25,8 @@
                         icon="bi bi-cash-stack"></item-info>
                 </div>
                 <div class="col-md-3">
-                    <item-info title="InvoiceDate" *ngIf="invoice.offerDate"
-                        value="{{invoice.offerDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+                    <item-info title="InvoiceDate" *ngIf="invoice.creationTime"
+                        value="{{invoice.creationTime.toDate() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
                 </div>
             </div>
         </div>

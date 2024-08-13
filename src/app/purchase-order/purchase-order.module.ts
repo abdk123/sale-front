@@ -37,6 +37,7 @@ import { DeliveryListComponent } from './delivery/delivery-list/delivery-list.co
 import { ManageDeliveryListComponent } from './delivery/manage-delivery-list/manage-delivery-list.component';
 import { DeliveryReportComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report.component';
 import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/delivery-report-item.component';
+import { MonitorPurchaseOrderComponent } from './monitor-purchase-order/monitor-purchase-order.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/del
     ManageDeliveryListComponent,
     DeliveryReportComponent,
     DeliveryReportItemComponent,
+    MonitorPurchaseOrderComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

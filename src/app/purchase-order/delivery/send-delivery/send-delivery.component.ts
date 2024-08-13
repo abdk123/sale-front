@@ -46,7 +46,6 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
 
   initialInvoice() {
     this.invoiceService.getWithDetail(this.invoiceId).subscribe((result) => {
-      console.log(result);
       this.invoice = result;
     });
   }

@@ -66,6 +66,7 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
   initialInvoice() {
     this.invoiceService.getWithDetail(this.invoiceId).subscribe((result) => {
       this.invoice = result;
+      console.log(this.invoice);
     });
   }
 

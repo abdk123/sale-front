@@ -40,7 +40,7 @@
     </div>
     <div class="card mt-2">
         <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceMaterials' | localize }}</h5>
+            <h5 class="card-title separator pb-2 mb-3">{{ 'TransportInfo' | localize }}</h5>
             <div class="row">
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
@@ -89,5 +89,5 @@
         </div>
     </div>
 </form>
-<send-delivery-item [invoiceId]="invoiceId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
-<delivery-list [invoiceId]="invoiceId"></delivery-list>
+<send-delivery-item [customerId]="invoice.customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+<delivery-list [customerId]="invoice.customerId"></delivery-list>
