@@ -10,7 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -35,9 +35,16 @@ import { SendDeliveryItemComponent } from './delivery/send-delivery/send-deliver
 import { PrintDeliveryComponent } from './delivery/print-delivery/print-delivery.component';
 import { DeliveryListComponent } from './delivery/delivery-list/delivery-list.component';
 import { ManageDeliveryListComponent } from './delivery/manage-delivery-list/manage-delivery-list.component';
+import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
+import { ConvertSaleInvoiceComponent } from './sale-invoice/convert-sale-invoice/convert-sale-invoice.component';
 import { DeliveryReportComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report.component';
 import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/delivery-report-item.component';
 import { MonitorPurchaseOrderComponent } from './monitor-purchase-order/monitor-purchase-order.component';
+import { PrintSaleInvoiceComponent } from './sale-invoice/print-sale-invoice/print-sale-invoice.component';
+import { ViewSaleInvoiceComponent } from './sale-invoice/view-sale-invoice/view-sale-invoice.component';
+import { ReturnedDeliveriesComponent } from './returned-deliveries/returned-deliveries.component';
+import { RejectedDeliveriesComponent } from './rejected-deliveries/rejected-deliveries.component';
+import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
 
 @NgModule({
   declarations: [
@@ -65,9 +72,16 @@ import { MonitorPurchaseOrderComponent } from './monitor-purchase-order/monitor-
     DeliveryListComponent,
     PrintDeliveryComponent,
     ManageDeliveryListComponent,
+    SaleInvoiceComponent,
+    ConvertSaleInvoiceComponent,
     DeliveryReportComponent,
     DeliveryReportItemComponent,
     MonitorPurchaseOrderComponent,
+    PrintSaleInvoiceComponent,
+    ViewSaleInvoiceComponent,
+    ReturnedDeliveriesComponent,
+    RejectedDeliveriesComponent,
+    PdfUrnComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -92,6 +106,7 @@ import { MonitorPurchaseOrderComponent } from './monitor-purchase-order/monitor-
     InvoiceServiceProxy,
     ReceivingServiceProxy,
     DeliveryServiceProxy,
+    SaleInvoiceServiceProxy,
   ],
 })
 export class PurchaseOrderModule {}

@@ -51,7 +51,4 @@ export class EditCategoryDialogComponent extends AppComponentBase implements OnI
         });
         
   }
-  
-  
-
 }

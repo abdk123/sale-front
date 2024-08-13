@@ -1,0 +1,13 @@
+<app-page-header [title]="'ReturnedDeliveries' | localize" [fields]="fields"
+    [CreatePermission]="'PurshaseOrder.ReturnedDeliveries.Create333'"
+    (advanceFilter)="showFilterDialog($event)" [filtering]="request.filtering && request.filtering.rules.length > 0"
+    (onChangePage)="onChangePage($event)" (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.ReturnedDeliveries.Update333'"
+    [DeletePermission]="'PurshaseOrder.ReturnedDeliveries.Delete333'" [fields]="fields" [data]="returnedDeliveries"
+    [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
+    (changeOrderBy)="changeOrderBy($event)"
+    [coloredBy]="'status'" (changePage)="pageChanged($event)"
+    ></app-page-grid>

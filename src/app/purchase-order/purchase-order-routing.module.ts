@@ -13,10 +13,14 @@ import { DeliveryComponent } from "./delivery/delivery.component";
 import { EditReceiveComponent } from "./receiving/edit-receive/edit-receive.component";
 import { CreateReceiveComponent } from "./receiving/create-receive/create-receive.component";
 import { SendDeliveryComponent } from "./delivery/send-delivery/send-delivery.component";
-import { PrintDeliveryComponent } from "./delivery/print-delivery/print-delivery.component";
+import { SaleInvoiceComponent } from "./sale-invoice/sale-invoice.component";
+import { ConvertSaleInvoiceComponent } from "./sale-invoice/convert-sale-invoice/convert-sale-invoice.component";
 import { ManageDeliveryListComponent } from "./delivery/manage-delivery-list/manage-delivery-list.component";
 import { DeliveryReportComponent } from "./delivery/manage-delivery-list/delivery-report/delivery-report.component";
 import { MonitorPurchaseOrderComponent } from "./monitor-purchase-order/monitor-purchase-order.component";
+import { ReturnedDeliveriesComponent } from "./returned-deliveries/returned-deliveries.component";
+import { RejectedDeliveriesComponent } from "./rejected-deliveries/rejected-deliveries.component";
+import { PdfUrnComponent } from "./sale-invoice/pdf-urn/pdf-urn.component";
 
 const routes: Routes = [
   {
@@ -47,12 +51,6 @@ const routes: Routes = [
         data: { permission: "Setting.Offers.Update" },
         canActivate: [AppRouteGuard],
       },
-      // {
-      //   path: "print-offer",
-      //   component: PrintOfferComponent,
-      //   // data: { permission: "PurshaseOrder.Invoices.Update" },
-      //   canActivate: [AppRouteGuard],
-      // },
       {
         path: "invoices",
         component: InvoiceComponent,
@@ -96,8 +94,14 @@ const routes: Routes = [
         canActivate: [AppRouteGuard],
       },
       {
-        path: "print-delivery",
-        component: PrintDeliveryComponent,
+        path: "sale-invoices",
+        component: SaleInvoiceComponent,
+        //data: { permission: "PurshaseOrder.Invoices.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "convert-sale-invoices",
+        component: ConvertSaleInvoiceComponent,
         //data: { permission: "PurshaseOrder.Deliveries.Print" },
         canActivate: [AppRouteGuard],
       },
@@ -117,6 +121,24 @@ const routes: Routes = [
         path: "monitor-po",
         component: MonitorPurchaseOrderComponent,
         //data: { permission: "PurshaseOrder.Deliveries." },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "returned-deliveries",
+        component: ReturnedDeliveriesComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "rejected-deliveries",
+        component: RejectedDeliveriesComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "pdf-urn",
+        component: PdfUrnComponent,
+        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
         canActivate: [AppRouteGuard],
       },
     ],

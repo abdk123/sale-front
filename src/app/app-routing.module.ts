@@ -32,6 +32,13 @@ import { TenantsComponent } from './tenants/tenants.component';
               ),
           },
           {
+            path: "hr",
+            loadChildren: () =>
+              import("./hr/hr.module").then(
+                (m) => m.HrModule
+              ),
+          },
+          {
             path: "security",
             loadChildren: () =>
               import("./security/security.module").then(

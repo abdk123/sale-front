@@ -1,5 +1,4 @@
-import { environment } from 'environments/environment';
-
+import { environment } from "environments/environment";
 
 const adminRoot = environment.adminRoot;
 const permissionsWorkflow = environment.permissionsWorkflow;
@@ -15,7 +14,6 @@ export interface IMenuItem {
   newWindow?: boolean;
   permissions?: string[];
   subs?: IMenuItem[];
-
 }
 
 const data: IMenuItem[] = [
@@ -72,9 +70,14 @@ const data: IMenuItem[] = [
         icon: "iconsminds-scale",
         permissions: permissionsSetting,
       },
+      {
+        label: "Employees",
+        to: `${adminRoot}/hr/employees`,
+        icon: "simple-icon-user",
+        permissions: permissionsSetting,
+      },
     ],
   },
-
   //Vouchers
   {
     icon: "simple-icon-book-open",
@@ -108,7 +111,7 @@ const data: IMenuItem[] = [
     label: "Orders",
     to: `${adminRoot}/orders`,
     permissions: permissionsSetting,
-    subs: [
+    subs: [ 
       {
         label: "Offers",
         to: `${adminRoot}/orders/offers`,
@@ -132,7 +135,7 @@ const data: IMenuItem[] = [
         icon: "bi bi-truck",
         permissions: permissionsSetting,
         to: ``,
-        subs:[
+        subs: [
           {
             label: "DeliveriesList",
             to: `${adminRoot}/orders/deliveries`,
@@ -144,10 +147,41 @@ const data: IMenuItem[] = [
             to: `${adminRoot}/orders/manage-delivery`,
             icon: "",
             permissions: permissionsSetting,
-          }
-        ]
+          },
+        ],
       },
-      
+      {
+        label: "SaleInvoices",
+        icon: "bi bi-truck",
+        permissions: permissionsSetting,
+        to: `1`,
+        subs: [
+          {
+            label: "SaleInvoiceList",
+            to: `${adminRoot}/orders/sale-invoices`,
+            icon: "bi bi-receipt",
+            permissions: permissionsSetting,
+          },
+          {
+            label: "ConvertSaleInvoices",
+            to: `${adminRoot}/orders/convert-sale-invoices`,
+            icon: "bi bi-receipt",
+            permissions: permissionsSetting,
+          },
+        ],
+      },
+      {
+        label: "ReturnedDeliveries",
+        to: `${adminRoot}/orders/returned-deliveries`,
+        icon: "bi bi-receipt",
+        permissions: permissionsSetting,
+      },
+      {
+        label: "RejectedDeliveries",
+        to: `${adminRoot}/orders/rejected-deliveries`,
+        icon: "bi bi-receipt",
+        permissions: permissionsSetting,
+      },
     ],
   },
   //Security

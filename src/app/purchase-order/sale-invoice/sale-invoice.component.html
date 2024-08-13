@@ -1,0 +1,13 @@
+<app-page-header [title]="'SaleInvoices' | localize" [fields]="fields"
+    [CreatePermission]="'PurshaseOrder.SaleInvoices.Create333'"
+    (advanceFilter)="showFilterDialog($event)" [filtering]="request.filtering && request.filtering.rules.length > 0"
+    (onChangePage)="onChangePage($event)" (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.SaleInvoices.Update333'"
+    [DeletePermission]="'PurshaseOrder.SaleInvoices.Delete333'" [fields]="fields" [data]="saleInvoices"
+    [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
+    (changeOrderBy)="changeOrderBy($event)"
+    [coloredBy]="'status'" (changePage)="pageChanged($event)" [menuItems]="menuItems"
+    (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

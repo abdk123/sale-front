@@ -16316,6 +16316,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
     driverName: string | undefined;
     vehicleNumber: string | undefined;
     grNumber: string | undefined;
+    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
@@ -16339,6 +16340,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
             this.vehicleNumber = _data["vehicleNumber"];
+            this.grNumber = _data["grNumber"];
             this.grNumber = _data["grNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
@@ -16368,6 +16370,7 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
         data["driverName"] = this.driverName;
         data["vehicleNumber"] = this.vehicleNumber;
         data["grNumber"] = this.grNumber;
+        data["grNumber"] = this.grNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
@@ -16395,6 +16398,7 @@ export interface ICreateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
+    grNumber: string | undefined;
     grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
@@ -16977,6 +16981,156 @@ export interface ICreateRoleDto {
     normalizedName: string | undefined;
     description: string | undefined;
     grantedPermissions: string[] | undefined;
+}
+
+export class CreateSaleInvoiceDto implements ICreateSaleInvoiceDto {
+    saleDescount: number;
+    saleCurrency: Currency;
+    note: string | undefined;
+    saleTakeBalance: number;
+    status: SaleInvoiceStatus;
+    daysForPaid: number;
+    dateForPaid: string | undefined;
+    paidType: PaidType;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+    customerId: number | undefined;
+    saleInvoiceItems: CreateSaleInvoiceItemDto[] | undefined;
+
+    constructor(data?: ICreateSaleInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.saleDescount = _data["saleDescount"];
+            this.saleCurrency = _data["saleCurrency"];
+            this.note = _data["note"];
+            this.saleTakeBalance = _data["saleTakeBalance"];
+            this.status = _data["status"];
+            this.daysForPaid = _data["daysForPaid"];
+            this.dateForPaid = _data["dateForPaid"];
+            this.paidType = _data["paidType"];
+            this.pdfFilePath = _data["pdfFilePath"];
+            this.pillURN = _data["pillURN"];
+            this.customerId = _data["customerId"];
+            if (Array.isArray(_data["saleInvoiceItems"])) {
+                this.saleInvoiceItems = [] as any;
+                for (let item of _data["saleInvoiceItems"])
+                    this.saleInvoiceItems.push(CreateSaleInvoiceItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateSaleInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateSaleInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["saleDescount"] = this.saleDescount;
+        data["saleCurrency"] = this.saleCurrency;
+        data["note"] = this.note;
+        data["saleTakeBalance"] = this.saleTakeBalance;
+        data["status"] = this.status;
+        data["daysForPaid"] = this.daysForPaid;
+        data["dateForPaid"] = this.dateForPaid;
+        data["paidType"] = this.paidType;
+        data["pdfFilePath"] = this.pdfFilePath;
+        data["pillURN"] = this.pillURN;
+        data["customerId"] = this.customerId;
+        if (Array.isArray(this.saleInvoiceItems)) {
+            data["saleInvoiceItems"] = [];
+            for (let item of this.saleInvoiceItems)
+                data["saleInvoiceItems"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): CreateSaleInvoiceDto {
+        const json = this.toJSON();
+        let result = new CreateSaleInvoiceDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateSaleInvoiceDto {
+    saleDescount: number;
+    saleCurrency: Currency;
+    note: string | undefined;
+    saleTakeBalance: number;
+    status: SaleInvoiceStatus;
+    daysForPaid: number;
+    dateForPaid: string | undefined;
+    paidType: PaidType;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+    customerId: number | undefined;
+    saleInvoiceItems: CreateSaleInvoiceItemDto[] | undefined;
+}
+
+export class CreateSaleInvoiceItemDto implements ICreateSaleInvoiceItemDto {
+    totalQuantity: number;
+    totalItemPrice: number;
+    saleInvoiceId: number | undefined;
+    deliveryItemId: number | undefined;
+
+    constructor(data?: ICreateSaleInvoiceItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalQuantity = _data["totalQuantity"];
+            this.totalItemPrice = _data["totalItemPrice"];
+            this.saleInvoiceId = _data["saleInvoiceId"];
+            this.deliveryItemId = _data["deliveryItemId"];
+        }
+    }
+
+    static fromJS(data: any): CreateSaleInvoiceItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateSaleInvoiceItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalQuantity"] = this.totalQuantity;
+        data["totalItemPrice"] = this.totalItemPrice;
+        data["saleInvoiceId"] = this.saleInvoiceId;
+        data["deliveryItemId"] = this.deliveryItemId;
+        return data;
+    }
+
+    clone(): CreateSaleInvoiceItemDto {
+        const json = this.toJSON();
+        let result = new CreateSaleInvoiceItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateSaleInvoiceItemDto {
+    totalQuantity: number;
+    totalItemPrice: number;
+    saleInvoiceId: number | undefined;
+    deliveryItemId: number | undefined;
 }
 
 export class CreateSaleInvoiceDto implements ICreateSaleInvoiceDto {
@@ -17895,6 +18049,11 @@ export enum Currency {
     _1 = 1,
 }
 
+export enum Currency {
+    _0 = 0,
+    _1 = 1,
+}
+
 export class CustomAttributeData implements ICustomAttributeData {
     attributeType: Type;
     constructor_: ConstructorInfo;
@@ -18465,6 +18624,7 @@ export class DeliveryDto implements IDeliveryDto {
     driverPhoneNumber: string | undefined;
     status: number;
     readonly totalTransportedQuantity: number;
+    readonly totalTransportedQuantity: number;
     customerId: number | undefined;
     customer: CustomerDto;
     deliveryItems: DeliveryItemDto[] | undefined;
@@ -18489,6 +18649,7 @@ export class DeliveryDto implements IDeliveryDto {
             this.vehicleNumber = _data["vehicleNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
+            (<any>this).totalTransportedQuantity = _data["totalTransportedQuantity"];
             (<any>this).totalTransportedQuantity = _data["totalTransportedQuantity"];
             this.customerId = _data["customerId"];
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
@@ -18519,6 +18680,7 @@ export class DeliveryDto implements IDeliveryDto {
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["totalTransportedQuantity"] = this.totalTransportedQuantity;
+        data["totalTransportedQuantity"] = this.totalTransportedQuantity;
         data["customerId"] = this.customerId;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         if (Array.isArray(this.deliveryItems)) {
@@ -18547,6 +18709,7 @@ export interface IDeliveryDto {
     vehicleNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
+    totalTransportedQuantity: number;
     totalTransportedQuantity: number;
     customerId: number | undefined;
     customer: CustomerDto;
@@ -18617,6 +18780,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
     deliveryItemStatus: DeliveryItemStatus;
+    deliveryItemStatus: DeliveryItemStatus;
 
     constructor(data?: IDeliveryItemDto) {
         if (data) {
@@ -18636,6 +18800,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
             this.approvedQuantity = _data["approvedQuantity"];
             this.rejectedQuantity = _data["rejectedQuantity"];
             this.invoiceItem = _data["invoiceItem"] ? InvoiceItemDto.fromJS(_data["invoiceItem"]) : <any>undefined;
+            this.deliveryItemStatus = _data["deliveryItemStatus"];
             this.deliveryItemStatus = _data["deliveryItemStatus"];
         }
     }
@@ -18657,6 +18822,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
         data["rejectedQuantity"] = this.rejectedQuantity;
         data["invoiceItem"] = this.invoiceItem ? this.invoiceItem.toJSON() : <any>undefined;
         data["deliveryItemStatus"] = this.deliveryItemStatus;
+        data["deliveryItemStatus"] = this.deliveryItemStatus;
         return data;
     }
 
@@ -18676,6 +18842,14 @@ export interface IDeliveryItemDto {
     approvedQuantity: number;
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
+    deliveryItemStatus: DeliveryItemStatus;
+}
+
+export enum DeliveryItemStatus {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
     deliveryItemStatus: DeliveryItemStatus;
 }
 
@@ -19135,6 +19309,108 @@ export interface IFieldInfo {
     isSecuritySafeCritical: boolean;
     isSecurityTransparent: boolean;
     fieldHandle: RuntimeFieldHandle;
+}
+
+export class FileOutputModel implements IFileOutputModel {
+    path: string | undefined;
+    fileType: string | undefined;
+    fileName: string | undefined;
+
+    constructor(data?: IFileOutputModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.path = _data["path"];
+            this.fileType = _data["fileType"];
+            this.fileName = _data["fileName"];
+        }
+    }
+
+    static fromJS(data: any): FileOutputModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileOutputModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["path"] = this.path;
+        data["fileType"] = this.fileType;
+        data["fileName"] = this.fileName;
+        return data;
+    }
+
+    clone(): FileOutputModel {
+        const json = this.toJSON();
+        let result = new FileOutputModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFileOutputModel {
+    path: string | undefined;
+    fileType: string | undefined;
+    fileName: string | undefined;
+}
+
+export class FileUploadOutputModel implements IFileUploadOutputModel {
+    success: boolean;
+    message: string | undefined;
+    file: FileOutputModel;
+
+    constructor(data?: IFileUploadOutputModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"];
+            this.message = _data["message"];
+            this.file = _data["file"] ? FileOutputModel.fromJS(_data["file"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): FileUploadOutputModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileUploadOutputModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success;
+        data["message"] = this.message;
+        data["file"] = this.file ? this.file.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): FileUploadOutputModel {
+        const json = this.toJSON();
+        let result = new FileUploadOutputModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFileUploadOutputModel {
+    success: boolean;
+    message: string | undefined;
+    file: FileOutputModel;
 }
 
 export class FilterDto implements IFilterDto {
@@ -21656,6 +21932,57 @@ export interface IParameterInfo {
     metadataToken: number;
 }
 
+export class PdfAndUrnDto implements IPdfAndUrnDto {
+    id: number;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+
+    constructor(data?: IPdfAndUrnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.pdfFilePath = _data["pdfFilePath"];
+            this.pillURN = _data["pillURN"];
+        }
+    }
+
+    static fromJS(data: any): PdfAndUrnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PdfAndUrnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["pdfFilePath"] = this.pdfFilePath;
+        data["pillURN"] = this.pillURN;
+        return data;
+    }
+
+    clone(): PdfAndUrnDto {
+        const json = this.toJSON();
+        let result = new PdfAndUrnDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPdfAndUrnDto {
+    id: number;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+}
+
 export class PermissionDto implements IPermissionDto {
     id: number;
     name: string | undefined;
@@ -22829,6 +23156,247 @@ export class RuntimeTypeHandle implements IRuntimeTypeHandle {
 
 export interface IRuntimeTypeHandle {
     value: IntPtr;
+}
+
+export class SaleInvoiceDto implements ISaleInvoiceDto {
+    id: number;
+    creationTime: string | undefined;
+    saleDescount: number;
+    saleCurrency: Currency;
+    readonly saeltotalPrice: number;
+    readonly invoiceTotalQuantity: number;
+    note: string | undefined;
+    saleTakeBalance: number;
+    status: SaleInvoiceStatus;
+    daysForPaid: number;
+    dateForPaid: string | undefined;
+    readonly remainingDaysForPaid: number;
+    paidType: PaidType;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+    customerId: number | undefined;
+    customer: CustomerDto;
+    saleInvoiceItems: SaleInvoiceItemDto[] | undefined;
+
+    constructor(data?: ISaleInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"];
+            this.saleDescount = _data["saleDescount"];
+            this.saleCurrency = _data["saleCurrency"];
+            (<any>this).saeltotalPrice = _data["saeltotalPrice"];
+            (<any>this).invoiceTotalQuantity = _data["invoiceTotalQuantity"];
+            this.note = _data["note"];
+            this.saleTakeBalance = _data["saleTakeBalance"];
+            this.status = _data["status"];
+            this.daysForPaid = _data["daysForPaid"];
+            this.dateForPaid = _data["dateForPaid"];
+            (<any>this).remainingDaysForPaid = _data["remainingDaysForPaid"];
+            this.paidType = _data["paidType"];
+            this.pdfFilePath = _data["pdfFilePath"];
+            this.pillURN = _data["pillURN"];
+            this.customerId = _data["customerId"];
+            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
+            if (Array.isArray(_data["saleInvoiceItems"])) {
+                this.saleInvoiceItems = [] as any;
+                for (let item of _data["saleInvoiceItems"])
+                    this.saleInvoiceItems.push(SaleInvoiceItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SaleInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaleInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime;
+        data["saleDescount"] = this.saleDescount;
+        data["saleCurrency"] = this.saleCurrency;
+        data["saeltotalPrice"] = this.saeltotalPrice;
+        data["invoiceTotalQuantity"] = this.invoiceTotalQuantity;
+        data["note"] = this.note;
+        data["saleTakeBalance"] = this.saleTakeBalance;
+        data["status"] = this.status;
+        data["daysForPaid"] = this.daysForPaid;
+        data["dateForPaid"] = this.dateForPaid;
+        data["remainingDaysForPaid"] = this.remainingDaysForPaid;
+        data["paidType"] = this.paidType;
+        data["pdfFilePath"] = this.pdfFilePath;
+        data["pillURN"] = this.pillURN;
+        data["customerId"] = this.customerId;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        if (Array.isArray(this.saleInvoiceItems)) {
+            data["saleInvoiceItems"] = [];
+            for (let item of this.saleInvoiceItems)
+                data["saleInvoiceItems"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): SaleInvoiceDto {
+        const json = this.toJSON();
+        let result = new SaleInvoiceDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISaleInvoiceDto {
+    id: number;
+    creationTime: string | undefined;
+    saleDescount: number;
+    saleCurrency: Currency;
+    saeltotalPrice: number;
+    invoiceTotalQuantity: number;
+    note: string | undefined;
+    saleTakeBalance: number;
+    status: SaleInvoiceStatus;
+    daysForPaid: number;
+    dateForPaid: string | undefined;
+    remainingDaysForPaid: number;
+    paidType: PaidType;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+    customerId: number | undefined;
+    customer: CustomerDto;
+    saleInvoiceItems: SaleInvoiceItemDto[] | undefined;
+}
+
+export class SaleInvoiceDtoPagedResultDto implements ISaleInvoiceDtoPagedResultDto {
+    items: SaleInvoiceDto[] | undefined;
+    totalCount: number;
+
+    constructor(data?: ISaleInvoiceDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(SaleInvoiceDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): SaleInvoiceDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaleInvoiceDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+
+    clone(): SaleInvoiceDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new SaleInvoiceDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISaleInvoiceDtoPagedResultDto {
+    items: SaleInvoiceDto[] | undefined;
+    totalCount: number;
+}
+
+export class SaleInvoiceItemDto implements ISaleInvoiceItemDto {
+    id: number;
+    totalQuantity: number;
+    totalItemPrice: number;
+    saleInvoiceId: number | undefined;
+    deliveryItemId: number | undefined;
+    deliveryItem: DeliveryItemDto;
+
+    constructor(data?: ISaleInvoiceItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.totalQuantity = _data["totalQuantity"];
+            this.totalItemPrice = _data["totalItemPrice"];
+            this.saleInvoiceId = _data["saleInvoiceId"];
+            this.deliveryItemId = _data["deliveryItemId"];
+            this.deliveryItem = _data["deliveryItem"] ? DeliveryItemDto.fromJS(_data["deliveryItem"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SaleInvoiceItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SaleInvoiceItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["totalQuantity"] = this.totalQuantity;
+        data["totalItemPrice"] = this.totalItemPrice;
+        data["saleInvoiceId"] = this.saleInvoiceId;
+        data["deliveryItemId"] = this.deliveryItemId;
+        data["deliveryItem"] = this.deliveryItem ? this.deliveryItem.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): SaleInvoiceItemDto {
+        const json = this.toJSON();
+        let result = new SaleInvoiceItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISaleInvoiceItemDto {
+    id: number;
+    totalQuantity: number;
+    totalItemPrice: number;
+    saleInvoiceId: number | undefined;
+    deliveryItemId: number | undefined;
+    deliveryItem: DeliveryItemDto;
+}
+
+export enum SaleInvoiceStatus {
+    _0 = 0,
 }
 
 export class SaleInvoiceDto implements ISaleInvoiceDto {
@@ -25492,6 +26060,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
     driverName: string | undefined;
     vehicleNumber: string | undefined;
     grNumber: string | undefined;
+    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
@@ -25515,6 +26084,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
             this.vehicleNumber = _data["vehicleNumber"];
+            this.grNumber = _data["grNumber"];
             this.grNumber = _data["grNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
@@ -25544,6 +26114,7 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
         data["driverName"] = this.driverName;
         data["vehicleNumber"] = this.vehicleNumber;
         data["grNumber"] = this.grNumber;
+        data["grNumber"] = this.grNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
@@ -25571,6 +26142,7 @@ export interface IUpdateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
+    grNumber: string | undefined;
     grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
@@ -26157,6 +26729,164 @@ export interface IUpdateReceivingItemDto {
     id: number;
     receivedQuantity: number;
     invoiceItemId: number | undefined;
+}
+
+export class UpdateSaleInvoiceDto implements IUpdateSaleInvoiceDto {
+    id: number;
+    saleDescount: number;
+    saleCurrency: Currency;
+    note: string | undefined;
+    saleTakeBalance: number;
+    status: SaleInvoiceStatus;
+    daysForPaid: number;
+    dateForPaid: string | undefined;
+    paidType: PaidType;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+    customerId: number | undefined;
+    saleInvoiceItems: UpdateSaleInvoiceItemDto[] | undefined;
+
+    constructor(data?: IUpdateSaleInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.saleDescount = _data["saleDescount"];
+            this.saleCurrency = _data["saleCurrency"];
+            this.note = _data["note"];
+            this.saleTakeBalance = _data["saleTakeBalance"];
+            this.status = _data["status"];
+            this.daysForPaid = _data["daysForPaid"];
+            this.dateForPaid = _data["dateForPaid"];
+            this.paidType = _data["paidType"];
+            this.pdfFilePath = _data["pdfFilePath"];
+            this.pillURN = _data["pillURN"];
+            this.customerId = _data["customerId"];
+            if (Array.isArray(_data["saleInvoiceItems"])) {
+                this.saleInvoiceItems = [] as any;
+                for (let item of _data["saleInvoiceItems"])
+                    this.saleInvoiceItems.push(UpdateSaleInvoiceItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateSaleInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateSaleInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["saleDescount"] = this.saleDescount;
+        data["saleCurrency"] = this.saleCurrency;
+        data["note"] = this.note;
+        data["saleTakeBalance"] = this.saleTakeBalance;
+        data["status"] = this.status;
+        data["daysForPaid"] = this.daysForPaid;
+        data["dateForPaid"] = this.dateForPaid;
+        data["paidType"] = this.paidType;
+        data["pdfFilePath"] = this.pdfFilePath;
+        data["pillURN"] = this.pillURN;
+        data["customerId"] = this.customerId;
+        if (Array.isArray(this.saleInvoiceItems)) {
+            data["saleInvoiceItems"] = [];
+            for (let item of this.saleInvoiceItems)
+                data["saleInvoiceItems"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): UpdateSaleInvoiceDto {
+        const json = this.toJSON();
+        let result = new UpdateSaleInvoiceDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateSaleInvoiceDto {
+    id: number;
+    saleDescount: number;
+    saleCurrency: Currency;
+    note: string | undefined;
+    saleTakeBalance: number;
+    status: SaleInvoiceStatus;
+    daysForPaid: number;
+    dateForPaid: string | undefined;
+    paidType: PaidType;
+    pdfFilePath: string | undefined;
+    pillURN: string | undefined;
+    customerId: number | undefined;
+    saleInvoiceItems: UpdateSaleInvoiceItemDto[] | undefined;
+}
+
+export class UpdateSaleInvoiceItemDto implements IUpdateSaleInvoiceItemDto {
+    id: number;
+    totalQuantity: number;
+    totalItemPrice: number;
+    saleInvoiceId: number | undefined;
+    deliveryItemId: number | undefined;
+
+    constructor(data?: IUpdateSaleInvoiceItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.totalQuantity = _data["totalQuantity"];
+            this.totalItemPrice = _data["totalItemPrice"];
+            this.saleInvoiceId = _data["saleInvoiceId"];
+            this.deliveryItemId = _data["deliveryItemId"];
+        }
+    }
+
+    static fromJS(data: any): UpdateSaleInvoiceItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateSaleInvoiceItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["totalQuantity"] = this.totalQuantity;
+        data["totalItemPrice"] = this.totalItemPrice;
+        data["saleInvoiceId"] = this.saleInvoiceId;
+        data["deliveryItemId"] = this.deliveryItemId;
+        return data;
+    }
+
+    clone(): UpdateSaleInvoiceItemDto {
+        const json = this.toJSON();
+        let result = new UpdateSaleInvoiceItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateSaleInvoiceItemDto {
+    id: number;
+    totalQuantity: number;
+    totalItemPrice: number;
+    saleInvoiceId: number | undefined;
+    deliveryItemId: number | undefined;
 }
 
 export class UpdateSaleInvoiceDto implements IUpdateSaleInvoiceDto {
@@ -27875,6 +28605,11 @@ export interface IWorkflowStepIndexForDropdownDto {
 export enum WorkflowStepStatus {
     _0 = 0,
     _1 = 1,
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {
