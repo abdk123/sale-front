@@ -3878,6 +3878,62 @@ export class DeliveryServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    update(body: UpdateDeliveryDto | undefined): Observable<DeliveryDto> {
+        let url_ = this.baseUrl + "/api/services/app/Delivery/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DeliveryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DeliveryDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<DeliveryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DeliveryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -4171,62 +4227,6 @@ export class DeliveryServiceProxy {
     }
 
     protected processCreate(response: HttpResponseBase): Observable<DeliveryDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = DeliveryDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    update(body: UpdateDeliveryDto | undefined): Observable<DeliveryDto> {
-        let url_ = this.baseUrl + "/api/services/app/Delivery/Update";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<DeliveryDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<DeliveryDto>;
-        }));
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<DeliveryDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6517,6 +6517,62 @@ export class OfferServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateOfferDto | undefined): Observable<OfferDto> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OfferDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OfferDto>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<OfferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param offerItemId (optional) 
      * @return Success
      */
@@ -6822,62 +6878,6 @@ export class OfferServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = OfferDtoPagedResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    create(body: CreateOfferDto | undefined): Observable<OfferDto> {
-        let url_ = this.baseUrl + "/api/services/app/Offer/Create";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<OfferDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<OfferDto>;
-        }));
-    }
-
-    protected processCreate(response: HttpResponseBase): Observable<OfferDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OfferDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -8160,6 +8160,62 @@ export class SaleInvoiceServiceProxy {
      * @param saleInvoiceId (optional) 
      * @return Success
      */
+    getPdfAndUrnById(saleInvoiceId: number | undefined): Observable<PdfAndUrnDto> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetPdfAndUrnById?";
+        if (saleInvoiceId === null)
+            throw new Error("The parameter 'saleInvoiceId' cannot be null.");
+        else if (saleInvoiceId !== undefined)
+            url_ += "saleInvoiceId=" + encodeURIComponent("" + saleInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPdfAndUrnById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPdfAndUrnById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PdfAndUrnDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PdfAndUrnDto>;
+        }));
+    }
+
+    protected processGetPdfAndUrnById(response: HttpResponseBase): Observable<PdfAndUrnDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PdfAndUrnDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param saleInvoiceId (optional) 
+     * @return Success
+     */
     getWithDetailsById(saleInvoiceId: number | undefined): Observable<SaleInvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetWithDetailsById?";
         if (saleInvoiceId === null)
@@ -8191,6 +8247,126 @@ export class SaleInvoiceServiceProxy {
     }
 
     protected processGetWithDetailsById(response: HttpResponseBase): Observable<SaleInvoiceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SaleInvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param saleInvoiceId (optional) 
+     * @param file (optional) 
+     * @return Success
+     */
+    uploadFile(saleInvoiceId: number | undefined, file: FileParameter | undefined): Observable<FileUploadOutputModel> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/UploadFile?";
+        if (saleInvoiceId === null)
+            throw new Error("The parameter 'saleInvoiceId' cannot be null.");
+        else if (saleInvoiceId !== undefined)
+            url_ += "saleInvoiceId=" + encodeURIComponent("" + saleInvoiceId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadFile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileUploadOutputModel>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileUploadOutputModel>;
+        }));
+    }
+
+    protected processUploadFile(response: HttpResponseBase): Observable<FileUploadOutputModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileUploadOutputModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addOrEditUrnNumber(body: PdfAndUrnDto | undefined): Observable<SaleInvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/AddOrEditUrnNumber";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddOrEditUrnNumber(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddOrEditUrnNumber(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SaleInvoiceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SaleInvoiceDto>;
+        }));
+    }
+
+    protected processAddOrEditUrnNumber(response: HttpResponseBase): Observable<SaleInvoiceDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -16316,7 +16492,6 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
     driverName: string | undefined;
     vehicleNumber: string | undefined;
     grNumber: string | undefined;
-    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
@@ -16340,7 +16515,6 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
             this.vehicleNumber = _data["vehicleNumber"];
-            this.grNumber = _data["grNumber"];
             this.grNumber = _data["grNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
@@ -16370,7 +16544,6 @@ export class CreateDeliveryDto implements ICreateDeliveryDto {
         data["driverName"] = this.driverName;
         data["vehicleNumber"] = this.vehicleNumber;
         data["grNumber"] = this.grNumber;
-        data["grNumber"] = this.grNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
@@ -16398,7 +16571,6 @@ export interface ICreateDeliveryDto {
     transportCostCurrency: number;
     driverName: string | undefined;
     vehicleNumber: string | undefined;
-    grNumber: string | undefined;
     grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
@@ -16981,156 +17153,6 @@ export interface ICreateRoleDto {
     normalizedName: string | undefined;
     description: string | undefined;
     grantedPermissions: string[] | undefined;
-}
-
-export class CreateSaleInvoiceDto implements ICreateSaleInvoiceDto {
-    saleDescount: number;
-    saleCurrency: Currency;
-    note: string | undefined;
-    saleTakeBalance: number;
-    status: SaleInvoiceStatus;
-    daysForPaid: number;
-    dateForPaid: string | undefined;
-    paidType: PaidType;
-    pdfFilePath: string | undefined;
-    pillURN: string | undefined;
-    customerId: number | undefined;
-    saleInvoiceItems: CreateSaleInvoiceItemDto[] | undefined;
-
-    constructor(data?: ICreateSaleInvoiceDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.saleDescount = _data["saleDescount"];
-            this.saleCurrency = _data["saleCurrency"];
-            this.note = _data["note"];
-            this.saleTakeBalance = _data["saleTakeBalance"];
-            this.status = _data["status"];
-            this.daysForPaid = _data["daysForPaid"];
-            this.dateForPaid = _data["dateForPaid"];
-            this.paidType = _data["paidType"];
-            this.pdfFilePath = _data["pdfFilePath"];
-            this.pillURN = _data["pillURN"];
-            this.customerId = _data["customerId"];
-            if (Array.isArray(_data["saleInvoiceItems"])) {
-                this.saleInvoiceItems = [] as any;
-                for (let item of _data["saleInvoiceItems"])
-                    this.saleInvoiceItems.push(CreateSaleInvoiceItemDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): CreateSaleInvoiceDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateSaleInvoiceDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["saleDescount"] = this.saleDescount;
-        data["saleCurrency"] = this.saleCurrency;
-        data["note"] = this.note;
-        data["saleTakeBalance"] = this.saleTakeBalance;
-        data["status"] = this.status;
-        data["daysForPaid"] = this.daysForPaid;
-        data["dateForPaid"] = this.dateForPaid;
-        data["paidType"] = this.paidType;
-        data["pdfFilePath"] = this.pdfFilePath;
-        data["pillURN"] = this.pillURN;
-        data["customerId"] = this.customerId;
-        if (Array.isArray(this.saleInvoiceItems)) {
-            data["saleInvoiceItems"] = [];
-            for (let item of this.saleInvoiceItems)
-                data["saleInvoiceItems"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): CreateSaleInvoiceDto {
-        const json = this.toJSON();
-        let result = new CreateSaleInvoiceDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateSaleInvoiceDto {
-    saleDescount: number;
-    saleCurrency: Currency;
-    note: string | undefined;
-    saleTakeBalance: number;
-    status: SaleInvoiceStatus;
-    daysForPaid: number;
-    dateForPaid: string | undefined;
-    paidType: PaidType;
-    pdfFilePath: string | undefined;
-    pillURN: string | undefined;
-    customerId: number | undefined;
-    saleInvoiceItems: CreateSaleInvoiceItemDto[] | undefined;
-}
-
-export class CreateSaleInvoiceItemDto implements ICreateSaleInvoiceItemDto {
-    totalQuantity: number;
-    totalItemPrice: number;
-    saleInvoiceId: number | undefined;
-    deliveryItemId: number | undefined;
-
-    constructor(data?: ICreateSaleInvoiceItemDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalQuantity = _data["totalQuantity"];
-            this.totalItemPrice = _data["totalItemPrice"];
-            this.saleInvoiceId = _data["saleInvoiceId"];
-            this.deliveryItemId = _data["deliveryItemId"];
-        }
-    }
-
-    static fromJS(data: any): CreateSaleInvoiceItemDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateSaleInvoiceItemDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalQuantity"] = this.totalQuantity;
-        data["totalItemPrice"] = this.totalItemPrice;
-        data["saleInvoiceId"] = this.saleInvoiceId;
-        data["deliveryItemId"] = this.deliveryItemId;
-        return data;
-    }
-
-    clone(): CreateSaleInvoiceItemDto {
-        const json = this.toJSON();
-        let result = new CreateSaleInvoiceItemDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateSaleInvoiceItemDto {
-    totalQuantity: number;
-    totalItemPrice: number;
-    saleInvoiceId: number | undefined;
-    deliveryItemId: number | undefined;
 }
 
 export class CreateSaleInvoiceDto implements ICreateSaleInvoiceDto {
@@ -18049,11 +18071,6 @@ export enum Currency {
     _1 = 1,
 }
 
-export enum Currency {
-    _0 = 0,
-    _1 = 1,
-}
-
 export class CustomAttributeData implements ICustomAttributeData {
     attributeType: Type;
     constructor_: ConstructorInfo;
@@ -18624,7 +18641,6 @@ export class DeliveryDto implements IDeliveryDto {
     driverPhoneNumber: string | undefined;
     status: number;
     readonly totalTransportedQuantity: number;
-    readonly totalTransportedQuantity: number;
     customerId: number | undefined;
     customer: CustomerDto;
     deliveryItems: DeliveryItemDto[] | undefined;
@@ -18649,7 +18665,6 @@ export class DeliveryDto implements IDeliveryDto {
             this.vehicleNumber = _data["vehicleNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
-            (<any>this).totalTransportedQuantity = _data["totalTransportedQuantity"];
             (<any>this).totalTransportedQuantity = _data["totalTransportedQuantity"];
             this.customerId = _data["customerId"];
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
@@ -18680,7 +18695,6 @@ export class DeliveryDto implements IDeliveryDto {
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["totalTransportedQuantity"] = this.totalTransportedQuantity;
-        data["totalTransportedQuantity"] = this.totalTransportedQuantity;
         data["customerId"] = this.customerId;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         if (Array.isArray(this.deliveryItems)) {
@@ -18709,7 +18723,6 @@ export interface IDeliveryDto {
     vehicleNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
-    totalTransportedQuantity: number;
     totalTransportedQuantity: number;
     customerId: number | undefined;
     customer: CustomerDto;
@@ -18780,7 +18793,6 @@ export class DeliveryItemDto implements IDeliveryItemDto {
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
     deliveryItemStatus: DeliveryItemStatus;
-    deliveryItemStatus: DeliveryItemStatus;
 
     constructor(data?: IDeliveryItemDto) {
         if (data) {
@@ -18800,7 +18812,6 @@ export class DeliveryItemDto implements IDeliveryItemDto {
             this.approvedQuantity = _data["approvedQuantity"];
             this.rejectedQuantity = _data["rejectedQuantity"];
             this.invoiceItem = _data["invoiceItem"] ? InvoiceItemDto.fromJS(_data["invoiceItem"]) : <any>undefined;
-            this.deliveryItemStatus = _data["deliveryItemStatus"];
             this.deliveryItemStatus = _data["deliveryItemStatus"];
         }
     }
@@ -18822,7 +18833,6 @@ export class DeliveryItemDto implements IDeliveryItemDto {
         data["rejectedQuantity"] = this.rejectedQuantity;
         data["invoiceItem"] = this.invoiceItem ? this.invoiceItem.toJSON() : <any>undefined;
         data["deliveryItemStatus"] = this.deliveryItemStatus;
-        data["deliveryItemStatus"] = this.deliveryItemStatus;
         return data;
     }
 
@@ -18842,14 +18852,6 @@ export interface IDeliveryItemDto {
     approvedQuantity: number;
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
-    deliveryItemStatus: DeliveryItemStatus;
-}
-
-export enum DeliveryItemStatus {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
     deliveryItemStatus: DeliveryItemStatus;
 }
 
@@ -21717,7 +21719,7 @@ export class OrderLogDto implements IOrderLogDto {
     creatorUserId: number | undefined;
     type: OrderLogType;
     actionId: number;
-    offerId: number;
+    relatedId: number;
     fullName: string | undefined;
     attributes: OrderLogAttributeDto[] | undefined;
 
@@ -21737,7 +21739,7 @@ export class OrderLogDto implements IOrderLogDto {
             this.creatorUserId = _data["creatorUserId"];
             this.type = _data["type"];
             this.actionId = _data["actionId"];
-            this.offerId = _data["offerId"];
+            this.relatedId = _data["relatedId"];
             this.fullName = _data["fullName"];
             if (Array.isArray(_data["attributes"])) {
                 this.attributes = [] as any;
@@ -21761,7 +21763,7 @@ export class OrderLogDto implements IOrderLogDto {
         data["creatorUserId"] = this.creatorUserId;
         data["type"] = this.type;
         data["actionId"] = this.actionId;
-        data["offerId"] = this.offerId;
+        data["relatedId"] = this.relatedId;
         data["fullName"] = this.fullName;
         if (Array.isArray(this.attributes)) {
             data["attributes"] = [];
@@ -21785,7 +21787,7 @@ export interface IOrderLogDto {
     creatorUserId: number | undefined;
     type: OrderLogType;
     actionId: number;
-    offerId: number;
+    relatedId: number;
     fullName: string | undefined;
     attributes: OrderLogAttributeDto[] | undefined;
 }
@@ -23156,247 +23158,6 @@ export class RuntimeTypeHandle implements IRuntimeTypeHandle {
 
 export interface IRuntimeTypeHandle {
     value: IntPtr;
-}
-
-export class SaleInvoiceDto implements ISaleInvoiceDto {
-    id: number;
-    creationTime: string | undefined;
-    saleDescount: number;
-    saleCurrency: Currency;
-    readonly saeltotalPrice: number;
-    readonly invoiceTotalQuantity: number;
-    note: string | undefined;
-    saleTakeBalance: number;
-    status: SaleInvoiceStatus;
-    daysForPaid: number;
-    dateForPaid: string | undefined;
-    readonly remainingDaysForPaid: number;
-    paidType: PaidType;
-    pdfFilePath: string | undefined;
-    pillURN: string | undefined;
-    customerId: number | undefined;
-    customer: CustomerDto;
-    saleInvoiceItems: SaleInvoiceItemDto[] | undefined;
-
-    constructor(data?: ISaleInvoiceDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.creationTime = _data["creationTime"];
-            this.saleDescount = _data["saleDescount"];
-            this.saleCurrency = _data["saleCurrency"];
-            (<any>this).saeltotalPrice = _data["saeltotalPrice"];
-            (<any>this).invoiceTotalQuantity = _data["invoiceTotalQuantity"];
-            this.note = _data["note"];
-            this.saleTakeBalance = _data["saleTakeBalance"];
-            this.status = _data["status"];
-            this.daysForPaid = _data["daysForPaid"];
-            this.dateForPaid = _data["dateForPaid"];
-            (<any>this).remainingDaysForPaid = _data["remainingDaysForPaid"];
-            this.paidType = _data["paidType"];
-            this.pdfFilePath = _data["pdfFilePath"];
-            this.pillURN = _data["pillURN"];
-            this.customerId = _data["customerId"];
-            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
-            if (Array.isArray(_data["saleInvoiceItems"])) {
-                this.saleInvoiceItems = [] as any;
-                for (let item of _data["saleInvoiceItems"])
-                    this.saleInvoiceItems.push(SaleInvoiceItemDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): SaleInvoiceDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SaleInvoiceDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["creationTime"] = this.creationTime;
-        data["saleDescount"] = this.saleDescount;
-        data["saleCurrency"] = this.saleCurrency;
-        data["saeltotalPrice"] = this.saeltotalPrice;
-        data["invoiceTotalQuantity"] = this.invoiceTotalQuantity;
-        data["note"] = this.note;
-        data["saleTakeBalance"] = this.saleTakeBalance;
-        data["status"] = this.status;
-        data["daysForPaid"] = this.daysForPaid;
-        data["dateForPaid"] = this.dateForPaid;
-        data["remainingDaysForPaid"] = this.remainingDaysForPaid;
-        data["paidType"] = this.paidType;
-        data["pdfFilePath"] = this.pdfFilePath;
-        data["pillURN"] = this.pillURN;
-        data["customerId"] = this.customerId;
-        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        if (Array.isArray(this.saleInvoiceItems)) {
-            data["saleInvoiceItems"] = [];
-            for (let item of this.saleInvoiceItems)
-                data["saleInvoiceItems"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): SaleInvoiceDto {
-        const json = this.toJSON();
-        let result = new SaleInvoiceDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISaleInvoiceDto {
-    id: number;
-    creationTime: string | undefined;
-    saleDescount: number;
-    saleCurrency: Currency;
-    saeltotalPrice: number;
-    invoiceTotalQuantity: number;
-    note: string | undefined;
-    saleTakeBalance: number;
-    status: SaleInvoiceStatus;
-    daysForPaid: number;
-    dateForPaid: string | undefined;
-    remainingDaysForPaid: number;
-    paidType: PaidType;
-    pdfFilePath: string | undefined;
-    pillURN: string | undefined;
-    customerId: number | undefined;
-    customer: CustomerDto;
-    saleInvoiceItems: SaleInvoiceItemDto[] | undefined;
-}
-
-export class SaleInvoiceDtoPagedResultDto implements ISaleInvoiceDtoPagedResultDto {
-    items: SaleInvoiceDto[] | undefined;
-    totalCount: number;
-
-    constructor(data?: ISaleInvoiceDtoPagedResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(SaleInvoiceDto.fromJS(item));
-            }
-            this.totalCount = _data["totalCount"];
-        }
-    }
-
-    static fromJS(data: any): SaleInvoiceDtoPagedResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SaleInvoiceDtoPagedResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        data["totalCount"] = this.totalCount;
-        return data;
-    }
-
-    clone(): SaleInvoiceDtoPagedResultDto {
-        const json = this.toJSON();
-        let result = new SaleInvoiceDtoPagedResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISaleInvoiceDtoPagedResultDto {
-    items: SaleInvoiceDto[] | undefined;
-    totalCount: number;
-}
-
-export class SaleInvoiceItemDto implements ISaleInvoiceItemDto {
-    id: number;
-    totalQuantity: number;
-    totalItemPrice: number;
-    saleInvoiceId: number | undefined;
-    deliveryItemId: number | undefined;
-    deliveryItem: DeliveryItemDto;
-
-    constructor(data?: ISaleInvoiceItemDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.totalQuantity = _data["totalQuantity"];
-            this.totalItemPrice = _data["totalItemPrice"];
-            this.saleInvoiceId = _data["saleInvoiceId"];
-            this.deliveryItemId = _data["deliveryItemId"];
-            this.deliveryItem = _data["deliveryItem"] ? DeliveryItemDto.fromJS(_data["deliveryItem"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): SaleInvoiceItemDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new SaleInvoiceItemDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["totalQuantity"] = this.totalQuantity;
-        data["totalItemPrice"] = this.totalItemPrice;
-        data["saleInvoiceId"] = this.saleInvoiceId;
-        data["deliveryItemId"] = this.deliveryItemId;
-        data["deliveryItem"] = this.deliveryItem ? this.deliveryItem.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): SaleInvoiceItemDto {
-        const json = this.toJSON();
-        let result = new SaleInvoiceItemDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISaleInvoiceItemDto {
-    id: number;
-    totalQuantity: number;
-    totalItemPrice: number;
-    saleInvoiceId: number | undefined;
-    deliveryItemId: number | undefined;
-    deliveryItem: DeliveryItemDto;
-}
-
-export enum SaleInvoiceStatus {
-    _0 = 0,
 }
 
 export class SaleInvoiceDto implements ISaleInvoiceDto {
@@ -26060,12 +25821,11 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
     driverName: string | undefined;
     vehicleNumber: string | undefined;
     grNumber: string | undefined;
-    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
     customerId: number | undefined;
-    invoiceId: number | undefined;
+    approveDate: moment.Moment | undefined;
     deliveryItems: UpdateDeliveryItemDto[] | undefined;
 
     constructor(data?: IUpdateDeliveryDto) {
@@ -26085,12 +25845,11 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
             this.driverName = _data["driverName"];
             this.vehicleNumber = _data["vehicleNumber"];
             this.grNumber = _data["grNumber"];
-            this.grNumber = _data["grNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
             this.transportedQuantity = _data["transportedQuantity"];
             this.customerId = _data["customerId"];
-            this.invoiceId = _data["invoiceId"];
+            this.approveDate = _data["approveDate"] ? moment(_data["approveDate"].toString()) : <any>undefined;
             if (Array.isArray(_data["deliveryItems"])) {
                 this.deliveryItems = [] as any;
                 for (let item of _data["deliveryItems"])
@@ -26114,12 +25873,11 @@ export class UpdateDeliveryDto implements IUpdateDeliveryDto {
         data["driverName"] = this.driverName;
         data["vehicleNumber"] = this.vehicleNumber;
         data["grNumber"] = this.grNumber;
-        data["grNumber"] = this.grNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
         data["transportedQuantity"] = this.transportedQuantity;
         data["customerId"] = this.customerId;
-        data["invoiceId"] = this.invoiceId;
+        data["approveDate"] = this.approveDate ? this.approveDate.toISOString() : <any>undefined;
         if (Array.isArray(this.deliveryItems)) {
             data["deliveryItems"] = [];
             for (let item of this.deliveryItems)
@@ -26143,12 +25901,11 @@ export interface IUpdateDeliveryDto {
     driverName: string | undefined;
     vehicleNumber: string | undefined;
     grNumber: string | undefined;
-    grNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
     transportedQuantity: number;
     customerId: number | undefined;
-    invoiceId: number | undefined;
+    approveDate: moment.Moment | undefined;
     deliveryItems: UpdateDeliveryItemDto[] | undefined;
 }
 
@@ -26157,7 +25914,7 @@ export class UpdateDeliveryItemDto implements IUpdateDeliveryItemDto {
     batchNumber: string | undefined;
     invoiceItemId: number | undefined;
     deliveredQuantity: number;
-    status: number;
+    deliveryItemStatus: number;
 
     constructor(data?: IUpdateDeliveryItemDto) {
         if (data) {
@@ -26174,7 +25931,7 @@ export class UpdateDeliveryItemDto implements IUpdateDeliveryItemDto {
             this.batchNumber = _data["batchNumber"];
             this.invoiceItemId = _data["invoiceItemId"];
             this.deliveredQuantity = _data["deliveredQuantity"];
-            this.status = _data["status"];
+            this.deliveryItemStatus = _data["deliveryItemStatus"];
         }
     }
 
@@ -26191,7 +25948,7 @@ export class UpdateDeliveryItemDto implements IUpdateDeliveryItemDto {
         data["batchNumber"] = this.batchNumber;
         data["invoiceItemId"] = this.invoiceItemId;
         data["deliveredQuantity"] = this.deliveredQuantity;
-        data["status"] = this.status;
+        data["deliveryItemStatus"] = this.deliveryItemStatus;
         return data;
     }
 
@@ -26208,7 +25965,7 @@ export interface IUpdateDeliveryItemDto {
     batchNumber: string | undefined;
     invoiceItemId: number | undefined;
     deliveredQuantity: number;
-    status: number;
+    deliveryItemStatus: number;
 }
 
 export class UpdateEmployeeDto implements IUpdateEmployeeDto {
@@ -26729,164 +26486,6 @@ export interface IUpdateReceivingItemDto {
     id: number;
     receivedQuantity: number;
     invoiceItemId: number | undefined;
-}
-
-export class UpdateSaleInvoiceDto implements IUpdateSaleInvoiceDto {
-    id: number;
-    saleDescount: number;
-    saleCurrency: Currency;
-    note: string | undefined;
-    saleTakeBalance: number;
-    status: SaleInvoiceStatus;
-    daysForPaid: number;
-    dateForPaid: string | undefined;
-    paidType: PaidType;
-    pdfFilePath: string | undefined;
-    pillURN: string | undefined;
-    customerId: number | undefined;
-    saleInvoiceItems: UpdateSaleInvoiceItemDto[] | undefined;
-
-    constructor(data?: IUpdateSaleInvoiceDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.saleDescount = _data["saleDescount"];
-            this.saleCurrency = _data["saleCurrency"];
-            this.note = _data["note"];
-            this.saleTakeBalance = _data["saleTakeBalance"];
-            this.status = _data["status"];
-            this.daysForPaid = _data["daysForPaid"];
-            this.dateForPaid = _data["dateForPaid"];
-            this.paidType = _data["paidType"];
-            this.pdfFilePath = _data["pdfFilePath"];
-            this.pillURN = _data["pillURN"];
-            this.customerId = _data["customerId"];
-            if (Array.isArray(_data["saleInvoiceItems"])) {
-                this.saleInvoiceItems = [] as any;
-                for (let item of _data["saleInvoiceItems"])
-                    this.saleInvoiceItems.push(UpdateSaleInvoiceItemDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): UpdateSaleInvoiceDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateSaleInvoiceDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["saleDescount"] = this.saleDescount;
-        data["saleCurrency"] = this.saleCurrency;
-        data["note"] = this.note;
-        data["saleTakeBalance"] = this.saleTakeBalance;
-        data["status"] = this.status;
-        data["daysForPaid"] = this.daysForPaid;
-        data["dateForPaid"] = this.dateForPaid;
-        data["paidType"] = this.paidType;
-        data["pdfFilePath"] = this.pdfFilePath;
-        data["pillURN"] = this.pillURN;
-        data["customerId"] = this.customerId;
-        if (Array.isArray(this.saleInvoiceItems)) {
-            data["saleInvoiceItems"] = [];
-            for (let item of this.saleInvoiceItems)
-                data["saleInvoiceItems"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): UpdateSaleInvoiceDto {
-        const json = this.toJSON();
-        let result = new UpdateSaleInvoiceDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUpdateSaleInvoiceDto {
-    id: number;
-    saleDescount: number;
-    saleCurrency: Currency;
-    note: string | undefined;
-    saleTakeBalance: number;
-    status: SaleInvoiceStatus;
-    daysForPaid: number;
-    dateForPaid: string | undefined;
-    paidType: PaidType;
-    pdfFilePath: string | undefined;
-    pillURN: string | undefined;
-    customerId: number | undefined;
-    saleInvoiceItems: UpdateSaleInvoiceItemDto[] | undefined;
-}
-
-export class UpdateSaleInvoiceItemDto implements IUpdateSaleInvoiceItemDto {
-    id: number;
-    totalQuantity: number;
-    totalItemPrice: number;
-    saleInvoiceId: number | undefined;
-    deliveryItemId: number | undefined;
-
-    constructor(data?: IUpdateSaleInvoiceItemDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.totalQuantity = _data["totalQuantity"];
-            this.totalItemPrice = _data["totalItemPrice"];
-            this.saleInvoiceId = _data["saleInvoiceId"];
-            this.deliveryItemId = _data["deliveryItemId"];
-        }
-    }
-
-    static fromJS(data: any): UpdateSaleInvoiceItemDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateSaleInvoiceItemDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["totalQuantity"] = this.totalQuantity;
-        data["totalItemPrice"] = this.totalItemPrice;
-        data["saleInvoiceId"] = this.saleInvoiceId;
-        data["deliveryItemId"] = this.deliveryItemId;
-        return data;
-    }
-
-    clone(): UpdateSaleInvoiceItemDto {
-        const json = this.toJSON();
-        let result = new UpdateSaleInvoiceItemDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUpdateSaleInvoiceItemDto {
-    id: number;
-    totalQuantity: number;
-    totalItemPrice: number;
-    saleInvoiceId: number | undefined;
-    deliveryItemId: number | undefined;
 }
 
 export class UpdateSaleInvoiceDto implements IUpdateSaleInvoiceDto {

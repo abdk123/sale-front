@@ -89,7 +89,7 @@ export class DeliveryReportItemComponent
     let input = new ChangeItemStatusInputDto();
     input.init({ id: id, status: status });
     this.deliveryService.changeItemStatus(input).subscribe((result) => {
-      this.deliveryItems.find((x) => x.id == result.id).status = status;
+      this.deliveryItems.find((x) => x.id == result.id).deliveryItemStatus = status;
     });
   }
 

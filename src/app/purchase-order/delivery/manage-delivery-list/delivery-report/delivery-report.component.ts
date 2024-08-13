@@ -57,11 +57,11 @@ export class DeliveryReportComponent
     });
   }
 
-  initialInvoice() {
-    this.invoiceService
-      .getWithDetail(this.delivery.invoiceId)
-      .subscribe((result) => (this.invoice = result));
-  }
+  // initialInvoice() {
+  //   this.invoiceService
+  //     .getWithDetail(this.delivery.invoiceId)
+  //     .subscribe((result) => (this.invoice = result));
+  // }
 
   save() {
     if (
