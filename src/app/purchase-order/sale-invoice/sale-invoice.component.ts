@@ -140,6 +140,8 @@ export class SaleInvoiceComponent
       this.saleInvoices = result.items;
       this.showPaging(result, pageNumber);
     });
+
+    
   }
 
   viewPrintPage(id: number) {

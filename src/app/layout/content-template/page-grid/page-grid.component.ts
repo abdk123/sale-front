@@ -4,6 +4,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { BtSortableHeader, SortEvent } from '@shared/directives/bt-sortable-header.directive';
 import { IPageField, IPageMenu } from '../page-default/page-field';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { CommaNumberPipe } from '@shared/pipes/comma-number.pipe';
 
 @Component({
   selector: "app-page-grid",
@@ -125,7 +126,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
       case "enum":
         return this.getEnumValue(item, field);
       default:
-        return field.name ? item[field.name] : "";
+        return (field.name && item[field.name]) ? item[field.name] : "....";
     }
   }
 
@@ -150,7 +151,8 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   }
 
   getNumberValue(item, field: IPageField) {
-    return item[field.name];
+    return new CommaNumberPipe()
+    .transform(item[field.name]);
   }
 
   getTemplateValue(item, field: IPageField) {

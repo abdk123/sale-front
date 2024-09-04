@@ -36,17 +36,16 @@
                             <th></th>
                             <th>{{'Status' | localize}}</th>
                             <th>{{'Customer' | localize}}</th>
-                            <th>{{'PoNumber' | localize}}</th>
                             <th>{{'GrCode' | localize}}</th>
                             <th>{{'Number' | localize}}</th>
                             <th>{{'DriverName' | localize}}</th>
                             <th>{{'DriverPhoneNumber' | localize}}</th>
                             <th>{{'VehicleNumber' | localize}}</th>
                             <th>{{'TotalQuantity' | localize}}</th>
-                            <th>{{'Date' | localize}}</th>
+                            <th>{{'ApproveDate' | localize}}</th>
                             <th>{{'TotalPrice' | localize}}</th>
+                            <th>{{'TransportCost' | localize}}</th>
                             <th>{{'Currency' | localize}}</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,21 +53,25 @@
                             <td>
                                 <label class="custom-control custom-checkbox mb-0 d-inline-block">
                                     <input type="checkbox" class="custom-control-input"
-                                        (change)="onCheck(delivery)">
+                                        (change)="onCheck(delivery)" [disabled]="delivery.status != 1">
                                     <span class="custom-control-label">&nbsp;</span>
                                 </label>
                             </td>
-                            <td *ngIf="delivery.status === 3">{{'Delivered' | localize}}</td>
+                            <td>
+                                <span *ngIf="delivery.status == 1" class="badge badge-pill badge-outline-primary">{{'Approved' | localize}}</span>
+                                <span *ngIf="delivery.status == 6" class="badge badge-pill badge-outline-secondary">{{'CreateSaleInoice' | localize}}</span>
+                                <span *ngIf="delivery.status == 7" class="badge badge-pill badge-outline-success">{{'Pain' | localize}}</span>
+                            </td>
                             <td>{{delivery.customer?.fullName}}</td>
-                            <td>PO</td>
-                            <td>GR</td>
+                            <td>{{delivery.grNumber}}</td>
                             <td>{{delivery.id}}</td>
                             <td>{{delivery.driverName}}</td>
                             <td>{{delivery.driverPhoneNumber}}</td>
                             <td>{{delivery.vehicleNumber}}</td>
-                            <td>{{delivery.totalTransportedQuantity}}</td>
-                            <td>{{delivery.creationTime | date:'yyyy-MM-dd'}}</td>
-                            <td>{{delivery.transportCost}}</td>
+                            <td>{{delivery.totalTransportedQuantity | commaNumber}}</td>
+                            <td>{{delivery.approveDate | date:'yyyy-MM-dd'}}</td>
+                            <td>{{delivery.totalPrice | commaNumber}}</td>
+                            <td>{{delivery.transportCost | commaNumber}}</td>
                             <td *ngIf="delivery.transportCostCurrency === 0">{{'Dinar' | localize}}</td>
                             <td *ngIf="delivery.transportCostCurrency === 1">{{'Dollar' | localize}}</td>
                         </tr>

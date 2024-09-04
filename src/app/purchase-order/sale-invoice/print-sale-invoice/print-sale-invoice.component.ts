@@ -47,7 +47,7 @@ export class PrintSaleInvoiceComponent extends AppComponentBase {
 
   calculateTotalPrice() {
     const totalPrice = this.saleInvoiceItems.reduce(
-      (sum, item) => sum + item.totalQuantity * item.totalItemPrice,
+      (sum, item) => sum + item.totalItemPrice,
       0
     );
     return totalPrice;

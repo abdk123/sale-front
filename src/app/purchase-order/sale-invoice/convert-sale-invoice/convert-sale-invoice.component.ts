@@ -81,8 +81,8 @@ export class ConvertSaleInvoiceComponent extends AppComponentBase {
       this.selectedDeliveries.forEach((delivery) => {
         delivery.deliveryItems.forEach((item) => {
           var saleInvoiceItem = new CreateSaleInvoiceItemDto();
-          saleInvoiceItem.totalQuantity = delivery.totalTransportedQuantity;
-          saleInvoiceItem.totalItemPrice = item.invoiceItem?.totalMaterilPrice;
+          saleInvoiceItem.totalQuantity = item.transportedQuantity;
+          saleInvoiceItem.totalItemPrice = item.toralPrice;
           saleInvoiceItem.deliveryItemId = item.id;
 
           this.saleInvoice.saleInvoiceItems.push(saleInvoiceItem);

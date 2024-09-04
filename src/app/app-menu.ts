@@ -25,19 +25,37 @@ const data: IMenuItem[] = [
     permissions: permissionsSetting,
     subs: [
       {
+        label: "Store",
+        to: `${adminRoot}/settings/store`,
+        icon: "iconsminds-clothing-store",
+        permissions: permissionsSetting,
+      },
+      {
+        label: "Category",
+        to: `${adminRoot}/settings/category`,
+        icon: "simple-icon-list",
+        permissions: permissionsSetting,
+      },
+      {
+        label: "Size",
+        to: `${adminRoot}/settings/unit`,
+        icon: "iconsminds-scale",
+        permissions: permissionsSetting,
+      },
+      {
         label: "Material",
         to: `${adminRoot}/settings/material`,
         icon: "iconsminds-shopping-basket",
         permissions: permissionsSetting,
       },
 
+      
       {
-        label: "Store",
-        to: `${adminRoot}/settings/store`,
-        icon: "iconsminds-clothing-store",
+        label: "Customer",
+        to: `${adminRoot}/settings/customer`,
+        icon: "simple-icon-user",
         permissions: permissionsSetting,
       },
-
       {
         label: "ClearanceCompany",
         to: `${adminRoot}/settings/clearanceCompany`,
@@ -51,25 +69,8 @@ const data: IMenuItem[] = [
         icon: "iconsminds-building",
         permissions: permissionsSetting,
       },
-
-      {
-        label: "Category",
-        to: `${adminRoot}/settings/category`,
-        icon: "simple-icon-list",
-        permissions: permissionsSetting,
-      },
-      {
-        label: "Customer",
-        to: `${adminRoot}/settings/customer`,
-        icon: "simple-icon-user",
-        permissions: permissionsSetting,
-      },
-      {
-        label: "Size",
-        to: `${adminRoot}/settings/unit`,
-        icon: "iconsminds-scale",
-        permissions: permissionsSetting,
-      },
+      
+      
       {
         label: "Employees",
         to: `${adminRoot}/hr/employees`,
@@ -78,6 +79,87 @@ const data: IMenuItem[] = [
       },
     ],
   },
+    //Offers
+    {
+      icon: "simple-icon-layers",
+      label: "Orders",
+      to: `${adminRoot}/orders`,
+      permissions: permissionsSetting,
+      subs: [ 
+        {
+          label: "Offers",
+          to: `${adminRoot}/orders/offers`,
+          icon: "iconsminds-address-book-2",
+          permissions: permissionsSetting,
+        },
+        {
+          label: "PurchaseInvoices",
+          to: `${adminRoot}/orders/invoices`,
+          icon: "bi bi-receipt",
+          permissions: permissionsSetting,
+        },
+        {
+          label: "ReveivingMaterials",
+          to: `${adminRoot}/orders/receives`,
+          icon: "bi bi-box-arrow-in-down",
+          permissions: permissionsSetting,
+        },
+        {
+          label: "Deliveries",
+          icon: "bi bi-truck",
+          permissions: permissionsSetting,
+          to: ``,
+          subs: [
+            {
+              label: "DeliveriesList",
+              to: `${adminRoot}/orders/deliveries`,
+              icon: "",
+              permissions: permissionsSetting,
+            },
+            {
+              label: "DeliveryManagement",
+              to: `${adminRoot}/orders/manage-delivery`,
+              icon: "",
+              permissions: permissionsSetting,
+            },
+            {
+              label: "ReturnedDeliveries",
+              to: `${adminRoot}/orders/returned-deliveries`,
+              icon: "bi bi-receipt",
+              permissions: permissionsSetting,
+            },
+            {
+              label: "RejectedDeliveries",
+              to: `${adminRoot}/orders/rejected-deliveries`,
+              icon: "bi bi-receipt",
+              permissions: permissionsSetting,
+            },
+          ],
+        },
+        {
+          label: "SaleInvoices",
+          icon: "bi bi-truck",
+          permissions: permissionsSetting,
+          to: `1`,
+          subs: [
+            {
+              label: "ConvertSaleInvoices",
+              to: `${adminRoot}/orders/convert-sale-invoices`,
+              icon: "bi bi-receipt",
+              permissions: permissionsSetting,
+            },
+            {
+              label: "SaleInvoiceList",
+              to: `${adminRoot}/orders/sale-invoices`,
+              icon: "bi bi-receipt",
+              permissions: permissionsSetting,
+            },
+            
+          ],
+        },
+        
+      ],
+    },
   //Vouchers
   {
     icon: "simple-icon-book-open",
@@ -105,85 +187,7 @@ const data: IMenuItem[] = [
       },
     ],
   },
-  //Offers
-  {
-    icon: "simple-icon-layers",
-    label: "Orders",
-    to: `${adminRoot}/orders`,
-    permissions: permissionsSetting,
-    subs: [ 
-      {
-        label: "Offers",
-        to: `${adminRoot}/orders/offers`,
-        icon: "iconsminds-address-book-2",
-        permissions: permissionsSetting,
-      },
-      {
-        label: "PurchaseInvoices",
-        to: `${adminRoot}/orders/invoices`,
-        icon: "bi bi-receipt",
-        permissions: permissionsSetting,
-      },
-      {
-        label: "ReveivingMaterials",
-        to: `${adminRoot}/orders/receives`,
-        icon: "bi bi-box-arrow-in-down",
-        permissions: permissionsSetting,
-      },
-      {
-        label: "Deliveries",
-        icon: "bi bi-truck",
-        permissions: permissionsSetting,
-        to: ``,
-        subs: [
-          {
-            label: "DeliveriesList",
-            to: `${adminRoot}/orders/deliveries`,
-            icon: "",
-            permissions: permissionsSetting,
-          },
-          {
-            label: "DeliveryManagement",
-            to: `${adminRoot}/orders/manage-delivery`,
-            icon: "",
-            permissions: permissionsSetting,
-          },
-        ],
-      },
-      {
-        label: "SaleInvoices",
-        icon: "bi bi-truck",
-        permissions: permissionsSetting,
-        to: `1`,
-        subs: [
-          {
-            label: "SaleInvoiceList",
-            to: `${adminRoot}/orders/sale-invoices`,
-            icon: "bi bi-receipt",
-            permissions: permissionsSetting,
-          },
-          {
-            label: "ConvertSaleInvoices",
-            to: `${adminRoot}/orders/convert-sale-invoices`,
-            icon: "bi bi-receipt",
-            permissions: permissionsSetting,
-          },
-        ],
-      },
-      {
-        label: "ReturnedDeliveries",
-        to: `${adminRoot}/orders/returned-deliveries`,
-        icon: "bi bi-receipt",
-        permissions: permissionsSetting,
-      },
-      {
-        label: "RejectedDeliveries",
-        to: `${adminRoot}/orders/rejected-deliveries`,
-        icon: "bi bi-receipt",
-        permissions: permissionsSetting,
-      },
-    ],
-  },
+
   //Security
   {
     icon: "iconsminds-security-settings",

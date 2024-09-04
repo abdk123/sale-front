@@ -11,7 +11,7 @@
                 <th></th>
                 <th class="bi" *ngFor="let field of fields" [sortable]="field.sortable ? field.name : ''"
                   (sort)="onSort($event)">{{field.label}}</th>
-                  <th></th>
+                  <th *ngIf="menuItems?.length > 0"></th>
               </tr>
             </thead>
             <tbody>
@@ -67,11 +67,11 @@
                   </span>
                 </td>
                 <td *ngFor="let field of fields" [innerHtml]="getValue(item, field)"></td>
-                <td style="max-width:10rem;">
-                  <div class="d-flex flex-wrap justify-content-start" >
-                      <ng-container *ngIf="menuItems?.length > 0">
+                <td style="max-width:10rem;"  *ngIf="menuItems?.length > 0">
+                  <div class="d-flex flex-column justify-content-start">
+                      <ng-container >
                         <button *ngFor="let menuItem of menuItems" id="button-basic" type="button" id="view" (click)="selectMenuItem(item.id,menuItem.name)"
-                        [class]="item.cssClass" class="btn btn-xs btn-outline-primary mx-1">
+                        [class]="item.cssClass" class="btn btn-xs btn-outline-primary my-1">
                         <i class="text-theme-1" [class]="menuItem.icon"></i>
                         &nbsp;&nbsp;
                         <span>{{menuItem.label | localize}}</span>

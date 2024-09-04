@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, HostListener, OnInit, Injector, NgZone, ViewChild, AfterViewInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { AppAuthService } from '@shared/auth/app-auth.service';
-import { GetNotificationsOutput, NotificationServiceProxy, UserNotification } from '@shared/service-proxies/service-proxies';
+import { GetNotificationsOutput, NotificationServiceProxy, SaleInvoiceServiceProxy, UserNotification } from '@shared/service-proxies/service-proxies';
 import { AppSessionService } from '@shared/session/app-session.service';
 import { getThemeColor, setThemeColor } from 'app/utils/util';
 import * as _ from 'lodash';
@@ -38,8 +38,7 @@ export class HeaderUserMenuComponent extends AppComponentBase implements OnInit 
 
   }
   ngAfterViewInit(): void {
-   //
-
+   
   }
 
   ngOnInit(): void {

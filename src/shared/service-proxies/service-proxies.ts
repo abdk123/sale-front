@@ -8389,6 +8389,53 @@ export class SaleInvoiceServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    sendNotifications(): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/SendNotifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSendNotifications(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSendNotifications(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSendNotifications(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -15467,6 +15514,8 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
     approveDate: string | undefined;
     supplierId: number | undefined;
     generateInvoice: boolean;
+    materialName: string | undefined;
+    unitName: string | undefined;
 
     constructor(data?: IChangeOfferStatusDto) {
         if (data) {
@@ -15485,6 +15534,8 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
             this.approveDate = _data["approveDate"];
             this.supplierId = _data["supplierId"];
             this.generateInvoice = _data["generateInvoice"];
+            this.materialName = _data["materialName"];
+            this.unitName = _data["unitName"];
         }
     }
 
@@ -15503,6 +15554,8 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
         data["approveDate"] = this.approveDate;
         data["supplierId"] = this.supplierId;
         data["generateInvoice"] = this.generateInvoice;
+        data["materialName"] = this.materialName;
+        data["unitName"] = this.unitName;
         return data;
     }
 
@@ -15521,6 +15574,8 @@ export interface IChangeOfferStatusDto {
     approveDate: string | undefined;
     supplierId: number | undefined;
     generateInvoice: boolean;
+    materialName: string | undefined;
+    unitName: string | undefined;
 }
 
 export class ChangePasswordDto implements IChangePasswordDto {
@@ -18632,14 +18687,16 @@ export interface ICustomerVoucherDtoPagedResultDto {
 
 export class DeliveryDto implements IDeliveryDto {
     id: number;
-    creationTime: string | undefined;
+    creationTime: moment.Moment;
+    approveDate: moment.Moment;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;
-    grName: string | undefined;
+    grNumber: string | undefined;
     vehicleNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
+    readonly totalPrice: number;
     readonly totalTransportedQuantity: number;
     customerId: number | undefined;
     customer: CustomerDto;
@@ -18657,14 +18714,16 @@ export class DeliveryDto implements IDeliveryDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.creationTime = _data["creationTime"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.approveDate = _data["approveDate"] ? moment(_data["approveDate"].toString()) : <any>undefined;
             this.transportCost = _data["transportCost"];
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
-            this.grName = _data["grName"];
+            this.grNumber = _data["grNumber"];
             this.vehicleNumber = _data["vehicleNumber"];
             this.driverPhoneNumber = _data["driverPhoneNumber"];
             this.status = _data["status"];
+            (<any>this).totalPrice = _data["totalPrice"];
             (<any>this).totalTransportedQuantity = _data["totalTransportedQuantity"];
             this.customerId = _data["customerId"];
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
@@ -18686,14 +18745,16 @@ export class DeliveryDto implements IDeliveryDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["creationTime"] = this.creationTime;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["approveDate"] = this.approveDate ? this.approveDate.toISOString() : <any>undefined;
         data["transportCost"] = this.transportCost;
         data["transportCostCurrency"] = this.transportCostCurrency;
         data["driverName"] = this.driverName;
-        data["grName"] = this.grName;
+        data["grNumber"] = this.grNumber;
         data["vehicleNumber"] = this.vehicleNumber;
         data["driverPhoneNumber"] = this.driverPhoneNumber;
         data["status"] = this.status;
+        data["totalPrice"] = this.totalPrice;
         data["totalTransportedQuantity"] = this.totalTransportedQuantity;
         data["customerId"] = this.customerId;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
@@ -18715,14 +18776,16 @@ export class DeliveryDto implements IDeliveryDto {
 
 export interface IDeliveryDto {
     id: number;
-    creationTime: string | undefined;
+    creationTime: moment.Moment;
+    approveDate: moment.Moment;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;
-    grName: string | undefined;
+    grNumber: string | undefined;
     vehicleNumber: string | undefined;
     driverPhoneNumber: string | undefined;
     status: number;
+    totalPrice: number;
     totalTransportedQuantity: number;
     customerId: number | undefined;
     customer: CustomerDto;
@@ -18792,6 +18855,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
     approvedQuantity: number;
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
+    toralPrice: number;
     deliveryItemStatus: DeliveryItemStatus;
 
     constructor(data?: IDeliveryItemDto) {
@@ -18812,6 +18876,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
             this.approvedQuantity = _data["approvedQuantity"];
             this.rejectedQuantity = _data["rejectedQuantity"];
             this.invoiceItem = _data["invoiceItem"] ? InvoiceItemDto.fromJS(_data["invoiceItem"]) : <any>undefined;
+            this.toralPrice = _data["toralPrice"];
             this.deliveryItemStatus = _data["deliveryItemStatus"];
         }
     }
@@ -18832,6 +18897,7 @@ export class DeliveryItemDto implements IDeliveryItemDto {
         data["approvedQuantity"] = this.approvedQuantity;
         data["rejectedQuantity"] = this.rejectedQuantity;
         data["invoiceItem"] = this.invoiceItem ? this.invoiceItem.toJSON() : <any>undefined;
+        data["toralPrice"] = this.toralPrice;
         data["deliveryItemStatus"] = this.deliveryItemStatus;
         return data;
     }
@@ -18852,6 +18918,7 @@ export interface IDeliveryItemDto {
     approvedQuantity: number;
     rejectedQuantity: number;
     invoiceItem: InvoiceItemDto;
+    toralPrice: number;
     deliveryItemStatus: DeliveryItemStatus;
 }
 
@@ -20041,7 +20108,6 @@ export interface IIntPtr {
 export class InvoiceDto implements IInvoiceDto {
     id: number;
     status: number;
-    supplierName: string | undefined;
     customerName: string | undefined;
     customerId: number | undefined;
     poNumber: string | undefined;
@@ -20069,7 +20135,6 @@ export class InvoiceDto implements IInvoiceDto {
         if (_data) {
             this.id = _data["id"];
             this.status = _data["status"];
-            this.supplierName = _data["supplierName"];
             this.customerName = _data["customerName"];
             this.customerId = _data["customerId"];
             this.poNumber = _data["poNumber"];
@@ -20101,7 +20166,6 @@ export class InvoiceDto implements IInvoiceDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["status"] = this.status;
-        data["supplierName"] = this.supplierName;
         data["customerName"] = this.customerName;
         data["customerId"] = this.customerId;
         data["poNumber"] = this.poNumber;
@@ -20133,7 +20197,6 @@ export class InvoiceDto implements IInvoiceDto {
 export interface IInvoiceDto {
     id: number;
     status: number;
-    supplierName: string | undefined;
     customerName: string | undefined;
     customerId: number | undefined;
     poNumber: string | undefined;
@@ -20212,6 +20275,8 @@ export class InvoiceItemDto implements IInvoiceItemDto {
     numberInSmallUnit: number;
     offerItem: OfferItemDto;
     offerItemId: number | undefined;
+    readonly supplierName: string | undefined;
+    readonly supplierId: number | undefined;
 
     constructor(data?: IInvoiceItemDto) {
         if (data) {
@@ -20231,6 +20296,8 @@ export class InvoiceItemDto implements IInvoiceItemDto {
             this.numberInSmallUnit = _data["numberInSmallUnit"];
             this.offerItem = _data["offerItem"] ? OfferItemDto.fromJS(_data["offerItem"]) : <any>undefined;
             this.offerItemId = _data["offerItemId"];
+            (<any>this).supplierName = _data["supplierName"];
+            (<any>this).supplierId = _data["supplierId"];
         }
     }
 
@@ -20250,6 +20317,8 @@ export class InvoiceItemDto implements IInvoiceItemDto {
         data["numberInSmallUnit"] = this.numberInSmallUnit;
         data["offerItem"] = this.offerItem ? this.offerItem.toJSON() : <any>undefined;
         data["offerItemId"] = this.offerItemId;
+        data["supplierName"] = this.supplierName;
+        data["supplierId"] = this.supplierId;
         return data;
     }
 
@@ -20269,6 +20338,8 @@ export interface IInvoiceItemDto {
     numberInSmallUnit: number;
     offerItem: OfferItemDto;
     offerItemId: number | undefined;
+    supplierName: string | undefined;
+    supplierId: number | undefined;
 }
 
 export class InvoiceItemForDeliveryDto implements IInvoiceItemForDeliveryDto {
@@ -21588,6 +21659,7 @@ export class OfferItemDto implements IOfferItemDto {
     material: MaterialDto;
     unit: UnitDto;
     offer: PoOfferDto;
+    supplier: CustomerDto;
 
     constructor(data?: IOfferItemDto) {
         if (data) {
@@ -21612,6 +21684,7 @@ export class OfferItemDto implements IOfferItemDto {
             this.material = _data["material"] ? MaterialDto.fromJS(_data["material"]) : <any>undefined;
             this.unit = _data["unit"] ? UnitDto.fromJS(_data["unit"]) : <any>undefined;
             this.offer = _data["offer"] ? PoOfferDto.fromJS(_data["offer"]) : <any>undefined;
+            this.supplier = _data["supplier"] ? CustomerDto.fromJS(_data["supplier"]) : <any>undefined;
         }
     }
 
@@ -21636,6 +21709,7 @@ export class OfferItemDto implements IOfferItemDto {
         data["material"] = this.material ? this.material.toJSON() : <any>undefined;
         data["unit"] = this.unit ? this.unit.toJSON() : <any>undefined;
         data["offer"] = this.offer ? this.offer.toJSON() : <any>undefined;
+        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
         return data;
     }
 
@@ -21660,6 +21734,7 @@ export interface IOfferItemDto {
     material: MaterialDto;
     unit: UnitDto;
     offer: PoOfferDto;
+    supplier: CustomerDto;
 }
 
 export class OrderLogAttributeDto implements IOrderLogAttributeDto {
@@ -23162,7 +23237,7 @@ export interface IRuntimeTypeHandle {
 
 export class SaleInvoiceDto implements ISaleInvoiceDto {
     id: number;
-    creationTime: string | undefined;
+    creationTime: moment.Moment;
     saleDescount: number;
     saleCurrency: Currency;
     readonly saeltotalPrice: number;
@@ -23171,7 +23246,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
     saleTakeBalance: number;
     status: SaleInvoiceStatus;
     daysForPaid: number;
-    dateForPaid: string | undefined;
+    dateForPaid: moment.Moment;
     readonly remainingDaysForPaid: number;
     paidType: PaidType;
     pdfFilePath: string | undefined;
@@ -23192,7 +23267,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.creationTime = _data["creationTime"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
             this.saleDescount = _data["saleDescount"];
             this.saleCurrency = _data["saleCurrency"];
             (<any>this).saeltotalPrice = _data["saeltotalPrice"];
@@ -23201,7 +23276,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
             this.saleTakeBalance = _data["saleTakeBalance"];
             this.status = _data["status"];
             this.daysForPaid = _data["daysForPaid"];
-            this.dateForPaid = _data["dateForPaid"];
+            this.dateForPaid = _data["dateForPaid"] ? moment(_data["dateForPaid"].toString()) : <any>undefined;
             (<any>this).remainingDaysForPaid = _data["remainingDaysForPaid"];
             this.paidType = _data["paidType"];
             this.pdfFilePath = _data["pdfFilePath"];
@@ -23226,7 +23301,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["creationTime"] = this.creationTime;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["saleDescount"] = this.saleDescount;
         data["saleCurrency"] = this.saleCurrency;
         data["saeltotalPrice"] = this.saeltotalPrice;
@@ -23235,7 +23310,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
         data["saleTakeBalance"] = this.saleTakeBalance;
         data["status"] = this.status;
         data["daysForPaid"] = this.daysForPaid;
-        data["dateForPaid"] = this.dateForPaid;
+        data["dateForPaid"] = this.dateForPaid ? this.dateForPaid.toISOString() : <any>undefined;
         data["remainingDaysForPaid"] = this.remainingDaysForPaid;
         data["paidType"] = this.paidType;
         data["pdfFilePath"] = this.pdfFilePath;
@@ -23260,7 +23335,7 @@ export class SaleInvoiceDto implements ISaleInvoiceDto {
 
 export interface ISaleInvoiceDto {
     id: number;
-    creationTime: string | undefined;
+    creationTime: moment.Moment;
     saleDescount: number;
     saleCurrency: Currency;
     saeltotalPrice: number;
@@ -23269,7 +23344,7 @@ export interface ISaleInvoiceDto {
     saleTakeBalance: number;
     status: SaleInvoiceStatus;
     daysForPaid: number;
-    dateForPaid: string | undefined;
+    dateForPaid: moment.Moment;
     remainingDaysForPaid: number;
     paidType: PaidType;
     pdfFilePath: string | undefined;
@@ -23399,6 +23474,8 @@ export interface ISaleInvoiceItemDto {
 
 export enum SaleInvoiceStatus {
     _0 = 0,
+    _1 = 1,
+    _2 = 2,
 }
 
 export enum SecurityRuleSet {
