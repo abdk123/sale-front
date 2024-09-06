@@ -6630,6 +6630,62 @@ export class OfferServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    convertToPurchaseInvoice(body: ConvertToPurchaseInvoiceDto | undefined): Observable<OfferDto> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/ConvertToPurchaseInvoice";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConvertToPurchaseInvoice(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConvertToPurchaseInvoice(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OfferDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OfferDto>;
+        }));
+    }
+
+    protected processConvertToPurchaseInvoice(response: HttpResponseBase): Observable<OfferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -15512,7 +15568,6 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
     status: number;
     porchaseOrderId: string | undefined;
     approveDate: string | undefined;
-    supplierId: number | undefined;
     generateInvoice: boolean;
     materialName: string | undefined;
     unitName: string | undefined;
@@ -15532,7 +15587,6 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
             this.status = _data["status"];
             this.porchaseOrderId = _data["porchaseOrderId"];
             this.approveDate = _data["approveDate"];
-            this.supplierId = _data["supplierId"];
             this.generateInvoice = _data["generateInvoice"];
             this.materialName = _data["materialName"];
             this.unitName = _data["unitName"];
@@ -15552,7 +15606,6 @@ export class ChangeOfferStatusDto implements IChangeOfferStatusDto {
         data["status"] = this.status;
         data["porchaseOrderId"] = this.porchaseOrderId;
         data["approveDate"] = this.approveDate;
-        data["supplierId"] = this.supplierId;
         data["generateInvoice"] = this.generateInvoice;
         data["materialName"] = this.materialName;
         data["unitName"] = this.unitName;
@@ -15572,7 +15625,6 @@ export interface IChangeOfferStatusDto {
     status: number;
     porchaseOrderId: string | undefined;
     approveDate: string | undefined;
-    supplierId: number | undefined;
     generateInvoice: boolean;
     materialName: string | undefined;
     unitName: string | undefined;
@@ -16219,6 +16271,65 @@ export interface IConstructorInfo {
     isSecuritySafeCritical: boolean;
     isSecurityTransparent: boolean;
     memberType: MemberTypes;
+}
+
+export class ConvertToPurchaseInvoiceDto implements IConvertToPurchaseInvoiceDto {
+    supplierId: number;
+    offerId: number;
+    offerItemsIds: number[] | undefined;
+
+    constructor(data?: IConvertToPurchaseInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.supplierId = _data["supplierId"];
+            this.offerId = _data["offerId"];
+            if (Array.isArray(_data["offerItemsIds"])) {
+                this.offerItemsIds = [] as any;
+                for (let item of _data["offerItemsIds"])
+                    this.offerItemsIds.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ConvertToPurchaseInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ConvertToPurchaseInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["supplierId"] = this.supplierId;
+        data["offerId"] = this.offerId;
+        if (Array.isArray(this.offerItemsIds)) {
+            data["offerItemsIds"] = [];
+            for (let item of this.offerItemsIds)
+                data["offerItemsIds"].push(item);
+        }
+        return data;
+    }
+
+    clone(): ConvertToPurchaseInvoiceDto {
+        const json = this.toJSON();
+        let result = new ConvertToPurchaseInvoiceDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IConvertToPurchaseInvoiceDto {
+    supplierId: number;
+    offerId: number;
+    offerItemsIds: number[] | undefined;
 }
 
 export class CreateCategoryDto implements ICreateCategoryDto {
@@ -16935,6 +17046,8 @@ export interface ICreateOfferDto {
 }
 
 export class CreateOfferItemDto implements ICreateOfferItemDto {
+    materialName: string | undefined;
+    unitName: string | undefined;
     materialId: number | undefined;
     sizeId: number | undefined;
     unitId: number | undefined;
@@ -16954,6 +17067,8 @@ export class CreateOfferItemDto implements ICreateOfferItemDto {
 
     init(_data?: any) {
         if (_data) {
+            this.materialName = _data["materialName"];
+            this.unitName = _data["unitName"];
             this.materialId = _data["materialId"];
             this.sizeId = _data["sizeId"];
             this.unitId = _data["unitId"];
@@ -16973,6 +17088,8 @@ export class CreateOfferItemDto implements ICreateOfferItemDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["materialName"] = this.materialName;
+        data["unitName"] = this.unitName;
         data["materialId"] = this.materialId;
         data["sizeId"] = this.sizeId;
         data["unitId"] = this.unitId;
@@ -16992,6 +17109,8 @@ export class CreateOfferItemDto implements ICreateOfferItemDto {
 }
 
 export interface ICreateOfferItemDto {
+    materialName: string | undefined;
+    unitName: string | undefined;
     materialId: number | undefined;
     sizeId: number | undefined;
     unitId: number | undefined;
@@ -18927,6 +19046,7 @@ export enum DeliveryItemStatus {
     _1 = 1,
     _2 = 2,
     _3 = 3,
+    _4 = 4,
 }
 
 export class DropdownDto implements IDropdownDto {
@@ -20108,8 +20228,6 @@ export interface IIntPtr {
 export class InvoiceDto implements IInvoiceDto {
     id: number;
     status: number;
-    customerName: string | undefined;
-    customerId: number | undefined;
     poNumber: string | undefined;
     currency: number;
     offerId: number | undefined;
@@ -20118,6 +20236,7 @@ export class InvoiceDto implements IInvoiceDto {
     creationTime: moment.Moment;
     totalQuantity: number;
     totalPrice: number;
+    supplierName: string | undefined;
     totalReceivedQuantity: number;
     readonly totalNotReceivedQuantity: number;
     invoiseDetails: InvoiceItemDto[] | undefined;
@@ -20135,8 +20254,6 @@ export class InvoiceDto implements IInvoiceDto {
         if (_data) {
             this.id = _data["id"];
             this.status = _data["status"];
-            this.customerName = _data["customerName"];
-            this.customerId = _data["customerId"];
             this.poNumber = _data["poNumber"];
             this.currency = _data["currency"];
             this.offerId = _data["offerId"];
@@ -20145,6 +20262,7 @@ export class InvoiceDto implements IInvoiceDto {
             this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
             this.totalQuantity = _data["totalQuantity"];
             this.totalPrice = _data["totalPrice"];
+            this.supplierName = _data["supplierName"];
             this.totalReceivedQuantity = _data["totalReceivedQuantity"];
             (<any>this).totalNotReceivedQuantity = _data["totalNotReceivedQuantity"];
             if (Array.isArray(_data["invoiseDetails"])) {
@@ -20166,8 +20284,6 @@ export class InvoiceDto implements IInvoiceDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["status"] = this.status;
-        data["customerName"] = this.customerName;
-        data["customerId"] = this.customerId;
         data["poNumber"] = this.poNumber;
         data["currency"] = this.currency;
         data["offerId"] = this.offerId;
@@ -20176,6 +20292,7 @@ export class InvoiceDto implements IInvoiceDto {
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["totalQuantity"] = this.totalQuantity;
         data["totalPrice"] = this.totalPrice;
+        data["supplierName"] = this.supplierName;
         data["totalReceivedQuantity"] = this.totalReceivedQuantity;
         data["totalNotReceivedQuantity"] = this.totalNotReceivedQuantity;
         if (Array.isArray(this.invoiseDetails)) {
@@ -20197,8 +20314,6 @@ export class InvoiceDto implements IInvoiceDto {
 export interface IInvoiceDto {
     id: number;
     status: number;
-    customerName: string | undefined;
-    customerId: number | undefined;
     poNumber: string | undefined;
     currency: number;
     offerId: number | undefined;
@@ -20207,6 +20322,7 @@ export interface IInvoiceDto {
     creationTime: moment.Moment;
     totalQuantity: number;
     totalPrice: number;
+    supplierName: string | undefined;
     totalReceivedQuantity: number;
     totalNotReceivedQuantity: number;
     invoiseDetails: InvoiceItemDto[] | undefined;
@@ -20275,8 +20391,6 @@ export class InvoiceItemDto implements IInvoiceItemDto {
     numberInSmallUnit: number;
     offerItem: OfferItemDto;
     offerItemId: number | undefined;
-    readonly supplierName: string | undefined;
-    readonly supplierId: number | undefined;
 
     constructor(data?: IInvoiceItemDto) {
         if (data) {
@@ -20296,8 +20410,6 @@ export class InvoiceItemDto implements IInvoiceItemDto {
             this.numberInSmallUnit = _data["numberInSmallUnit"];
             this.offerItem = _data["offerItem"] ? OfferItemDto.fromJS(_data["offerItem"]) : <any>undefined;
             this.offerItemId = _data["offerItemId"];
-            (<any>this).supplierName = _data["supplierName"];
-            (<any>this).supplierId = _data["supplierId"];
         }
     }
 
@@ -20317,8 +20429,6 @@ export class InvoiceItemDto implements IInvoiceItemDto {
         data["numberInSmallUnit"] = this.numberInSmallUnit;
         data["offerItem"] = this.offerItem ? this.offerItem.toJSON() : <any>undefined;
         data["offerItemId"] = this.offerItemId;
-        data["supplierName"] = this.supplierName;
-        data["supplierId"] = this.supplierId;
         return data;
     }
 
@@ -20338,8 +20448,6 @@ export interface IInvoiceItemDto {
     numberInSmallUnit: number;
     offerItem: OfferItemDto;
     offerItemId: number | undefined;
-    supplierName: string | undefined;
-    supplierId: number | undefined;
 }
 
 export class InvoiceItemForDeliveryDto implements IInvoiceItemForDeliveryDto {
@@ -21499,12 +21607,11 @@ export class OfferDto implements IOfferDto {
     offerEndDate: moment.Moment | undefined;
     currency: number;
     customerId: number | undefined;
-    supplierId: number | undefined;
     totalQuantity: number;
     totalPrice: number;
     customer: CustomerDto;
-    supplier: CustomerDto;
     creationTime: moment.Moment;
+    approveDate: moment.Moment | undefined;
     offerItems: OfferItemDto[] | undefined;
 
     constructor(data?: IOfferDto) {
@@ -21524,12 +21631,11 @@ export class OfferDto implements IOfferDto {
             this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
             this.customerId = _data["customerId"];
-            this.supplierId = _data["supplierId"];
             this.totalQuantity = _data["totalQuantity"];
             this.totalPrice = _data["totalPrice"];
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
-            this.supplier = _data["supplier"] ? CustomerDto.fromJS(_data["supplier"]) : <any>undefined;
             this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.approveDate = _data["approveDate"] ? moment(_data["approveDate"].toString()) : <any>undefined;
             if (Array.isArray(_data["offerItems"])) {
                 this.offerItems = [] as any;
                 for (let item of _data["offerItems"])
@@ -21553,12 +21659,11 @@ export class OfferDto implements IOfferDto {
         data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
         data["customerId"] = this.customerId;
-        data["supplierId"] = this.supplierId;
         data["totalQuantity"] = this.totalQuantity;
         data["totalPrice"] = this.totalPrice;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["approveDate"] = this.approveDate ? this.approveDate.toISOString() : <any>undefined;
         if (Array.isArray(this.offerItems)) {
             data["offerItems"] = [];
             for (let item of this.offerItems)
@@ -21582,12 +21687,11 @@ export interface IOfferDto {
     offerEndDate: moment.Moment | undefined;
     currency: number;
     customerId: number | undefined;
-    supplierId: number | undefined;
     totalQuantity: number;
     totalPrice: number;
     customer: CustomerDto;
-    supplier: CustomerDto;
     creationTime: moment.Moment;
+    approveDate: moment.Moment | undefined;
     offerItems: OfferItemDto[] | undefined;
 }
 
@@ -21648,6 +21752,8 @@ export interface IOfferDtoPagedResultDto {
 
 export class OfferItemDto implements IOfferItemDto {
     id: number;
+    materialName: string | undefined;
+    unitName: string | undefined;
     materialId: number | undefined;
     sizeId: number | undefined;
     unitId: number | undefined;
@@ -21673,6 +21779,8 @@ export class OfferItemDto implements IOfferItemDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.materialName = _data["materialName"];
+            this.unitName = _data["unitName"];
             this.materialId = _data["materialId"];
             this.sizeId = _data["sizeId"];
             this.unitId = _data["unitId"];
@@ -21698,6 +21806,8 @@ export class OfferItemDto implements IOfferItemDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["materialName"] = this.materialName;
+        data["unitName"] = this.unitName;
         data["materialId"] = this.materialId;
         data["sizeId"] = this.sizeId;
         data["unitId"] = this.unitId;
@@ -21723,6 +21833,8 @@ export class OfferItemDto implements IOfferItemDto {
 
 export interface IOfferItemDto {
     id: number;
+    materialName: string | undefined;
+    unitName: string | undefined;
     materialId: number | undefined;
     sizeId: number | undefined;
     unitId: number | undefined;
@@ -26350,6 +26462,8 @@ export interface IUpdateOfferDto {
 
 export class UpdateOfferItemDto implements IUpdateOfferItemDto {
     id: number;
+    materialName: string | undefined;
+    unitName: string | undefined;
     materialId: number | undefined;
     sizeId: number | undefined;
     unitId: number | undefined;
@@ -26370,6 +26484,8 @@ export class UpdateOfferItemDto implements IUpdateOfferItemDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.materialName = _data["materialName"];
+            this.unitName = _data["unitName"];
             this.materialId = _data["materialId"];
             this.sizeId = _data["sizeId"];
             this.unitId = _data["unitId"];
@@ -26390,6 +26506,8 @@ export class UpdateOfferItemDto implements IUpdateOfferItemDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["materialName"] = this.materialName;
+        data["unitName"] = this.unitName;
         data["materialId"] = this.materialId;
         data["sizeId"] = this.sizeId;
         data["unitId"] = this.unitId;
@@ -26410,6 +26528,8 @@ export class UpdateOfferItemDto implements IUpdateOfferItemDto {
 
 export interface IUpdateOfferItemDto {
     id: number;
+    materialName: string | undefined;
+    unitName: string | undefined;
     materialId: number | undefined;
     sizeId: number | undefined;
     unitId: number | undefined;

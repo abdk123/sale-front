@@ -2,14 +2,11 @@ import { Component, Injector, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AppComponentBase } from "@shared/app-component-base";
 import {
-  InvoiceDto,
   DropdownDto,
-  InvoiceServiceProxy,
-  TransportCompanyServiceProxy,
-  ClearanceCompanyServiceProxy,
   CreateDeliveryDto,
   DeliveryServiceProxy,
-  CustomerServiceProxy,
+  OfferDto,
+  OfferServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs";
 
@@ -19,9 +16,9 @@ import { finalize } from "rxjs";
   styleUrls: ["./send-delivery.component.scss"],
 })
 export class SendDeliveryComponent extends AppComponentBase implements OnInit {
-  invoice: InvoiceDto = new InvoiceDto();
+  offer: OfferDto = new OfferDto();
   deliveryDto: CreateDeliveryDto = new CreateDeliveryDto();
-  invoiceId: number;
+  offerId: number;
   saving: boolean;
   customers: DropdownDto[] = [];
   currencies = [
@@ -32,7 +29,7 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private router: Router,
-    private invoiceService: InvoiceServiceProxy,
+    private offerService: OfferServiceProxy,
     private deliveryService: DeliveryServiceProxy,
     private route: ActivatedRoute
   ) {
@@ -40,20 +37,19 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.invoiceId = this.route.snapshot?.params?.invoiceId;
+    this.offerId = this.route.snapshot?.params?.invoiceId;
     this.initialInvoice();
   }
 
   initialInvoice() {
-    this.invoiceService.getWithDetail(this.invoiceId).subscribe((result) => {
-      this.invoice = result;
+    this.offerService.getOfferWithDetailId(this.offerId).subscribe((result) => {
+      this.offer = result;
     });
   }
 
   save() {
     this.saving = true;
-    this.deliveryDto.customerId = this.invoice.customerId;
-    this.deliveryDto.invoiceId = this.invoice.id;
+    this.deliveryDto.customerId = this.offer.customerId;
     this.deliveryService
       .create(this.deliveryDto)
       .pipe(

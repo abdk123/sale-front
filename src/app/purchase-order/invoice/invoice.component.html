@@ -1,4 +1,4 @@
-<app-page-header [title]="'Invoices' | localize"  [fields]="fields"
+<app-page-header [title]="'PorchaseInvoices' | localize"  [fields]="fields"
  [CreatePermission]="'PurshaseOrder.Invoices.Create333'" (addNewItem)="showAddNewModal()"
   (advanceFilter)="showFilterDialog($event)" 
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
@@ -11,4 +11,4 @@
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
 (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
-(changePage)="pageChanged($event)" [menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>
+(changePage)="pageChanged($event)" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

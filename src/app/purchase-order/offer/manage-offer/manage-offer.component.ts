@@ -13,7 +13,7 @@ import { finalize } from 'rxjs';
 export class ManageOfferComponent extends AppComponentBase implements OnInit {
   offer: OfferDto = new OfferDto();
   changeStatusInput: ChangeOfferStatusDto = new ChangeOfferStatusDto();
-  customers:DropdownDto[]=[];
+  
   saving = false;
   id: number;
   statusIsRequired = false;
@@ -26,23 +26,19 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private _router: Router,
-    private customerService: CustomerServiceProxy,
+    
     private offerService: OfferServiceProxy,
     private _route: ActivatedRoute
   ) {
     super(injector);
   }
   ngOnInit(): void {
-    this.initialCustomers();
+    
     this.id = this._route.snapshot?.params?.id;
     this.initialOffer();
   }
   
-  initialCustomers() {
-    this.customerService.getForDropdown().subscribe((result) => {
-      this.customers = result;
-    });
-  }
+  
 
   initialOffer() {
     this.offerService
@@ -54,7 +50,6 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
   }
   
   initialValue(){
-    this.changeStatusInput.supplierId = this.offer.supplierId;
       this.changeStatusInput.id = this.offer.id;
       this.changeStatusInput.porchaseOrderId = this.offer.porchaseOrderId;
       this.changeStatusInput.status = this.offer.status;
@@ -77,21 +72,10 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
         )
         .subscribe((result) => {
           this.notify.info(this.l("SavedSuccessfully"));
-            this._router.navigate(["/app/orders/offers"]);
+            //this._router.navigate(["/app/orders/offers"]);
         });
     }
   }
 
-  convertToPurchaseInvoice(){
-    if(this.changeStatusInput.status == 0){
-      abp.message.error(this.l('TheOfferMustBeApprovedFirst')); 
-      return;  
-    }
-    if(this.changeStatusInput.supplierId == 0){
-      abp.message.error(this.l('SupplierIsRequired')); 
-      return;  
-    }
-    this.changeStatusInput.generateInvoice = true;
-    this.save();
-  }
+  
 }

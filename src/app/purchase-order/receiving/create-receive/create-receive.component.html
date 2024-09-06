@@ -6,7 +6,7 @@
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
-                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' | localize}}</button>
+                    [disabled]="saving" (click)="save()">{{ 'Save' | localize}}</button>
             </div>
         </div>
     </div>
@@ -14,9 +14,9 @@
         <div class="card-body">
             <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
             <div class="row">
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
-                </div>
+                </div> -->
                 <div class="col-md-3">
                     <item-info title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
                 </div>
@@ -115,6 +115,13 @@
                     </label>
                     <abp-validation-summary [control]="clearanceCostModel" [controlEl]="clearanceCostEl">
                     </abp-validation-summary>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.transportCostCurrency">
+                        </ng-select>
+                        <span>{{ 'ClearanceCostCurrency' | localize }}</span>
+                    </label>
                 </div>
             </div>
         </div>

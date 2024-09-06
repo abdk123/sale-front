@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { ConvertToPurchaseInvoiceDto, CustomerServiceProxy, DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'manage-offer-item',
@@ -9,6 +10,7 @@ import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, 
 })
 export class ManageOfferItemComponent extends AppComponentBase implements OnInit {
   item: UpdateOfferItemDto = new UpdateOfferItemDto();
+  purchaseInvoiceDto: ConvertToPurchaseInvoiceDto = new ConvertToPurchaseInvoiceDto();
   @Output() onSave = new EventEmitter<UpdateOfferItemDto[]>();
   @Input() offerId: number;
   items: UpdateOfferItemDto[] = [];
@@ -16,27 +18,37 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
   allUnits: MaterialUnitDto[] = [];
+  customers:DropdownDto[]=[];
   saving = false;
   indexUpdate = -1;
-  materialIsRequired = false;
-  addByUnitIsRequired = false;
+  supplierIsRequired = false;
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
-    private _offerService: OfferServiceProxy,
-    private stockService: StockServiceProxy
+    private offerService: OfferServiceProxy,
+    private stockService: StockServiceProxy,
+    private customerService: CustomerServiceProxy,
   ) {
     super(injector);
   }
   ngOnInit(): void {
+    this.purchaseInvoiceDto.offerId = this.offerId;
+    this.purchaseInvoiceDto.offerItemsIds = [];
     this.initialAllStocks();
     this.initialItems();
     this.initialMaterials();
     this.initialAllMaterialUnits();
+    this.initialCustomers();
+  }
+
+  initialCustomers() {
+    this.customerService.getForDropdown().subscribe((result) => {
+      this.customers = result;
+    });
   }
 
   initialItems() {
-    this._offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
+    this.offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
       this.items = result;
     });
   }
@@ -60,66 +72,6 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
     });
   }
 
-  initialStocks(materialId: number) {
-    this.stockService.getAllByMaterialId(materialId).subscribe((result) => {
-      this.stocks.push.apply(this.stocks, result);
-    });
-  }
-
-  onSelectMaterial(dto: DropdownDto) {
-    this.initialMaterialUnits(dto.id);
-    if (this.stocks.findIndex((x) => x.materialId) == -1) {
-      this.initialStocks(dto.id);
-    }
-  }
-
-  onChangeAddedbyUnit(dto: MaterialUnitDto) {
-    if (dto) {
-      if (dto.isSmallUnit) {
-        this.item.addedBySmallUnit = dto.isSmallUnit;
-        this.item.sizeId = dto.id;
-      } else {
-        this.item.unitId = dto.id;
-      }
-    }
-  }
-
-  save() {
-    this.materialIsRequired = this.item.materialId ? false : true;
-    this.addByUnitIsRequired =
-      this.item.sizeId || this.item.unitId ? false : true;
-
-    if (!this.materialIsRequired && !this.addByUnitIsRequired) {
-      this.saving = true;
-      if (this.indexUpdate > -1) this.updateItem();
-      else {
-        this.addNewItem();
-      }
-      this.saving = false;
-    }
-  }
-
-  initialItemForUpdate(index: number) {
-    this.indexUpdate = index;
-    this.item = this.items[this.indexUpdate];
-
-    // 
-    // this.initialMaterialUnits(this.item.materialId);
-    // if (this.stocks.findIndex((x) => x.materialId) == -1) {
-    //   this.initialStocks(this.item.materialId);
-    // }
-  }
-
-  DeleteItem(i){
-    const item = this.items[i];
-    this.items = this.items.filter(x=>x.id != item.id);
-    this.onSave.emit(this.items);
-  }
-
-  cancelUpdate() {
-    this.indexUpdate = -1;
-    this.item = new UpdateOfferItemDto();
-  }
 
   updateItem() {
     this.items[this.indexUpdate].materialId = this.item.materialId;
@@ -208,5 +160,48 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
       ? `${this.l("SmallUnit")}`
       : `${this.l("LargeUnit")}`;
   }
+
+  onCheck(args, offerItemId){
+    console.log(args);
+    var checked = args.target.value;
+    if(this.purchaseInvoiceDto.offerItemsIds == undefined)
+      this.purchaseInvoiceDto.offerItemsIds = [];
+
+    const index = this.checkIfItemExist(offerItemId);
+    if(index > -1 && !checked){
+      this.purchaseInvoiceDto.offerItemsIds.splice(index,1);
+    }else if(index == -1 && checked){{
+      this.purchaseInvoiceDto.offerItemsIds.push(offerItemId);
+    }
+  }
 }
+
+  checkIfItemExist(offerItemId){
+    const index = this.purchaseInvoiceDto.offerItemsIds.findIndex(id=>id == offerItemId);
+    return index;
+  }
+
+  convertToPurchaseInvoice(){
+    
+    this.supplierIsRequired = this.purchaseInvoiceDto.supplierId == undefined ? true : false;
+    if (
+      !this.supplierIsRequired
+    ) {
+      
+      this.saving = true;
+      this.offerService
+        .convertToPurchaseInvoice(this.purchaseInvoiceDto)
+        .pipe(
+          finalize(() => {
+            this.saving = false;
+          })
+        )
+        .subscribe((result) => {
+          this.notify.info(this.l("SavedSuccessfully"));
+            //this._router.navigate(["/app/orders/offers"]);
+        });
+    }
+  }
+}
+  
 

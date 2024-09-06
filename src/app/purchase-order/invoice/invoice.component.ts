@@ -1,9 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEnumValue, IPageMenu } from '@app/layout/content-template/page-default/page-field';
+import { IEnumValue, IPageField, IPageMenu } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
 import { FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy } from '@shared/service-proxies/service-proxies';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: "invoice",
@@ -26,7 +26,7 @@ export class InvoiceComponent
     { value: 1, text: this.l("Dinar") },
   ];
 
-  fields = [
+  fields: IPageField[] = [
     {
       label: this.l("Status"),
       name: "status",
@@ -38,7 +38,7 @@ export class InvoiceComponent
       label: this.l("Supplier"),
       name: "supplierName",
       sortable: false,
-      type: "string",
+      type: "string"
     },
     {
       label: this.l("InvoiceNumber"),
@@ -66,13 +66,6 @@ export class InvoiceComponent
       type: "number",
     },
     {
-      label: this.l("OfferDate"),
-      name: "offerDate",
-      sortable: false,
-      type: "date",
-      format: "dd-MM-yyyy",
-    },
-    {
       label: this.l("PoNumber"),
       name: "poNumber",
       sortable: false,
@@ -90,8 +83,7 @@ export class InvoiceComponent
 
   constructor(
     injector: Injector,
-    private _modalService: BsModalService,
-    private _router: Router,
+    private router: Router,
     private invoiceService: InvoiceServiceProxy,
     public bsModalRef: BsModalRef
   ) {
@@ -102,7 +94,7 @@ export class InvoiceComponent
     pageNumber: number,
     finishedCallback: Function
   ): void {
-    request.including = "";
+    request.including = "Offer,Supplier,InvoiseDetails";
     this.invoiceService.read(request).subscribe((result) => {
       this.invoices = result.items;
       this.showPaging(result, pageNumber);
@@ -110,12 +102,12 @@ export class InvoiceComponent
   }
 
   showAddNewModal() {
-    this._router.navigate(["/app/orders/create-invoice"]);
+    this.router.navigate(["/app/orders/create-invoice"]);
   }
 
   showEditModal(id: any) {
     var orderId = this.invoices.find((x) => x.id == id)?.offerId;
-    this._router.navigate([
+    this.router.navigate([
       "/app/orders/edit-invoice",
       {
         invoiceId: id,
@@ -150,7 +142,7 @@ export class InvoiceComponent
   }
 
   sendDelivery(invoiceId) {
-    this._router.navigate([
+    this.router.navigate([
       "/app/orders/send-delivery",
       {
         invoiceId: invoiceId,

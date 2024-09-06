@@ -8,20 +8,14 @@
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
                     [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' | localize}}</button>
             </div>
-            <div class="top-right-button-container text-zero">
-                <button type="button" class="top-right-button btn btn-primary  mb-3 mr-2"
-                    [disabled]="!updateOfferForm.form.valid || saving || !changeStatusInput.supplierId"
-                    (click)="convertToPurchaseInvoice()">{{ 'ConvertToPurchaseInvoice' |
-                    localize}}</button>
-            </div>
+            
         </div>
     </div>
     <div class="card mt-2">
         <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'UpdateOffer' | localize }}</h5>
+            <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
             <div class="row">
-
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class=" has-float-label">
                         <ng-select [items]="status" required bindLabel="name" bindValue="id" name="status"
                             [(ngModel)]="changeStatusInput.status">
@@ -30,7 +24,7 @@
                     </label>
                     <span *ngIf="statusIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="porchaseOrderId"
                             [(ngModel)]="changeStatusInput.porchaseOrderId" #porchaseOrderIdModel="ngModel"
@@ -40,7 +34,7 @@
                     <abp-validation-summary [control]="porchaseOrderIdModel" [controlEl]="porchaseOrderIdEl">
                     </abp-validation-summary>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class=" has-float-label">
                         <input class="form-control" required [(ngModel)]="approveDate" name="approveDate" bsDatepicker
                             [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
@@ -50,13 +44,33 @@
                     <abp-validation-summary [control]="approveDateModel" [controlEl]="approveDateEl">
                     </abp-validation-summary>
                 </div>
+            </div>
+            <div class="separator mb-2"></div>
+            <div class="row">
                 <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="customers" bindLabel="name" bindValue="id" name="supplierId"
-                            [(ngModel)]="changeStatusInput.supplierId">
-                        </ng-select>
-                        <span>{{ 'Supplier' | localize }}</span>
-                    </label>
+                    <item-info title="Customer" *ngIf="offer.customer" [value]="offer.customer.fullName"
+                        icon="bi bi-person"></item-info>
+                </div>
+                <div class="col-md-3">
+                    <item-info title="OfferId" [value]="offer.id" icon="bi bi-bookmark"></item-info>
+                </div>
+                <div class="col-md-3">
+                    <item-info title="Currency" value="{{offer.currency == 1 ? 'Dollar' : 'Dinar'}}"
+                        icon="bi bi-cash-stack"></item-info>
+                </div>
+                <div class="col-md-3">
+                    <item-info title="StartDate" *ngIf="offer.creationTime"
+                        value="{{offer.creationTime.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
+                </div>
+                <div class="col-md-3">
+                    <item-info title="OfferEndDate" *ngIf="offer.offerEndDate"
+                        value="{{offer.offerEndDate.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
+                </div>
+                <div class="col-md-3">
+                    <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>
+                </div>
+                <div class="col-md-3">
+                    <item-info title="TotalPrice" value="{{offer.totalPrice}}"></item-info>
                 </div>
             </div>
         </div>
@@ -65,35 +79,7 @@
 
 <div class="card mt-2">
     <div class="card-body">
-        <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
-        <div class="row">
-            <div class="col-md-3">
-                <item-info title="Customer" *ngIf="offer.customer" [value]="offer.customer.fullName"
-                    icon="bi bi-person"></item-info>
-            </div>
-            <div class="col-md-3">
-                <item-info title="OfferId" [value]="offer.id" icon="bi bi-bookmark"></item-info>
-            </div>
-            <div class="col-md-3">
-                <item-info title="Currency" value="{{offer.currency == 1 ? 'Dollar' : 'Dinar'}}"
-                    icon="bi bi-cash-stack"></item-info>
-            </div>
-            <div class="col-md-3">
-                <item-info title="StartDate" *ngIf="offer.creationTime"
-                    value="{{offer.creationTime.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
-            </div>
-            <div class="col-md-3">
-                <item-info title="OfferEndDate" *ngIf="offer.offerEndDate"
-                    value="{{offer.offerEndDate.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
-            </div>
-            <div class="col-md-3">
-                <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>
-            </div>
-            <div class="col-md-3">
-                <item-info title="TotalPrice" value="{{offer.totalPrice}}"></item-info>
-            </div>
-        </div>
-        <div class="separator mb-2"></div>
+        <h5 class="card-title separator pb-2 mb-3">{{ 'MaterialsInfo' | localize }}</h5>
         <manage-offer-item [offerId]="id"></manage-offer-item>
     </div>
 </div>

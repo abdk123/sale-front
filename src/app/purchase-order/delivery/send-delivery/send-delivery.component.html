@@ -15,26 +15,26 @@
             <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
             <div class="row">
                 <div class="col-md-2">
-                    <item-info title="Customer" [value]="invoice.customerName" icon="bi bi-person"></item-info>
+                    <item-info title="Customer" [value]="offer?.customer?.fullName" icon="bi bi-person"></item-info>
                 </div>
                 <div class="col-md-2">
-                    <item-info title="PoNumber" [value]="invoice.poNumber" icon=""></item-info>
+                    <item-info title="PoNumber" [value]="offer?.porchaseOrderId" icon=""></item-info>
                 </div>
                 
                 <div class="col-md-2">
-                    <item-info title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
+                    <item-info title="OfferNumber" [value]="offer?.id" icon="bi bi-bookmark"></item-info>
                 </div>
                 <div class="col-md-2">
-                    <item-info title="Currency" value="{{invoice.currency == 1 ? 'Dollar' : 'Dinar'}}"
+                    <item-info title="Currency" value="{{offer?.currency == 1 ? 'Dollar' : 'Dinar'}}"
                         icon="bi bi-cash-stack"></item-info>
                 </div>
                 <div class="col-md-2">
-                    <item-info title="ApproveDate" *ngIf="invoice.approveDate"
-                        value="{{invoice.approveDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+                    <item-info title="ApproveDate" *ngIf="offer?.approveDate"
+                        value="{{offer?.approveDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
                 </div>
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                     <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -89,5 +89,5 @@
         </div>
     </div>
 </form>
-<send-delivery-item [customerId]="invoice.customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
-<delivery-list [customerId]="invoice.customerId"></delivery-list>
+<send-delivery-item [customerId]="offer?.customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+<delivery-list [customerId]="offer?.customerId"></delivery-list>

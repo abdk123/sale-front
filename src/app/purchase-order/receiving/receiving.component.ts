@@ -51,7 +51,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
     super(injector);
   }
   protected list(request: FullPagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    request.including = "";
+    request.including = "Offer,Supplier,InvoiseDetails";
     this.invoiceService.read(request)
       .subscribe(result => {
         this.invoices = result.items;
