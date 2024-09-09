@@ -1,0 +1,37 @@
+
+
+    <abp-modal-header [title]="'Reject' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body modal-xl">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="rejectedQuantity">
+              {{ "RejectedQuantity" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input type="number" class="form-control" name="rejectedQuantity" id="rejectedQuantity" [max]="quantity" required 
+                [(ngModel)]="rejectedQuantity" #rejectedQuantityModel="ngModel" #rejectedQuantityEl   />
+              <abp-validation-summary [control]="rejectedQuantityModel" [controlEl]="rejectedQuantityEl"></abp-validation-summary>
+            </div>
+          </div>
+    </div>
+    <div class="modal-footer justify-content-between ">
+        
+        <div>
+            <button type="button" (click)="reject(true)" class="btn btn-primary" [disabled]="saving || rejectedQuantity == 0 || rejectedQuantity == undefined">
+                <i class="bi bi-save"> </i> {{ 'RejectAndReturnToSupplier' | localize }}
+              </button>
+              <button type="button" (click)="reject(false)" class="btn btn-outline-primary  mx-2" [disabled]="saving || rejectedQuantity == 0 || rejectedQuantity == undefined">
+                  <i class="bi bi-save"> </i> {{ 'RejectAndRecordAsDamaged' | localize }}
+              </button>
+        </div>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          [disabled]="saving"
+          (click)="bsModalRef.hide()"
+        >
+        <i class="bi bi-x-lg"> </i> {{ 'Cancel' | localize }}
+        </button>
+      </div>
+
+
+ 

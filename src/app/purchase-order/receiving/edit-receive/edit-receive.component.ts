@@ -19,8 +19,8 @@ export class EditReceiveComponent extends AppComponentBase implements OnInit {
   transportCompanies: DropdownDto[] = [];
   clearanceCompanies: DropdownDto[] = [];
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
 
   constructor(

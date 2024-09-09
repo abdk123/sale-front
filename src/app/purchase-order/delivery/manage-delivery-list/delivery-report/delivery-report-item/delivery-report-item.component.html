@@ -10,8 +10,8 @@
                         <th>{{'BatchNumber' | localize}}</th>
                         <th>{{'Material' | localize}}</th>
                         <th>{{'Unit' | localize}}</th>
-                        <th>{{'ReceivedQuantity' | localize}}</th>
-                        <th>{{'RequiredQuantity' | localize}}</th>
+                        <th>{{'TotalQuantity' | localize}}</th>
+                        <th>{{'DeliveredQuantity' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'NumberInSmallUnit' | localize}}</th>
                         <th>{{'SaleType' | localize}}</th>
@@ -27,22 +27,19 @@
                                 <span class="custom-control-label">&nbsp;</span>
                             </label>
                         </td>
-                        <td>{{item.invoiceItem?.offerItem?.offer?.porchaseOrderId}}</td>
+                        <td>{{item.offerItem?.offer?.porchaseOrderId}}</td>
                         <td>{{item.batchNumber}}</td>
-                        <td>{{item.invoiceItem?.offerItem?.material?.name}}</td>
-                        <td>{{item.invoiceItem?.offerItem?.addedBySmallUnit ? item?.invoiceItem?.offerItem?.size?.name : item?.invoiceItem?.offerItem?.unit?.name}}</td>
-                        <td>{{item.invoiceItem?.receivedQuantity | commaNumber}}</td>
+                        <td>{{item.offerItem?.material?.name}}</td>
+                        <td>{{item.offerItem?.addedBySmallUnit ? item?.offerItem?.size?.name : item?.offerItem?.unit?.name}}</td>
+                        <td>{{item.offerItem?.quantity | commaNumber}}</td>
                         <td><span class="text-success">{{item.deliveredQuantity | commaNumber}}</span></td>
-                        <td>{{(item.invoiceItem?.totalMaterilPrice * item.deliveredQuantity) | commaNumber}}</td>
-                        <td>{{item.invoiceItem?.numberInSmallUnit}}</td>
+                        <td>{{(item.offerItem?.unitPrice * item.deliveredQuantity) | commaNumber}}</td>
+                        <td>{{item.offerItem?.numberInSmallUnit}}</td>
                         <td>{{getSaleType(item)}}</td>
                         <td>
                             <div class="d-flex flex-column" *ngIf="item.deliveryItemStatus == 0 ">
-                                <button type="button" (click)="changeDeliveryStatus(2, item.id)" class="btn btn-xs btn-outline-warning">
-                                    {{'RejectAndReturnToSupplier' | localize}}
-                                </button>
-                                <button type="button" (click)="changeDeliveryStatus(3, item.id)" class="btn btn-outline-danger btn-xs my-1">
-                                    {{'RejectAndRecordAsDamaged' | localize}}
+                                <button type="button" (click)="showRejectDialog(item)" class="btn btn-outline-danger btn-xs my-1">
+                                    {{'Reject' | localize}}
                                 </button>
                             </div>
                             <span *ngIf="item.deliveryItemStatus == 2" class="badge badge-pill badge-outline-danger">{{'RejectAndReturnToSupplier' | localize}}</span>

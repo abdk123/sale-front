@@ -22,8 +22,8 @@ export class SaleInvoiceComponent
     { value: 1, text: this.l("Paid") },
   ];
   currency: IEnumValue[] = [
-    { value: 0, text: this.l("Dollar") },
-    { value: 1, text: this.l("Dinar") },
+    { value: 1, text: this.l("Dollar") },
+    { value: 0, text: this.l("Dinar") },
   ];
 
   menuItems: IPageMenu[] = [

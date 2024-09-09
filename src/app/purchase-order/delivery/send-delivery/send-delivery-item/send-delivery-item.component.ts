@@ -11,8 +11,8 @@ import {
 import { AppComponentBase } from "@shared/app-component-base";
 import {
   CreateDeliveryItemDto,
-  InvoiceItemForDeliveryDto,
-  InvoiceServiceProxy,
+  OfferItemForDeliveryDto,
+  OfferServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 
 @Component({
@@ -27,25 +27,25 @@ export class SendDeliveryItemComponent
   @Input() customerId: number;
   @Input() deliveryItems: CreateDeliveryItemDto[] = [];
   @Output() deliveryItemsChange = new EventEmitter<CreateDeliveryItemDto[]>();
-  items: InvoiceItemForDeliveryDto[] = [];
+  items: OfferItemForDeliveryDto[] = [];
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
 
-  constructor(injector: Injector, private invoiceService: InvoiceServiceProxy) {
+  constructor(injector: Injector, private offerService: OfferServiceProxy) {
     super(injector);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (this.customerId) {
-          this.invoiceService.getForDelivery(this.customerId)
+      if (this.customerId && this.items.length == 0) {
+          this.offerService.getForDelivery(this.customerId)
       .subscribe(result => this.items = result);
     }
   }
 
   ngOnInit(): void {
-    //this.invoiceId = this.route.snapshot?.params?.invoiceId;
+    //this.offerId = this.route.snapshot?.params?.offerId;
   }
 
   getSaleType(addedBySmallUnit) {
@@ -54,17 +54,17 @@ export class SendDeliveryItemComponent
       : `${this.l("LargeUnit")}`;
   }
 
-  onCheck(args, invoiceItemId, receivedQuantity){
+  onCheck(args, offerItemId, receivedQuantity){
     if(this.deliveryItems == undefined)
       this.deliveryItems = [];
 
-    const index = this.checkIfItemExist(invoiceItemId);
+    const index = this.checkIfItemExist(offerItemId);
     if(index > -1){
       this.deliveryItems.splice(index,1);
     }else{
       var item = new CreateDeliveryItemDto();
       item.init({
-        invoiceItemId: invoiceItemId,
+        offerItemId: offerItemId,
         deliveredQuantity: receivedQuantity,
         batchNumber:''
       });
@@ -73,14 +73,15 @@ export class SendDeliveryItemComponent
     }
   }
 
-  checkIfItemExist(invoiceItemId){
-    const index = this.deliveryItems.findIndex(x=>x.invoiceItemId == invoiceItemId);
+  checkIfItemExist(offerItemId){
+    const index = this.deliveryItems.findIndex(x=>x.offerItemId == offerItemId);
     return index;
   }
 
-  updateQuantity(args, invoiceItemId) {
+  updateQuantity(args, offerItemId) {
+    debugger;
     var value = Number(args.target.value);
-    const index = this.deliveryItems ? this.deliveryItems.findIndex((x) => x.invoiceItemId == invoiceItemId) : -1;
+    const index = this.deliveryItems ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId) : -1;
     if (index > -1) {
       this.deliveryItems[index].deliveredQuantity = Number(args.target.value);
     } 
@@ -88,9 +89,9 @@ export class SendDeliveryItemComponent
     this.deliveryItemsChange.emit(this.deliveryItems);
   }
 
-  updateBatchNumber(args,invoiceItemId){
+  updateBatchNumber(args,offerItemId){
     var value = args.target.value;
-    const index = this.deliveryItems ? this.deliveryItems.findIndex((x) => x.invoiceItemId == invoiceItemId) : -1;
+    const index = this.deliveryItems ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId) : -1;
     if (index > -1) {
       this.deliveryItems[index].batchNumber = args.target.value;
     } 
@@ -98,10 +99,10 @@ export class SendDeliveryItemComponent
     this.deliveryItemsChange.emit(this.deliveryItems);
   }
 
-  checkDisabled(invoiceItemId:number){
+  checkDisabled(offerItemId:number){
     
     if(this.deliveryItems == undefined)
       return true;
-    return !this.deliveryItems.some(x=>x.invoiceItemId === invoiceItemId);
+    return !this.deliveryItems.some(x=>x.offerItemId === offerItemId);
   }
 }

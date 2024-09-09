@@ -10,7 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, RejectDeliveryServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -45,6 +45,7 @@ import { ViewSaleInvoiceComponent } from './sale-invoice/view-sale-invoice/view-
 import { ReturnedDeliveriesComponent } from './returned-deliveries/returned-deliveries.component';
 import { RejectedDeliveriesComponent } from './rejected-deliveries/rejected-deliveries.component';
 import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
+import { RejectDialogComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/reject-dialog/reject-dialog.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
     ReturnedDeliveriesComponent,
     RejectedDeliveriesComponent,
     PdfUrnComponent,
+    RejectDialogComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -107,6 +109,7 @@ import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
     ReceivingServiceProxy,
     DeliveryServiceProxy,
     SaleInvoiceServiceProxy,
+    RejectDeliveryServiceProxy
   ],
 })
 export class PurchaseOrderModule {}

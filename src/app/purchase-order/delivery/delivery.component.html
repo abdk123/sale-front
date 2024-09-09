@@ -1,5 +1,5 @@
 <app-page-header [title]="'Deliveries' | localize"  [fields]="fields"
- [CreatePermission]="'PurshaseOrder.Deliveries.Create333'" (addNewItem)="showAddNewModal()"
+ [CreatePermission]="'PurshaseOrder.Deliveries.Create333'" 
   (advanceFilter)="showFilterDialog($event)" 
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
   (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
@@ -7,8 +7,8 @@
 
 
 <app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.Deliveries.Update333'" 
-[DeletePermission]="'PurshaseOrder.Deliveries.Delete333'" [fields]="fields" [data]="invoices" 
+[DeletePermission]="'PurshaseOrder.Deliveries.Delete333'" [fields]="fields" [data]="offers" 
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
-(editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'"
+ [coloredBy]="'status'"
 (changePage)="pageChanged($event)" [menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

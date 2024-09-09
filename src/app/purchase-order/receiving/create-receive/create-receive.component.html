@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="transportCompanies" required bindLabel="name" bindValue="id"
+                        <ng-select [items]="transportCompanies" bindLabel="name" bindValue="id"
                             name="transportCompanyId" [(ngModel)]="receiveDto.transportCompanyId">
                         </ng-select>
                         <span>{{ 'TransportCompany' | localize }}</span>
@@ -47,7 +47,7 @@
                 
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="transportCost"
+                        <input type="number" class="form-control" name="transportCost"
                             [(ngModel)]="receiveDto.transportCost" #transportCostModel="ngModel" #transportCostEl />
                         <span>{{ 'TransportCost' | localize }}</span>
                     </label>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                        <input type="text" class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="receiveDto.driverName" #driverNameModel="ngModel" #driverNameEl />
                         <span>{{ 'DriverName' | localize }}</span>
                     </label>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                        <input type="text" class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="receiveDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
                         <span>{{ 'DriverPhoneNumber' | localize }}</span>
                     </label>
@@ -74,14 +74,14 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.transportCostCurrency">
+                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.transportCostCurrency">
                         </ng-select>
                         <span>{{ 'TransportCostCurrency' | localize }}</span>
                     </label>
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <input class="form-control" required [(ngModel)]="date" name="creationTime"
+                        <input class="form-control" [(ngModel)]="date" name="creationTime"
                             bsDatepicker [container]="'html'"
                             [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
                             #creationTimeModel="ngModel" #creationTimeEl>
@@ -100,7 +100,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="clearanceCompanies" required bindLabel="name" bindValue="id"
+                        <ng-select [items]="clearanceCompanies" bindLabel="name" bindValue="id"
                             name="clearanceCompanyId" [(ngModel)]="receiveDto.clearanceCompanyId">
                         </ng-select>
                         <span>{{ 'TransportCompany' | localize }}</span>
@@ -109,7 +109,7 @@
                 
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="clearanceCost"
+                        <input type="number" class="form-control" name="clearanceCost"
                             [(ngModel)]="receiveDto.clearanceCost" #clearanceCostModel="ngModel" #clearanceCostEl />
                         <span>{{ 'ClearanceCost' | localize }}</span>
                     </label>
@@ -118,7 +118,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.transportCostCurrency">
+                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.clearanceCostCurrency">
                         </ng-select>
                         <span>{{ 'ClearanceCostCurrency' | localize }}</span>
                     </label>

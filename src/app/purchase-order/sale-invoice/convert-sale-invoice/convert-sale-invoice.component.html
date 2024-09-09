@@ -13,7 +13,7 @@
         </div>
         <div class="col-3 mt-2">
             <label class=" has-float-label">
-                <ng-select [items]="customers" bindLabel="name" name="customer" bindValue="id" [(ngModel)]="customerId">
+                <ng-select [items]="customers" bindLabel="name" name="customer" bindValue="id" [(ngModel)]="customerId" (change)="onChange()">
                 </ng-select>
                 <span>{{ 'Customer' | localize }}</span>
             </label>
@@ -53,7 +53,7 @@
                             <td>
                                 <label class="custom-control custom-checkbox mb-0 d-inline-block">
                                     <input type="checkbox" class="custom-control-input"
-                                        (change)="onCheck(delivery)" [disabled]="delivery.status != 1">
+                                        (change)="onCheck($event, delivery)" [disabled]="delivery.status != 1">
                                     <span class="custom-control-label">&nbsp;</span>
                                 </label>
                             </td>
@@ -68,7 +68,7 @@
                             <td>{{delivery.driverName}}</td>
                             <td>{{delivery.driverPhoneNumber}}</td>
                             <td>{{delivery.vehicleNumber}}</td>
-                            <td>{{delivery.totalTransportedQuantity | commaNumber}}</td>
+                            <td>{{delivery.totalApprovedQuantity | commaNumber}}</td>
                             <td>{{delivery.approveDate | date:'yyyy-MM-dd'}}</td>
                             <td>{{delivery.totalPrice | commaNumber}}</td>
                             <td>{{delivery.transportCost | commaNumber}}</td>

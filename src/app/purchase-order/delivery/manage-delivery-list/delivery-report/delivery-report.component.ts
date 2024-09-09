@@ -4,9 +4,9 @@ import { AppComponentBase } from "@shared/app-component-base";
 import {
   DropdownDto,
   DeliveryServiceProxy,
-  InvoiceServiceProxy,
+  OfferServiceProxy,
   UpdateDeliveryDto,
-  InvoiceDto,
+  OfferDto,
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs";
 
@@ -20,14 +20,14 @@ export class DeliveryReportComponent
   implements OnInit
 {
   delivery: UpdateDeliveryDto = new UpdateDeliveryDto();
-  invoice: InvoiceDto = new InvoiceDto();
+  offer: OfferDto = new OfferDto();
   deliveryId: number;
   saving: boolean;
   customers: DropdownDto[] = [];
   grNumberIsRequired: boolean = false;
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
 
   deliveryStatus = [
@@ -39,7 +39,7 @@ export class DeliveryReportComponent
     injector: Injector,
     private router: Router,
     private deliveryService: DeliveryServiceProxy,
-    private invoiceService: InvoiceServiceProxy,
+    private offerService: OfferServiceProxy,
     private route: ActivatedRoute
   ) {
     super(injector);
@@ -53,14 +53,14 @@ export class DeliveryReportComponent
   initialDelivery() {
     this.deliveryService.getForEdit(this.deliveryId).subscribe((result) => {
       this.delivery = result;
-      //this.initialInvoice();
+      //this.initialOffer();
     });
   }
 
-  // initialInvoice() {
-  //   this.invoiceService
-  //     .getWithDetail(this.delivery.invoiceId)
-  //     .subscribe((result) => (this.invoice = result));
+  // initialOffer() {
+  //   this.offerService
+  //     .getWithDetail(this.delivery.offerId)
+  //     .subscribe((result) => (this.offer = result));
   // }
 
   save() {

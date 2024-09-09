@@ -50,17 +50,16 @@
                         <strong>{{item.totalItemPrice | commaNumber}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
-                        <strong>{{item?.deliveryItem?.invoiceItem?.totalMaterilPrice | commaNumber}}</strong>
+                        <strong>{{item?.deliveryItem?.offerItem?.unitPrice | commaNumber}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold; margin-top: 30px ; color:black ; ">
-                        <strong *ngIf="item?.deliveryItem?.invoiceItem?.offerItem?.unitId != undefined">{{item?.deliveryItem?.invoiceItem?.offerItem?.unit?.name}}</strong>
-                        <strong *ngIf="item?.deliveryItem?.invoiceItem?.offerItem?.sizeId != undefined">{{item?.deliveryItem?.invoiceItem?.offerItem?.size?.name}}</strong>
+                        <strong >{{item?.deliveryItem?.offerItem?.unitName}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
                         <strong>{{item.totalQuantity | commaNumber}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
-                        <strong>{{item?.deliveryItem?.invoiceItem?.offerItem?.material?.name}}</strong>
+                        <strong>{{item?.deliveryItem?.offerItem?.materialName}}</strong>
                     </td>
                 </tr>
             </tbody>

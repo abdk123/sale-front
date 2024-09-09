@@ -9,7 +9,7 @@
                         <th>{{'PoNumber' | localize}}</th>
                         <th>{{'Material' | localize}}</th>
                         <th>{{'Unit' | localize}}</th>
-                        <th>{{'InvoiceNumber' | localize}}</th>
+                        <th>{{'OfferNumber' | localize}}</th>
                         <th>{{'Quantity' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'NumberInSmallUnit' | localize}}</th>
@@ -23,24 +23,24 @@
                     <tr *ngFor="let item of items; index as i">
                         <td>
                             <label class="custom-control custom-checkbox mb-0 d-inline-block">
-                                <input type="checkbox" class="custom-control-input" (change)="onCheck($event,item.invoiceItemId,item.receivedQuantity)">
+                                <input type="checkbox" class="custom-control-input" (change)="onCheck($event,item.offerItemId,item.receivedQuantity)">
                                 <span class="custom-control-label">&nbsp;</span>
                               </label>
                         </td>
                         <td>{{item.poNumber}}</td>
                         <td>{{item.materialName}}</td>
                         <td>{{item.addedBySmallUnit ? item.smallUnit : item.unit}}</td>
-                        <td>{{item.invoiceId}}</td>
-                        <td>{{item.requiredQuantity}}</td>
-                        <td>{{item.totalMaterilPrice}}</td>
+                        <td>{{item.offerId}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.totalPrice}}</td>
                         <td>{{item.numberInSmallUnit}}</td>
                         <td>{{item.deliveredQuantity}}</td>
                         <td>{{getSaleType(item.addedBySmallUnit)}}</td>
                         <td>
-                            <input type="number" class="form-control" [disabled]="checkDisabled(item.invoiceItemId)" (keyup)="updateQuantity($event,item.invoiceItemId)" />
+                            <input type="number" class="form-control" [disabled]="checkDisabled(item.offerItemId)" (input)="updateQuantity($event,item.offerItemId)" />
                         </td>
                         <td>
-                            <input type="text"  [disabled]="checkDisabled(item.invoiceItemId)" class="form-control" (keyup)="updateBatchNumber($event,item.invoiceItemId)" />
+                            <input type="text"  [disabled]="checkDisabled(item.offerItemId)" class="form-control" (input)="updateBatchNumber($event,item.offerItemId)" />
                         </td>
                     </tr>
                 </tbody>

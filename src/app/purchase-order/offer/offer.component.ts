@@ -31,8 +31,9 @@ export class OfferComponent
     { value: 4, text: this.l("Expired") },
   ];
   currency: IEnumValue[] = [
-    { value: 0, text: this.l("Dollar") },
-    { value: 1, text: this.l("Dinar") },
+    { value: 0, text: this.l("Dinar") },
+    { value: 1, text: this.l("Dollar") },
+    
   ];
   menuItems: IPageMenu[] = [
     {

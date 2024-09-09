@@ -47,20 +47,20 @@
             <tbody id="Itemslist">
                 <tr *ngFor="let item of deliveryItems; let i = index" [ngClass]=" i % 2 == 0 ? 'green-row' : 'red-row'">
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
-                        <strong>{{item.invoiceItem?.offerItem?.offer?.porchaseOrderId}}</strong>
+                        <strong>{{item?.offerItem?.offer?.porchaseOrderId}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
                         <strong>{{item.batchNumber}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold; margin-top: 30px ; color:black ; ">
                         <!-- <strong *ngIf="item.unitId != undefined">{{item.unit?.name}}</strong> -->
-                        <strong>{{item.invoiceItem?.offerItem?.unit?.name}}</strong>
+                        <strong>{{item?.offerItem?.unit ? item?.offerItem?.unit?.name : item?.offerItem?.size?.name}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
                         <strong>{{item.deliveredQuantity}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
-                        <strong>{{item.invoiceItem?.offerItem?.material?.name}}</strong>
+                        <strong>{{item?.offerItem?.material?.name}}</strong>
                     </td>
                 </tr>
             </tbody>            

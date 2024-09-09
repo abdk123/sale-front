@@ -21,8 +21,8 @@ export class EditOfferComponent extends AppComponentBase implements OnInit {
   customers: DropdownDto[] = [];
   itemIndex: number;
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
   status = [
     { id: 0, name: this.l("WaitingApprove") },

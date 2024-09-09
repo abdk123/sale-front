@@ -27,6 +27,18 @@ export class ClearanceCompanyCashFlowComponent
       value: 1,
       text: this.l("Receive"),
     },
+    {
+      value: 2,
+      text: this.l("ClearanceCost"),
+    },
+    {
+      value: 3,
+      text: this.l("TransportCost"),
+    },
+    {
+      value: 3,
+      text: this.l("ReceivingCost"),
+    },
   ];
 
   fields = [

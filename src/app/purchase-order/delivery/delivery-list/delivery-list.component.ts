@@ -14,8 +14,8 @@ export class DeliveryListComponent extends AppComponentBase implements OnInit,On
   deliveries:DeliveryDto[] = [];
   @Input() customerId: number;
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
 
   constructor(

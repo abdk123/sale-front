@@ -28,8 +28,8 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
   transportCompanies: DropdownDto[] = [];
   clearanceCompanies: DropdownDto[] = [];
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 0, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
   ];
 
   constructor(
@@ -71,7 +71,6 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
   }
 
   save() {
-    debugger;
     const invalidMaterial = this.checkEnteredQuantities();
     if(invalidMaterial == ''){
       this.receiveDto.creationTime = this.date.toISOString();

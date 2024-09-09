@@ -24,8 +24,8 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   itemIndex: number;
   endDate: Date;
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
   status = [
     { id: 0, name: this.l("WaitingApprove") },

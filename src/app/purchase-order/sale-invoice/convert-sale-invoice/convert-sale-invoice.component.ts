@@ -41,12 +41,11 @@ export class ConvertSaleInvoiceComponent extends AppComponentBase {
 
   ngOnInit(): void {
     this.initialCustomers();
-    this.initialDeliveries();
   }
 
   initialDeliveries() {
     this._deliveryService
-      .getAllDeliverd()
+      .getAllByCustomerId(this.customerId)
       .subscribe((result: DeliveryDto[]) => {
         this.deliveries = result;
       });
@@ -55,19 +54,29 @@ export class ConvertSaleInvoiceComponent extends AppComponentBase {
   initialCustomers() {
     this._customerService.getForDropdown().subscribe((result) => {
       this.customers = result;
+      if(this.customers?.length > 0){
+        this.customerId = this.customers[0].id;
+        this.initialDeliveries();
+      }
     });
   }
 
-  onCheck(delivery: DeliveryDto) {
-    const PDelivery = this.selectedDeliveries.find((x) => x.id === delivery.id);
-    if (PDelivery !== undefined) {
-      const index = this.selectedDeliveries.findIndex(
-        (x) => x.id === delivery.id
-      );
+  onChange(){
+    this.initialDeliveries();
+  }
+
+  onCheck(args,delivery: DeliveryDto) {
+    var checked = args.target.value;
+    const index = this.selectedDeliveries.findIndex((x) => x.id === delivery.id);
+    if(checked){
+      if (index == -1) {
+        this.selectedDeliveries.push(delivery);
+      } 
+    }else{
       this.selectedDeliveries.splice(index, 1);
-    } else {
-      this.selectedDeliveries.push(delivery);
+
     }
+    
   }
 
   async save() {
@@ -81,8 +90,8 @@ export class ConvertSaleInvoiceComponent extends AppComponentBase {
       this.selectedDeliveries.forEach((delivery) => {
         delivery.deliveryItems.forEach((item) => {
           var saleInvoiceItem = new CreateSaleInvoiceItemDto();
-          saleInvoiceItem.totalQuantity = item.transportedQuantity;
-          saleInvoiceItem.totalItemPrice = item.toralPrice;
+          saleInvoiceItem.totalQuantity = item.approvedQuantity;
+          saleInvoiceItem.totalItemPrice = item.totalPrice;
           saleInvoiceItem.deliveryItemId = item.id;
 
           this.saleInvoice.saleInvoiceItems.push(saleInvoiceItem);

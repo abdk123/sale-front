@@ -35,8 +35,8 @@ status: IEnumValue[] = [
   { value: 5, text: this.l("PartialRejected") },
 ];
 currency: IEnumValue[] = [
-  { value: 0, text: this.l("Dollar") },
-  { value: 1, text: this.l("Dinar") },
+  { value: 1, text: this.l("Dollar") },
+  { value: 0, text: this.l("Dinar") },
 ];
 
   menuItems: IPageMenu[] = [
@@ -55,7 +55,7 @@ currency: IEnumValue[] = [
 fields = [
   // {
   //   label: this.l("PoNumber"),
-  //   name: "invoice",
+  //   name: "offer",
   //   sortable: false,
   //   type: "reference",
   //   referenceTextField: "poNumber",
@@ -76,7 +76,7 @@ fields = [
   },
   // {
   //   label: this.l("InvoiceNumber"),
-  //   name: "invoice",
+  //   name: "offer",
   //   sortable: true,
   //   type: "reference",
   //   referenceTextField: "id",
@@ -135,9 +135,6 @@ fields = [
     });
   }
 
-  showAddNewModal() {
-    this._router.navigate(["/app/orders/create-invoice"]);
-  }
 
   showEditModal(id: any) {
     this._router.navigate([

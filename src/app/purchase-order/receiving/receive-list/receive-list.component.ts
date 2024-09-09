@@ -14,8 +14,8 @@ export class ReceiveListComponent extends AppComponentBase implements OnInit {
   receives:ReceivingDto[] = [];
   @Input() invoiceId: number;
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
 
   constructor(

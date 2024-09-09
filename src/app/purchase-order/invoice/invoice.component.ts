@@ -22,8 +22,8 @@ export class InvoiceComponent
     { value: 3, text: this.l("Received") },
   ];
   currency: IEnumValue[] = [
-    { value: 0, text: this.l("Dollar") },
-    { value: 1, text: this.l("Dinar") },
+    { value: 1, text: this.l("Dollar") },
+    { value: 0, text: this.l("Dinar") },
   ];
 
   fields: IPageField[] = [

@@ -22,8 +22,9 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   saving: boolean;
   customers: DropdownDto[] = [];
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 0, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    
   ];
 
   constructor(
@@ -37,11 +38,11 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.offerId = this.route.snapshot?.params?.invoiceId;
-    this.initialInvoice();
+    this.offerId = this.route.snapshot?.params?.offerId;
+    this.initialOffer();
   }
 
-  initialInvoice() {
+  initialOffer() {
     this.offerService.getOfferWithDetailId(this.offerId).subscribe((result) => {
       this.offer = result;
     });

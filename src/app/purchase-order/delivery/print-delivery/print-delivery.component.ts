@@ -24,8 +24,7 @@ export class PrintDeliveryComponent extends AppComponentBase {
   constructor(
     injector: Injector,
     private _route: ActivatedRoute,
-    private customerService: CustomerServiceProxy,
-    private offerService: OfferServiceProxy
+    private customerService: CustomerServiceProxy
   ) {
     super(injector);
 

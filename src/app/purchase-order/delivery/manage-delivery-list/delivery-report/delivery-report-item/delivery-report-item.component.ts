@@ -19,6 +19,8 @@ import {
   UpdateDeliveryItemDto,
 } from "@shared/service-proxies/service-proxies";
 import { forEach } from "lodash-es";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+import { RejectDialogComponent } from "./reject-dialog/reject-dialog.component";
 
 @Component({
   selector: "delivery-report-item",
@@ -34,12 +36,14 @@ export class DeliveryReportItemComponent
   @Output() deliveryItemsChange = new EventEmitter<UpdateDeliveryItemDto[]>();
   items: DeliveryItemDto[] = [];
   currencies = [
-    { id: 0, name: this.l("Dollar") },
-    { id: 1, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
   ];
 
   constructor(
     injector: Injector,
+    private modalService: BsModalService,
+    public bsModalRef: BsModalRef,
     private deliveryService: DeliveryServiceProxy
   ) {
     super(injector);
@@ -57,30 +61,31 @@ export class DeliveryReportItemComponent
     this.deliveryService
       .getWithDetailsById(this.deliveryId)
       .subscribe((result) => {
+        console.log(result);
         this.items = result.deliveryItems;
       });
   }
 
   getSaleType(item: DeliveryItemDto) {
-    return item.invoiceItem.offerItem.addedBySmallUnit == true
+    return item.offerItem.addedBySmallUnit == true
       ? `${this.l("SmallUnit")}`
       : `${this.l("LargeUnit")}`;
   }
 
-  checkIfItemExist(invoiceItemId) {
+  checkIfItemExist(offerItemId) {
     const index = this.deliveryItems.findIndex(
-      (x) => x.invoiceItemId == invoiceItemId
+      (x) => x.offerItemId == offerItemId
     );
     return index > -1;
   }
 
-  getQuantity(invoiceItemId) {
-    return this.deliveryItems.find((x) => x.invoiceItemId == invoiceItemId)
+  getQuantity(offerItemId) {
+    return this.deliveryItems.find((x) => x.offerItemId == offerItemId)
       ?.deliveredQuantity;
   }
 
-  getBatchNumber(invoiceItemId) {
-    return this.deliveryItems.find((x) => x.invoiceItemId == invoiceItemId)
+  getBatchNumber(offerItemId) {
+    return this.deliveryItems.find((x) => x.offerItemId == offerItemId)
       ?.batchNumber;
   }
 
@@ -90,6 +95,27 @@ export class DeliveryReportItemComponent
     input.init({ id: id, status: status });
     this.deliveryService.changeItemStatus(input).subscribe((result) => {
       this.deliveryItems.find((x) => x.id == result.id).deliveryItemStatus = status;
+    });
+  }
+
+
+  showRejectDialog(item) {
+    let rejectDialog: BsModalRef;
+    rejectDialog = this.modalService.show(
+      RejectDialogComponent,
+      {
+        backdrop: true,
+        ignoreBackdropClick: true,
+        class: 'modal-lg',
+        initialState:{
+          deliveryId:this.deliveryId,
+          deliveryItemId:item.id,
+          quantity:item.deliveredQuantity
+        }
+      }
+    );
+    rejectDialog.content.onSave.subscribe(() => {
+      
     });
   }
 
@@ -110,7 +136,7 @@ export class DeliveryReportItemComponent
           id: item.id,
           deliveryItemStatus: item.deliveryItemStatus,
           deliveredQuantity: item.deliveredQuantity,
-          invoiceItemId: item.invoiceItem.id,
+          offerItemId: item.offerItem.id,
           batchNumber: item.batchNumber,
         });
         this.deliveryItems.push(deliveryItem);

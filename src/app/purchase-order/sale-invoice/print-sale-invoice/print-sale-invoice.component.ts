@@ -18,7 +18,6 @@ export class PrintSaleInvoiceComponent extends AppComponentBase {
     this._route.queryParams.subscribe((x) => {
       this.saleInvoice = JSON.parse(x[0]);
       this.saleInvoiceItems = this.saleInvoice.saleInvoiceItems;
-      debugger;
       setTimeout(() => {
         print();
       }, 1000);
