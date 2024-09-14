@@ -72,13 +72,15 @@ export class CreateOfferItemComponent
   }
 
   onChangeAddedbyUnit(dto: MaterialUnitDto) {
-    debugger;
     if(dto){
       if (dto.isSmallUnit) {
-        this.item.addedBySmallUnit = dto.isSmallUnit;
+        this.item.addedBySmallUnit = true;
         this.item.sizeId = dto.id;
+        this.item.unitId = undefined;
       } else {
+        this.item.addedBySmallUnit = false;
         this.item.unitId = dto.id;
+        this.item.sizeId = undefined;
       }
     }
   }
@@ -159,6 +161,7 @@ export class CreateOfferItemComponent
 
   getStock(materialId:number){
     var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
+
     if(materialStocks.length > -1){
       var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.numberInLargeUnit, 0);
       var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);

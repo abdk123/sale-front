@@ -20,6 +20,7 @@ export class RejectDialogComponent extends AppComponentBase implements OnInit {
   deliveryItemId: number;
   deliveryId: number;
   rejectedQuantity: number;
+  rejectionDate: Date = new Date();
   constructor(
     injector: Injector,
     private deliveryService: DeliveryServiceProxy,
@@ -28,7 +29,11 @@ export class RejectDialogComponent extends AppComponentBase implements OnInit {
     super(injector);
   }
   ngOnInit(): void {
-    this.rejectedQuantity = this.quantity;
+    this.deliveryService.get(this.deliveryId)
+    .subscribe(result=>{
+      this.rejectedQuantity = result.deliveryItems
+      .find(x=>x.id == this.deliveryItemId)?.rejectedQuantity;
+    })
   }
 
   reject(returnToSupplier: boolean) {

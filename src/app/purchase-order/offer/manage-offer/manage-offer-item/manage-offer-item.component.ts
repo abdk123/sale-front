@@ -162,7 +162,6 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   }
 
   onCheck(args, offerItemId){
-    console.log(args);
     var checked = args.target.value;
     if(this.purchaseInvoiceDto.offerItemsIds == undefined)
       this.purchaseInvoiceDto.offerItemsIds = [];

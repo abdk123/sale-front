@@ -43,6 +43,7 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
   }
   ngOnInit(): void {
     this.initialCustomers();
+    this.offer.status = 0;
   }
 
   initialCustomers() {

@@ -15,6 +15,7 @@
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'NumberInSmallUnit' | localize}}</th>
                         <th>{{'SaleType' | localize}}</th>
+                        <th>{{'Status' | localize}}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,14 +38,17 @@
                         <td>{{item.offerItem?.numberInSmallUnit}}</td>
                         <td>{{getSaleType(item)}}</td>
                         <td>
-                            <div class="d-flex flex-column" *ngIf="item.deliveryItemStatus == 0 ">
-                                <button type="button" (click)="showRejectDialog(item)" class="btn btn-outline-danger btn-xs my-1">
-                                    {{'Reject' | localize}}
-                                </button>
-                            </div>
                             <span *ngIf="item.deliveryItemStatus == 2" class="badge badge-pill badge-outline-danger">{{'RejectAndReturnToSupplier' | localize}}</span>
                             <span *ngIf="item.deliveryItemStatus == 3" class="badge badge-pill badge-outline-danger">{{'RejectAndRecordAsDamaged' | localize}}</span>
                             <span *ngIf="item.deliveryItemStatus == 1" class="badge badge-pill badge-outline-success">{{'Approved' | localize}}</span>
+                            <span *ngIf="item.deliveryItemStatus == 0" class="badge badge-pill badge-outline-success">{{'Pending' | localize}}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column" *ngIf="item.deliveryItemStatus == 0 ">
+                                <button type="button" (click)="showRejectDialog(item)" class="btn btn-danger btn-xs my-1">
+                                    {{'Reject' | localize}}
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

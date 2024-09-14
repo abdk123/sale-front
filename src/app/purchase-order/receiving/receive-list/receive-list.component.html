@@ -18,12 +18,12 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of receives; index as i">
-                        <td>{{item.transportCompany.name}}</td>
+                        <td>{{item.transportCompany?.name}}</td>
                         <td>{{item.driverName}}</td>
                         <td>{{item.driverPhoneNumber }}</td>
                         <td>{{item.totalReceivedQuantity}}</td>
                         <td>{{item.transportCost}}</td>
-                        <td>{{currencies[item.transportCostCurrency].name}}</td>
+                        <td>{{item.transportCompany ? currencies[item.transportCostCurrency].name : ''}}</td>
                         <td>{{item.clearanceCompany.name}}</td>
                         <td>{{item.clearanceCost}}</td>
                         <td>

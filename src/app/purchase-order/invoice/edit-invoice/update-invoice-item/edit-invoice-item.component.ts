@@ -46,6 +46,7 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
     this.invoiceService.getWithDetail(this.invoiceId)
     .subscribe(result=>{
       this.invoiceItems = result.invoiseDetails;
+      
     })
   }
 

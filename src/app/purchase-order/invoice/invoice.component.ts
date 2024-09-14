@@ -18,7 +18,7 @@ export class InvoiceComponent
   status: IEnumValue[] = [
     { value: 0, text: this.l("NotPriced") },
     { value: 1, text: this.l("PendingReceived") },
-    { value: 2, text: this.l("PartialRecieved") },
+    { value: 2, text: this.l("PartialReceive") },
     { value: 3, text: this.l("Received") },
   ];
   currency: IEnumValue[] = [

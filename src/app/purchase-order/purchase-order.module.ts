@@ -46,6 +46,12 @@ import { ReturnedDeliveriesComponent } from './returned-deliveries/returned-deli
 import { RejectedDeliveriesComponent } from './rejected-deliveries/rejected-deliveries.component';
 import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
 import { RejectDialogComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/reject-dialog/reject-dialog.component';
+import { ViewOfferComponent } from './offer/view-offer/view-offer.component';
+import { ViewOfferSummaryComponent } from './offer/view-offer/view-offer-summary/view-offer-summary.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ViewOfferItemComponent } from './offer/view-offer/view-offer-item/view-offer-item.component';
+import { ViewPorchaseInvoiceComponent } from './offer/view-offer/view-porchase-invoice/view-porchase-invoice.component';
+import { ViewDeliveryComponent } from './offer/view-offer/view-delivery/view-delivery.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +90,11 @@ import { RejectDialogComponent } from './delivery/manage-delivery-list/delivery-
     RejectedDeliveriesComponent,
     PdfUrnComponent,
     RejectDialogComponent,
+    ViewOfferComponent,
+    ViewOfferSummaryComponent,
+    ViewOfferItemComponent,
+    ViewPorchaseInvoiceComponent,
+    ViewDeliveryComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -98,6 +109,7 @@ import { RejectDialogComponent } from './delivery/manage-delivery-list/delivery-
     PurchaseOrderRoutingModule,
     NgSelectModule,
     BsDatepickerModule,
+    TabsModule.forRoot(),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [

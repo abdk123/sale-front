@@ -16,7 +16,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
   status:IEnumValue[]=[
     {value:0,text:this.l("NotPriced")},
     {value:1,text:this.l("PendingReceived")},
-    {value:2,text:this.l("PartialRecieved")},
+    {value:2,text:this.l("PartialReceive")},
     {value:3,text:this.l("Received")}
   ];
   currency:IEnumValue[]=[
@@ -51,7 +51,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
     super(injector);
   }
   protected list(request: FullPagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    request.including = "Offer,Supplier,InvoiseDetails";
+    request.including = "Offer,Supplier,InvoiseDetails,Receivings";
     this.invoiceService.read(request)
       .subscribe(result => {
         this.invoices = result.items;

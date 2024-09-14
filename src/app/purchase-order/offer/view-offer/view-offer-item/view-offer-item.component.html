@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-12 list">
+        <div class="card d-flex flex-row mb-3" *ngFor="let item of items">
+            <div class="d-flex flex-grow-1 min-width-zero">
+                <div
+                    class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <a href="javascript:;" class="list-item-heading mb-0 truncate w-10 w-xs-100">
+                        {{getMaterialName(item.materialId)}}</a>
+                    <div><item-info title="Quantity"
+                            [value]="(item.quantity | commaNumber) +' '+getUnit(item)"></item-info></div>
+                    <div><item-info title="UnitPrice" [value]="(item.unitPrice | commaNumber)"></item-info></div>
+                    <div><item-info title="TotalPrice"
+                            [value]="(item.unitPrice * item.quantity) | commaNumber"></item-info></div>
+                    <div><item-info title="Stock" [value]="getStock(item.materialId)"></item-info></div>
+                    <div><item-info title="SaleType" [cssClass]="'badge badge-outline-secondary badge-pill'"
+                            [value]="getSaleType(item.addedBySmallUnit)"></item-info></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

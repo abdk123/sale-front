@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IEnumValue } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { DeliveryDto, DeliveryServiceProxy, FullPagedRequestDto } from '@shared/service-proxies/service-proxies';
+import { DeliveryDto, DeliveryServiceProxy, FullPagedRequestDto, RejectDeliveryItemDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -12,47 +12,55 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 
 export class RejectedDeliveriesComponent
-  extends FullPagedListingComponentBase<DeliveryDto>
+  extends FullPagedListingComponentBase<RejectDeliveryItemDto>
   implements OnInit
 {
-  returnedDeliveries: DeliveryDto[] = [];
+  returnedDeliveries: RejectDeliveryItemDto[] = [];
   currency: IEnumValue[] = [
     { value: 1, text: this.l("Dollar") },
     { value: 0, text: this.l("Dinar") },
   ];
   fields = [
     {
-      label: this.l("Customer"),
-      name: "customer",
+      label: this.l("Material"),
+      name: "materialName",
       sortable: false,
       type: "string",
     },
     {
-      label: this.l("InvoiceNumber"),
-      name: "invoiceNumber",
-      sortable: true,
-      type: "number",
-    },
-    {
       label: this.l("PoNumber"),
       name: "poNumber",
+      sortable: true,
+      type: "string",
+    },
+    {
+      label: this.l("UnitName"),
+      name: "unitName",
       sortable: false,
       type: "number",
     },
     {
-      label: this.l("Number"),
-      name: "id",
-      sortable: false,
-      type: "number",
+      label: this.l("Currency"),
+      name: "currency",
+      type: "enum",
+      enumValue: this.currency,
+      sortable: true,
     },
     {
-      label: this.l("RejectDate"),
-      name: "rejectDate",
-      sortable: false,
-      type: "date",
+      label: this.l("Status"),
+      name: "status",
+      type: "enum",
+      enumValue: this.currency,
+      sortable: true,
     },
   ];
 
+  status: IEnumValue[] = [
+    { value: 0, text: this.l("Pending") },
+    { value: 1, text: this.l("Approved") },
+    { value: 2, text: this.l("RejectAndReturnToSupplier") },
+    { value: 3, text: this.l("RejectAndRecordAsDamaged") },
+  ];
   constructor(
     injector: Injector,
     private _router: Router,

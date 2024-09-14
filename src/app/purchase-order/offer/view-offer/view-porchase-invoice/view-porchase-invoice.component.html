@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-12 list">
+        <div class="card mb-3" *ngFor="let invoice of invoices">
+            <div class="d-flex flex-grow-1 min-width-zero separator">
+                <div
+                    class="card-body py-4 align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <a href="javascript:;" class="list-item-heading mb-0 truncate w-10 w-xs-100">
+                        {{invoice?.supplierName}}</a>
+                    <div><item-info title="Status" [value]="getStatus(invoice?.status)"></item-info></div>
+                    <div><item-info title="Currency" [value]="getCurrency(invoice?.currency)"></item-info></div>
+                    <div><item-info title="CreationTime" [value]="invoice.creationTime | format:'DD-MM-yyyy' "></item-info></div>
+                    <div><item-info title="ApproveDate" [value]="invoice.approveDate | format:'DD-MM-yyyy' "></item-info></div>
+                </div>
+            </div>
+            <div class="">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>{{'Material' | localize}}</th>
+                                <th>{{'EnteredQuantity' | localize}}</th>
+                                <th>{{'ReceivedQuantity' | localize}}</th>
+                                <th>{{'UnitPrice' | localize}}</th>
+                                <th>{{'TotalPrice' | localize}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let invoiceItem of invoice.invoiseDetails; index as i">
+                                <td>{{invoiceItem?.offerItem?.material?.name}}</td>
+                                <td>{{invoiceItem?.quantity}}</td>
+                                <td>{{invoiceItem?.receivedQuantity}}</td>
+                                <td>{{invoiceItem?.totalMaterilPrice}}</td>
+                                <td>{{invoiceItem?.receivedQuantity * invoiceItem?.totalMaterilPrice}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>{{'ReceivedQuantity' | localize}}</th>
+                                <th>{{'TransportCompany' | localize}}</th>
+                                <th>{{'TransportCost' | localize}}</th>
+                                <th>{{'DriverName' | localize}}</th>
+                                <th>{{'DriverPhoneNumber' | localize}}</th>
+                                <th>{{'ClearanceCompany' | localize}}</th>
+                                <th>{{'ClearanceCost' | localize}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let receiving of invoice.receivings; index as i">
+                                <td>{{receiving?.totalReceivedQuantity}}</td>
+                                <td>{{receiving?.transportCompany?.name}}</td>
+                                <td>{{receiving?.transportCost}} {{receiving?.transportCostCurrency ? getCurrency(receiving?.transportCostCurrency) : ''}}</td>
+                                <td>{{receiving?.driverName}}</td>
+                                <td>{{receiving?.driverPhoneNumber}}</td>
+                                <td>{{receiving?.clearanceCompany?.name}}</td>
+                                <td>{{receiving?.clearanceCost}} {{receiving?.clearanceCostCurrency ? getCurrency(receiving?.clearanceCostCurrency) : ''}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

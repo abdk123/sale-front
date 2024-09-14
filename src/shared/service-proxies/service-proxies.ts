@@ -4919,7 +4919,7 @@ export class InvoiceServiceProxy {
      * @param offerId (optional) 
      * @return Success
      */
-    getByOfferId(offerId: number | undefined): Observable<InvoiceDto> {
+    getByOfferId(offerId: number | undefined): Observable<InvoiceDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Invoice/GetByOfferId?";
         if (offerId === null)
             throw new Error("The parameter 'offerId' cannot be null.");
@@ -4942,14 +4942,14 @@ export class InvoiceServiceProxy {
                 try {
                     return this.processGetByOfferId(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<InvoiceDto>;
+                    return _observableThrow(e) as any as Observable<InvoiceDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<InvoiceDto>;
+                return _observableThrow(response_) as any as Observable<InvoiceDto[]>;
         }));
     }
 
-    protected processGetByOfferId(response: HttpResponseBase): Observable<InvoiceDto> {
+    protected processGetByOfferId(response: HttpResponseBase): Observable<InvoiceDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4960,7 +4960,14 @@ export class InvoiceServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = InvoiceDto.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(InvoiceDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -19573,7 +19580,6 @@ export enum DeliveryItemStatus {
     _1 = 1,
     _2 = 2,
     _3 = 3,
-    _4 = 4,
 }
 
 export class DropdownDto implements IDropdownDto {
@@ -20768,6 +20774,7 @@ export class InvoiceDto implements IInvoiceDto {
     totalReceivedQuantity: number;
     readonly totalNotReceivedQuantity: number;
     invoiseDetails: InvoiceItemDto[] | undefined;
+    receivings: ReceivingDto[] | undefined;
 
     constructor(data?: IInvoiceDto) {
         if (data) {
@@ -20798,6 +20805,11 @@ export class InvoiceDto implements IInvoiceDto {
                 this.invoiseDetails = [] as any;
                 for (let item of _data["invoiseDetails"])
                     this.invoiseDetails.push(InvoiceItemDto.fromJS(item));
+            }
+            if (Array.isArray(_data["receivings"])) {
+                this.receivings = [] as any;
+                for (let item of _data["receivings"])
+                    this.receivings.push(ReceivingDto.fromJS(item));
             }
         }
     }
@@ -20830,6 +20842,11 @@ export class InvoiceDto implements IInvoiceDto {
             for (let item of this.invoiseDetails)
                 data["invoiseDetails"].push(item.toJSON());
         }
+        if (Array.isArray(this.receivings)) {
+            data["receivings"] = [];
+            for (let item of this.receivings)
+                data["receivings"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -20857,6 +20874,7 @@ export interface IInvoiceDto {
     totalReceivedQuantity: number;
     totalNotReceivedQuantity: number;
     invoiseDetails: InvoiceItemDto[] | undefined;
+    receivings: ReceivingDto[] | undefined;
 }
 
 export class InvoiceDtoPagedResultDto implements IInvoiceDtoPagedResultDto {
@@ -23397,6 +23415,7 @@ export class RejectDeliveryDto implements IRejectDeliveryDto {
     deliveryItemId: number;
     rejectedQuantity: number;
     returnToSupplier: boolean;
+    rejectionDate: moment.Moment | undefined;
 
     constructor(data?: IRejectDeliveryDto) {
         if (data) {
@@ -23413,6 +23432,7 @@ export class RejectDeliveryDto implements IRejectDeliveryDto {
             this.deliveryItemId = _data["deliveryItemId"];
             this.rejectedQuantity = _data["rejectedQuantity"];
             this.returnToSupplier = _data["returnToSupplier"];
+            this.rejectionDate = _data["rejectionDate"] ? moment(_data["rejectionDate"].toString()) : <any>undefined;
         }
     }
 
@@ -23429,6 +23449,7 @@ export class RejectDeliveryDto implements IRejectDeliveryDto {
         data["deliveryItemId"] = this.deliveryItemId;
         data["rejectedQuantity"] = this.rejectedQuantity;
         data["returnToSupplier"] = this.returnToSupplier;
+        data["rejectionDate"] = this.rejectionDate ? this.rejectionDate.toISOString() : <any>undefined;
         return data;
     }
 
@@ -23445,6 +23466,7 @@ export interface IRejectDeliveryDto {
     deliveryItemId: number;
     rejectedQuantity: number;
     returnToSupplier: boolean;
+    rejectionDate: moment.Moment | undefined;
 }
 
 export class RejectDeliveryItemDto implements IRejectDeliveryItemDto {

@@ -9,4 +9,5 @@ export class ItemInfoComponent {
   @Input() title:string = '';
   @Input() value:string = '';
   @Input() icon:string = '';
+  @Input() cssClass:string = '';
 }

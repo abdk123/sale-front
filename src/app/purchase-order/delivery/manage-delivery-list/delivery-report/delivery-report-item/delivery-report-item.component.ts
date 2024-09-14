@@ -61,7 +61,6 @@ export class DeliveryReportItemComponent
     this.deliveryService
       .getWithDetailsById(this.deliveryId)
       .subscribe((result) => {
-        console.log(result);
         this.items = result.deliveryItems;
       });
   }
@@ -115,7 +114,7 @@ export class DeliveryReportItemComponent
       }
     );
     rejectDialog.content.onSave.subscribe(() => {
-      
+      this.initialItems();
     });
   }
 

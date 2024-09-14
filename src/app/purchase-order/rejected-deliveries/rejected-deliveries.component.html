@@ -1,7 +1,7 @@
 <app-page-header [title]="'RejectedDeliveries' | localize" [fields]="fields"
     [CreatePermission]="'PurshaseOrder.RejectedDeliveries.Create333'" (advanceFilter)="showFilterDialog($event)"
     [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
-    (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+    (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)" [coloredBy]="'status'">
 </app-page-header>
 
 

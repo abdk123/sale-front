@@ -54,7 +54,6 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
       .getForEdit(this.offerId)
       .subscribe((result: UpdateOfferDto) => {
         this.offer = result;
-        console.log(result);
         this.endDate = this.getDateFromString(this.offer.offerEndDate);
         this.initialInvoice();
       });

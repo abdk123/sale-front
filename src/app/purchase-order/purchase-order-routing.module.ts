@@ -21,6 +21,7 @@ import { MonitorPurchaseOrderComponent } from "./monitor-purchase-order/monitor-
 import { ReturnedDeliveriesComponent } from "./returned-deliveries/returned-deliveries.component";
 import { RejectedDeliveriesComponent } from "./rejected-deliveries/rejected-deliveries.component";
 import { PdfUrnComponent } from "./sale-invoice/pdf-urn/pdf-urn.component";
+import { ViewOfferComponent } from "./offer/view-offer/view-offer.component";
 
 const routes: Routes = [
   {
@@ -49,6 +50,11 @@ const routes: Routes = [
         path: "manage-offer",
         component: ManageOfferComponent,
         data: { permission: "Setting.Offers.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "summary",
+        component: ViewOfferComponent,
         canActivate: [AppRouteGuard],
       },
       {
@@ -121,12 +127,6 @@ const routes: Routes = [
         path: "monitor-po",
         component: MonitorPurchaseOrderComponent,
         //data: { permission: "PurshaseOrder.Deliveries." },
-        canActivate: [AppRouteGuard],
-      },
-      {
-        path: "returned-deliveries",
-        component: ReturnedDeliveriesComponent,
-        //data: { permission: "PurshaseOrder.Deliveries.AddDeliveryReport" },
         canActivate: [AppRouteGuard],
       },
       {

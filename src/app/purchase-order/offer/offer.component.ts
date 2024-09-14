@@ -169,7 +169,14 @@ export class OfferComponent
     });
   }
 
-  showViewModal(id: number) {}
+  showViewModal(id: number) {
+    this._router.navigate([
+      "/app/orders/summary",
+      {
+        id: id,
+      },
+    ]);
+  }
 
   showFilterDialog(status) {}
 

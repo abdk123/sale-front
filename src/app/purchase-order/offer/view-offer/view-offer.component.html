@@ -1,0 +1,114 @@
+
+<div class="">
+    <div class="row pb-4">
+        <div class="col-12">
+            <h1>{{'PoNumber' | localize}} </h1><h1 class="px-2 text-primary">{{offer?.porchaseOrderId}}</h1>
+
+            <div class="top-right-button-container text-zero">
+                <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'Back' | localize}} <i
+                        class="simple-icon-action-undo"></i></a>
+            </div>
+            <div class="separator mb-2"></div>
+            <!--  -->
+            <div class="card mt-2 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <item-info title="Customer" *ngIf="offer.customer" [value]="offer.customer.fullName"
+                                icon="bi bi-person"></item-info>
+                        </div>
+                        <div class="col-md-3">
+                            <item-info title="OfferId" [value]="offer.id" icon="bi bi-bookmark"></item-info>
+                        </div>
+                        <div class="col-md-3">
+                            <item-info title="Currency" value="{{offer.currency == 1 ? 'Dollar' : 'Dinar'}}"
+                                icon="bi bi-cash-stack"></item-info>
+                        </div>
+                        <div class="col-md-3">
+                            <item-info title="CreationTime" *ngIf="offer.creationTime"
+                                value="{{offer.creationTime.toDate() | date:'dd-MM-yyyy hh:MM' }}"
+                                icon="bi bi-calendar"></item-info>
+                        </div>
+                        <div class="col-md-3">
+                            <item-info title="OfferEndDate" *ngIf="offer.offerEndDate"
+                                value="{{offer.offerEndDate.toDate() | date:'dd-MM-yyyy hh:MM' }}"
+                                icon="bi bi-calendar"></item-info>
+                        </div>
+                        <div class="col-md-3">
+                            <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>
+                        </div>
+                        <div class="col-md-3">
+                            <item-info title="TotalPrice" value="{{offer.totalPrice}}"></item-info>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <!-- <div class="card mt-2">
+                <tabset class="card-tabs tab-container">
+                    <tab [heading]="('OfferItems' | localize)" class="tab-content">
+                        <div class="separator"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
+                    </tab>
+                    <tab [heading]="('PorchaseInvoices' | localize)" class="tab-content"></tab>
+                    <tab [heading]="('Deliveries' | localize)" class="tab-content"></tab>
+                </tabset>
+            </div> -->
+            <tabset class="separator-tabs ml-0 tab-container mt-2">
+                <tab [heading]="('OfferItems' | localize)" class="tab-content">
+                    <view-offer-item [items]="offer.offerItems"></view-offer-item>
+                </tab>
+                <tab [heading]="('PorchaseInvoices' | localize)" class="tab-content">
+                    <view-porchase-invoice [offerId]="offer.id"></view-porchase-invoice>
+                </tab>
+                <tab [heading]="('Deliveries' | localize)" class="tab-content">
+                    <view-delivery [offerId]="offer.id"></view-delivery>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+
+    <!-- <view-offer-summary>
+        <div class="p-4 h-100">
+            <p class="text-muted text-small mb-3">اجمالي فواتير الشراء</p>
+            <ul class="list-unstyled mb-4">
+                <li class="nav-item"><a href="#"><i class="simple-icon-refresh"></i><span class="ml-1">الكمية الغير مسلمة</span><span
+                            class="float-right">20</span></a></li>
+                <li class="nav-item"><a href="#"><i class="simple-icon-check"></i><span class="ml-1">الكمية المسلمة</span>  <span
+                            class="float-right">4</span></a></li>
+            </ul>
+            <p class="text-muted text-small mb-4"> Categories </p>
+            <ul class="list-unstyled mb-5">
+                <li>
+                    <div class="custom-control custom-checkbox mb-2"><input type="checkbox" id="category1"
+                            class="custom-control-input"><label for="category1"
+                            class="custom-control-label">Development</label></div>
+                </li>
+                <li>
+                    <div class="custom-control custom-checkbox mb-2"><input type="checkbox" id="category2"
+                            class="custom-control-input"><label for="category2"
+                            class="custom-control-label">Workplace</label></div>
+                </li>
+                <li>
+                    <div class="custom-control custom-checkbox"><input type="checkbox" id="category3"
+                            class="custom-control-input"><label for="category3"
+                            class="custom-control-label">Hardware</label></div>
+                </li>
+            </ul>
+            <p class="text-muted text-small mb-3">Labels</p>
+            <div>
+                <p class="d-sm-inline-block mb-1"><a href="javascript:;"><span
+                            class="badge badge-pill badge-outline-primary mb-1 mr-1">NEW FRAMEWORK</span></a></p>
+                <p class="d-sm-inline-block mb-1"><a href="javascript:;"><span
+                            class="badge badge-pill badge-outline-theme-3 mb-1 mr-1">EDUCATION</span></a></p>
+                <p class="d-sm-inline-block mb-1"><a href="javascript:;"><span
+                            class="badge badge-pill badge-outline-secondary mb-1 mr-1">PERSONAL</span></a></p>
+            </div>
+        </div>
+    </view-offer-summary> -->
+</div>
