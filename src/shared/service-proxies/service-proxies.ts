@@ -1278,6 +1278,62 @@ export class ClearanceCompanyCashFlowServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getBalance(id: number | undefined): Observable<BalanceInfoDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyCashFlow/GetBalance?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceInfoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceInfoDto>;
+        }));
+    }
+
+    protected processGetBalance(response: HttpResponseBase): Observable<BalanceInfoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BalanceInfoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     get(id: number | undefined): Observable<ClearanceCompanyCashFlowDto> {
         let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyCashFlow/Get?";
         if (id === null)
@@ -2778,6 +2834,62 @@ export class CustomerCashFlowServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getBalance(id: number | undefined): Observable<BalanceInfoDto> {
+        let url_ = this.baseUrl + "/api/services/app/CustomerCashFlow/GetBalance?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceInfoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceInfoDto>;
+        }));
+    }
+
+    protected processGetBalance(response: HttpResponseBase): Observable<BalanceInfoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BalanceInfoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     get(id: number | undefined): Observable<CustomerCashFlowDto> {
         let url_ = this.baseUrl + "/api/services/app/CustomerCashFlow/Get?";
         if (id === null)
@@ -3735,6 +3847,69 @@ export class DeliveryServiceProxy {
     }
 
     protected processGetAllByCustomerId(response: HttpResponseBase): Observable<DeliveryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DeliveryDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param customerId (optional) 
+     * @return Success
+     */
+    getForSaleInvoice(customerId: number | undefined): Observable<DeliveryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Delivery/GetForSaleInvoice?";
+        if (customerId === null)
+            throw new Error("The parameter 'customerId' cannot be null.");
+        else if (customerId !== undefined)
+            url_ += "customerId=" + encodeURIComponent("" + customerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForSaleInvoice(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForSaleInvoice(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DeliveryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DeliveryDto[]>;
+        }));
+    }
+
+    protected processGetForSaleInvoice(response: HttpResponseBase): Observable<DeliveryDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -11993,6 +12168,62 @@ export class TransportCompanyCashFlowServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getBalance(id: number | undefined): Observable<BalanceInfoDto> {
+        let url_ = this.baseUrl + "/api/services/app/TransportCompanyCashFlow/GetBalance?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceInfoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceInfoDto>;
+        }));
+    }
+
+    protected processGetBalance(response: HttpResponseBase): Observable<BalanceInfoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BalanceInfoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     get(id: number | undefined): Observable<TransportCompanyCashFlowDto> {
         let url_ = this.baseUrl + "/api/services/app/TransportCompanyCashFlow/Get?";
         if (id === null)
@@ -15867,6 +16098,57 @@ export interface IAuthenticateResultModel {
     encryptedAccessToken: string | undefined;
     expireInSeconds: number;
     userId: number;
+}
+
+export class BalanceInfoDto implements IBalanceInfoDto {
+    id: number;
+    dollarBalance: number;
+    dinarBalance: number;
+
+    constructor(data?: IBalanceInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.dollarBalance = _data["dollarBalance"];
+            this.dinarBalance = _data["dinarBalance"];
+        }
+    }
+
+    static fromJS(data: any): BalanceInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BalanceInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["dollarBalance"] = this.dollarBalance;
+        data["dinarBalance"] = this.dinarBalance;
+        return data;
+    }
+
+    clone(): BalanceInfoDto {
+        const json = this.toJSON();
+        let result = new BalanceInfoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBalanceInfoDto {
+    id: number;
+    dollarBalance: number;
+    dinarBalance: number;
 }
 
 export enum CallingConventions {
@@ -20771,10 +21053,9 @@ export class InvoiceDto implements IInvoiceDto {
     totalPrice: number;
     supplierName: string | undefined;
     supplierId: string | undefined;
-    totalReceivedQuantity: number;
+    readonly totalReceivedQuantity: number;
     readonly totalNotReceivedQuantity: number;
     invoiseDetails: InvoiceItemDto[] | undefined;
-    receivings: ReceivingDto[] | undefined;
 
     constructor(data?: IInvoiceDto) {
         if (data) {
@@ -20799,17 +21080,12 @@ export class InvoiceDto implements IInvoiceDto {
             this.totalPrice = _data["totalPrice"];
             this.supplierName = _data["supplierName"];
             this.supplierId = _data["supplierId"];
-            this.totalReceivedQuantity = _data["totalReceivedQuantity"];
+            (<any>this).totalReceivedQuantity = _data["totalReceivedQuantity"];
             (<any>this).totalNotReceivedQuantity = _data["totalNotReceivedQuantity"];
             if (Array.isArray(_data["invoiseDetails"])) {
                 this.invoiseDetails = [] as any;
                 for (let item of _data["invoiseDetails"])
                     this.invoiseDetails.push(InvoiceItemDto.fromJS(item));
-            }
-            if (Array.isArray(_data["receivings"])) {
-                this.receivings = [] as any;
-                for (let item of _data["receivings"])
-                    this.receivings.push(ReceivingDto.fromJS(item));
             }
         }
     }
@@ -20842,11 +21118,6 @@ export class InvoiceDto implements IInvoiceDto {
             for (let item of this.invoiseDetails)
                 data["invoiseDetails"].push(item.toJSON());
         }
-        if (Array.isArray(this.receivings)) {
-            data["receivings"] = [];
-            for (let item of this.receivings)
-                data["receivings"].push(item.toJSON());
-        }
         return data;
     }
 
@@ -20874,7 +21145,6 @@ export interface IInvoiceDto {
     totalReceivedQuantity: number;
     totalNotReceivedQuantity: number;
     invoiseDetails: InvoiceItemDto[] | undefined;
-    receivings: ReceivingDto[] | undefined;
 }
 
 export class InvoiceDtoPagedResultDto implements IInvoiceDtoPagedResultDto {

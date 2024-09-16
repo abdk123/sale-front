@@ -53,13 +53,13 @@
                         <strong>{{item?.deliveryItem?.offerItem?.unitPrice | commaNumber}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold; margin-top: 30px ; color:black ; ">
-                        <strong >{{item?.deliveryItem?.offerItem?.unitName}}</strong>
+                        <strong >{{getUnitName(item)}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
                         <strong>{{item.totalQuantity | commaNumber}}</strong>
                     </td>
                     <td style="text-align: center; font-weight: bold ; color:black ; ">
-                        <strong>{{item?.deliveryItem?.offerItem?.materialName}}</strong>
+                        <strong>{{getMaterialName(item)}}</strong>
                     </td>
                 </tr>
             </tbody>

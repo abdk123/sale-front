@@ -33,6 +33,6 @@ export class ViewDeliveryComponent extends AppComponentBase implements OnChanges
   }
 
   initialDelivery() {
-    this.deliveryService.getWithDetailsById()
+    //this.deliveryService.getWithDetailsById()
   }
 }

@@ -51,4 +51,23 @@ export class PrintSaleInvoiceComponent extends AppComponentBase {
     );
     return totalPrice;
   }
+
+  getUnitName(item){
+    if(item?.deliveryItem?.offerItem?.unitName)
+      return item?.deliveryItem?.offerItem?.unitName;
+
+    if(item?.deliveryItem?.offerItem?.unit?.name)
+      return item?.deliveryItem?.offerItem?.unit?.name;
+
+    return item?.deliveryItem?.offerItem?.size?.name;
+
+  }
+
+  getMaterialName(item){
+    debugger;
+    if(item?.deliveryItem?.offerItem?.materialName)
+      return item?.deliveryItem?.offerItem?.materialName;
+
+    return item?.deliveryItem?.offerItem?.material?.name;
+  }
 }

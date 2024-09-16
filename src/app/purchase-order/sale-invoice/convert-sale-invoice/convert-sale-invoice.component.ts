@@ -45,8 +45,9 @@ export class ConvertSaleInvoiceComponent extends AppComponentBase {
 
   initialDeliveries() {
     this._deliveryService
-      .getAllByCustomerId(this.customerId)
+      .getForSaleInvoice(this.customerId)
       .subscribe((result: DeliveryDto[]) => {
+        console.log(result);
         this.deliveries = result;
       });
   }
