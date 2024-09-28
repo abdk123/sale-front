@@ -2,8 +2,10 @@ import { Component, Injector, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AppComponentBase } from "@shared/app-component-base";
 import {
+  BalanceInfoDto,
   CreateOfferDto,
   CreateOfferItemDto,
+  CustomerCashFlowServiceProxy,
   CustomerServiceProxy,
   DropdownDto,
   OfferServiceProxy,
@@ -25,6 +27,7 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
   showPorchaseOrder = false;
   customers: DropdownDto[] = [];
   itemIndex: number;
+  customerBalance : BalanceInfoDto = new BalanceInfoDto();
   currencies = [
     { id: 1, name: this.l("Dollar") },
     { id: 0, name: this.l("Dinar") },
@@ -37,6 +40,7 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
     injector: Injector,
     private router: Router,
     private customerService: CustomerServiceProxy,
+    private customerCashFlowService: CustomerCashFlowServiceProxy,
     private offerService: OfferServiceProxy,
   ) {
     super(injector);
@@ -91,5 +95,12 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
 
   onSaveOfferItem(items:CreateOfferItemDto[]) {
     this.offer.offerItems = items;
+  }
+
+  onSelectCustomer(args){
+    this.customerCashFlowService.getBalance(this.offer.customerId)
+    .subscribe((result: BalanceInfoDto)=>{
+      this.customerBalance = result;
+    })
   }
 }

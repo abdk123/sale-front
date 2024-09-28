@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-12 list">
+        <div class="card mb-3" *ngFor="let invoice of invoices">
+            <div class="d-flex flex-grow-1 min-width-zero separator">
+                <div
+                    class="card-body py-4 align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <div><item-info title="Status" [value]="getStatus(invoice?.status)"></item-info></div>
+                    <div><item-info title="Currency" [value]="getStatus(invoice?.saleCurrency)"></item-info></div>
+                    <div><item-info title="TotalPrice"
+                            [value]="(invoice?.saeltotalPrice | commaNumber)"></item-info></div>
+                    <div><item-info title="TotalQuantity"
+                            [value]="(invoice?.invoiceTotalQuantity | commaNumber)"></item-info></div>
+                    <div><item-info title="DateForPaid"
+                            [value]="invoice?.dateForPaid | format:'DD-MM-yyyy'"></item-info></div>
+                    <div><item-info title="RemainingDaysForPaid" [value]="invoice?.remainingDaysForPaid"></item-info>
+                    </div>
+                    <div><item-info title="PillURN" [value]="invoice?.pillURN"></item-info></div>
+
+                </div>
+            </div>
+            <!-- <div class="table-responsive" *ngIf="invoice?.invoiceItems?.length > 0">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{{'Material' | localize}}</th>
+                            <th>{{'PoNumber' | localize}}</th>
+                            <th>{{'BatchNumber' | localize}}</th>
+                            <th>{{'DeliveredQuantity' | localize}}</th>
+                            <th>{{'ApprovedQuantity' | localize}}</th>
+                            <th>{{'RejectedQuantity' | localize}}</th>
+                            <th>{{'TotalPrice' | localize}}</th>
+                            <th>{{'Status' | localize}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoiceItem of invoice?.invoiceItems; index as i">
+                            <td>{{invoiceItem?.offerItem?.material?.name}}</td>
+                            <td>{{invoiceItem?.offerItem?.offer?.porchaseOrderId}}</td>
+                            <td>{{invoiceItem?.batchNumber}}</td>
+                            <td>{{invoiceItem?.deliveredQuantity | commaNumber}}</td>
+                            <td>{{invoiceItem?.approvedQuantity | commaNumber}}</td>
+                            <td>{{invoiceItem?.rejectedQuantity | commaNumber}}</td>
+                            <td>{{invoiceItem?.totalPrice | commaNumber}}</td>
+                            <td>{{getItemStatus(invoiceItem?.invoiceItemStatus)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+        </div>
+        <div class="d-flex justify-content-center" *ngIf="invoices?.length == 0">
+            <h3 class="text-center text-danger">لا يوجد فواتير حالياً</h3>
+        </div>
+    </div>
+</div>

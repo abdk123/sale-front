@@ -36,10 +36,10 @@
                                 icon="bi bi-calendar"></item-info>
                         </div>
                         <div class="col-md-3">
-                            <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>
+                            <item-info title="TotalQuantity" value="{{offer.totalQuantity | commaNumber}}"></item-info>
                         </div>
                         <div class="col-md-3">
-                            <item-info title="TotalPrice" value="{{offer.totalPrice}}"></item-info>
+                            <item-info title="TotalPrice" value="{{offer.totalPrice | commaNumber}}"></item-info>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <tab [heading]="('Deliveries' | localize)" class="tab-content"></tab>
                 </tabset>
             </div> -->
-            <tabset class="separator-tabs ml-0 tab-container mt-2">
+            <tabset  class="separator-tabs ml-0 tab-container mt-2">
                 <tab [heading]="('OfferItems' | localize)" class="tab-content">
                     <view-offer-item [items]="offer.offerItems"></view-offer-item>
                 </tab>
@@ -67,9 +67,13 @@
                     <view-porchase-invoice [offerId]="offer.id"></view-porchase-invoice>
                 </tab>
                 <tab [heading]="('Deliveries' | localize)" class="tab-content">
-                    <view-delivery [offerId]="offer.id"></view-delivery>
+                    <view-delivery [offerItemsIds]="offerItemsIds"></view-delivery>
+                </tab>
+                <tab [heading]="('SaleInvoices' | localize)" class="tab-content">
+                    <view-sale-invoice [offerItemsIds]="offerItemsIds"></view-sale-invoice>
                 </tab>
             </tabset>
+            
         </div>
     </div>
 

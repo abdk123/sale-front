@@ -13,6 +13,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto> implements OnInit {
   
   invoices: InvoiceDto[] = [];
+  colors = ['table-danger','table-warning','table-secondary','table-success'];
   status:IEnumValue[]=[
     {value:0,text:this.l("NotPriced")},
     {value:1,text:this.l("PendingReceived")},

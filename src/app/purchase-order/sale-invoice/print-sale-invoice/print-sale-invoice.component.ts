@@ -64,7 +64,6 @@ export class PrintSaleInvoiceComponent extends AppComponentBase {
   }
 
   getMaterialName(item){
-    debugger;
     if(item?.deliveryItem?.offerItem?.materialName)
       return item?.deliveryItem?.offerItem?.materialName;
 

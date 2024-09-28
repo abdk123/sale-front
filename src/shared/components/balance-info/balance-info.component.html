@@ -1,0 +1,5 @@
+<div class="d-flex align-items-center justify-content-start">
+    <div><span>{{'Dollar' | localize}}: </span><span [ngClass]="{'text-danger' : balance.dollarBalance < 0}">{{dollar}}</span></div>
+    <div>/</div>
+    <div><span>{{'Dinar' | localize}}: </span><span [ngClass]="{'text-danger' : balance.dinarBalance < 0}">{{dinar}}</span></div>
+</div>

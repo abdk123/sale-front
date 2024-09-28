@@ -10,5 +10,5 @@
 [DeletePermission]="'PurshaseOrder.Invoices.Delete'" [fields]="fields" [data]="invoices" 
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
-(editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)"
+(editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'" 
 (changePage)="pageChanged($event)" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

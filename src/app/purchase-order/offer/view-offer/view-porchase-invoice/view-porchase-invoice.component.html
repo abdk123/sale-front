@@ -27,10 +27,10 @@
                         <tbody>
                             <tr *ngFor="let invoiceItem of invoice.invoiseDetails; index as i">
                                 <td>{{invoiceItem?.offerItem?.material?.name}}</td>
-                                <td>{{invoiceItem?.quantity}}</td>
-                                <td>{{invoiceItem?.receivedQuantity}}</td>
-                                <td>{{invoiceItem?.totalMaterilPrice}}</td>
-                                <td>{{invoiceItem?.receivedQuantity * invoiceItem?.totalMaterilPrice}}</td>
+                                <td>{{invoiceItem?.quantity | commaNumber}}</td>
+                                <td>{{invoiceItem?.receivedQuantity | commaNumber}}</td>
+                                <td>{{invoiceItem?.totalMaterilPrice | commaNumber}}</td>
+                                <td>{{(invoiceItem?.receivedQuantity * invoiceItem?.totalMaterilPrice) | commaNumber}}</td>
                             </tr>
                         </tbody>
                     </table>

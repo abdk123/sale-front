@@ -11,6 +11,7 @@ import { OfferDto, OfferServiceProxy } from '@shared/service-proxies/service-pro
 export class ViewOfferComponent extends AppComponentBase implements OnInit {
 
   offer: OfferDto = new OfferDto();
+  offerItemsIds: number[] = [];
   id:number;
   constructor(
     injector: Injector,
@@ -32,6 +33,13 @@ export class ViewOfferComponent extends AppComponentBase implements OnInit {
     this.offerService.getOfferWithDetailId(this.id)
     .subscribe(result=>{
       this.offer = result;
+      if(this.offer.offerItems?.length > 0){
+        this.offerItemsIds = [];
+        this.offer.offerItems.forEach(item=>{
+          this.offerItemsIds.push(item.id);
+        });
+      }
+      
     });
   }
 

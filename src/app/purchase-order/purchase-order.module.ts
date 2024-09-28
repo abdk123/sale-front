@@ -10,7 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, RejectDeliveryServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerCashFlowServiceProxy, CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, RejectDeliveryServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -41,7 +41,6 @@ import { DeliveryReportComponent } from './delivery/manage-delivery-list/deliver
 import { DeliveryReportItemComponent } from './delivery/manage-delivery-list/delivery-report/delivery-report-item/delivery-report-item.component';
 import { MonitorPurchaseOrderComponent } from './monitor-purchase-order/monitor-purchase-order.component';
 import { PrintSaleInvoiceComponent } from './sale-invoice/print-sale-invoice/print-sale-invoice.component';
-import { ViewSaleInvoiceComponent } from './sale-invoice/view-sale-invoice/view-sale-invoice.component';
 import { ReturnedDeliveriesComponent } from './returned-deliveries/returned-deliveries.component';
 import { RejectedDeliveriesComponent } from './rejected-deliveries/rejected-deliveries.component';
 import { PdfUrnComponent } from './sale-invoice/pdf-urn/pdf-urn.component';
@@ -52,6 +51,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ViewOfferItemComponent } from './offer/view-offer/view-offer-item/view-offer-item.component';
 import { ViewPorchaseInvoiceComponent } from './offer/view-offer/view-porchase-invoice/view-porchase-invoice.component';
 import { ViewDeliveryComponent } from './offer/view-offer/view-delivery/view-delivery.component';
+import { ViewSaleInvoiceComponent } from './offer/view-offer/view-sale-invoice/view-sale-invoice.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +121,8 @@ import { ViewDeliveryComponent } from './offer/view-offer/view-delivery/view-del
     ReceivingServiceProxy,
     DeliveryServiceProxy,
     SaleInvoiceServiceProxy,
-    RejectDeliveryServiceProxy
+    RejectDeliveryServiceProxy,
+    CustomerCashFlowServiceProxy
   ],
 })
 export class PurchaseOrderModule {}

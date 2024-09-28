@@ -9,13 +9,23 @@ import { DeliveryDto, DeliveryServiceProxy } from '@shared/service-proxies/servi
   styleUrls: ['./view-delivery.component.scss']
 })
 export class ViewDeliveryComponent extends AppComponentBase implements OnChanges {
-  @Input() offerId: number;
+  @Input() offerItemsIds: number[] = [];
   deliveries: DeliveryDto[] = [];
   status: IEnumValue[] = [
-    { value: 0, text: this.l("NotPriced") },
-    { value: 1, text: this.l("PendingReceived") },
-    { value: 2, text: this.l("PartialReceive") },
-    { value: 3, text: this.l("Received") },
+    { value: 0, text: this.l("WaitingApprove") },
+    { value: 1, text: this.l("Approved") },
+    { value: 2, text: this.l("Shipped") },
+    { value: 3, text: this.l("Delivered") },
+    { value: 3, text: this.l("Rejected") },
+    { value: 3, text: this.l("PartialRejected") },
+    { value: 3, text: this.l("CreateSaleInoice") },
+    { value: 3, text: this.l("Paid") },
+  ];
+  itemStatus: IEnumValue[] = [
+    { value: 0, text: this.l("Pending") },
+    { value: 1, text: this.l("Approved") },
+    { value: 2, text: this.l("RejectAndReturnToSupplier") },
+    { value: 3, text: this.l("RejectAndRecordAsDamaged") },
   ];
   currency: IEnumValue[] = [
     { value: 1, text: this.l("Dollar") },
@@ -27,12 +37,27 @@ export class ViewDeliveryComponent extends AppComponentBase implements OnChanges
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.offerId) {
+    if (this.offerItemsIds?.length > 0) {
       this.initialDelivery();
     }
   }
 
   initialDelivery() {
-    //this.deliveryService.getWithDetailsById()
+    this.deliveryService.getByOfferItems(this.offerItemsIds)
+    .subscribe(result=>{
+      this.deliveries = result;
+    })
+  }
+
+  getStatus(value){
+    return this.status.find(x=>x.value == value)?.text;
+  }
+
+  getItemStatus(value){
+    return this.itemStatus.find(x=>x.value == value)?.text;
+  }
+
+  getCurrency(value){
+    return this.currency.find(x=>x.value == value)?.text;
   }
 }

@@ -13,6 +13,7 @@ export class DeliveryListComponent extends AppComponentBase implements OnInit,On
   invoice: InvoiceDto = new InvoiceDto();
   deliveries:DeliveryDto[] = [];
   @Input() customerId: number;
+  @Input() offerId: number;
   currencies = [
     { id: 1, name: this.l("Dollar") },
     { id: 0, name: this.l("Dinar") },
@@ -31,6 +32,7 @@ export class DeliveryListComponent extends AppComponentBase implements OnInit,On
       this.deliveryService.getAllByCustomerId(this.customerId)
       .subscribe(result=>{
         this.deliveries = result;
+        console.log(this.deliveries);
       });
     }
   }

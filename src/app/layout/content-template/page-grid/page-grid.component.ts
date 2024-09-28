@@ -29,6 +29,8 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   @Input() cashFlowButton: boolean = false;
   @Input() PrintButton: boolean = false;
   @Input() menuItems: IPageMenu[] = [];
+  @Input() colors = ['table-danger','table-primary','table-secondary','table-success'];
+
   @Output() changeOrderBy: EventEmitter<string> = new EventEmitter();
   @Output() changePage: EventEmitter<any> = new EventEmitter();
   @Output() ParentId: EventEmitter<any> = new EventEmitter();
@@ -182,7 +184,6 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
     return value;
   }
 
-  colors = ['table-primary','table-secondary','table-success'];
   getClassForRow(item): string {
     let classes = this.selected[item.index] ? "highlighted-row" : "";
     if(this.coloredBy){

@@ -17,10 +17,11 @@
                 <div class="col-md-3">
                     <label class=" has-float-label">
                         <ng-select [items]="customers" required bindLabel="name" bindValue="id" name="customerId"
-                            [(ngModel)]="offer.customerId">
+                            [(ngModel)]="offer.customerId" (change)="onSelectCustomer($event)">
                         </ng-select>
-                        <span>{{ 'Customer' | localize }}</span>
+                        <span >{{ 'Customer' | localize }}</span> 
                     </label>
+                    <balance-info [balance]="customerBalance" *ngIf="!customerIsRequired && offer.customerId">{{customerBalance}}</balance-info>
                     <span *ngIf="customerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
                 <div class="col-md-3">

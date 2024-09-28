@@ -1,1 +1,55 @@
-<p>view-delivery works!</p>
+<div class="row">
+    <div class="col-12 list">
+        <div class="card mb-3" *ngFor="let delivery of deliveries">
+            <div class="d-flex flex-grow-1 min-width-zero separator">
+                <div
+                    class="card-body py-4 align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <a href="javascript:;" class="list-item-heading mb-0 truncate w-10 w-xs-100">
+                        {{delivery?.customer?.fullName}}</a>
+                    <div><item-info title="Status" [value]="getStatus(delivery?.status)"></item-info></div>
+                    <div><item-info title="TotalPrice" [value]="(delivery?.totalPrice | commaNumber)"></item-info></div>
+                    <div><item-info title="TransportCost" [value]="(delivery?.transportCost | commaNumber) + getCurrency(delivery?.transportCostCurrency)"></item-info></div>
+                    <div><item-info title="DriverName" [value]="delivery?.driverName"></item-info></div>
+                    <div><item-info title="DriverPhoneNumber" [value]="delivery?.driverPhoneNumber"></item-info></div>
+                    <div><item-info title="VehicleNumber" [value]="delivery?.vehicleNumber"></item-info></div>
+                    <!-- 
+                    <div><item-info title="CreationTime"
+                            [value]="delivery?.creationTime | format:'DD-MM-yyyy' "></item-info></div>
+                    <div><item-info title="ApproveDate"
+                            [value]="delivery.approveDate | format:'DD-MM-yyyy' "></item-info></div> -->
+                </div>
+            </div>
+            <div class="table-responsive" *ngIf="delivery?.deliveryItems?.length > 0">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{{'Material' | localize}}</th>
+                            <th>{{'PoNumber' | localize}}</th>
+                            <th>{{'BatchNumber' | localize}}</th>
+                            <th>{{'DeliveredQuantity' | localize}}</th>
+                            <th>{{'ApprovedQuantity' | localize}}</th>
+                            <th>{{'RejectedQuantity' | localize}}</th>
+                            <th>{{'TotalPrice' | localize}}</th>
+                            <th>{{'Status' | localize}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let deliveryItem of delivery?.deliveryItems; index as i">
+                            <td>{{deliveryItem?.offerItem?.material?.name}}</td>
+                            <td>{{deliveryItem?.offerItem?.offer?.porchaseOrderId}}</td>
+                            <td>{{deliveryItem?.batchNumber}}</td>
+                            <td>{{deliveryItem?.deliveredQuantity | commaNumber}}</td>
+                            <td>{{deliveryItem?.approvedQuantity | commaNumber}}</td>
+                            <td>{{deliveryItem?.rejectedQuantity | commaNumber}}</td>
+                            <td>{{deliveryItem?.totalPrice | commaNumber}}</td>
+                            <td>{{getItemStatus(deliveryItem?.deliveryItemStatus)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center" *ngIf="deliveries?.length == 0">
+            <h3 class="text-center text-danger">لا يوجد دليفري حالياً</h3>
+        </div>
+    </div>
+</div>

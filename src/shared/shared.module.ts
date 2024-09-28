@@ -32,7 +32,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FilterComponent } from './components/filter/filter.component';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { DetailsComponent } from '../shared/components/details/details.component';
-import { ItemInfoComponent } from './components/item-info/item-info.component'
+import { ItemInfoComponent } from './components/item-info/item-info.component';
+import { BalanceInfoComponent } from './components/balance-info/balance-info.component'
 
 @NgModule({
     imports: [
@@ -65,7 +66,8 @@ import { ItemInfoComponent } from './components/item-info/item-info.component'
         BtSortableHeader,
         FilterComponent,
         DetailsComponent,
-        ItemInfoComponent
+        ItemInfoComponent,
+        BalanceInfoComponent
     ],
     exports: [
         AbpPaginationControlsComponent,
@@ -85,7 +87,8 @@ import { ItemInfoComponent } from './components/item-info/item-info.component'
         DateFormattedPipe,
         BtSortableHeader,
         DetailsComponent,
-        ItemInfoComponent
+        ItemInfoComponent,
+        BalanceInfoComponent
     ]
 })
 export class SharedModule {
