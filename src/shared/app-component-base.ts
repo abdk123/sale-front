@@ -73,4 +73,22 @@ export abstract class AppComponentBase {
       }
       return null;
   }
+
+  getBalance(value){
+    if(value != undefined)
+    {
+        var realNumber = Math.abs(value);
+        if(value < 0){
+            return this.numberWithCommas(realNumber) + '/' + this.l('OnHim');
+        }else if(value > 0){
+            return this.numberWithCommas(realNumber) + '/' + this.l('ForHim');
+        }
+    }
+    return '0';
+}
+
+numberWithCommas(number){
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 }

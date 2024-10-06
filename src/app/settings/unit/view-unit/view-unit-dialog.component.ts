@@ -6,6 +6,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'view-unit-dialog',
   templateUrl: './view-unit-dialog.component.html',
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 
 export class ViewUnitDialogComponent extends AppComponentBase {

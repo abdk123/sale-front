@@ -52,6 +52,7 @@ import { ViewOfferItemComponent } from './offer/view-offer/view-offer-item/view-
 import { ViewPorchaseInvoiceComponent } from './offer/view-offer/view-porchase-invoice/view-porchase-invoice.component';
 import { ViewDeliveryComponent } from './offer/view-offer/view-delivery/view-delivery.component';
 import { ViewSaleInvoiceComponent } from './offer/view-offer/view-sale-invoice/view-sale-invoice.component';
+import { SupplierOfferComponent } from './supplier-offer/supplier-offer.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { ViewSaleInvoiceComponent } from './offer/view-offer/view-sale-invoice/v
     ViewOfferItemComponent,
     ViewPorchaseInvoiceComponent,
     ViewDeliveryComponent,
+    SupplierOfferComponent,
   ],
   imports: [
     AccordionModule.forRoot(),

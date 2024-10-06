@@ -5,43 +5,64 @@
 
 <div class="row">
     <div class="col-12 separator">
-        <h1>{{'TransportCompanyCashFlow' | localize}}</h1>
+        <h1>{{'TranspartCompanyCashFlow' | localize}}</h1>
         <a class="btn btn-link btn-empty btn-lg" href="/app/settings/transportCompany">{{'BackToTransportCompanyList' | localize}} <i
                 class="simple-icon-arrow-right"></i></a>
-        <div class="row mb-2">
-            <div class="col-md-2">
-                <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
-                    <input class="form-control" placeholder="{{'Search'|localize}}" (keyup)="searchKeyUp($event)">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label class="search-sm has-float-label">
-                    <input class="form-control" bsDatepicker [container]="'html'"
-                        [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="fromDate"
-                        id="fromDate" [(ngModel)]="fromDate" #fromDateModel="ngModel" #fromDateEl />
-                    <abp-validation-summary [control]="fromDateModel" [controlEl]="fromDateEl"></abp-validation-summary>
-                    <span>{{ "FromDate"|localize }}</span>
-                </label>
-            </div>
-            <div class="col-md-3">
-                <label class="search-sm has-float-label">
-                    <input class="form-control" bsDatepicker [container]="'html'"
-                        [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="toDate" id="toDate"
-                        [(ngModel)]="toDate" #toDateModel="ngModel" #toDateEl />
-                    <abp-validation-summary [control]="toDateModel" [controlEl]="toDateEl"></abp-validation-summary>
-                    <span>{{ "ToDate"|localize }}</span>
-                </label>
-            </div>
-            <div class="col-md-3">
-                <button type="button" class="btn btn-outline-primary" [disabled]="false"
-                    (click)="list(undefined,0,undefined)">
-                    <i class="bi-search"> </i> {{ 'Search' | localize }}
-                </button>
-            </div>
-        </div>
+        
     </div>
 </div>
 
 <app-page-grid [hasDetails]="false" [fields]="fields" [data]="cashFlows" [totalItems]="totalItems"
     [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
-    (changeOrderBy)="changeOrderBy($event)" [actionList]="true" (changePage)="pageChanged($event)"></app-page-grid>
+    (changeOrderBy)="changeOrderBy($event)" [actionList]="true" (changePage)="pageChanged($event)">
+    <div class="row mb-3 separator ">
+        <div class="col-md-6 ">
+            <h3>
+                <small class="text-muted">{{'CurrentBalanceDollar' | localize}} :</small>
+                {{getBalance(currentBalance.dollarBalance)}}
+            </h3>
+        </div>
+        <div class="col-md-6">
+            <h3>
+                <small class="text-muted">{{'CurrentBalanceDinar' | localize}} :</small>
+                {{getBalance(currentBalance.dinarBalance)}}
+            </h3>
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label class="has-float-label">
+                <ng-select [items]="currencies" (change)="onChangeCurrency($event)" [clearable]="false" bindLabel="name" bindValue="id" name="currency"
+                    [(ngModel)]="currency">
+                </ng-select>
+                <span>{{ 'Currency' | localize }}</span>
+            </label>
+        </div>
+        <div class="col-md-3">
+            <label class="has-float-label">
+                <input class="form-control" bsDatepicker [container]="'html'"
+                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="fromDate" id="fromDate"
+                    [(ngModel)]="fromDate" #fromDateModel="ngModel" #fromDateEl />
+                <abp-validation-summary [control]="fromDateModel" [controlEl]="fromDateEl"></abp-validation-summary>
+                <span>{{ "FromDate"|localize }}</span>
+            </label>
+
+        </div>
+        <div class="col-md-3">
+            <label class="has-float-label">
+                <input class="form-control" bsDatepicker [container]="'html'"
+                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="toDate" id="toDate"
+                    [(ngModel)]="toDate" #toDateModel="ngModel" #toDateEl />
+                <abp-validation-summary [control]="toDateModel" [controlEl]="toDateEl"></abp-validation-summary>
+                <span>{{ "ToDate"|localize }}</span>
+            </label>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-outline-primary" [disabled]="false"
+                (click)="list(undefined,0,undefined)">
+                <i class="bi-search"> </i> {{ 'Search' | localize }}
+            </button>
+        </div>
+    </div>
+</app-page-grid>

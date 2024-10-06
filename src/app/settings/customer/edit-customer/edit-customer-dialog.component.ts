@@ -7,6 +7,13 @@ import { finalize } from 'rxjs';
 @Component({
   selector: "edit-material-dialog",
   templateUrl: "./edit-customer-dialog.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class EditCustomerDialogComponent extends AppComponentBase {
   saving = false;

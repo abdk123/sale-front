@@ -7,6 +7,13 @@ import { finalize } from 'rxjs';
 @Component({
   selector: "edit-unit-dialog",
   templateUrl: "./edit-unit-dialog.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class EditUnitDialogComponent extends AppComponentBase {
   saving = false;

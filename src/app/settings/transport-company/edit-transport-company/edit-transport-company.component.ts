@@ -16,6 +16,13 @@ import { finalize } from "rxjs";
 @Component({
   selector: "edit-transport-company",
   templateUrl: "./edit-transport-company.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class EditTransportCompanyComponent
   extends AppComponentBase

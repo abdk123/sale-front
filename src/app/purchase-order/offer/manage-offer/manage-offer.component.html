@@ -24,7 +24,7 @@
                     </label>
                     <span *ngIf="statusIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" *ngIf="changeStatusInput.status == 1">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="porchaseOrderId"
                             [(ngModel)]="changeStatusInput.porchaseOrderId" #porchaseOrderIdModel="ngModel"

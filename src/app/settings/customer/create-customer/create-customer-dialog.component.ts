@@ -10,6 +10,13 @@ import { finalize } from "rxjs";
 @Component({
   selector: "create-customer-dialog",
   templateUrl: "./create-customer-dialog.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class CreateCustomerDialogComponent extends AppComponentBase {
   saving = false;

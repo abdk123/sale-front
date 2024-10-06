@@ -63,12 +63,12 @@ export class CustomerComponent
       sortable: false,
       type: "number",
     },
-    {
-      label: this.l("InitialBalance"),
-      name: "initialBalance",
-      sortable: false,
-      type: "number",
-    },
+    // {
+    //   label: this.l("InitialBalance"),
+    //   name: "initialBalance",
+    //   sortable: false,
+    //   type: "number",
+    // },
     {
       label: this.l("Type"),
       name: "type",

@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { CustomerCashFlowDto, CustomerCashFlowServiceProxy, FullPagedRequestDto } from '@shared/service-proxies/service-proxies';
+import { BalanceInfoDto, CustomerCashFlowDto, CustomerCashFlowServiceProxy, FullPagedRequestDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -18,7 +18,7 @@ export class CustomerCashFlowComponent
   fromDate: string;
   toDate: string;
 
-  TransactionNames = [
+  transactionNames = [
     {
       value: 0,
       text: this.l("Spend"),
@@ -27,65 +27,38 @@ export class CustomerCashFlowComponent
       value: 1,
       text: this.l("Receive"),
     },
+    {value:2, text:this.l("ClearanceCost")},
+    {value:3, text:this.l("TransportCost")},
+    {value:4, text:this.l("ReceivingCost")},
   ];
 
   fields = [
     {
-      label: this.l("Number"),
-      name: "id",
-      sortable: true,
-      type: "number",
-    },
-    {
       label: this.l("TransactionName"),
       name: "transactionName",
-      sortable: true,
+      sortable: false,
       type: "enum",
-      enumValue: this.TransactionNames,
+      enumValue: this.transactionNames,
     },
     {
-      label: this.l("Customer"),
-      name: "customer",
+      label: this.l("ClearanceCompany"),
+      name: "clearanceCompany",
       sortable: false,
       type: "reference",
-      referenceTextField: "fullName",
+      referenceTextField: "name",
     },
     {
-      label: this.l("AmountDollar"),
-      name: "amountDollar",
-      sortable: true,
-      type: "number",
-    },
-    {
-      label: this.l("CurrentBalanceDollar"),
-      name: "currentBalanceDollar",
-      sortable: true,
-      type: "number",
-    },
-    {
-      label: this.l("AmountDinar"),
-      name: "amountDinar",
-      sortable: true,
-      type: "number",
-    },
-    {
-      label: this.l("CurrentBalanceDinar"),
-      name: "currentBalanceDinar",
-      sortable: true,
+      label: this.l("Number"),
+      name: "id",
+      sortable: false,
       type: "number",
     },
     {
       label: this.l("TransactionDetails"),
       name: "transactionDetails",
-      sortable: true,
+      sortable: false,
       type: "string",
-    },
-    {
-      label: this.l("Note"),
-      name: "note",
-      sortable: true,
-      type: "string",
-    },
+    }
   ];
 
   constructor(
@@ -117,7 +90,7 @@ export class CustomerCashFlowComponent
     }
 
     this._customerCashFlowService
-      .getAllByCustomerId(this.id,fromDate,toDate)
+      .getAllByCustomerId(this.id,fromDate,toDate,this.currency)
       .subscribe((result) => {
         this.cashFlows = result;
       });
@@ -132,8 +105,89 @@ export class CustomerCashFlowComponent
     //   },
     // });
   }
+  currentBalance: BalanceInfoDto = new BalanceInfoDto();
+  getCurrentBalance(){
+    this._customerCashFlowService.getBalance(this.id)
+    .subscribe(result=>{
+      this.currentBalance = result;
+    })
+  }
+  onChangeCurrency(item){
+    this.currency = item.id;
+    this.initialFields();
+    this.refresh();
+  }
+
+  currency: number = 1;
+  currencies = [
+    { id: 1, name: this.l("Dollar") },
+    { id: 0, name: this.l("Dinar") },
+  ];
+  ngOnInit(): void {
+    this.getCurrentBalance();
+    this.initialFields();
+  }
+  initialFields() {
+    this.fields = [];
+    this.fields = [
+      {
+        label: this.l("TransactionName"),
+        name: "transactionName",
+        sortable: false,
+        type: "enum",
+        enumValue: this.transactionNames,
+      },
+      {
+        label: this.l("ClearanceCompany"),
+        name: "clearanceCompany",
+        sortable: false,
+        type: "reference",
+        referenceTextField: "name",
+      },
+      {
+        label: this.l("Number"),
+        name: "id",
+        sortable: false,
+        type: "number",
+      },
+      {
+        label: this.l("TransactionDetails"),
+        name: "transactionDetails",
+        sortable: false,
+        type: "string",
+      }
+    ];
+    if (this.currency == 1) {
+      this.fields.unshift(
+        {
+          label: this.l("CurrentBalanceDollar"),
+          name: "currentBalanceDollar",
+          sortable: false,
+          type: "balance",
+        },
+        {
+          label: this.l("AmountDollar"),
+          name: "amountDollar",
+          sortable: true,
+          type: "balance",
+        }
+      );
+    } else {
+      this.fields.unshift(
+        
+        {
+          label: this.l("CurrentBalanceDinar"),
+          name: "currentBalanceDinar",
+          sortable: false,
+          type: "balance",
+        },
+        {
+          label: this.l("AmountDinar"),
+          name: "amountDinar",
+          sortable: false,
+          type: "balance",
+        }
+      );
+    }
+  }
 }
-
-
-
-

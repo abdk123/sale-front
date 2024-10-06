@@ -5,6 +5,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: "view-clearance-company",
   templateUrl: "./view-clearance-company.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class ViewClearanceCompanyComponent implements OnInit {
   clearanceCompany = new ClearanceCompanyDto();

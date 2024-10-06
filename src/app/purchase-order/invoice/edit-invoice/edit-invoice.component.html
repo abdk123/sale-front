@@ -5,13 +5,13 @@
             <a class="btn btn-link btn-empty btn-lg" href="/app/orders/invoices">{{'BackToInvoiceList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
-                <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
+                <button type="click" class="top-right-button btn btn-primary  mb-3 mr-2"
                     [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' |
                     localize}}</button>
             </div>
             <div class="top-right-button-container text-zero">
-                <button type="click" class="top-right-button btn btn-primary  mb-3 mr-2"
-                     (click)="saveInvoiceDetail()">{{ 'SaveInvoiceDetail' | localize}}</button>
+                <a [disabled]="!this.invoice.invoiseDetails" type="click" class="top-right-button btn btn-primary  mb-3 mr-2"
+                     (click)="saveInvoiceDetail()">{{ 'SaveInvoiceDetail' | localize}}</a>
             </div>
         </div>
     </div>

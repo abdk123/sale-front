@@ -127,6 +127,8 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
         return this.getReferenceValue(item, field);
       case "enum":
         return this.getEnumValue(item, field);
+      case "balance":
+        return this.getBalanceValue(item, field);
       default:
         return (field.name && item[field.name]) ? item[field.name] : "....";
     }
@@ -156,6 +158,11 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
     return new CommaNumberPipe()
     .transform(item[field.name]);
   }
+
+  getBalanceValue(item, field: IPageField) {
+    return this.getBalance(item[field.name]);
+  }
+
 
   getTemplateValue(item, field: IPageField) {
     let template = field.templateValue;

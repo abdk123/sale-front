@@ -10,6 +10,13 @@ import { finalize } from "rxjs";
 @Component({
   selector: "create-transport-company",
   templateUrl: "./create-transport-company.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class CreateTransportCompanyComponent extends AppComponentBase {
   saving = false;

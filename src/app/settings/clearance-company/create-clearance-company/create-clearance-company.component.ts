@@ -7,6 +7,13 @@ import { finalize } from 'rxjs';
 @Component({
   selector: "create-clearance-company",
   templateUrl: "./create-clearance-company.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class CreateClearanceCompanyComponent extends AppComponentBase {
   saving = false;

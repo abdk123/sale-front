@@ -115,10 +115,24 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   }
 
   saveInvoiceDetail(){
-    this.invoiceService.saveInvoiceDetail(this.invoice)
-    .subscribe((result)=>{
-
-    });
+    if(!this.invoice.invoiseDetails){
+      return;
+    }
+    if(this.invoice.invoiseDetails?.length == 0 || this.invoice.invoiseDetails.some(x=>x.quantity == 0)){
+      abp.message.error(this.l("الكمية المدخلة يجب ان تكون اكبر من صفر"));
+      return;
+    }else if(this.invoice.invoiseDetails && this.invoice.invoiseDetails.some(x=>x.quantity > x.offerItem.quantity)){
+      abp.message.error(this.l("الكمية المدخلة يجب ان تكون اصغر او تساوي الكمية المدخلة في العرض "));
+    }else if(this.invoice.invoiseDetails.some(x=>x.totalMaterilPrice == 0)){
+      abp.message.error(this.l("السعر يجب ان يكون اكبر من صفر"));
+    }else{
+      this.invoiceService.saveInvoiceDetail(this.invoice)
+      .subscribe((result)=>{
+        this.notify.info(this.l("SavedSuccessfully"));
+        this.router.navigate(["/app/orders/invoices"]);
+      });
+    }
+    
   }
 
   onSaveOfferItem(items: UpdateOfferItemDto[]) {

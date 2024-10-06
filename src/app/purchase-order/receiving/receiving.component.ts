@@ -42,6 +42,8 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
     { label: this.l('TotalQuantity'), name: 'totalQuantity', sortable: true, type: 'number' },
     { label: this.l('NotReceivedQuantity'), name: 'totalNotReceivedQuantity', sortable: true, type: 'number' },
     { label: this.l('Currency'), name: 'currency',  type: 'enum' , enumValue: this.currency ,sortable: true },
+    { label: this.l('CreatorUser'), name: 'creatorUser', sortable: false, type: 'string' },
+
   ];
   
   constructor(injector: Injector,
@@ -52,7 +54,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
     super(injector);
   }
   protected list(request: FullPagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    request.including = "Offer,Supplier,InvoiseDetails,Receivings";
+    request.including = "Offer,Supplier,InvoiseDetails,Receivings,CreatorUser";
     this.invoiceService.read(request)
       .subscribe(result => {
         this.invoices = result.items;
