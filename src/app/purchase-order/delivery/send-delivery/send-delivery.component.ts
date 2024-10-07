@@ -16,9 +16,8 @@ import { finalize } from "rxjs";
   styleUrls: ["./send-delivery.component.scss"],
 })
 export class SendDeliveryComponent extends AppComponentBase implements OnInit {
-  offer: OfferDto = new OfferDto();
   deliveryDto: CreateDeliveryDto = new CreateDeliveryDto();
-  offerId: number;
+  customerId: number;
   saving: boolean;
   customers: DropdownDto[] = [];
   currencies = [
@@ -30,7 +29,7 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private router: Router,
-    private offerService: OfferServiceProxy,
+    //private offerService: OfferServiceProxy,
     private deliveryService: DeliveryServiceProxy,
     private route: ActivatedRoute
   ) {
@@ -38,19 +37,19 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.offerId = this.route.snapshot?.params?.offerId;
-    this.initialOffer();
+    this.customerId = this.route.snapshot?.params?.customerId;
+    //this.initialOffer();
   }
 
-  initialOffer() {
-    this.offerService.getOfferWithDetailId(this.offerId).subscribe((result) => {
-      this.offer = result;
-    });
-  }
+  // initialOffer() {
+  //   this.offerService.getOfferWithDetailId(this.offerId).subscribe((result) => {
+  //     this.offer = result;
+  //   });
+  // }
 
   save() {
     this.saving = true;
-    this.deliveryDto.customerId = this.offer.customerId;
+    this.deliveryDto.customerId = this.customerId;
     this.deliveryService
       .create(this.deliveryDto)
       .pipe(

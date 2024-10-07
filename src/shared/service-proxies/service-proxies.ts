@@ -333,6 +333,62 @@ export class CategoryServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<CategoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/Category/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CategoryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CategoryDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<CategoryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CategoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateCategoryDto> {
         let url_ = this.baseUrl + "/api/services/app/Category/GetForEdit?";
         if (id === null)
@@ -826,6 +882,62 @@ export class ClearanceCompanyServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<ClearanceCompanyDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceCompany/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ClearanceCompanyDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ClearanceCompanyDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<ClearanceCompanyDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ClearanceCompanyDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateClearanceCompanyDto> {
         let url_ = this.baseUrl + "/api/services/app/ClearanceCompany/GetForEdit?";
         if (id === null)
@@ -1280,6 +1392,64 @@ export class ClearanceCompanyCashFlowServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllBalances(): Observable<BalanceInfoDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyCashFlow/GetAllBalances";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllBalances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllBalances(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceInfoDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceInfoDto[]>;
+        }));
+    }
+
+    protected processGetAllBalances(response: HttpResponseBase): Observable<BalanceInfoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(BalanceInfoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -1370,6 +1540,62 @@ export class ClearanceCompanyCashFlowServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<ClearanceCompanyCashFlowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ClearanceCompanyCashFlowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<ClearanceCompanyCashFlowDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyCashFlow/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ClearanceCompanyCashFlowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ClearanceCompanyCashFlowDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<ClearanceCompanyCashFlowDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1994,6 +2220,62 @@ export class ClearanceCompanyVoucherServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<ClearanceCompanyVoucherDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyVoucher/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ClearanceCompanyVoucherDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ClearanceCompanyVoucherDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<ClearanceCompanyVoucherDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ClearanceCompanyVoucherDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateClearanceCompanyVoucherDto> {
         let url_ = this.baseUrl + "/api/services/app/ClearanceCompanyVoucher/GetForEdit?";
         if (id === null)
@@ -2362,6 +2644,62 @@ export class CustomerServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<CustomerDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomerDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<CustomerDto> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CustomerDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CustomerDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<CustomerDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2897,6 +3235,64 @@ export class CustomerCashFlowServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllBalances(): Observable<BalanceInfoDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/CustomerCashFlow/GetAllBalances";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllBalances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllBalances(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceInfoDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceInfoDto[]>;
+        }));
+    }
+
+    protected processGetAllBalances(response: HttpResponseBase): Observable<BalanceInfoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(BalanceInfoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -2931,6 +3327,62 @@ export class CustomerCashFlowServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<CustomerCashFlowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomerCashFlowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<CustomerCashFlowDto> {
+        let url_ = this.baseUrl + "/api/services/app/CustomerCashFlow/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CustomerCashFlowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CustomerCashFlowDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<CustomerCashFlowDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3530,6 +3982,62 @@ export class CustomerVoucherServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<CustomerVoucherDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomerVoucherDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<CustomerVoucherDto> {
+        let url_ = this.baseUrl + "/api/services/app/CustomerVoucher/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CustomerVoucherDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CustomerVoucherDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<CustomerVoucherDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4353,6 +4861,62 @@ export class DeliveryServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<DeliveryDto> {
+        let url_ = this.baseUrl + "/api/services/app/Delivery/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DeliveryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DeliveryDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<DeliveryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DeliveryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateDeliveryDto> {
         let url_ = this.baseUrl + "/api/services/app/Delivery/GetForEdit?";
         if (id === null)
@@ -4651,6 +5215,62 @@ export class EmployeeServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<EmployeeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmployeeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<EmployeeDto> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<EmployeeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<EmployeeDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<EmployeeDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5349,6 +5969,62 @@ export class InvoiceServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<InvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/Invoice/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InvoiceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InvoiceDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<InvoiceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateInvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/Invoice/GetForEdit?";
         if (id === null)
@@ -5817,6 +6493,62 @@ export class MaterialServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<MaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<MaterialDto> {
+        let url_ = this.baseUrl + "/api/services/app/Material/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MaterialDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<MaterialDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -7119,6 +7851,62 @@ export class OfferServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<OfferDto> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OfferDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OfferDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<OfferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateOfferDto> {
         let url_ = this.baseUrl + "/api/services/app/Offer/GetForEdit?";
         if (id === null)
@@ -7692,6 +8480,62 @@ export class ReceivingServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<ReceivingDto> {
+        let url_ = this.baseUrl + "/api/services/app/Receiving/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReceivingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReceivingDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<ReceivingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceivingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateReceivingDto> {
         let url_ = this.baseUrl + "/api/services/app/Receiving/GetForEdit?";
         if (id === null)
@@ -7990,6 +8834,62 @@ export class RejectDeliveryServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<RejectDeliveryItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RejectDeliveryItemDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<RejectDeliveryItemDto> {
+        let url_ = this.baseUrl + "/api/services/app/RejectDelivery/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RejectDeliveryItemDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RejectDeliveryItemDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<RejectDeliveryItemDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -9376,6 +10276,62 @@ export class SaleInvoiceServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<SaleInvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SaleInvoiceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SaleInvoiceDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<SaleInvoiceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SaleInvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateSaleInvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/SaleInvoice/GetForEdit?";
         if (id === null)
@@ -9851,6 +10807,62 @@ export class SizeServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<SizeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SizeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<SizeDto> {
+        let url_ = this.baseUrl + "/api/services/app/Size/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SizeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SizeDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<SizeDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -10495,6 +11507,62 @@ export class StockServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<StockDto> {
+        let url_ = this.baseUrl + "/api/services/app/Stock/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<StockDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateStockDto> {
         let url_ = this.baseUrl + "/api/services/app/Stock/GetForEdit?";
         if (id === null)
@@ -10963,6 +12031,62 @@ export class StoreServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<StoreDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StoreDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<StoreDto> {
+        let url_ = this.baseUrl + "/api/services/app/Store/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StoreDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StoreDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<StoreDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -11767,6 +12891,62 @@ export class SupplierOfferServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<SupplierOfferDto> {
+        let url_ = this.baseUrl + "/api/services/app/SupplierOffer/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SupplierOfferDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SupplierOfferDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<SupplierOfferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SupplierOfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateSupplierOfferDto> {
         let url_ = this.baseUrl + "/api/services/app/SupplierOffer/GetForEdit?";
         if (id === null)
@@ -12519,6 +13699,62 @@ export class TransportCompanyServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<TransportCompanyDto> {
+        let url_ = this.baseUrl + "/api/services/app/TransportCompany/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TransportCompanyDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TransportCompanyDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<TransportCompanyDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TransportCompanyDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateTransportCompanyDto> {
         let url_ = this.baseUrl + "/api/services/app/TransportCompany/GetForEdit?";
         if (id === null)
@@ -12973,6 +14209,64 @@ export class TransportCompanyCashFlowServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllBalances(): Observable<BalanceInfoDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/TransportCompanyCashFlow/GetAllBalances";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllBalances(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllBalances(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceInfoDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceInfoDto[]>;
+        }));
+    }
+
+    protected processGetAllBalances(response: HttpResponseBase): Observable<BalanceInfoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(BalanceInfoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -13063,6 +14357,62 @@ export class TransportCompanyCashFlowServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<TransportCompanyCashFlowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TransportCompanyCashFlowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<TransportCompanyCashFlowDto> {
+        let url_ = this.baseUrl + "/api/services/app/TransportCompanyCashFlow/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TransportCompanyCashFlowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TransportCompanyCashFlowDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<TransportCompanyCashFlowDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -13687,6 +15037,62 @@ export class TransportCompanyVoucherServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<TransportCompanyVoucherDto> {
+        let url_ = this.baseUrl + "/api/services/app/TransportCompanyVoucher/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TransportCompanyVoucherDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TransportCompanyVoucherDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<TransportCompanyVoucherDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TransportCompanyVoucherDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateTransportCompanyVoucherDto> {
         let url_ = this.baseUrl + "/api/services/app/TransportCompanyVoucher/GetForEdit?";
         if (id === null)
@@ -13933,6 +15339,62 @@ export class UnitServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<UnitDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UnitDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<UnitDto> {
+        let url_ = this.baseUrl + "/api/services/app/Unit/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UnitDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UnitDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<UnitDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -15241,6 +16703,62 @@ export class WorkflowServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<WorkflowDto> {
+        let url_ = this.baseUrl + "/api/services/app/Workflow/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<WorkflowDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateWorkflowDto> {
         let url_ = this.baseUrl + "/api/services/app/Workflow/GetForEdit?";
         if (id === null)
@@ -15795,6 +17313,62 @@ export class WorkflowStepServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    getAggregate(id: number | undefined): Observable<WorkflowStepDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowStep/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowStepDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowStepDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<WorkflowStepDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowStepDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getForEdit(id: number | undefined): Observable<UpdateWorkflowStepDto> {
         let url_ = this.baseUrl + "/api/services/app/WorkflowStep/GetForEdit?";
         if (id === null)
@@ -16207,6 +17781,62 @@ export class WorkflowStepIndexServiceProxy {
     }
 
     protected processGet(response: HttpResponseBase): Observable<WorkflowStepIndexDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WorkflowStepIndexDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<WorkflowStepIndexDto> {
+        let url_ = this.baseUrl + "/api/services/app/WorkflowStepIndex/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WorkflowStepIndexDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WorkflowStepIndexDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<WorkflowStepIndexDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -16912,6 +18542,7 @@ export class BalanceInfoDto implements IBalanceInfoDto {
     id: number;
     dollarBalance: number;
     dinarBalance: number;
+    name: string | undefined;
 
     constructor(data?: IBalanceInfoDto) {
         if (data) {
@@ -16927,6 +18558,7 @@ export class BalanceInfoDto implements IBalanceInfoDto {
             this.id = _data["id"];
             this.dollarBalance = _data["dollarBalance"];
             this.dinarBalance = _data["dinarBalance"];
+            this.name = _data["name"];
         }
     }
 
@@ -16942,6 +18574,7 @@ export class BalanceInfoDto implements IBalanceInfoDto {
         data["id"] = this.id;
         data["dollarBalance"] = this.dollarBalance;
         data["dinarBalance"] = this.dinarBalance;
+        data["name"] = this.name;
         return data;
     }
 
@@ -16957,6 +18590,7 @@ export interface IBalanceInfoDto {
     id: number;
     dollarBalance: number;
     dinarBalance: number;
+    name: string | undefined;
 }
 
 export enum CallingConventions {
@@ -17335,6 +18969,8 @@ export class ClearanceCompanyCashFlowDto implements IClearanceCompanyCashFlowDto
     transactionName: TransactionName;
     clearanceCompanyId: number | undefined;
     clearanceCompany: ClearanceCompanyDto;
+    creatorUserId: number | undefined;
+    creationTime: moment.Moment;
 
     constructor(data?: IClearanceCompanyCashFlowDto) {
         if (data) {
@@ -17357,6 +18993,8 @@ export class ClearanceCompanyCashFlowDto implements IClearanceCompanyCashFlowDto
             this.transactionName = _data["transactionName"];
             this.clearanceCompanyId = _data["clearanceCompanyId"];
             this.clearanceCompany = _data["clearanceCompany"] ? ClearanceCompanyDto.fromJS(_data["clearanceCompany"]) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
         }
     }
 
@@ -17379,6 +19017,8 @@ export class ClearanceCompanyCashFlowDto implements IClearanceCompanyCashFlowDto
         data["transactionName"] = this.transactionName;
         data["clearanceCompanyId"] = this.clearanceCompanyId;
         data["clearanceCompany"] = this.clearanceCompany ? this.clearanceCompany.toJSON() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         return data;
     }
 
@@ -17401,6 +19041,8 @@ export interface IClearanceCompanyCashFlowDto {
     transactionName: TransactionName;
     clearanceCompanyId: number | undefined;
     clearanceCompany: ClearanceCompanyDto;
+    creatorUserId: number | undefined;
+    creationTime: moment.Moment;
 }
 
 export class ClearanceCompanyCashFlowDtoPagedResultDto implements IClearanceCompanyCashFlowDtoPagedResultDto {
@@ -20242,6 +21884,8 @@ export class CustomerCashFlowDto implements ICustomerCashFlowDto {
     transactionName: TransactionName;
     customerId: number | undefined;
     customer: CustomerDto;
+    creatorUserId: number | undefined;
+    creationTime: moment.Moment;
 
     constructor(data?: ICustomerCashFlowDto) {
         if (data) {
@@ -20264,6 +21908,8 @@ export class CustomerCashFlowDto implements ICustomerCashFlowDto {
             this.transactionName = _data["transactionName"];
             this.customerId = _data["customerId"];
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
         }
     }
 
@@ -20286,6 +21932,8 @@ export class CustomerCashFlowDto implements ICustomerCashFlowDto {
         data["transactionName"] = this.transactionName;
         data["customerId"] = this.customerId;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         return data;
     }
 
@@ -20308,6 +21956,8 @@ export interface ICustomerCashFlowDto {
     transactionName: TransactionName;
     customerId: number | undefined;
     customer: CustomerDto;
+    creatorUserId: number | undefined;
+    creationTime: moment.Moment;
 }
 
 export class CustomerCashFlowDtoPagedResultDto implements ICustomerCashFlowDtoPagedResultDto {
@@ -25946,6 +27596,8 @@ export class StockDto implements IStockDto {
     materialId: number | undefined;
     material: string | undefined;
     storeId: number | undefined;
+    unit: UnitDto;
+    size: SizeDto;
 
     constructor(data?: IStockDto) {
         if (data) {
@@ -25971,6 +27623,8 @@ export class StockDto implements IStockDto {
             this.materialId = _data["materialId"];
             this.material = _data["material"];
             this.storeId = _data["storeId"];
+            this.unit = _data["unit"] ? UnitDto.fromJS(_data["unit"]) : <any>undefined;
+            this.size = _data["size"] ? SizeDto.fromJS(_data["size"]) : <any>undefined;
         }
     }
 
@@ -25996,6 +27650,8 @@ export class StockDto implements IStockDto {
         data["materialId"] = this.materialId;
         data["material"] = this.material;
         data["storeId"] = this.storeId;
+        data["unit"] = this.unit ? this.unit.toJSON() : <any>undefined;
+        data["size"] = this.size ? this.size.toJSON() : <any>undefined;
         return data;
     }
 
@@ -26021,6 +27677,8 @@ export interface IStockDto {
     materialId: number | undefined;
     material: string | undefined;
     storeId: number | undefined;
+    unit: UnitDto;
+    size: SizeDto;
 }
 
 export class StockDtoPagedResultDto implements IStockDtoPagedResultDto {
@@ -26771,6 +28429,8 @@ export enum TransactionName {
     _2 = 2,
     _3 = 3,
     _4 = 4,
+    _5 = 5,
+    _6 = 6,
 }
 
 export class TransportCompanyCashFlowDto implements ITransportCompanyCashFlowDto {
@@ -26784,6 +28444,8 @@ export class TransportCompanyCashFlowDto implements ITransportCompanyCashFlowDto
     transactionName: TransactionName;
     transportCompanyId: number | undefined;
     transportCompany: TransportCompanyDto;
+    creatorUserId: number | undefined;
+    creationTime: moment.Moment;
 
     constructor(data?: ITransportCompanyCashFlowDto) {
         if (data) {
@@ -26806,6 +28468,8 @@ export class TransportCompanyCashFlowDto implements ITransportCompanyCashFlowDto
             this.transactionName = _data["transactionName"];
             this.transportCompanyId = _data["transportCompanyId"];
             this.transportCompany = _data["transportCompany"] ? TransportCompanyDto.fromJS(_data["transportCompany"]) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
         }
     }
 
@@ -26828,6 +28492,8 @@ export class TransportCompanyCashFlowDto implements ITransportCompanyCashFlowDto
         data["transactionName"] = this.transactionName;
         data["transportCompanyId"] = this.transportCompanyId;
         data["transportCompany"] = this.transportCompany ? this.transportCompany.toJSON() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         return data;
     }
 
@@ -26850,6 +28516,8 @@ export interface ITransportCompanyCashFlowDto {
     transactionName: TransactionName;
     transportCompanyId: number | undefined;
     transportCompany: TransportCompanyDto;
+    creatorUserId: number | undefined;
+    creationTime: moment.Moment;
 }
 
 export class TransportCompanyCashFlowDtoPagedResultDto implements ITransportCompanyCashFlowDtoPagedResultDto {

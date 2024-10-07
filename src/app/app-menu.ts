@@ -181,7 +181,33 @@ const data: IMenuItem[] = [
       },
     ],
   },
-
+//Report
+{
+  icon: "iconsminds-files",
+  label: "Reports",
+  to: `${adminRoot}/cash-flows`,
+  permissions: permissionsSetting,
+  subs: [
+    {
+      label: "CustomerCashFlow",
+      to: `${adminRoot}/cash-flows/total-customer-cash-flows`,
+      icon: "iconsminds-file",
+      permissions: permissionsSetting,
+    },
+    {
+      label: "ClearanceCompanyCashFlow",
+      to: `${adminRoot}/cash-flows/total-clearance-cash-flows`,
+      icon: "iconsminds-file",
+      permissions: permissionsSetting,
+    },
+    {
+      label: "TranspartCompanyCashFlow",
+      to: `${adminRoot}/cash-flows/total-transport-cash-flows`,
+      icon: "iconsminds-file",
+      permissions: permissionsSetting,
+    },
+  ],
+},
   //Security
   {
     icon: "iconsminds-security-settings",

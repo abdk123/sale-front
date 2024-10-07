@@ -45,7 +45,7 @@ export class EditReceiveComponent extends AppComponentBase implements OnInit {
   }
 
   initialReceiving() {
-    this.receivingServiceProxy.get(this.receivingId).subscribe((result) => {
+    this.receivingServiceProxy.getAggregate(this.receivingId).subscribe((result) => {
       this.receiveDto = result;
     });
   }

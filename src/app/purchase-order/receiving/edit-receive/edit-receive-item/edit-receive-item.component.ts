@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CreateReceivingItemDto, InvoiceItemDto, InvoiceServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateReceivingItemDto, InvoiceItemDto, InvoiceServiceProxy, ReceivingItemDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: "edit-receive-item",
@@ -12,8 +12,8 @@ export class EditReceiveItemComponent
   implements OnInit
 {
   @Input() invoiceId: number;
-  @Input() items: CreateReceivingItemDto[] = [];
-  @Output() itemsChange = new EventEmitter<CreateReceivingItemDto[]>();
+  @Input() items: ReceivingItemDto[] = [];
+  @Output() itemsChange = new EventEmitter<ReceivingItemDto[]>();
   invoiceItems: InvoiceItemDto[] = [];
   constructor(injector: Injector, private invoiceService: InvoiceServiceProxy) {
     super(injector);
@@ -62,7 +62,7 @@ export class EditReceiveItemComponent
         this.items[index].receivedQuantity = Number(args.target.value);
       }
     } else {
-      var item = new CreateReceivingItemDto();
+      var item = new ReceivingItemDto();
       item.init({
         invoiceItemId: invoiceItemId,
         receivedQuantity: Number(args.target.value),

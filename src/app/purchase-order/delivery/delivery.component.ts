@@ -7,6 +7,8 @@ import {
 import { FullPagedListingComponentBase } from "@shared/full-paged-listing-component-base";
 import {
   CreateDeliveryItemDto,
+  CustomerDto,
+  CustomerServiceProxy,
   DeliveryDto,
   FullPagedRequestDto,
   OfferDto,
@@ -19,11 +21,11 @@ import { BsModalRef } from "ngx-bootstrap/modal";
   templateUrl: "./delivery.component.html",
 })
 export class DeliveryComponent
-  extends FullPagedListingComponentBase<OfferDto>
+  extends FullPagedListingComponentBase<CustomerDto>
   implements OnInit
 {
-  offers: OfferDto[] = [];
-  deliveryPrinted: DeliveryDto = new DeliveryDto();
+  customers: CustomerDto[] = [];
+  deliveryPrinted: CustomerDto = new CustomerDto();
   deliveryItemsPrinted: CreateDeliveryItemDto[] = [];
 
   status: IEnumValue[] = [
@@ -47,44 +49,29 @@ export class DeliveryComponent
 
   fields = [
     {
-      label: this.l("Customer"),
-      name: "customer",
-      sortable: false,
-      type: "reference",
-      referenceTextField:'fullName'
-    },
-    {
-      label: this.l("PoNumber"),
-      name: "porchaseOrderId",
-      sortable: false,
+      label: this.l("FullName"),
+      name: "fullName",
+      sortable: true,
       type: "string",
     },
-    // {
-    //   label: this.l("Status"),
-    //   name: "status",
-    //   type: "enum",
-    //   enumValue: this.status,
-    //   sortable: true,
-    // },
     {
-      label: this.l("OfferNumber"),
-      name: "id",
+      label: this.l("PhoneNumber"),
+      name: "phoneNumber",
       sortable: true,
-      type: "number",
+      type: "string",
     },
     {
-      label: this.l("Currency"),
-      name: "currency",
-      type: "enum",
-      enumValue: this.currency,
+      label: this.l("Address"),
+      name: "address",
       sortable: true,
-    },
+      type: "string",
+    }
   ];
 
   constructor(
     injector: Injector,
     private _router: Router,
-    private offerService: OfferServiceProxy,
+    private customerService: CustomerServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -95,8 +82,8 @@ export class DeliveryComponent
     finishedCallback: Function
   ): void {
     request.including = "Customer";
-    this.offerService.read(request).subscribe((result) => {
-      this.offers = result.items;
+    this.customerService.read(request).subscribe((result) => {
+      this.customers = result.items;
       this.showPaging(result, pageNumber);
     });
   }
@@ -113,12 +100,12 @@ export class DeliveryComponent
     }
   }
 
-  addOrEditDelivery(offerId) {
+  addOrEditDelivery(customerId) {
     this._router.navigate([
       "/app/orders/send-delivery",
 
       {
-        offerId: offerId,
+        customerId: customerId,
       },
     ]);
   }

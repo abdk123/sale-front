@@ -15,18 +15,24 @@
 <app-page-grid [hasDetails]="false" [fields]="fields" [data]="cashFlows" [totalItems]="totalItems"
     [pageNumber]="pageNumber" [pageSize]="pageSize" (viewItem)="showViewModal($event)"
     (changeOrderBy)="changeOrderBy($event)" [actionList]="true" (changePage)="pageChanged($event)">
-    <div class="row mb-3 separator ">
-        <div class="col-md-6 ">
-            <h3>
+    <div class="row mb-3 pb-2 separator ">
+        <div class="col-md-4 ">
+            <h4>
+                <small class="text-muted">{{'Name' | localize}} :</small>
+                {{currentBalance.name}}
+            </h4>
+        </div>
+        <div class="col-md-4 ">
+            <h4>
                 <small class="text-muted">{{'CurrentBalanceDollar' | localize}} :</small>
                 {{getBalance(currentBalance.dollarBalance)}}
-            </h3>
+            </h4>
         </div>
-        <div class="col-md-6">
-            <h3>
+        <div class="col-md-4">
+            <h4>
                 <small class="text-muted">{{'CurrentBalanceDinar' | localize}} :</small>
                 {{getBalance(currentBalance.dinarBalance)}}
-            </h3>
+            </h4>
 
         </div>
     </div>

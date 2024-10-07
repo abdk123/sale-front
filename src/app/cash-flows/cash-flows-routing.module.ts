@@ -5,6 +5,9 @@ import { ClearanceCompanyCashFlowComponent } from "./clearance-company-cash-flow
 import { AppRouteGuard } from "@shared/auth/auth-route-guard";
 import { TransportCompanyCashFlowComponent } from "./transport-company-cash-flow/transport-company-cash-flow.component";
 import { CustomerCashFlowComponent } from "./customer-cash-flow/customer-cash-flow.component";
+import { TotalCustomerCashFlowComponent } from "./total-customer-cash-flow/total-customer-cash-flow.component";
+import { TotalClearanceCashFlowComponent } from "./total-clearance-cash-flow/total-clearance-cash-flow.component";
+import { TotalTransportCashFlowComponent } from "./total-transport-cash-flow/total-transport-cash-flow.component";
 
 
 const routes: Routes = [
@@ -27,6 +30,24 @@ const routes: Routes = [
       {
         path: "customer-cash-flows",
         component: CustomerCashFlowComponent,
+        //data: { permission: "Setting.Customers" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "total-customer-cash-flows",
+        component: TotalCustomerCashFlowComponent,
+        //data: { permission: "Setting.Customers" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "total-clearance-cash-flows",
+        component: TotalClearanceCashFlowComponent,
+        //data: { permission: "Setting.Customers" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "total-transport-cash-flows",
+        component: TotalTransportCashFlowComponent,
         //data: { permission: "Setting.Customers" },
         canActivate: [AppRouteGuard],
       },

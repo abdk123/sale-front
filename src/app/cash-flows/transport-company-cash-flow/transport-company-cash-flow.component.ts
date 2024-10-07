@@ -31,6 +31,8 @@ export class TransportCompanyCashFlowComponent
     {value:2, text:this.l("ClearanceCost")},
     {value:3, text:this.l("TransportCost")},
     {value:4, text:this.l("ReceivingCost")},
+    {value:5, text:this.l("DeliveryTransportCost")},
+    {value:6, text:this.l("DeliveryCost")},
   ];
 
   fields: IPageField[] = [];
@@ -108,11 +110,10 @@ export class TransportCompanyCashFlowComponent
         enumValue: this.transactionNames,
       },
       {
-        label: this.l("ClearanceCompany"),
-        name: "clearanceCompany",
+        label: this.l("Date"),
+        name: "creationTime",
         sortable: false,
-        type: "reference",
-        referenceTextField: "name",
+        type: "date"
       },
       {
         label: this.l("Number"),

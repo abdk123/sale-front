@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="card mt-2">
+    <!-- <div class="card mt-2">
         <div class="card-body">
             <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
             <div class="row">
@@ -32,12 +32,9 @@
                     <item-info title="ApproveDate" *ngIf="offer?.approveDate"
                         value="{{offer?.approveDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
                 </div>
-                <!-- <div class="col-md-2">
-                    <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
-                </div> -->
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="card mt-2">
         <div class="card-body">
             <h5 class="card-title separator pb-2 mb-3">{{ 'TransportInfo' | localize }}</h5>
@@ -89,5 +86,5 @@
         </div>
     </div>
 </form>
-<send-delivery-item [customerId]="offer?.customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+<send-delivery-item [customerId]="customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
 <!-- <delivery-list [customerId]="offer?.customerId"></delivery-list> -->

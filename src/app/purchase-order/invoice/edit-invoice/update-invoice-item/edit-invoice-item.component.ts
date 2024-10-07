@@ -194,7 +194,7 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
   allStocks: StockDto[] = [];
   initialAllStocks(){
     
-    this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
+    this.stockService.getAll("Size,Unit",undefined,undefined,undefined,undefined,0,100000)
     .subscribe((result)=>{
       
       this.allStocks = result.items;
@@ -202,7 +202,6 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
   }
 
   getStock(materialId: number) {
-    
     if(this.stocks.length !== 0){
     var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
     }else{

@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IPageField } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
 import { BalanceInfoDto, CustomerCashFlowDto, CustomerCashFlowServiceProxy, FullPagedRequestDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -8,6 +9,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: "customer-cash-flow",
   templateUrl: "./customer-cash-flow.component.html",
+  styles: [
+    `
+      .form-control {
+        padding: 0.3rem 0.5rem !important;
+      }
+    `,
+  ],
 })
 export class CustomerCashFlowComponent
   extends FullPagedListingComponentBase<CustomerCashFlowDto>
@@ -30,36 +38,13 @@ export class CustomerCashFlowComponent
     {value:2, text:this.l("ClearanceCost")},
     {value:3, text:this.l("TransportCost")},
     {value:4, text:this.l("ReceivingCost")},
+    {value:5, text:this.l("DeliveryTransportCost")},
+    {value:6, text:this.l("DeliveryCost")},
   ];
 
-  fields = [
-    {
-      label: this.l("TransactionName"),
-      name: "transactionName",
-      sortable: false,
-      type: "enum",
-      enumValue: this.transactionNames,
-    },
-    {
-      label: this.l("ClearanceCompany"),
-      name: "clearanceCompany",
-      sortable: false,
-      type: "reference",
-      referenceTextField: "name",
-    },
-    {
-      label: this.l("Number"),
-      name: "id",
-      sortable: false,
-      type: "number",
-    },
-    {
-      label: this.l("TransactionDetails"),
-      name: "transactionDetails",
-      sortable: false,
-      type: "string",
-    }
-  ];
+  fields: IPageField[] = [];
+    
+ 
 
   constructor(
     injector: Injector,
@@ -138,11 +123,10 @@ export class CustomerCashFlowComponent
         enumValue: this.transactionNames,
       },
       {
-        label: this.l("ClearanceCompany"),
-        name: "clearanceCompany",
+        label: this.l("Date"),
+        name: "creationTime",
         sortable: false,
-        type: "reference",
-        referenceTextField: "name",
+        type: "date"
       },
       {
         label: this.l("Number"),
