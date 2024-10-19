@@ -10,7 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { SharedModule } from '@shared/shared.module';
 import { OfferComponent } from './offer/offer.component';
-import { CustomerCashFlowServiceProxy, CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, RejectDeliveryServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerCashFlowServiceProxy, CustomerServiceProxy, DeliveryServiceProxy, InvoiceServiceProxy, MaterialServiceProxy, OfferServiceProxy, ReceivingServiceProxy, RejectDeliveryServiceProxy, SaleInvoiceServiceProxy, StockServiceProxy, SupplierOfferServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOfferComponent } from './offer/create-offer/create-offer.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -53,6 +53,10 @@ import { ViewPorchaseInvoiceComponent } from './offer/view-offer/view-porchase-i
 import { ViewDeliveryComponent } from './offer/view-offer/view-delivery/view-delivery.component';
 import { ViewSaleInvoiceComponent } from './offer/view-offer/view-sale-invoice/view-sale-invoice.component';
 import { SupplierOfferComponent } from './supplier-offer/supplier-offer.component';
+import { CreateSupplierOfferComponent } from './supplier-offer/create-supplier-offer/create-supplier-offer.component';
+import { CreateSupplierOfferItemComponent } from './supplier-offer/create-supplier-offer/create-supplier-offer-item/create-supplier-offer-item.component';
+import { UpdateSupplierOfferComponent } from './supplier-offer/update-supplier-offer/update-supplier-offer.component';
+import { UpdateSupplierOfferItemComponent } from './supplier-offer/update-supplier-offer/update-supplier-offer-item/update-supplier-offer-item.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +101,10 @@ import { SupplierOfferComponent } from './supplier-offer/supplier-offer.componen
     ViewPorchaseInvoiceComponent,
     ViewDeliveryComponent,
     SupplierOfferComponent,
+    CreateSupplierOfferComponent,
+    CreateSupplierOfferItemComponent,
+    UpdateSupplierOfferComponent,
+    UpdateSupplierOfferItemComponent
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -124,7 +132,8 @@ import { SupplierOfferComponent } from './supplier-offer/supplier-offer.componen
     DeliveryServiceProxy,
     SaleInvoiceServiceProxy,
     RejectDeliveryServiceProxy,
-    CustomerCashFlowServiceProxy
+    CustomerCashFlowServiceProxy,
+    SupplierOfferServiceProxy 
   ],
 })
 export class PurchaseOrderModule {}

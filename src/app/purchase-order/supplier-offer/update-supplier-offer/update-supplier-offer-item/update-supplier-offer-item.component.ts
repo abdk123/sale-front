@@ -1,20 +1,17 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, InvoiceDto, InvoiceItemDto, InvoiceServiceProxy, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, SupplierOfferServiceProxy, UnitDto, UpdateOfferItemDto, UpdateSupplierOfferItemDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  selector: "edit-invoice-item",
-  templateUrl: "./edit-invoice-item.component.html",
-  styleUrls: ["./edit-invoice-item.component.scss"],
+  selector: "update-supplier-offer-item",
+  templateUrl: "./update-supplier-offer-item.component.html",
+  styleUrls: ["./update-supplier-offer-item.component.scss"],
 })
-export class EditInvoiceItemComponent extends AppComponentBase implements OnInit {
-  item: UpdateOfferItemDto = new UpdateOfferItemDto();
-  @Output() onSave = new EventEmitter<UpdateOfferItemDto[]>();
-  @Output() onSaveInvoice = new EventEmitter<InvoiceItemDto[]>();
+export class UpdateSupplierOfferItemComponent extends AppComponentBase implements OnInit {
+  item: UpdateSupplierOfferItemDto = new UpdateSupplierOfferItemDto();
+  @Output() onSave = new EventEmitter<UpdateSupplierOfferItemDto[]>();
   @Input() offerId: number;
-  @Input() invoiceId: number;
-  items: UpdateOfferItemDto[] = [];
-  invoiceItems: InvoiceItemDto[] = [];
+  items: UpdateSupplierOfferItemDto[] = [];
   materials: DropdownDto[] = [];
   units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
@@ -27,36 +24,21 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
-    private offerService: OfferServiceProxy,
-    private stockService: StockServiceProxy,
-    private invoiceService: InvoiceServiceProxy,
+    private _offerService: SupplierOfferServiceProxy,
+    private stockService: StockServiceProxy
   ) {
     super(injector);
   }
   ngOnInit(): void {
-    this.initialInvoice();
     this.initialAllStocks();
-    
+    this.initialItems();
     this.initialMaterials();
     this.initialAllMaterialUnits();
-    
-  }
-
-  initialInvoice() {
-    this.invoiceService.getWithDetail(this.invoiceId)
-    .subscribe(result=>{
-      this.invoiceItems = result.invoiseDetails;
-      this.initialItems();
-    })
   }
 
   initialItems() {
-    this.offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
-      result.forEach(item=>{
-        if(this.invoiceItems.findIndex(x=>x.offerItemId == item.id) > -1){
-          this.items.push(item);
-        }
-      });
+    this._offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
+      this.items = result;
     });
   }
   
@@ -67,7 +49,6 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
   }
 
   initialMaterialUnits(materialId: number) {
-    
     this.stockService.getMaterialUnits(materialId).subscribe((result) => {
       this.units = result;
     });
@@ -121,11 +102,8 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
 
   initialItemForUpdate(index: number) {
     this.indexUpdate = index;
-    const materialId = this.items[this.indexUpdate]?.materialId;
-    if(materialId){
-      this.initialMaterialUnits(materialId);
-      this.item = this.items[this.indexUpdate];
-    }
+    this.item = this.items[this.indexUpdate];
+
     // 
     // this.initialMaterialUnits(this.item.materialId);
     // if (this.stocks.findIndex((x) => x.materialId) == -1) {
@@ -198,7 +176,7 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
   allStocks: StockDto[] = [];
   initialAllStocks(){
     
-    this.stockService.getAll("Size,Unit",undefined,undefined,undefined,undefined,0,100000)
+    this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
     .subscribe((result)=>{
       
       this.allStocks = result.items;
@@ -206,6 +184,7 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
   }
 
   getStock(materialId: number) {
+    
     if(this.stocks.length !== 0){
     var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
     }else{
@@ -232,41 +211,4 @@ export class EditInvoiceItemComponent extends AppComponentBase implements OnInit
       ? `${this.l("SmallUnit")}`
       : `${this.l("LargeUnit")}`;
   }
-
-  getInvoiceQuantity(offerItemId){
-    const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
-    if(invoiceItem){
-      return invoiceItem.quantity;
-    }
-    return 0;
-  }
-
-  getInvoicePrice(offerItemId){
-    const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
-    if(invoiceItem){
-      return invoiceItem.totalMaterilPrice;
-    }
-    return 0;
-  }
-  updateInvoiceQuantity(args,offerItemId){
-    this.invoiceItems.find(x=>x.offerItem.id == offerItemId).quantity = Number(args.target.value);
-    this.onSaveInvoice.emit(this.invoiceItems);
-  }
-
-  updateInvoicePrice(args,offerItemId){
-    this.invoiceItems.find(x=>x.offerItem.id == offerItemId).totalMaterilPrice = Number(args.target.value);
-    this.onSaveInvoice.emit(this.invoiceItems);
-    
-  }
-
-  getTotalPrice(offerItemId){
-    let total = 0;
-    const invoiceItem = this.invoiceItems.find(x=>x.offerItem.id == offerItemId);
-    if(invoiceItem && invoiceItem.quantity && invoiceItem.totalMaterilPrice){
-      total = Number(invoiceItem.quantity) * Number(invoiceItem.totalMaterilPrice);
-    }
-    return total;
-  }
-
-  
 }

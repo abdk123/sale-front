@@ -88,9 +88,23 @@ const data: IMenuItem[] = [
       subs: [ 
         {
           label: "Offers",
-          to: `${adminRoot}/orders/offers`,
           icon: "iconsminds-address-book-2",
           permissions: permissionsSetting,
+          to: ``,
+          subs: [
+            {
+              label: "OfferToCustomer",
+              to: `${adminRoot}/orders/offers`,
+              icon: "",
+              permissions: permissionsSetting,
+            },
+            {
+              label: "OfferFromSupplier",
+              to: `${adminRoot}/orders/supplier-offers`,
+              icon: "",
+              permissions: permissionsSetting,
+            },
+          ],
         },
         {
           label: "PurchaseInvoices",

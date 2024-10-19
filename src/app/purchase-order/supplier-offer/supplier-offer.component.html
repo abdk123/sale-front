@@ -1,1 +1,15 @@
-<p>supplier-offer works!</p>
+<app-page-header [title]="'SupplierOffers' | localize"  [fields]="fields"
+ [CreatePermission]="'Setting.SupplierOffers.Create'" (addNewItem)="showAddNewModal()"
+  (advanceFilter)="showFilterDialog($event)" 
+  [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
+  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
+</app-page-header>
+
+
+<app-page-grid [hasDetails]="false" [EditPermission]="'Setting.SupplierOffers.Update'" 
+[DeletePermission]="'Setting.SupplierOffers.Delete'" [fields]="fields" [data]="supplierOffers" 
+[totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
+(viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
+(editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'"
+(changePage)="pageChanged($event)" [PrintButton]="true" 
+[menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

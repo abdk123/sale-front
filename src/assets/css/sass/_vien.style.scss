@@ -6401,14 +6401,21 @@ rating span {
 /* 30.Authorization */
 .auth-card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  /* From https://css.glass */
+background: rgba(39, 151, 162, 0.1);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(39, 151, 162, 0.3);
   @include depth(1);
 
   .image-side {
-    width: 50%;
-    background: url("../../img/login/balloon.jpg") no-repeat center center;
-    background-size: cover;
-    padding: 80px 40px;
+    // width: 70%;
+    background: url("../../img/login/balloon.png") no-repeat center center;
+    background-size: contain;
+    padding: 50px 80px;
 
     .h3 {
       line-height: 0.8rem;
@@ -6416,8 +6423,8 @@ rating span {
   }
 
   .form-side {
-    width: 60%;
-    padding: 80px;
+    // width: 90%;
+    padding: 20px;
   }
 
   @include respond-below(md) {

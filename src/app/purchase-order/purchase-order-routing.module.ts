@@ -22,6 +22,8 @@ import { ReturnedDeliveriesComponent } from "./returned-deliveries/returned-deli
 import { RejectedDeliveriesComponent } from "./rejected-deliveries/rejected-deliveries.component";
 import { PdfUrnComponent } from "./sale-invoice/pdf-urn/pdf-urn.component";
 import { ViewOfferComponent } from "./offer/view-offer/view-offer.component";
+import { SupplierOfferComponent } from "./supplier-offer/supplier-offer.component";
+import { CreateSupplierOfferComponent } from "./supplier-offer/create-supplier-offer/create-supplier-offer.component";
 
 const routes: Routes = [
   {
@@ -50,6 +52,18 @@ const routes: Routes = [
         path: "manage-offer",
         component: ManageOfferComponent,
         data: { permission: "Setting.Offers.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "supplier-offers",
+        component: SupplierOfferComponent,
+        //data: { permission: "Setting.Offers" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "create-supplier-offer",
+        component: CreateSupplierOfferComponent,
+        //data: { permission: "Setting.Offers.Create" },
         canActivate: [AppRouteGuard],
       },
       {

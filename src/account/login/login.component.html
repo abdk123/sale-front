@@ -2,20 +2,12 @@
 <main>
   <div class="container">
     <div class="row h-100">
-      <div class="col-12 col-md-10 mx-auto my-auto">
-        <div class="card auth-card">
-          <div class="position-relative image-side" [ngClass]="{'text-center': innerWidth <= 992}">
-            
+      <div class="col-3"></div>
+      <div class="col-6 col-md-6 mx-auto my-auto">
+        <div class="card auth-card p-2">
+          <div class="position-relative image-side">
           </div>
           <div class="form-side">
-            <div class="d-flex flex-column mb-2">
-              <h1 class="font-weight-bold mb-0" style="font-size: xxx-large;">SAT</h1>
-              <p class="">
-                SER ALTATOWER COMPANY
-              </p> 
-            </div>
-            <h6 class="mb-4">{{'Login'|localize}}</h6>
-
             <form novalidate autocomplete="off" #loginForm="ngForm" (ngSubmit)="login()">
               <div class="input-group mb-2 mr-sm-2">
                 <div class="input-group-prepend">
@@ -23,7 +15,7 @@
                     <span >@</span>
                   </a>
                 </div>
-                <input type="text" class="form-control" name="userNameOrEmailAddress" placeholder="{{'UserName' | localize}}"
+                <input type="text" class="form-control" name="userNameOrEmailAddress" placeholder="اسم المستخدم"
                   [(ngModel)]="authService.authenticateModel.userNameOrEmailAddress" required maxlength="256"
                   #userNameOrEmailAddressModel="ngModel" #userNameOrEmailAddressEl />
 
@@ -39,7 +31,7 @@
                   </a>
                 </div>
                 <input  type="{{ !showPassword ? 'password' : 'text' }}"
-                class="form-control" name="password" placeholder= "{{'Password' | localize}}"
+                class="form-control" name="password" placeholder= "كلمة المرور"
                   [(ngModel)]="authService.authenticateModel.password" required maxlength="32" #passwordModel="ngModel"
                   #passwordEl />
                   </div>
@@ -51,7 +43,7 @@
                     <input type="checkbox" class="custom-control-input" id="rememberMe" name="rememberMe"
                       [(ngModel)]="authService.rememberMe" />
                     <label for="rememberMe" class="custom-control-label">
-                      {{ "RememberMe" | localize }}
+                      تذكر كلمة المرور
                     </label>
                   </div>
                 </div>
@@ -66,6 +58,7 @@
           </div>
         </div>
       </div>
+      <div class="col-3"></div>
     </div>
   </div>
 </main>

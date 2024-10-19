@@ -23,7 +23,7 @@ export class HeaderLeftNavbarComponent extends AppComponentBase implements OnIni
 
   constructor(injector: Injector, private _layoutStore: LayoutStoreService
     ,private sidebarService: SidebarService,
-     private _userService: UserServiceProxy,
+     private userService: UserServiceProxy,
      private rendererFactory: RendererFactory2,
      ) {
       
@@ -67,7 +67,7 @@ export class HeaderLeftNavbarComponent extends AppComponentBase implements OnIni
   changeLanguage(languageName: string): void {
     const input = new ChangeUserLanguageDto();
     input.languageName = languageName;
-    this._userService.changeLanguage(input).subscribe(() => {
+    this.userService.changeLanguage(input).subscribe(() => {
       abp.utils.setCookieValue(
         'Abp.Localization.CultureName',
         languageName,

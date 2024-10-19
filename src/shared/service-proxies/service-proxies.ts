@@ -11928,6 +11928,497 @@ export class StockServiceProxy {
 }
 
 @Injectable()
+export class StockHistoryServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    get(id: number | undefined): Observable<StockHistoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/Get?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDto>;
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<StockHistoryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockHistoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAggregate(id: number | undefined): Observable<StockHistoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/GetAggregate?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAggregate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAggregate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDto>;
+        }));
+    }
+
+    protected processGetAggregate(response: HttpResponseBase): Observable<StockHistoryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockHistoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getForEdit(id: number | undefined): Observable<UpdateStockHistoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/GetForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UpdateStockHistoryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UpdateStockHistoryDto>;
+        }));
+    }
+
+    protected processGetForEdit(response: HttpResponseBase): Observable<UpdateStockHistoryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UpdateStockHistoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param including (optional) 
+     * @param filtering_Condition (optional) 
+     * @param filtering_Rules (optional) 
+     * @param keyword (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(including: string | undefined, filtering_Condition: string | undefined, filtering_Rules: FilterRuleDto[] | undefined, keyword: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<StockHistoryDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/GetAll?";
+        if (including === null)
+            throw new Error("The parameter 'including' cannot be null.");
+        else if (including !== undefined)
+            url_ += "Including=" + encodeURIComponent("" + including) + "&";
+        if (filtering_Condition === null)
+            throw new Error("The parameter 'filtering_Condition' cannot be null.");
+        else if (filtering_Condition !== undefined)
+            url_ += "Filtering.Condition=" + encodeURIComponent("" + filtering_Condition) + "&";
+        if (filtering_Rules === null)
+            throw new Error("The parameter 'filtering_Rules' cannot be null.");
+        else if (filtering_Rules !== undefined)
+            filtering_Rules && filtering_Rules.forEach((item, index) => {
+                for (let attr in item)
+        			if (item.hasOwnProperty(attr)) {
+        				url_ += "Filtering.Rules[" + index + "]." + attr + "=" + encodeURIComponent("" + (item as any)[attr]) + "&";
+        			}
+            });
+        if (keyword === null)
+            throw new Error("The parameter 'keyword' cannot be null.");
+        else if (keyword !== undefined)
+            url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<StockHistoryDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockHistoryDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    read(body: FullPagedRequestDto | undefined): Observable<StockHistoryDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/Read";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRead(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRead(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDtoPagedResultDto>;
+        }));
+    }
+
+    protected processRead(response: HttpResponseBase): Observable<StockHistoryDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockHistoryDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateStockHistoryDto | undefined): Observable<StockHistoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDto>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<StockHistoryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockHistoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    update(body: UpdateStockHistoryDto | undefined): Observable<StockHistoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<StockHistoryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StockHistoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class StoreServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -20914,6 +21405,65 @@ export interface ICreateStockDto {
     storeId: number | undefined;
 }
 
+export class CreateStockHistoryDto implements ICreateStockHistoryDto {
+    type: StockType;
+    reason: StockReason;
+    title: string | undefined;
+    quantity: number;
+    stockId: number | undefined;
+
+    constructor(data?: ICreateStockHistoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.reason = _data["reason"];
+            this.title = _data["title"];
+            this.quantity = _data["quantity"];
+            this.stockId = _data["stockId"];
+        }
+    }
+
+    static fromJS(data: any): CreateStockHistoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateStockHistoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["reason"] = this.reason;
+        data["title"] = this.title;
+        data["quantity"] = this.quantity;
+        data["stockId"] = this.stockId;
+        return data;
+    }
+
+    clone(): CreateStockHistoryDto {
+        const json = this.toJSON();
+        let result = new CreateStockHistoryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateStockHistoryDto {
+    type: StockType;
+    reason: StockReason;
+    title: string | undefined;
+    quantity: number;
+    stockId: number | undefined;
+}
+
 export class CreateStoreDto implements ICreateStoreDto {
     id: number;
     name: string | undefined;
@@ -20971,13 +21521,13 @@ export interface ICreateStoreDto {
 
 export class CreateSupplierOfferDto implements ICreateSupplierOfferDto {
     id: number;
-    offerEndDate: moment.Moment | undefined;
+    supplierOfferEndDate: moment.Moment | undefined;
     currency: number;
     supplierId: number | undefined;
     note: string | undefined;
     status: number;
     porchaseOrderId: string | undefined;
-    offerItems: CreateSupplierOfferItemDto[] | undefined;
+    supplierOfferItems: CreateSupplierOfferItemDto[] | undefined;
 
     constructor(data?: ICreateSupplierOfferDto) {
         if (data) {
@@ -20991,16 +21541,16 @@ export class CreateSupplierOfferDto implements ICreateSupplierOfferDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
+            this.supplierOfferEndDate = _data["supplierOfferEndDate"] ? moment(_data["supplierOfferEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
             this.supplierId = _data["supplierId"];
             this.note = _data["note"];
             this.status = _data["status"];
             this.porchaseOrderId = _data["porchaseOrderId"];
-            if (Array.isArray(_data["offerItems"])) {
-                this.offerItems = [] as any;
-                for (let item of _data["offerItems"])
-                    this.offerItems.push(CreateSupplierOfferItemDto.fromJS(item));
+            if (Array.isArray(_data["supplierOfferItems"])) {
+                this.supplierOfferItems = [] as any;
+                for (let item of _data["supplierOfferItems"])
+                    this.supplierOfferItems.push(CreateSupplierOfferItemDto.fromJS(item));
             }
         }
     }
@@ -21015,16 +21565,16 @@ export class CreateSupplierOfferDto implements ICreateSupplierOfferDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
+        data["supplierOfferEndDate"] = this.supplierOfferEndDate ? this.supplierOfferEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
         data["supplierId"] = this.supplierId;
         data["note"] = this.note;
         data["status"] = this.status;
         data["porchaseOrderId"] = this.porchaseOrderId;
-        if (Array.isArray(this.offerItems)) {
-            data["offerItems"] = [];
-            for (let item of this.offerItems)
-                data["offerItems"].push(item.toJSON());
+        if (Array.isArray(this.supplierOfferItems)) {
+            data["supplierOfferItems"] = [];
+            for (let item of this.supplierOfferItems)
+                data["supplierOfferItems"].push(item.toJSON());
         }
         return data;
     }
@@ -21039,13 +21589,13 @@ export class CreateSupplierOfferDto implements ICreateSupplierOfferDto {
 
 export interface ICreateSupplierOfferDto {
     id: number;
-    offerEndDate: moment.Moment | undefined;
+    supplierOfferEndDate: moment.Moment | undefined;
     currency: number;
     supplierId: number | undefined;
     note: string | undefined;
     status: number;
     porchaseOrderId: string | undefined;
-    offerItems: CreateSupplierOfferItemDto[] | undefined;
+    supplierOfferItems: CreateSupplierOfferItemDto[] | undefined;
 }
 
 export class CreateSupplierOfferItemDto implements ICreateSupplierOfferItemDto {
@@ -27736,6 +28286,143 @@ export interface IStockDtoPagedResultDto {
     totalCount: number;
 }
 
+export class StockHistoryDto implements IStockHistoryDto {
+    type: StockType;
+    reason: StockReason;
+    title: string | undefined;
+    quantity: number;
+    stockId: number | undefined;
+    id: number;
+    stock: StockDto;
+
+    constructor(data?: IStockHistoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.reason = _data["reason"];
+            this.title = _data["title"];
+            this.quantity = _data["quantity"];
+            this.stockId = _data["stockId"];
+            this.id = _data["id"];
+            this.stock = _data["stock"] ? StockDto.fromJS(_data["stock"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): StockHistoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StockHistoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["reason"] = this.reason;
+        data["title"] = this.title;
+        data["quantity"] = this.quantity;
+        data["stockId"] = this.stockId;
+        data["id"] = this.id;
+        data["stock"] = this.stock ? this.stock.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): StockHistoryDto {
+        const json = this.toJSON();
+        let result = new StockHistoryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStockHistoryDto {
+    type: StockType;
+    reason: StockReason;
+    title: string | undefined;
+    quantity: number;
+    stockId: number | undefined;
+    id: number;
+    stock: StockDto;
+}
+
+export class StockHistoryDtoPagedResultDto implements IStockHistoryDtoPagedResultDto {
+    items: StockHistoryDto[] | undefined;
+    totalCount: number;
+
+    constructor(data?: IStockHistoryDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(StockHistoryDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): StockHistoryDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StockHistoryDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+
+    clone(): StockHistoryDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new StockHistoryDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStockHistoryDtoPagedResultDto {
+    items: StockHistoryDto[] | undefined;
+    totalCount: number;
+}
+
+export enum StockReason {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+}
+
+export enum StockType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+}
+
 export class StoreDto implements IStoreDto {
     id: number;
     name: string | undefined;
@@ -27943,7 +28630,7 @@ export interface IStructLayoutAttribute {
 export class SupplierOfferDto implements ISupplierOfferDto {
     id: number;
     status: number;
-    offerEndDate: moment.Moment | undefined;
+    supplierOfferEndDate: moment.Moment | undefined;
     currency: number;
     supplierId: number | undefined;
     totalQuantity: number;
@@ -27966,7 +28653,7 @@ export class SupplierOfferDto implements ISupplierOfferDto {
         if (_data) {
             this.id = _data["id"];
             this.status = _data["status"];
-            this.offerEndDate = _data["offerEndDate"] ? moment(_data["offerEndDate"].toString()) : <any>undefined;
+            this.supplierOfferEndDate = _data["supplierOfferEndDate"] ? moment(_data["supplierOfferEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
             this.supplierId = _data["supplierId"];
             this.totalQuantity = _data["totalQuantity"];
@@ -27993,7 +28680,7 @@ export class SupplierOfferDto implements ISupplierOfferDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["status"] = this.status;
-        data["offerEndDate"] = this.offerEndDate ? this.offerEndDate.toISOString() : <any>undefined;
+        data["supplierOfferEndDate"] = this.supplierOfferEndDate ? this.supplierOfferEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
         data["supplierId"] = this.supplierId;
         data["totalQuantity"] = this.totalQuantity;
@@ -28020,7 +28707,7 @@ export class SupplierOfferDto implements ISupplierOfferDto {
 export interface ISupplierOfferDto {
     id: number;
     status: number;
-    offerEndDate: moment.Moment | undefined;
+    supplierOfferEndDate: moment.Moment | undefined;
     currency: number;
     supplierId: number | undefined;
     totalQuantity: number;
@@ -31025,6 +31712,69 @@ export interface IUpdateStockDto {
     storeId: number | undefined;
 }
 
+export class UpdateStockHistoryDto implements IUpdateStockHistoryDto {
+    type: StockType;
+    reason: StockReason;
+    title: string | undefined;
+    quantity: number;
+    stockId: number | undefined;
+    id: number;
+
+    constructor(data?: IUpdateStockHistoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.reason = _data["reason"];
+            this.title = _data["title"];
+            this.quantity = _data["quantity"];
+            this.stockId = _data["stockId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): UpdateStockHistoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateStockHistoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["reason"] = this.reason;
+        data["title"] = this.title;
+        data["quantity"] = this.quantity;
+        data["stockId"] = this.stockId;
+        data["id"] = this.id;
+        return data;
+    }
+
+    clone(): UpdateStockHistoryDto {
+        const json = this.toJSON();
+        let result = new UpdateStockHistoryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateStockHistoryDto {
+    type: StockType;
+    reason: StockReason;
+    title: string | undefined;
+    quantity: number;
+    stockId: number | undefined;
+    id: number;
+}
+
 export class UpdateStoreDto implements IUpdateStoreDto {
     id: number;
     name: string | undefined;
@@ -31082,7 +31832,7 @@ export interface IUpdateStoreDto {
 
 export class UpdateSupplierOfferDto implements IUpdateSupplierOfferDto {
     id: number;
-    offerEndDate: string | undefined;
+    supplierOfferEndDate: string | undefined;
     currency: number;
     supplierId: number | undefined;
     note: string | undefined;
@@ -31102,7 +31852,7 @@ export class UpdateSupplierOfferDto implements IUpdateSupplierOfferDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.offerEndDate = _data["offerEndDate"];
+            this.supplierOfferEndDate = _data["supplierOfferEndDate"];
             this.currency = _data["currency"];
             this.supplierId = _data["supplierId"];
             this.note = _data["note"];
@@ -31126,7 +31876,7 @@ export class UpdateSupplierOfferDto implements IUpdateSupplierOfferDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["offerEndDate"] = this.offerEndDate;
+        data["supplierOfferEndDate"] = this.supplierOfferEndDate;
         data["currency"] = this.currency;
         data["supplierId"] = this.supplierId;
         data["note"] = this.note;
@@ -31150,7 +31900,7 @@ export class UpdateSupplierOfferDto implements IUpdateSupplierOfferDto {
 
 export interface IUpdateSupplierOfferDto {
     id: number;
-    offerEndDate: string | undefined;
+    supplierOfferEndDate: string | undefined;
     currency: number;
     supplierId: number | undefined;
     note: string | undefined;

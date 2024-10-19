@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 
 @Component({
   selector: 'view-offer-summary',
@@ -6,7 +6,7 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./view-offer-summary.component.scss']
 })
 export class ViewOfferSummaryComponent {
-  isOpen = false;
+  @Input() isOpen = true;
 
   constructor() {
   }

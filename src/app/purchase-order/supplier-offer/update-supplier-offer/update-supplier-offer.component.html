@@ -1,0 +1,68 @@
+<form class="form-horizontal " autocomplete="off" #updateOfferForm="ngForm" (ngSubmit)="save()">
+    <div class="row">
+        <div class="col-12 separator">
+            <h1>{{'UpdateOffer' | localize}}</h1>
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/supplier-offers">{{'BackToOfferList' | localize}} <i
+                    class="simple-icon-arrow-right"></i></a>
+            <div class="top-right-button-container text-zero">
+                <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
+                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save Offer' |
+                    localize}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-body">
+            <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="customers" required bindLabel="name" bindValue="id" name="customerId"
+                            [(ngModel)]="offer.supplierId">
+                        </ng-select>
+                        <span>{{ 'Customer' | localize }}</span>
+                    </label>
+                    <span *ngIf="customerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency"
+                            [(ngModel)]="offer.currency">
+                        </ng-select>
+                        <span>{{ 'Currency' | localize }}</span>
+                    </label>
+                    <span *ngIf="currencyIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <ng-select [items]="status" required bindLabel="name" bindValue="id" name="status"
+                            [(ngModel)]="offer.status" (change)="onChangeStatus($event)">
+                        </ng-select>
+                        <span>{{ 'Status' | localize }}</span>
+                    </label>
+                    <span *ngIf="statusIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+                </div>
+                <div class="col-md-3">
+                    <label class=" has-float-label">
+                        <input class="form-control" required [(ngModel)]="endDate" name="offerEndDate"
+                            bsDatepicker [container]="'html'"
+                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
+                            #offerEndDateModel="ngModel" #offerEndDateEl>
+                        <span>{{ 'OfferEndDate' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="offerEndDateModel" [controlEl]="offerEndDateEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-3" *ngIf="showPorchaseOrder">
+                    <label class="form-group has-float-label">
+                        <input type="text" class="form-control" name="porchaseOrderId"
+                            [(ngModel)]="offer.porchaseOrderId" />
+                        <span>{{ 'PoNumber' | localize }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <edit-offer-item [offerId]="id" (onSave)="onSaveOfferItem($event)"></edit-offer-item>
+
+</form>

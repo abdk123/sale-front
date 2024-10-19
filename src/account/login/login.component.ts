@@ -1,21 +1,22 @@
-import { Component, HostListener, Injector, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Injector, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { AbpSessionService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/app-component-base';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppAuthService } from '@shared/auth/app-auth.service';
-import { RoleServiceProxy } from '@shared/service-proxies/service-proxies';
-
+import { filter as _filter } from 'lodash-es';
 
 @Component({
   templateUrl: './login.component.html',
-  animations: [accountModuleAnimation()]
+  animations: [accountModuleAnimation()],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent extends AppComponentBase implements OnInit, OnDestroy {
   submitting = false;
   innerWidth;
   showPassword: boolean = false;
   currentLanguage: abp.localization.ILanguageInfo;
-  lang;
+  languages: abp.localization.ILanguageInfo[];
+  customLanguage=[];
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -31,10 +32,17 @@ export class LoginComponent extends AppComponentBase implements OnInit, OnDestro
 
   }
   ngOnInit(): void {
-    this.lang = this.localization.currentLanguage;
-    if (this.lang.name== "ar") {
-      this.checkForDirectionChange();
-    }
+    this.languages = _filter(
+      this.localization.languages,
+      (l) => !l.isDisabled
+    );
+    this.customLanguage.push(this.languages.find(z=>z.name=='en'),this.languages.find(z=> z.name=='ar'));
+    this.currentLanguage = this.localization.currentLanguage;
+    // if( this.currentLanguage.name =='ar')
+    // {
+    //   this.checkForDirectionChange();
+    // }
+    this.checkForDirectionChange();
     this.renderer.addClass(document.body, 'background');
     this.renderer.addClass(document.body, 'no-footer');
   }

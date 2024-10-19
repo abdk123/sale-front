@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Injector, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
+import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
 import { CreateCategoryDto, CategoryServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
@@ -20,7 +21,12 @@ export class CreateCategoryDialogComponent extends AppComponentBase {
     super(injector);
   }
 
+  
+  validationErrors: Partial<AbpValidationError>[] = [
+    { name: 'name', localizationKey: 'NameAlreadyExist' },
+  ];
   ngOnInit(): void { 
+    
   }
 
   save(): void {
