@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 separator">
             <h1>{{'ReveivingMaterials' | localize}}</h1>
-            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives">{{'BackToReceivingList' | localize}} <i
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives/{{invoiceId}}">{{'BackToReceivingList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
@@ -27,101 +27,6 @@
                 <div class="col-md-3">
                     <item-info title="InvoiceDate" *ngIf="invoice.creationTime"
                         value="{{invoice.creationTime.toDate() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mt-2">
-        <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'TransportInfo' | localize }}</h5>
-            <div class="row">
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="transportCompanies" bindLabel="name" bindValue="id"
-                            name="transportCompanyId" [(ngModel)]="receiveDto.transportCompanyId">
-                        </ng-select>
-                        <span>{{ 'TransportCompany' | localize }}</span>
-                    </label>
-                </div>
-                
-                <div class="col-md-3">
-                    <label class="form-group has-float-label">
-                        <input type="number" class="form-control" name="transportCost"
-                            [(ngModel)]="receiveDto.transportCost" #transportCostModel="ngModel" #transportCostEl />
-                        <span>{{ 'TransportCost' | localize }}</span>
-                    </label>
-                    <abp-validation-summary [control]="transportCostModel" [controlEl]="transportCostEl">
-                    </abp-validation-summary>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-group has-float-label">
-                        <input type="text" class="form-control" name="driverPhoneNumber"
-                            [(ngModel)]="receiveDto.driverName" #driverNameModel="ngModel" #driverNameEl />
-                        <span>{{ 'DriverName' | localize }}</span>
-                    </label>
-                    <abp-validation-summary [control]="driverNameModel" [controlEl]="driverNameEl">
-                    </abp-validation-summary>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-group has-float-label">
-                        <input type="text" class="form-control" name="driverPhoneNumber"
-                            [(ngModel)]="receiveDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
-                        <span>{{ 'DriverPhoneNumber' | localize }}</span>
-                    </label>
-                    <abp-validation-summary [control]="driverPhoneNumberModel" [controlEl]="driverPhoneNumberEl">
-                    </abp-validation-summary>
-                </div>
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.transportCostCurrency">
-                        </ng-select>
-                        <span>{{ 'TransportCostCurrency' | localize }}</span>
-                    </label>
-                </div>
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <input class="form-control" [(ngModel)]="date" name="creationTime"
-                            bsDatepicker [container]="'html'"
-                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
-                            #creationTimeModel="ngModel" #creationTimeEl>
-                        <span>{{ 'Date' | localize }}</span>
-                    </label>
-                    <abp-validation-summary [control]="creationTimeModel" [controlEl]="creationTimeEl">
-                    </abp-validation-summary>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mt-2">
-        <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'ClearanceInfo' | localize }}</h5>
-            <div class="row">
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="clearanceCompanies" bindLabel="name" bindValue="id"
-                            name="clearanceCompanyId" [(ngModel)]="receiveDto.clearanceCompanyId">
-                        </ng-select>
-                        <span>{{ 'TransportCompany' | localize }}</span>
-                    </label>
-                </div>
-                
-                <div class="col-md-3">
-                    <label class="form-group has-float-label">
-                        <input type="number" class="form-control" name="clearanceCost"
-                            [(ngModel)]="receiveDto.clearanceCost" #clearanceCostModel="ngModel" #clearanceCostEl />
-                        <span>{{ 'ClearanceCost' | localize }}</span>
-                    </label>
-                    <abp-validation-summary [control]="clearanceCostModel" [controlEl]="clearanceCostEl">
-                    </abp-validation-summary>
-                </div>
-                <div class="col-md-3">
-                    <label class=" has-float-label">
-                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.clearanceCostCurrency">
-                        </ng-select>
-                        <span>{{ 'ClearanceCostCurrency' | localize }}</span>
-                    </label>
                 </div>
             </div>
         </div>

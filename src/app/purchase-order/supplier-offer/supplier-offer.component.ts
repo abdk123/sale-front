@@ -130,7 +130,7 @@ export class SupplierOfferComponent
 
   showEditModal(id: any) {
     this._router.navigate([
-      "/app/orders/update-supplier-Offer",
+      "/app/orders/update-supplier-offer",
       {
         id: id,
       },
@@ -171,7 +171,7 @@ export class SupplierOfferComponent
 
   mangeSupplierOffer(id: any) {
     this._router.navigate([
-      "/app/orders/manage-supplierOffer",
+      "/app/orders/manage-supplier-offer",
       {
         id: id,
       },

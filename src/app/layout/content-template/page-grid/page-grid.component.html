@@ -72,8 +72,8 @@
                   <div class="d-flex flex-column justify-content-start">
                       <ng-container >
                         <button *ngFor="let menuItem of menuItems" id="button-basic" type="button" id="view" style="white-space: nowrap;" (click)="selectMenuItem(item.id,menuItem.name)"
-                        [class]="item.cssClass" class="btn btn-xs btn-outline-primary my-1">
-                        <i class="text-theme-1" [class]="menuItem.icon"></i>
+                        [class]="item.cssClass" class="btn btn-xs btn-outline-primary my-1 text-center">
+                        <span class="text-lg" [class]="menuItem.icon"></span>
                         <span class="ml-1">{{menuItem.label | localize}}</span>
                       </button>
                       </ng-container>

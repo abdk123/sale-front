@@ -1,0 +1,58 @@
+
+        
+
+        <div *ngIf="loading" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <!-- <th></th> -->
+                        <th>{{'Material' | localize}}</th>
+                        <th>{{'Unit' | localize}}</th>
+                        <!-- <th>{{'PackingUnit' | localize}}</th> -->
+                        <th>{{'Quantity' | localize}}</th>
+                        <th>{{'MaterialPrice' | localize}}</th>
+                        <th>{{'TotalPrice' | localize}}</th>
+                        <th>{{'QuantityInStore' | localize}}</th>
+                        <th>{{'SaleType' | localize}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; index as i">
+                        <!-- <td >
+                            <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                                <input type="checkbox" class="custom-control-input" (change)="onCheck($event, item.id)">
+                                <span class="custom-control-label">&nbsp;</span>
+                            </label>
+                        </td> -->
+                        <td>{{getMaterialName(item.materialId)}}</td>
+                        <td>{{getUnit(item.unitId)}}</td>
+                        <!-- <td>{{getPackingUnit(item.sizeId)}}</td> -->
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.unitPrice}}</td>
+                        <td>{{item.unitPrice * item.quantity}}</td>
+                        <td>{{getStock(item.materialId)}}</td>
+                        <td>{{getSaleType(item.addedBySmallUnit)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- <form class="form-horizontal " autocomplete="off" #convertToPurchaseInvoiceForm="ngForm" (ngSubmit)="convertToPurchaseInvoice()">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <label class=" has-float-label">
+                        <ng-select [items]="customers" bindLabel="name" [(ngModel)]="purchaseInvoiceDto.supplierId" bindValue="id" name="supplierId"
+                        [disabled]="!purchaseInvoiceDto.offerItemsIds || purchaseInvoiceDto.offerItemsIds?.length == 0">
+                        </ng-select>
+                        <span>{{ 'Supplier' | localize }}</span>
+                    </label>
+                    <span *ngIf="supplierIsRequired" class="error invalid-feedback d-block"> {{'ThisFieldIsRequired' | localize}} </span>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="top-right-button btn btn-outline-primary"
+                            [disabled]="!convertToPurchaseInvoiceForm.form.valid || saving"
+                            (click)="convertToPurchaseInvoice()">{{ 'ConvertToPurchaseInvoice' | localize}}</button>
+                </div>
+            </div>
+        </form> -->
+    

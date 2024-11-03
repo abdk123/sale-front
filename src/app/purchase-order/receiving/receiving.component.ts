@@ -1,8 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IEnumValue, IPageMenu } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FilterDto, FilterRuleDto, FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy, ReceivingDto, ReceivingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -10,9 +10,10 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   templateUrl: './receiving.component.html',
   styleUrls: ['./receiving.component.scss']
 })
-export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto> implements OnInit {
+export class ReceivingComponent extends FullPagedListingComponentBase<ReceivingDto> implements OnInit {
   
-  invoices: InvoiceDto[] = [];
+  receives: ReceivingDto[] = [];
+  invoiceId
   colors = ['table-danger','table-warning','table-secondary','table-success'];
   status:IEnumValue[]=[
     {value:0,text:this.l("NotPriced")},
@@ -28,8 +29,13 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
   menuItems: IPageMenu[] = [
     {
       name:'receive',
-      label:'Receive',
-      icon:'simple-icon-settings',
+      label:'ReveivingMaterials',
+      icon:'bi bi-save',
+    },
+    {
+      name:'completeInfo',
+      label:'CompleteInfo',
+      icon:'bi bi-check-lg',
     }
   ]
   
@@ -49,30 +55,43 @@ export class ReceivingComponent extends FullPagedListingComponentBase<InvoiceDto
   constructor(injector: Injector,
     private _modalService: BsModalService,
     private _router: Router,
+    private route: ActivatedRoute,
     private invoiceService: InvoiceServiceProxy,
+    private receivingService: ReceivingServiceProxy,
     public bsModalRef: BsModalRef) {
     super(injector);
   }
   protected list(request: FullPagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    request.including = "Offer,Supplier,InvoiseDetails,Receivings,CreatorUser";
-    this.invoiceService.read(request)
+    request.including = "ClearanceCompany,TransportCompany,Invoice,CreatorUser";
+    this.invoiceId = this.route.snapshot?.params?.invoiceId;
+    var filter = new FilterDto();
+    filter.condition = "and";
+    filter.rules = [];
+    filter.rules.push(FilterRuleDto.fromJS({field:"invoiceId",operator:"=",value:this.invoiceId}));
+    request.filtering = filter;
+    this.receivingService.read(request)
       .subscribe(result => {
-        this.invoices = result.items;
+        this.receives = result.items;
         this.showPaging(result, pageNumber);
       });
   }
 
   showAddNewModal() {
-    this._router.navigate(['/app/orders/create-invoice']);
+    this._router.navigate([
+      "/app/orders/create-receive",
+      {
+        invoiceId: this.invoiceId
+      },
+    ]);
   }
 
   showEditModal(id: any){
-    var orderId = this.invoices.find(x=>x.id == id)?.offerId;
+    //var orderId = this.receives.find(x=>x.id == id)?.offerId;
     this._router.navigate([
       "/app/orders/edit-invoice",
       {
-        invoiceId: id,
-        offerId: orderId
+        invoiceId: this.invoiceId,
+        id: id
       },
     ]);
   }

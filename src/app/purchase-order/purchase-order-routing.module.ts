@@ -24,6 +24,10 @@ import { PdfUrnComponent } from "./sale-invoice/pdf-urn/pdf-urn.component";
 import { ViewOfferComponent } from "./offer/view-offer/view-offer.component";
 import { SupplierOfferComponent } from "./supplier-offer/supplier-offer.component";
 import { CreateSupplierOfferComponent } from "./supplier-offer/create-supplier-offer/create-supplier-offer.component";
+import { UpdateSupplierOfferComponent } from "./supplier-offer/update-supplier-offer/update-supplier-offer.component";
+import { ManageSupplierOfferComponent } from "./supplier-offer/manage-supplier-offer/manage-supplier-offer.component";
+import { CreateInvoiceComponent } from "./invoice/create-invoice/create-invoice.component";
+import { CompleteReceiveComponent } from "./receiving/complete-receive/complete-receive.component";
 
 const routes: Routes = [
   {
@@ -67,6 +71,18 @@ const routes: Routes = [
         canActivate: [AppRouteGuard],
       },
       {
+        path: "update-supplier-offer",
+        component: UpdateSupplierOfferComponent,
+        //data: { permission: "Setting.Offers.Create" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "manage-supplier-offer",
+        component: ManageSupplierOfferComponent,
+        //data: { permission: "Setting.Offers.Create" },
+        canActivate: [AppRouteGuard],
+      },
+      {
         path: "summary",
         component: ViewOfferComponent,
         canActivate: [AppRouteGuard],
@@ -75,6 +91,12 @@ const routes: Routes = [
         path: "invoices",
         component: InvoiceComponent,
         data: { permission: "PurshaseOrder.Invoices" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "create-invoice",
+        component: CreateInvoiceComponent,
+        data: { permission: "PurshaseOrder.Invoices.Create" },
         canActivate: [AppRouteGuard],
       },
       {
@@ -99,6 +121,12 @@ const routes: Routes = [
         path: "edit-receive",
         component: EditReceiveComponent,
         data: { permission: "PurshaseOrder.Receivings.Update" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "complete-receive-info",
+        component: CompleteReceiveComponent,
+        data: { permission: "PurshaseOrder.Receivings.CompleteInfo" },
         canActivate: [AppRouteGuard],
       },
       {

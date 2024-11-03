@@ -1,5 +1,5 @@
 <app-page-header [title]="'Receivings' | localize"  [fields]="fields"
- [CreatePermission]="'PurshaseOrder.Receivings.Create333'" (addNewItem)="showAddNewModal()"
+ [CreatePermission]="'PurshaseOrder.Receivings.Create'" (addNewItem)="showAddNewModal()"
   (advanceFilter)="showFilterDialog($event)" 
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
   (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
@@ -7,7 +7,7 @@
 
 
 <app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.Receivings.Update333'" 
-[DeletePermission]="'PurshaseOrder.Receivings.Delete333'" [fields]="fields" [data]="invoices" 
+[DeletePermission]="'PurshaseOrder.Receivings.Delete333'" [fields]="fields" [data]="receives" 
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
 (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'" 

@@ -1,14 +1,16 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, SupplierOfferServiceProxy, UnitDto, UpdateOfferItemDto, UpdateSupplierOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { ConvertToPurchaseInvoiceDto, CustomerServiceProxy, DropdownDto, MaterialServiceProxy, MaterialUnitDto, SupplierOfferServiceProxy, StockDto, StockServiceProxy, UpdateSupplierOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { finalize } from 'rxjs';
 
 @Component({
-  selector: "update-supplier-offer-item",
-  templateUrl: "./update-supplier-offer-item.component.html",
-  styleUrls: ["./update-supplier-offer-item.component.scss"],
+  selector: 'manage-supplier-offer-item',
+  templateUrl: './manage-supplier-offer-item.component.html',
+  styleUrls: ['./manage-supplier-offer-item.component.scss']
 })
-export class UpdateSupplierOfferItemComponent extends AppComponentBase implements OnInit {
+export class ManageSupplierOfferItemComponent extends AppComponentBase implements OnInit,OnChanges {
   item: UpdateSupplierOfferItemDto = new UpdateSupplierOfferItemDto();
+  purchaseInvoiceDto: ConvertToPurchaseInvoiceDto = new ConvertToPurchaseInvoiceDto();
   @Output() onSave = new EventEmitter<UpdateSupplierOfferItemDto[]>();
   @Input() offerId: number;
   items: UpdateSupplierOfferItemDto[] = [];
@@ -16,32 +18,49 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
   units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
   allUnits: MaterialUnitDto[] = [];
-  loading: boolean = false;
+  customers:DropdownDto[]=[];
   saving = false;
   indexUpdate = -1;
-  materialIsRequired = false;
-  addByUnitIsRequired = false;
+  supplierIsRequired = false;
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
-    private _offerService: SupplierOfferServiceProxy,
-    private stockService: StockServiceProxy
+    private offerService: SupplierOfferServiceProxy,
+    private stockService: StockServiceProxy,
+    private customerService: CustomerServiceProxy,
   ) {
     super(injector);
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    debugger;
+    if(this.offerId){
+      this.initialItems();
+    }
+  }
   ngOnInit(): void {
+    this.purchaseInvoiceDto.offerId = this.offerId;
+    this.purchaseInvoiceDto.offerItemsIds = [];
     this.initialAllStocks();
-    this.initialItems();
+    
     this.initialMaterials();
     this.initialAllMaterialUnits();
+    this.initialCustomers();
+  }
+
+  initialCustomers() {
+    this.customerService.getForDropdown().subscribe((result) => {
+      this.customers = result;
+    });
   }
 
   initialItems() {
-    this._offerService.getItemsBySupplierOfferId(this.offerId).subscribe((result) => {
+    debugger;
+    this.offerService.getItemsBySupplierOfferId(this.offerId).subscribe((result) => {
       this.items = result;
+      console.log(this.items);
     });
   }
-  
+  loading: boolean = false;
   initialMaterials() {
     this.materialService.getForDropdown().subscribe((result) => {
       this.materials = result;
@@ -61,66 +80,6 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
     });
   }
 
-  initialStocks(materialId: number) {
-    this.stockService.getAllByMaterialId(materialId).subscribe((result) => {
-      this.stocks.push.apply(this.stocks, result);
-    });
-  }
-
-  onSelectMaterial(dto: DropdownDto) {
-    this.initialMaterialUnits(dto.id);
-    if (this.stocks.findIndex((x) => x.materialId) == -1) {
-      this.initialStocks(dto.id);
-    }
-  }
-
-  onChangeAddedbyUnit(dto: MaterialUnitDto) {
-    if (dto) {
-      if (dto.isSmallUnit) {
-        this.item.addedBySmallUnit = dto.isSmallUnit;
-        this.item.sizeId = dto.id;
-      } else {
-        this.item.unitId = dto.id;
-      }
-    }
-  }
-
-  save() {
-    this.materialIsRequired = this.item.materialId ? false : true;
-    this.addByUnitIsRequired =
-      this.item.sizeId || this.item.unitId ? false : true;
-
-    if (!this.materialIsRequired && !this.addByUnitIsRequired) {
-      this.saving = true;
-      if (this.indexUpdate > -1) this.updateItem();
-      else {
-        this.addNewItem();
-      }
-      this.saving = false;
-    }
-  }
-
-  initialItemForUpdate(index: number) {
-    this.indexUpdate = index;
-    this.item = this.items[this.indexUpdate];
-
-    // 
-    // this.initialMaterialUnits(this.item.materialId);
-    // if (this.stocks.findIndex((x) => x.materialId) == -1) {
-    //   this.initialStocks(this.item.materialId);
-    // }
-  }
-
-  DeleteItem(i){
-    const item = this.items[i];
-    this.items = this.items.filter(x=>x.id != item.id);
-    this.onSave.emit(this.items);
-  }
-
-  cancelUpdate() {
-    this.indexUpdate = -1;
-    this.item = new UpdateOfferItemDto();
-  }
 
   updateItem() {
     this.items[this.indexUpdate].materialId = this.item.materialId;
@@ -131,12 +90,12 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
     this.items[this.indexUpdate].unitPrice = this.item.unitPrice;
     this.items[this.indexUpdate].specefecation = this.item.specefecation;
     this.onSave.emit(this.items);
-    this.item = new UpdateOfferItemDto();
+    this.item = new UpdateSupplierOfferItemDto();
   }
 
   addNewItem() {
     this.items.push(this.item);
-    this.item = new UpdateOfferItemDto();
+    this.item = new UpdateSupplierOfferItemDto();
     this.onSave.emit(this.items);
   }
 
@@ -175,10 +134,8 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
 
   allStocks: StockDto[] = [];
   initialAllStocks(){
-    
     this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
     .subscribe((result)=>{
-      
       this.allStocks = result.items;
     })
   }
@@ -211,4 +168,47 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
       ? `${this.l("SmallUnit")}`
       : `${this.l("LargeUnit")}`;
   }
+
+  onCheck(args, offerItemId){
+    var checked = args.target.value;
+    if(this.purchaseInvoiceDto.offerItemsIds == undefined)
+      this.purchaseInvoiceDto.offerItemsIds = [];
+
+    const index = this.checkIfItemExist(offerItemId);
+    if(index > -1 && !checked){
+      this.purchaseInvoiceDto.offerItemsIds.splice(index,1);
+    }else if(index == -1 && checked){{
+      this.purchaseInvoiceDto.offerItemsIds.push(offerItemId);
+    }
+  }
 }
+
+  checkIfItemExist(offerItemId){
+    const index = this.purchaseInvoiceDto.offerItemsIds.findIndex(id=>id == offerItemId);
+    return index;
+  }
+
+  convertToPurchaseInvoice(){
+    
+    this.supplierIsRequired = this.purchaseInvoiceDto.supplierId == undefined ? true : false;
+    if (
+      !this.supplierIsRequired
+    ) {
+      
+      this.saving = true;
+      this.offerService
+        .convertToPurchaseInvoice(this.purchaseInvoiceDto)
+        .pipe(
+          finalize(() => {
+            this.saving = false;
+          })
+        )
+        .subscribe((result) => {
+          this.notify.info(this.l("SavedSuccessfully"));
+            //this._router.navigate(["/app/orders/offers"]);
+        });
+    }
+  }
+}
+  
+

@@ -1,9 +1,10 @@
 <app-page-header [title]="'PorchaseInvoices' | localize"  [fields]="fields"
- [CreatePermission]="'PurshaseOrder.Invoices.Create333'" (addNewItem)="showAddNewModal()"
+ [CreatePermission]="'PurshaseOrder.Invoices.Create'" (addNewItem)="showAddNewModal()"
   (advanceFilter)="showFilterDialog($event)" 
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
   (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
 </app-page-header>
+
 
 
 <app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.Invoices.Update'" 
@@ -11,4 +12,4 @@
 [totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
 (viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
 (editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'" 
-(changePage)="pageChanged($event)" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>
+(changePage)="pageChanged($event)" [menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>

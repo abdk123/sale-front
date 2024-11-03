@@ -15,6 +15,7 @@ export class InvoiceComponent
   implements OnInit
 {
   invoices: InvoiceDto[] = [];
+  displayOptionsCollapsed = false;
   colors = ['table-danger','table-warning','table-secondary','table-success'];
   status: IEnumValue[] = [
     { value: 0, text: this.l("NotPriced") },
@@ -47,12 +48,12 @@ export class InvoiceComponent
       sortable: true,
       type: "number",
     },
-    {
-      label: this.l("TotalQuantity"),
-      name: "totalQuantity",
-      sortable: true,
-      type: "number",
-    },
+    // {
+    //   label: this.l("TotalQuantity"),
+    //   name: "totalQuantity",
+    //   sortable: true,
+    //   type: "number",
+    // },
     {
       label: this.l("Currency"),
       name: "currency",
@@ -76,11 +77,11 @@ export class InvoiceComponent
 
   menuItems: IPageMenu[] = [
     {
-      name: "sendDelivery",
-      label: "SendDelivery",
-      icon: "simple-icon-settings",
+      name:'receive',
+      label:'Receive',
+      icon:'bi bi-box-arrow-in-down',
     },
-  ];
+  ]
 
   constructor(
     injector: Injector,
@@ -137,18 +138,19 @@ export class InvoiceComponent
   showFilterDialog(status) {}
 
   onSelectMenuItem(args) {
-    if (args.name == "sendDelivery") {
-      this.sendDelivery(args.id);
+    if (args.name == "receive") {
+      this.receive(args.id);
     }
   }
 
-  sendDelivery(invoiceId) {
+  receive(invoiceId) {
     this.router.navigate([
-      "/app/orders/send-delivery",
+      "/app/orders/receives",
       {
         invoiceId: invoiceId,
       },
     ]);
   }
+  
 }
 

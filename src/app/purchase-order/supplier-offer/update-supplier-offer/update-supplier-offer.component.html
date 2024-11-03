@@ -15,12 +15,12 @@
         <div class="card-body">
             <h5 class="card-title separator pb-2 mb-3">{{ 'OfferInfo' | localize }}</h5>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class=" has-float-label">
                         <ng-select [items]="customers" required bindLabel="name" bindValue="id" name="customerId"
                             [(ngModel)]="offer.supplierId">
                         </ng-select>
-                        <span>{{ 'Customer' | localize }}</span>
+                        <span>{{ 'Supplier' | localize }}</span>
                     </label>
                     <span *ngIf="customerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
@@ -33,7 +33,7 @@
                     </label>
                     <span *ngIf="currencyIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <label class=" has-float-label">
                         <ng-select [items]="status" required bindLabel="name" bindValue="id" name="status"
                             [(ngModel)]="offer.status" (change)="onChangeStatus($event)">
@@ -41,8 +41,8 @@
                         <span>{{ 'Status' | localize }}</span>
                     </label>
                     <span *ngIf="statusIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
-                </div>
-                <div class="col-md-3">
+                </div> -->
+                <div class="col-md-4">
                     <label class=" has-float-label">
                         <input class="form-control" required [(ngModel)]="endDate" name="offerEndDate"
                             bsDatepicker [container]="'html'"

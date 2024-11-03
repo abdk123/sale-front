@@ -7792,6 +7792,127 @@ export class OfferServiceProxy {
     }
 
     /**
+     * @param customerId (optional) 
+     * @return Success
+     */
+    getByCustomerId(customerId: number | undefined): Observable<OfferDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/GetByCustomerId?";
+        if (customerId === null)
+            throw new Error("The parameter 'customerId' cannot be null.");
+        else if (customerId !== undefined)
+            url_ += "customerId=" + encodeURIComponent("" + customerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByCustomerId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByCustomerId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OfferDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OfferDto[]>;
+        }));
+    }
+
+    protected processGetByCustomerId(response: HttpResponseBase): Observable<OfferDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(OfferDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getApproved(): Observable<OfferDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Offer/GetApproved";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApproved(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApproved(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OfferDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OfferDto[]>;
+        }));
+    }
+
+    protected processGetApproved(response: HttpResponseBase): Observable<OfferDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(OfferDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -12979,6 +13100,62 @@ export class SupplierOfferServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    changeStatus(body: ChangeOfferStatusDto | undefined): Observable<SupplierOfferDto> {
+        let url_ = this.baseUrl + "/api/services/app/SupplierOffer/ChangeStatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SupplierOfferDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SupplierOfferDto>;
+        }));
+    }
+
+    protected processChangeStatus(response: HttpResponseBase): Observable<SupplierOfferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SupplierOfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param offerId (optional) 
      * @return Success
      */
@@ -13312,6 +13489,127 @@ export class SupplierOfferServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = SupplierOfferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param supplierId (optional) 
+     * @return Success
+     */
+    getBySupplierId(supplierId: number | undefined): Observable<SupplierOfferDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/SupplierOffer/GetBySupplierId?";
+        if (supplierId === null)
+            throw new Error("The parameter 'supplierId' cannot be null.");
+        else if (supplierId !== undefined)
+            url_ += "supplierId=" + encodeURIComponent("" + supplierId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBySupplierId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBySupplierId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SupplierOfferDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SupplierOfferDto[]>;
+        }));
+    }
+
+    protected processGetBySupplierId(response: HttpResponseBase): Observable<SupplierOfferDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SupplierOfferDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getApproved(): Observable<SupplierOfferDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/SupplierOffer/GetApproved";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApproved(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApproved(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SupplierOfferDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SupplierOfferDto[]>;
+        }));
+    }
+
+    protected processGetApproved(response: HttpResponseBase): Observable<SupplierOfferDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SupplierOfferDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -20653,9 +20951,12 @@ export interface ICreateEmployeeDto {
 }
 
 export class CreateInvoiceDto implements ICreateInvoiceDto {
-    id: number;
-    status: number;
+    invoiceType: number;
     offerId: number | undefined;
+    supplierOfferId: number | undefined;
+    supplierId: number | undefined;
+    currency: Currency;
+    invoiseDetails: CreateInvoiceItemDto[] | undefined;
 
     constructor(data?: ICreateInvoiceDto) {
         if (data) {
@@ -20668,9 +20969,16 @@ export class CreateInvoiceDto implements ICreateInvoiceDto {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
-            this.status = _data["status"];
+            this.invoiceType = _data["invoiceType"];
             this.offerId = _data["offerId"];
+            this.supplierOfferId = _data["supplierOfferId"];
+            this.supplierId = _data["supplierId"];
+            this.currency = _data["currency"];
+            if (Array.isArray(_data["invoiseDetails"])) {
+                this.invoiseDetails = [] as any;
+                for (let item of _data["invoiseDetails"])
+                    this.invoiseDetails.push(CreateInvoiceItemDto.fromJS(item));
+            }
         }
     }
 
@@ -20683,9 +20991,16 @@ export class CreateInvoiceDto implements ICreateInvoiceDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["status"] = this.status;
+        data["invoiceType"] = this.invoiceType;
         data["offerId"] = this.offerId;
+        data["supplierOfferId"] = this.supplierOfferId;
+        data["supplierId"] = this.supplierId;
+        data["currency"] = this.currency;
+        if (Array.isArray(this.invoiseDetails)) {
+            data["invoiseDetails"] = [];
+            for (let item of this.invoiseDetails)
+                data["invoiseDetails"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -20698,9 +21013,67 @@ export class CreateInvoiceDto implements ICreateInvoiceDto {
 }
 
 export interface ICreateInvoiceDto {
-    id: number;
-    status: number;
+    invoiceType: number;
     offerId: number | undefined;
+    supplierOfferId: number | undefined;
+    supplierId: number | undefined;
+    currency: Currency;
+    invoiseDetails: CreateInvoiceItemDto[] | undefined;
+}
+
+export class CreateInvoiceItemDto implements ICreateInvoiceItemDto {
+    quantity: number;
+    offerItemId: number | undefined;
+    supplierOfferItemId: number | undefined;
+    totalMaterilPrice: number;
+
+    constructor(data?: ICreateInvoiceItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.quantity = _data["quantity"];
+            this.offerItemId = _data["offerItemId"];
+            this.supplierOfferItemId = _data["supplierOfferItemId"];
+            this.totalMaterilPrice = _data["totalMaterilPrice"];
+        }
+    }
+
+    static fromJS(data: any): CreateInvoiceItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateInvoiceItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["quantity"] = this.quantity;
+        data["offerItemId"] = this.offerItemId;
+        data["supplierOfferItemId"] = this.supplierOfferItemId;
+        data["totalMaterilPrice"] = this.totalMaterilPrice;
+        return data;
+    }
+
+    clone(): CreateInvoiceItemDto {
+        const json = this.toJSON();
+        let result = new CreateInvoiceItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateInvoiceItemDto {
+    quantity: number;
+    offerItemId: number | undefined;
+    supplierOfferItemId: number | undefined;
+    totalMaterilPrice: number;
 }
 
 export class CreateMaterialDto implements ICreateMaterialDto {
@@ -28629,6 +29002,7 @@ export interface IStructLayoutAttribute {
 
 export class SupplierOfferDto implements ISupplierOfferDto {
     id: number;
+    porchaseOrderId: string | undefined;
     status: number;
     supplierOfferEndDate: moment.Moment | undefined;
     currency: number;
@@ -28652,6 +29026,7 @@ export class SupplierOfferDto implements ISupplierOfferDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.porchaseOrderId = _data["porchaseOrderId"];
             this.status = _data["status"];
             this.supplierOfferEndDate = _data["supplierOfferEndDate"] ? moment(_data["supplierOfferEndDate"].toString()) : <any>undefined;
             this.currency = _data["currency"];
@@ -28679,6 +29054,7 @@ export class SupplierOfferDto implements ISupplierOfferDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["porchaseOrderId"] = this.porchaseOrderId;
         data["status"] = this.status;
         data["supplierOfferEndDate"] = this.supplierOfferEndDate ? this.supplierOfferEndDate.toISOString() : <any>undefined;
         data["currency"] = this.currency;
@@ -28706,6 +29082,7 @@ export class SupplierOfferDto implements ISupplierOfferDto {
 
 export interface ISupplierOfferDto {
     id: number;
+    porchaseOrderId: string | undefined;
     status: number;
     supplierOfferEndDate: moment.Moment | undefined;
     currency: number;

@@ -43,16 +43,13 @@ export class UpdateSupplierOfferComponent extends AppComponentBase implements On
     this.initialCustomers();
   }
 
-  endDate: string;
+  endDate: Date;
   initialOffer() {
     this._offerService
       .getForEdit(this.id)
       .subscribe((result: UpdateSupplierOfferDto) => {
         this.offer = result;
-        this.endDate = new DatePipe("en-US").transform(
-          this.offer.supplierOfferEndDate,
-          "dd-MM-yyyy"
-        );
+        this.endDate = this.getDateFromString(this.offer.supplierOfferEndDate);
       });
   }
 
@@ -87,7 +84,7 @@ export class UpdateSupplierOfferComponent extends AppComponentBase implements On
         abp.message.warn(this.l("PoNumberIsRequired"));
       }
       this.saving = true;
-      this.offer.supplierOfferEndDate = this.endDate;
+      this.offer.supplierOfferEndDate = this.endDate.toISOString();
       this._offerService
         .update(this.offer)
         .pipe(

@@ -57,6 +57,10 @@ import { CreateSupplierOfferComponent } from './supplier-offer/create-supplier-o
 import { CreateSupplierOfferItemComponent } from './supplier-offer/create-supplier-offer/create-supplier-offer-item/create-supplier-offer-item.component';
 import { UpdateSupplierOfferComponent } from './supplier-offer/update-supplier-offer/update-supplier-offer.component';
 import { UpdateSupplierOfferItemComponent } from './supplier-offer/update-supplier-offer/update-supplier-offer-item/update-supplier-offer-item.component';
+import { ManageSupplierOfferComponent } from './supplier-offer/manage-supplier-offer/manage-supplier-offer.component';
+import { ManageSupplierOfferItemComponent } from './supplier-offer/manage-supplier-offer/manage-supplier-offer-item/manage-supplier-offer-item.component';
+import { CreateInvoiceComponent } from './invoice/create-invoice/create-invoice.component';
+import { CompleteReceiveComponent } from './receiving/complete-receive/complete-receive.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +108,11 @@ import { UpdateSupplierOfferItemComponent } from './supplier-offer/update-suppli
     CreateSupplierOfferComponent,
     CreateSupplierOfferItemComponent,
     UpdateSupplierOfferComponent,
-    UpdateSupplierOfferItemComponent
+    UpdateSupplierOfferItemComponent,
+    ManageSupplierOfferComponent,
+    ManageSupplierOfferItemComponent,
+    CreateInvoiceComponent,
+    CompleteReceiveComponent
   ],
   imports: [
     AccordionModule.forRoot(),
