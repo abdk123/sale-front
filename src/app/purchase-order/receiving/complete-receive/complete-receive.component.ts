@@ -45,7 +45,7 @@ export class CompleteReceiveComponent extends AppComponentBase implements OnInit
   }
 
   initialReceiving() {
-    this.receivingServiceProxy.getAggregate(this.receivingId).subscribe((result) => {
+    this.receivingServiceProxy.getWithDetail(this.receivingId).subscribe((result) => {
       this.receiveDto = result;
     });
   }

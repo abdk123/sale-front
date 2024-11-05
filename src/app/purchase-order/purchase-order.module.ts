@@ -61,6 +61,7 @@ import { ManageSupplierOfferComponent } from './supplier-offer/manage-supplier-o
 import { ManageSupplierOfferItemComponent } from './supplier-offer/manage-supplier-offer/manage-supplier-offer-item/manage-supplier-offer-item.component';
 import { CreateInvoiceComponent } from './invoice/create-invoice/create-invoice.component';
 import { CompleteReceiveComponent } from './receiving/complete-receive/complete-receive.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { CompleteReceiveComponent } from './receiving/complete-receive/complete-
     NgSelectModule,
     BsDatepickerModule,
     TabsModule.forRoot(),
+    BsDropdownModule.forRoot(),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [

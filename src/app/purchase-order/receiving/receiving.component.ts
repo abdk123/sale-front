@@ -2,18 +2,26 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IEnumValue, IPageMenu } from '@app/layout/content-template/page-default/page-field';
 import { FullPagedListingComponentBase } from '@shared/full-paged-listing-component-base';
-import { FilterDto, FilterRuleDto, FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy, ReceivingDto, ReceivingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
+import { FilterDto, FilterRuleDto, FullPagedRequestDto, InvoiceDto, InvoiceServiceProxy, ReceivingDto, ReceivingDtoPagedResultDto, ReceivingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'receiving',
   templateUrl: './receiving.component.html',
   styleUrls: ['./receiving.component.scss']
 })
-export class ReceivingComponent extends FullPagedListingComponentBase<ReceivingDto> implements OnInit {
+export class ReceivingComponent extends PagedListingComponentBase<ReceivingDto> implements OnInit {
   
+  displayOptionsCollapsed = false;
+  showItemsPerPage = true;
+  pageSize =10;
+  itemOptionsPerPage = [5,10,20];
+  selectedOptionIndex: number = 0; 
+  invoiceId: number;
+  keyword = '';
   receives: ReceivingDto[] = [];
-  invoiceId
   colors = ['table-danger','table-warning','table-secondary','table-success'];
   status:IEnumValue[]=[
     {value:0,text:this.l("NotPriced")},
@@ -61,19 +69,27 @@ export class ReceivingComponent extends FullPagedListingComponentBase<ReceivingD
     public bsModalRef: BsModalRef) {
     super(injector);
   }
-  protected list(request: FullPagedRequestDto, pageNumber: number, finishedCallback: Function): void {
-    request.including = "ClearanceCompany,TransportCompany,Invoice,CreatorUser";
+  protected list(request: PagedReceiveRequestDto, pageNumber: number, finishedCallback: Function): void {
     this.invoiceId = this.route.snapshot?.params?.invoiceId;
-    var filter = new FilterDto();
-    filter.condition = "and";
-    filter.rules = [];
-    filter.rules.push(FilterRuleDto.fromJS({field:"invoiceId",operator:"=",value:this.invoiceId}));
-    request.filtering = filter;
-    this.receivingService.read(request)
-      .subscribe(result => {
-        this.receives = result.items;
-        this.showPaging(result, pageNumber);
-      });
+    request.invoiceId =  this.invoiceId;
+    request.keyword = this.keyword;
+    this.receivingService.getAll(
+      request.keyword,
+      request.invoiceId,
+      '',
+      request.skipCount,
+      request.maxResultCount
+    )
+    .pipe(
+      finalize(() => {
+        finishedCallback();
+      })
+    )
+    .subscribe((result:ReceivingDtoPagedResultDto) => {
+      this.receives = result.items;
+      this.totalItems = result.totalCount;
+      this.showPaging(result, pageNumber);
+    });
   }
 
   showAddNewModal() {
@@ -96,13 +112,13 @@ export class ReceivingComponent extends FullPagedListingComponentBase<ReceivingD
     ]);
   }
 
-  deleteItem(id:number): void {
+  delete(entity: ReceivingDto): void {
     abp.message.confirm(
       this.l('InvoiceDeleteWarningMessage',  'Invoices'),
       undefined,
       (result: boolean) => {
         if (result) {
-          this.invoiceService.delete(id).subscribe(() => {
+          this.invoiceService.delete(entity.id).subscribe(() => {
             abp.notify.success(this.l('SuccessfullyDeleted'));
             this.refresh();
           });
@@ -111,13 +127,20 @@ export class ReceivingComponent extends FullPagedListingComponentBase<ReceivingD
     );
   }
   
+  onChangeItemsPerPage(item): void  {
+    this.selectedOptionIndex = this.itemOptionsPerPage.findIndex((x) => x === item);
+    this.pageSize = this.itemOptionsPerPage[this.selectedOptionIndex];
+    this.refresh();
+  }
+
   showViewModal(id:number){
     
   }
   
-    showFilterDialog(status) {
- 
-    }
+  searchKeyUp(event): void {
+    this.keyword = event.target.value.toLowerCase().trim();
+    this.refresh();
+  }
 
     onSelectMenuItem(args){
       if(args.name == "receive"){
@@ -135,3 +158,7 @@ export class ReceivingComponent extends FullPagedListingComponentBase<ReceivingD
     }
 }
 
+class PagedReceiveRequestDto extends PagedRequestDto {
+  keyword: string;
+  invoiceId: number | null;
+}

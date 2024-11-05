@@ -1,14 +1,120 @@
-<app-page-header [title]="'Receivings' | localize"  [fields]="fields"
- [CreatePermission]="'PurshaseOrder.Receivings.Create'" (addNewItem)="showAddNewModal()"
-  (advanceFilter)="showFilterDialog($event)" 
-  [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
-  (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">
-</app-page-header>
+<div class="row">
+  <div class="col-12">
+    <app-heading [title]="'Receivings' | localize"></app-heading>
+    <a class="ml-4 text-primary" href="/app/orders/receives/{{invoiceId}}">
+      {{'BackToInvoiceList' | localize}}
+      <i class=" iconsminds-arrow-left"></i>
+    </a>
+    <div *ngIf="isGranted('PurshaseOrder.Receivings.Create')" class="top-right-button-container text-zero"> <button
+        type="button" (click)="showAddNewModal()" class="top-right-button btn btn-primary btn-lg mr-1">{{ 'AddNew' |
+        localize}}</button></div>
 
+    <div class="display-options-container ">
+      <a class="btn pt-0 pl-0 d-inline-block d-md-none c-pointer" data-toggle="collapse"
+        (click)="displayOptionsCollapsed = !displayOptionsCollapsed" role="button" aria-expanded="true"
+        aria-controls="displayOptions">
+        {{ 'pages.display-options' | localize}}
+        <i class="simple-icon-arrow-down align-middle"></i>
+      </a>
+      <div id="displayOptions" [collapse]="displayOptionsCollapsed" class="collapse dont-collapse-sm">
+        <div class="d-inline-block">
+          <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+            <input class="form-control" placeholder="{{'Search'|localize}}" (keyup)="searchKeyUp($event)">
+          </div>
+        </div>
+        <div class="d-inline-block">
+          <div class="d-inline-block float-md-left mr-1 mb-1 align-top">
 
-<app-page-grid [hasDetails]="false" [EditPermission]="'PurshaseOrder.Receivings.Update333'" 
-[DeletePermission]="'PurshaseOrder.Receivings.Delete333'" [fields]="fields" [data]="receives" 
-[totalItems]="totalItems" [pageNumber]="pageNumber" [pageSize]="pageSize" 
-(viewItem)="showViewModal($event)"(changeOrderBy)="changeOrderBy($event)"
-(editItem)="showEditModal($event)" (deleteItem)="deleteItem($event)" [coloredBy]="'status'" 
-(changePage)="pageChanged($event)" [menuItems]="menuItems" (onSelectMenuItem)="onSelectMenuItem($event)"></app-page-grid>
+            <!-- <div class="btn-group" role="group" aria-label="advance filter group">
+              <button class="btn btn-xs btn-outline-primary" (click)="onFilter()"><i
+                  class="bi bi-filter mr-1"></i>{{'Filter' | localize}}</button>
+              <button class="btn btn-xs btn-outline-primary" *ngIf="filtering" (click)="clearFilter()"><i
+                  class="bi bi-x-lg"></i> </button>
+            </div> -->
+          </div>
+        </div>
+        <!-- 
+        <div class="float-right mx-1" *ngIf="showOrderBy">
+          <div class="float-md-left mr-1 mb-1" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark btn-xs dropdown-toggle"
+              aria-controls="dropdown-basic">
+              {{'Columns' | localize}} <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <li role="menuitem" *ngFor="let item of fields"><a (click)="onChangeOrderBy(item)">{{item.label}}</a></li>
+            </ul>
+          </div>
+        </div> -->
+
+        <div class="mr-2 float-right" *ngIf="showItemsPerPage">
+          <span class="text-muted text-small">{{'PerPage'|localize}} </span>
+          <span dropdown class="d-inline-block position-relative">
+            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" dropdownToggle>
+              {{pageSize}}
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-sm text-right" *dropdownMenu>
+              <li role="menuitem" *ngFor="let item of itemOptionsPerPage let currentItem = $index">
+                <a [ngClass]="currentItem === selectedOptionIndex ? 'dropdown-item active' : 'dropdown-item'"
+                  (click)="onChangeItemsPerPage(item)">
+                  {{item}}
+                </a>
+              </li>
+            </div>
+          </span>
+        </div>
+
+      </div>
+      <div class="separator mb-4"></div>
+    </div>
+
+  </div>
+</div>
+  <!-- ------------- -->
+  <div class="card mt-1 mb-2 w-full">
+    <div class="card-body" style="padding: 1rem !important;">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="p-3 ">
+            <p class="mb-2">
+              {{'ReceivingDate' | localize}} : <span class="badge badge-pill badge-info">12/05/2024</span>
+            </p>
+            <p class="text-muted text-small">
+              {{'Description' | localize}} : <span class="placeholder col-6"></span>
+            </p>
+            
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="d-flex">
+            <div class="mr-2">
+              <span class="transport-comp"></span>
+            </div>
+            <div class="p-3 ">
+              <p class="list-item-heading mb-1">
+                {{'TransportCompany' | localize}} : 
+              </p>
+              <p class="text-muted text-small">
+                {{'TransportCost' | localize}} :
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="d-flex">
+            <div class="mr-2">
+              <span class="clearance-comp"></span>
+            </div>
+            <div class="p-3">
+              <p class="list-item-heading mb-1">
+                {{'ClearanceCompany' | localize}} : 
+              </p>
+              <p class="text-muted text-small">
+                {{'ClearanceCost' | localize}} :
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

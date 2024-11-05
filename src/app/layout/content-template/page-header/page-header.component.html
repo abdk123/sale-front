@@ -3,8 +3,9 @@
     <app-heading [title]="title"></app-heading>
     <!-- <app-breadcrumb></app-breadcrumb>   -->
     <a *ngIf="IsDetail" class="ml-4 pointer text-primary" (click)="backTo()">
-      <i class=" iconsminds-arrow-left-in-circle "></i>
-      {{'BackTo'|localize}}{{ParentName}}{{' List'|localize}}</a>
+      {{'BackTo'+ ParentName + 'List' | localize}}
+      <i class=" iconsminds-arrow-left"></i>
+    </a>
     <div *ngIf="isGranted(CreatePermission)" class="top-right-button-container text-zero"> <button type="button" (click)="onAddNewItem()"
         class="top-right-button btn btn-primary btn-lg mr-1">{{ 'AddNew' | localize}}</button></div>
     <div class="display-options-container ">
@@ -23,12 +24,12 @@
         <div class="d-inline-block" *ngIf="showAdvanceFilter">
           <div class="d-inline-block float-md-left mr-1 mb-1 align-top">
 
-            <div class="btn-group" role="group" aria-label="advance filter group">
+            <!-- <div class="btn-group" role="group" aria-label="advance filter group">
               <button class="btn btn-xs btn-outline-primary" (click)="onFilter()"><i
                   class="bi bi-filter mr-1"></i>{{'Filter' | localize}}</button>
               <button class="btn btn-xs btn-outline-primary" *ngIf="filtering" (click)="clearFilter()"><i
                   class="bi bi-x-lg"></i> </button>
-            </div>
+            </div> -->
           </div>
         </div>
 <!-- 

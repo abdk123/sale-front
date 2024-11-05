@@ -1,4 +1,18 @@
+.form-control {
+  padding: 0.3rem 0.5rem !important;
+}
 
-.form-control{
-    padding: 0.3rem 0.5rem !important;
-  }
+.clearance-comp {
+  content: url(../../../assets/img/svg/clearance-comp.svg);
+  width: 70px;
+  height: 70px;
+}
+
+.transport-comp {
+  content: url(../../../assets/img/svg/transport-comp.svg);
+  width: 75px;
+  height: 70px;
+  border:6px solid #adc2c4;
+  padding: 0.3rem;
+  border-radius: 1rem;
+}
