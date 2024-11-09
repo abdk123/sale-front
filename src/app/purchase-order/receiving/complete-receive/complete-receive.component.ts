@@ -1,17 +1,31 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppComponentBase } from '@shared/app-component-base';
-import { ClearanceCompanyServiceProxy, DropdownDto, InvoiceDto, InvoiceServiceProxy, ReceivingDto, ReceivingServiceProxy, TransportCompanyDto, TransportCompanyServiceProxy } from '@shared/service-proxies/service-proxies';
-import { finalize } from 'rxjs';
+import { Component, Injector, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AppComponentBase } from "@shared/app-component-base";
+import {
+  ClearanceCompanyServiceProxy,
+  CompleteReceivingDto,
+  DropdownDto,
+  InvoiceDto,
+  InvoiceServiceProxy,
+  ReceivingDto,
+  ReceivingServiceProxy,
+  TransportCompanyDto,
+  TransportCompanyServiceProxy,
+} from "@shared/service-proxies/service-proxies";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "complete-receive",
   templateUrl: "./complete-receive.component.html",
   styleUrls: ["./complete-receive.component.scss"],
 })
-export class CompleteReceiveComponent extends AppComponentBase implements OnInit {
+export class CompleteReceiveComponent
+  extends AppComponentBase
+  implements OnInit
+{
   invoice: InvoiceDto = new InvoiceDto();
   receiveDto: ReceivingDto = new ReceivingDto();
+  input: CompleteReceivingDto = new CompleteReceivingDto();
   invoiceId: number;
   receivingId: number;
   saving: boolean;
@@ -19,8 +33,8 @@ export class CompleteReceiveComponent extends AppComponentBase implements OnInit
   transportCompanies: DropdownDto[] = [];
   clearanceCompanies: DropdownDto[] = [];
   currencies = [
-    { id: 1, name: this.l("Dollar") },
     { id: 0, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
   ];
 
   constructor(
@@ -37,7 +51,7 @@ export class CompleteReceiveComponent extends AppComponentBase implements OnInit
 
   ngOnInit(): void {
     this.invoiceId = this.route.snapshot?.params?.invoiceId;
-    this.receivingId = this.route.snapshot?.params?.receivingId;
+    this.receivingId = this.route.snapshot?.params?.receiveId;
     this.initialReceiving();
     this.initialInvoice();
     this.initialTransportCompanies();
@@ -45,9 +59,22 @@ export class CompleteReceiveComponent extends AppComponentBase implements OnInit
   }
 
   initialReceiving() {
-    this.receivingServiceProxy.getWithDetail(this.receivingId).subscribe((result) => {
-      this.receiveDto = result;
-    });
+    this.receivingServiceProxy
+      .getWithDetail(this.receivingId)
+      .subscribe((result) => {
+        this.receiveDto = result;
+        this.input.init({
+          id: result.id,
+          transportCost: result.transportCost,
+          transportCostCurrency: result.transportCostCurrency,
+          driverName: result.driverName,
+          driverPhoneNumber: result.driverPhoneNumber,
+          transportCompanyId: result.transportCompanyId,
+          clearanceCost: result.clearanceCost,
+          clearanceCostCurrency: result.clearanceCostCurrency,
+          clearanceCompanyId: result.clearanceCompanyId,
+        });
+      });
   }
 
   initialTransportCompanies() {
@@ -70,20 +97,22 @@ export class CompleteReceiveComponent extends AppComponentBase implements OnInit
 
   save() {
     this.receiveDto.creationTime = this.date.toISOString();
-      this.receiveDto.invoiceId = this.invoiceId;
-      this.saving = true;
-      this.receivingServiceProxy
-        .update(this.receiveDto)
-        .pipe(
-          finalize(() => {
-            this.saving = false;
-            this.notify.info(this.l("SavedSuccessfully"));
-            this.router.navigate(["/app/orders/receives"]);
-          })
-        )
-        .subscribe((result) => {});
+    this.receiveDto.invoiceId = this.invoiceId;
+    this.saving = true;
+    this.receivingServiceProxy
+      .completeInfo(this.input)
+      .pipe(
+        finalize(() => {
+        })
+      )
+      .subscribe((result) => {
+        this.saving = false;
+          this.notify.info(this.l("SavedSuccessfully"));
+        this.router.navigate([
+          "/app/orders/receives;invoiceId=" + this.invoiceId,
+        ]);
+      });
   }
-
 
   enteredQ(id) {
     let item = this.receiveDto.receivingItems.find(

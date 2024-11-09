@@ -1,36 +1,52 @@
-<form class="form-horizontal " autocomplete="off" #updateOfferForm="ngForm" (ngSubmit)="save()">
+<form class="form-horizontal " autocomplete="off" #createReceiveForm="ngForm" (ngSubmit)="save()">
     <div class="row">
         <div class="col-12 separator">
             <h1>{{'ReveivingMaterials' | localize}}</h1>
-            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives/{{invoiceId}}">{{'BackToReceivingList' | localize}} <i
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives;invoiceId={{invoiceId}}">{{'BackToReceivingList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
-                    [disabled]="saving" (click)="save()">{{ 'Save' | localize}}</button>
+                    [disabled]="saving || !createReceiveForm.form.valid" (click)="save()">{{ 'Save' | localize}}</button>
             </div>
         </div>
     </div>
     <div class="card mt-2">
         <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
-            <div class="row">
-                <!-- <div class="col-md-3">
-                    <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
-                </div> -->
-                <div class="col-md-3">
-                    <item-info title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
+            <div class="row separator">
+                <div class="col-md-4 mb-2">
+                    <item-info [isRow]="true" title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
                 </div>
-                <div class="col-md-3">
-                    <item-info title="Currency" value="{{invoice.currency == 1 ? 'Dollar' : 'Dinar'}}"
+                <div class="col-md-4 mb-2">
+                    <item-info [isRow]="true" title="Currency" value="{{invoice.currency == 1 ? 'Dollar' : 'Dinar'}}"
                         icon="bi bi-cash-stack"></item-info>
                 </div>
-                <div class="col-md-3">
-                    <item-info title="InvoiceDate" *ngIf="invoice.creationTime"
+                <div class="col-md-4 mb-2">
+                    <item-info [isRow]="true" title="InvoiceDate" *ngIf="invoice.creationTime" cssClass="badge badge-outline-primary"
                         value="{{invoice.creationTime.toDate() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <label class=" has-float-label">
+                        <input class="form-control" required [(ngModel)]="receiveDto.receivingDate" name="offerEndDate"
+                            bsDatepicker [container]="'html'"
+                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
+                            #receivingDate="ngModel" #offerEndDateEl>
+                        <span>{{ 'ReceivingDate' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="receivingDate" [controlEl]="offerEndDateEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-4">
+                    <label class=" has-float-label">
+                        <textarea class="form-control" name="specefecation" rows="3"
+                            [(ngModel)]="receiveDto.note"></textarea>
+                        <span>{{ 'Note' | localize }}</span>
+                    </label>
                 </div>
             </div>
         </div>
     </div>
 </form>
 <create-receive-item [invoiceId]="invoiceId" [(items)]="receiveDto.receivingItems"></create-receive-item>
-<receive-list [invoiceId]="invoiceId"></receive-list>
+<!-- <receive-list [invoiceId]="invoiceId"></receive-list> -->

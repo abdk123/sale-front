@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 separator">
             <h1>{{'SendDelivery' | localize}}</h1>
-            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/deliveries">{{'BackToDeliveriesList' | localize}} <i
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/manage-delivery">{{'BackToDeliveriesList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
@@ -37,9 +37,20 @@
     </div> -->
     <div class="card mt-2">
         <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'TransportInfo' | localize }}</h5>
+            <h5 class="card-title separator pb-2 mb-3">{{ 'DeliveryInfo' | localize }}</h5>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <label class=" has-float-label">
+                        <ng-select [items]="customers" required bindLabel="name" bindValue="id" name="customerId"
+                            [(ngModel)]="deliveryDto.customerId" (change)="onSelectCustomer($event)">
+                        </ng-select>
+                        <span >{{ 'Customer' | localize }}</span> 
+                    </label>
+                    <balance-info [balance]="customerBalance" *ngIf="!customerIsRequired && deliveryDto.customerId">{{customerBalance}}</balance-info>
+                    <span *ngIf="customerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+
+                </div>
+                <div class="col-md-4">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="driverName"
                             [(ngModel)]="deliveryDto.driverName" #driverNameModel="ngModel" #driverNameEl />
@@ -48,7 +59,7 @@
                     <abp-validation-summary [control]="driverNameModel" [controlEl]="driverNameEl">
                     </abp-validation-summary>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="deliveryDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
@@ -57,7 +68,11 @@
                     <abp-validation-summary [control]="driverPhoneNumberModel" [controlEl]="driverPhoneNumberEl">
                     </abp-validation-summary>
                 </div>
-                <div class="col-md-3">
+                
+                
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="vehicleNumber"
                             [(ngModel)]="deliveryDto.vehicleNumber" #vehicleNumberModel="ngModel" #vehicleNumberEl />
@@ -66,7 +81,7 @@
                     <abp-validation-summary [control]="vehicleNumberModel" [controlEl]="vehicleNumberEl">
                     </abp-validation-summary>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-group has-float-label">
                         <input type="number" required class="form-control" name="transportCost"
                             [(ngModel)]="deliveryDto.transportCost" #transportCostModel="ngModel" #transportCostEl />
@@ -75,7 +90,7 @@
                     <abp-validation-summary [control]="transportCostModel" [controlEl]="transportCostEl">
                     </abp-validation-summary>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class=" has-float-label">
                         <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="deliveryDto.transportCostCurrency">
                         </ng-select>
@@ -86,5 +101,7 @@
         </div>
     </div>
 </form>
-<send-delivery-item [customerId]="customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+<ng-container *ngIf="deliveryDto?.customerId">
+    <send-delivery-item [customerId]="deliveryDto?.customerId" [(deliveryItems)]="deliveryDto.deliveryItems"></send-delivery-item>
+</ng-container>
 <!-- <delivery-list [customerId]="offer?.customerId"></delivery-list> -->

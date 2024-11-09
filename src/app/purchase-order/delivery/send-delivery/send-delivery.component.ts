@@ -7,6 +7,9 @@ import {
   DeliveryServiceProxy,
   OfferDto,
   OfferServiceProxy,
+  BalanceInfoDto,
+  CustomerServiceProxy,
+  CustomerCashFlowServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs";
 
@@ -20,6 +23,9 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   customerId: number;
   saving: boolean;
   customers: DropdownDto[] = [];
+  customerIsRequired: boolean = false;
+  customerBalance : BalanceInfoDto = new BalanceInfoDto();
+
   currencies = [
     { id: 0, name: this.l("Dinar") },
     { id: 1, name: this.l("Dollar") },
@@ -29,7 +35,8 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private router: Router,
-    //private offerService: OfferServiceProxy,
+    private customerService: CustomerServiceProxy,
+    private customerCashFlowService: CustomerCashFlowServiceProxy,
     private deliveryService: DeliveryServiceProxy,
     private route: ActivatedRoute
   ) {
@@ -37,8 +44,15 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.customerId = this.route.snapshot?.params?.customerId;
+    //this.customerId = this.route.snapshot?.params?.customerId;
     //this.initialOffer();
+    this.initialCustomers();
+  }
+
+  initialCustomers() {
+    this.customerService.getForDropdown().subscribe((result) => {
+      this.customers = result;
+    });
   }
 
   // initialOffer() {
@@ -56,9 +70,16 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
         finalize(() => {
           this.saving = false;
           this.notify.info(this.l("SavedSuccessfully"));
-          this.router.navigate(["/app/orders/deliveries"]);
+          this.router.navigate(["/app/orders/manage-delivery"]);
         })
       )
       .subscribe((result) => {});
+  }
+
+  onSelectCustomer(args){
+    this.customerCashFlowService.getBalance(this.deliveryDto.customerId)
+    .subscribe((result: BalanceInfoDto)=>{
+      this.customerBalance = result;
+    })
   }
 }

@@ -112,12 +112,12 @@ const data: IMenuItem[] = [
           icon: "bi bi-receipt",
           permissions: permissionsSetting,
         },
-        {
-          label: "ReveivingMaterials",
-          to: `${adminRoot}/orders/receives`,
-          icon: "bi bi-box-arrow-in-down",
-          permissions: permissionsSetting,
-        },
+        // {
+        //   label: "ReveivingMaterials",
+        //   to: `${adminRoot}/orders/receives`,
+        //   icon: "bi bi-box-arrow-in-down",
+        //   permissions: permissionsSetting,
+        // },
         {
           label: "Deliveries",
           icon: "bi bi-truck",

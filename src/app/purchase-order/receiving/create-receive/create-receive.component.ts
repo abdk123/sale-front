@@ -54,7 +54,7 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
           finalize(() => {
             this.saving = false;
             this.notify.info(this.l("SavedSuccessfully"));
-            this.router.navigate(["/app/orders/receives"]);
+            this.router.navigate(["/app/orders/receives;invoiceId="+this.invoiceId]);
           })
         )
         .subscribe((result) => {});

@@ -8598,6 +8598,62 @@ export class ReceivingServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    completeInfo(body: CompleteReceivingDto | undefined): Observable<ReceivingDto> {
+        let url_ = this.baseUrl + "/api/services/app/Receiving/CompleteInfo";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompleteInfo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompleteInfo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReceivingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReceivingDto>;
+        }));
+    }
+
+    protected processCompleteInfo(response: HttpResponseBase): Observable<ReceivingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceivingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -20006,6 +20062,81 @@ export interface IClearanceCompanyVoucherDtoPagedResultDto {
     totalCount: number;
 }
 
+export class CompleteReceivingDto implements ICompleteReceivingDto {
+    id: number;
+    transportCost: number;
+    transportCostCurrency: number;
+    driverName: string | undefined;
+    driverPhoneNumber: string | undefined;
+    transportCompanyId: number | undefined;
+    clearanceCost: number;
+    clearanceCostCurrency: number;
+    clearanceCompanyId: number | undefined;
+
+    constructor(data?: ICompleteReceivingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.transportCost = _data["transportCost"];
+            this.transportCostCurrency = _data["transportCostCurrency"];
+            this.driverName = _data["driverName"];
+            this.driverPhoneNumber = _data["driverPhoneNumber"];
+            this.transportCompanyId = _data["transportCompanyId"];
+            this.clearanceCost = _data["clearanceCost"];
+            this.clearanceCostCurrency = _data["clearanceCostCurrency"];
+            this.clearanceCompanyId = _data["clearanceCompanyId"];
+        }
+    }
+
+    static fromJS(data: any): CompleteReceivingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompleteReceivingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["transportCost"] = this.transportCost;
+        data["transportCostCurrency"] = this.transportCostCurrency;
+        data["driverName"] = this.driverName;
+        data["driverPhoneNumber"] = this.driverPhoneNumber;
+        data["transportCompanyId"] = this.transportCompanyId;
+        data["clearanceCost"] = this.clearanceCost;
+        data["clearanceCostCurrency"] = this.clearanceCostCurrency;
+        data["clearanceCompanyId"] = this.clearanceCompanyId;
+        return data;
+    }
+
+    clone(): CompleteReceivingDto {
+        const json = this.toJSON();
+        let result = new CompleteReceivingDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompleteReceivingDto {
+    id: number;
+    transportCost: number;
+    transportCostCurrency: number;
+    driverName: string | undefined;
+    driverPhoneNumber: string | undefined;
+    transportCompanyId: number | undefined;
+    clearanceCost: number;
+    clearanceCostCurrency: number;
+    clearanceCompanyId: number | undefined;
+}
+
 export class ConstructorInfo implements IConstructorInfo {
     readonly name: string | undefined;
     declaringType: Type;
@@ -21159,6 +21290,8 @@ export interface ICreateOfferItemDto {
 }
 
 export class CreateReceivingDto implements ICreateReceivingDto {
+    receivingDate: string | undefined;
+    note: string | undefined;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;
@@ -21183,6 +21316,8 @@ export class CreateReceivingDto implements ICreateReceivingDto {
 
     init(_data?: any) {
         if (_data) {
+            this.receivingDate = _data["receivingDate"];
+            this.note = _data["note"];
             this.transportCost = _data["transportCost"];
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
@@ -21211,6 +21346,8 @@ export class CreateReceivingDto implements ICreateReceivingDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["receivingDate"] = this.receivingDate;
+        data["note"] = this.note;
         data["transportCost"] = this.transportCost;
         data["transportCostCurrency"] = this.transportCostCurrency;
         data["driverName"] = this.driverName;
@@ -21239,6 +21376,8 @@ export class CreateReceivingDto implements ICreateReceivingDto {
 }
 
 export interface ICreateReceivingDto {
+    receivingDate: string | undefined;
+    note: string | undefined;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;
@@ -26818,6 +26957,8 @@ export interface IPropertyInfo {
 
 export class ReceivingDto implements IReceivingDto {
     id: number;
+    receivingDate: moment.Moment | undefined;
+    note: string | undefined;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;
@@ -26848,6 +26989,8 @@ export class ReceivingDto implements IReceivingDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.receivingDate = _data["receivingDate"] ? moment(_data["receivingDate"].toString()) : <any>undefined;
+            this.note = _data["note"];
             this.transportCost = _data["transportCost"];
             this.transportCostCurrency = _data["transportCostCurrency"];
             this.driverName = _data["driverName"];
@@ -26882,6 +27025,8 @@ export class ReceivingDto implements IReceivingDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["receivingDate"] = this.receivingDate ? this.receivingDate.toISOString() : <any>undefined;
+        data["note"] = this.note;
         data["transportCost"] = this.transportCost;
         data["transportCostCurrency"] = this.transportCostCurrency;
         data["driverName"] = this.driverName;
@@ -26916,6 +27061,8 @@ export class ReceivingDto implements IReceivingDto {
 
 export interface IReceivingDto {
     id: number;
+    receivingDate: moment.Moment | undefined;
+    note: string | undefined;
     transportCost: number;
     transportCostCurrency: number;
     driverName: string | undefined;

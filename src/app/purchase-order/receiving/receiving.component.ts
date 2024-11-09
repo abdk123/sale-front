@@ -30,8 +30,8 @@ export class ReceivingComponent extends PagedListingComponentBase<ReceivingDto> 
     {value:3,text:this.l("Received")}
   ];
   currency:IEnumValue[]=[
-    {value:1,text:this.l("Dollar")},
     {value:0,text:this.l("Dinar")},
+    {value:1,text:this.l("Dollar")},
   ];
   
   menuItems: IPageMenu[] = [
@@ -155,6 +155,27 @@ export class ReceivingComponent extends PagedListingComponentBase<ReceivingDto> 
           invoiceId: invoiceId,
         },
       ]);
+    }
+
+    onEditItem(item){
+
+    }
+    onDeleteItem(item){
+
+    }
+
+    completeData(receiveId){
+      this._router.navigate([
+        "/app/orders/complete-receive-info",
+        {
+          receiveId: receiveId,
+          invoiceId: this.invoiceId
+        },
+      ]);
+    }
+
+    getCurrency(value){
+      return this.currency.find(x=>x.value == value)?.text;
     }
 }
 

@@ -1,5 +1,5 @@
 <app-page-header [title]="'Deliveries' | localize"  [fields]="fields"
- [CreatePermission]="'PurshaseOrder.Deliveries.Create333'"
+ [CreatePermission]="'PurshaseOrder.Deliveries.Create'" (addNewItem)="showAddNewModal()"
   (advanceFilter)="showFilterDialog($event)" 
   [filtering]="request.filtering && request.filtering.rules.length > 0" (onChangePage)="onChangePage($event)"
   (changeOrderBy)="changeOrderBy($event)" (searchKeyUp)="searchKeyUp($event)">

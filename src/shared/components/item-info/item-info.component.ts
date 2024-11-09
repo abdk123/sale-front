@@ -10,4 +10,5 @@ export class ItemInfoComponent {
   @Input() value:string = '';
   @Input() icon:string = '';
   @Input() cssClass:string = '';
+  @Input() isRow: boolean = false;
 }

@@ -1,7 +1,19 @@
-<div class="flex">
-    <span class="text-muted text-small mb-2">{{title | localize}}</span>
-    <span class="text-muted text-small mb-2 mx-1"><i [class]="icon"></i></span>
-</div>
-<div>
-    <p [class]="cssClass" class="mb-3">{{value}}</p>
+<ng-container *ngIf="!isRow">
+    <div class="d-flex">
+        <span class="text-muted text-small mb-2">{{title | localize}}</span>
+        <span class="text-muted text-small mb-2 mx-1"><i [class]="icon"></i></span>
+    </div>
+    <div>
+        <p [class]="cssClass" class="mb-3">{{value}}</p>
+    </div>
+</ng-container>
+
+<div class="d-flex align-items-center" *ngIf="isRow">
+    <div class="d-flex mr-2">
+        <span class="text-muted text-small  mr-1"><i [class]="icon"></i></span>
+        <span class="text-muted text-small ">{{title | localize}} :</span>
+    </div>
+    <div class="">
+        <span [class]="cssClass" >{{value}}</span>
+    </div>
 </div>

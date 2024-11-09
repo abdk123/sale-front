@@ -193,4 +193,13 @@ fields = [
       },
     ]);
   }
+
+  showAddNewModal(){
+    this._router.navigate([
+      "/app/orders/send-delivery",
+      {
+        //customerId: customerId,
+      },
+    ]);
+  }
 }

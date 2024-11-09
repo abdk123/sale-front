@@ -16,3 +16,18 @@
   padding: 0.3rem;
   border-radius: 1rem;
 }
+
+.placeholder-glow .placeholder {
+  -webkit-animation: placeholder-glow 2s ease-in-out infinite;
+  animation: placeholder-glow 2s ease-in-out infinite;
+}
+.placeholder {
+  display: inline-block;
+  min-height: 1em;
+  vertical-align: middle;
+  cursor: wait;
+  background-color: currentColor;
+  opacity: .1;
+  border-radius: 6px;
+  min-width: 5rem;
+}

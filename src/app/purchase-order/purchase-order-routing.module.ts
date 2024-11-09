@@ -126,7 +126,7 @@ const routes: Routes = [
       {
         path: "complete-receive-info",
         component: CompleteReceiveComponent,
-        data: { permission: "PurshaseOrder.Receivings.CompleteInfo" },
+        //data: { permission: "PurshaseOrder.Receivings.CompleteInfo" },
         canActivate: [AppRouteGuard],
       },
       {

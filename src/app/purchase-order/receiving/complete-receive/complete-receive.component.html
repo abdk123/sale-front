@@ -2,32 +2,11 @@
     <div class="row">
         <div class="col-12 separator">
             <h1>{{'CompleteReceivingInfo' | localize}}</h1>
-            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives/{{invoiceId}}">{{'BackToReceivingList' | localize}} <i
+            <a class="btn btn-link btn-empty btn-lg" href="/app/orders/receives;invoiceId={{invoiceId}}">{{'BackToReceivingList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
                     [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' | localize}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="card mt-2">
-        <div class="card-body">
-            <h5 class="card-title separator pb-2 mb-3">{{ 'InvoiceInfo' | localize }}</h5>
-            <div class="row">
-                <!-- <div class="col-md-3">
-                    <item-info title="Supplier" [value]="invoice.supplierName" icon="bi bi-person"></item-info>
-                </div> -->
-                <div class="col-md-3">
-                    <item-info title="InvoiceNumber" [value]="invoice.id" icon="bi bi-bookmark"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="Currency" value="{{invoice.currency == 1 ? 'Dollar' : 'Dinar'}}"
-                        icon="bi bi-cash-stack"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="InvoiceDate" *ngIf="invoice.offerDate"
-                        value="{{invoice.offerDate.date() | date:'dd-MM-yyyy' }}" icon="bi bi-calendar"></item-info>
-                </div>
             </div>
         </div>
     </div>
@@ -39,7 +18,7 @@
                 <div class="col-md-3">
                     <label class=" has-float-label">
                         <ng-select required [items]="transportCompanies" required bindLabel="name" bindValue="id"
-                            name="transportCompanyId" [(ngModel)]="receiveDto.transportCompanyId">
+                            name="transportCompanyId" [(ngModel)]="input.transportCompanyId">
                         </ng-select>
                         <span>{{ 'TransportCompany'| localize }}</span>
                     </label>
@@ -48,7 +27,7 @@
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
                         <input type="number" required class="form-control" name="transportCost"
-                            [(ngModel)]="receiveDto.transportCost" #transportCostModel="ngModel" #transportCostEl />
+                            [(ngModel)]="input.transportCost" #transportCostModel="ngModel" #transportCostEl />
                         <span>{{ 'TransportCost' | localize }}</span>
                     </label>
                     <abp-validation-summary [control]="transportCostModel" [controlEl]="transportCostEl">
@@ -56,8 +35,8 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="driverPhoneNumber"
-                            [(ngModel)]="receiveDto.driverName" #driverNameModel="ngModel" #driverNameEl />
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                            [(ngModel)]="input.driverName" #driverNameModel="ngModel" #driverNameEl />
                         <span>{{ 'DriverName' | localize }}</span>
                     </label>
                     <abp-validation-summary [control]="driverNameModel" [controlEl]="driverNameEl">
@@ -65,8 +44,8 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="driverPhoneNumber"
-                            [(ngModel)]="receiveDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                            [(ngModel)]="input.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
                         <span>{{ 'DriverPhoneNumber' | localize }}</span>
                     </label>
                     <abp-validation-summary [control]="driverPhoneNumberModel" [controlEl]="driverPhoneNumberEl">
@@ -74,7 +53,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="receiveDto.transportCostCurrency">
+                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="input.transportCostCurrency">
                         </ng-select>
                         <span>{{ 'TransportCostCurrency' | localize }}</span>
                     </label>
@@ -101,7 +80,7 @@
                 <div class="col-md-3">
                     <label class=" has-float-label">
                         <ng-select [items]="clearanceCompanies" required bindLabel="name" bindValue="id"
-                            name="clearanceCompanyId" [(ngModel)]="receiveDto.clearanceCompanyId">
+                            name="clearanceCompanyId" [(ngModel)]="input.clearanceCompanyId">
                         </ng-select>
                         <span>{{ 'ClearanceCompany'| localize }}</span>
                     </label>
@@ -110,7 +89,7 @@
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
                         <input type="number" class="form-control" name="clearanceCost"
-                            [(ngModel)]="receiveDto.clearanceCost" #clearanceCostModel="ngModel" #clearanceCostEl />
+                            [(ngModel)]="input.clearanceCost" #clearanceCostModel="ngModel" #clearanceCostEl />
                         <span>{{ 'ClearanceCost' | localize }}</span>
                     </label>
                     <abp-validation-summary [control]="clearanceCostModel" [controlEl]="clearanceCostEl">
@@ -120,7 +99,7 @@
                 
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="clearanceCostCurrency" [(ngModel)]="receiveDto.clearanceCostCurrency">
+                        <ng-select [items]="currencies" bindLabel="name" bindValue="id" name="clearanceCostCurrency" [(ngModel)]="input.clearanceCostCurrency">
                         </ng-select>
                         <span>{{ 'ClearanceCostCurrency' | localize }}</span>
                     </label>

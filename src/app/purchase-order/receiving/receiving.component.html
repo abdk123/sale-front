@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-12">
     <app-heading [title]="'Receivings' | localize"></app-heading>
-    <a class="ml-4 text-primary" href="/app/orders/receives/{{invoiceId}}">
+    <a class="ml-4 text-primary" href="/app/orders/invoices">
       {{'BackToInvoiceList' | localize}}
       <i class=" iconsminds-arrow-left"></i>
     </a>
@@ -70,51 +70,129 @@
 
   </div>
 </div>
-  <!-- ------------- -->
-  <div class="card mt-1 mb-2 w-full">
-    <div class="card-body" style="padding: 1rem !important;">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="p-3 ">
-            <p class="mb-2">
-              {{'ReceivingDate' | localize}} : <span class="badge badge-pill badge-info">12/05/2024</span>
+<!-- ------------- -->
+<div class="card mt-1 mb-2 w-full" *ngFor="let receive of receives">
+  <div class="card-body" style="padding: 1rem !important;">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="px-3 pt-3">
+          <p class="mb-2">
+            {{'ReceivingDate' | localize}} :
+            <ng-container *ngIf="receive.receivingDate">
+              <span class="badge badge-outline-pill badge-info">{{receive.receivingDate | format: 'DD-MM-yyyy'}}</span>
+            </ng-container>
+            <ng-container *ngIf="!receive.receivingDate">
+              <span class=" placeholder-glow"><span class="placeholder"></span></span>
+            </ng-container>
+          </p>
+          <p class="text-muted text-small">
+            {{'Description' | localize}} :
+            <ng-container *ngIf="receive.note">
+              <span [tooltip]="receive.note">{{receive.note | truncate:30}}</span>
+            </ng-container>
+            <ng-container *ngIf="!receive.note">
+              <span class=" placeholder-glow"><span class="placeholder"></span></span>
+            </ng-container>
+          </p>
+
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex">
+          <div class="mr-2">
+            <span class="transport-comp"></span>
+          </div>
+          <div class="px-3 pt-1">
+            <p class="list-item-heading mb-1">
+              {{'TransportCompany' | localize}} :
+              <ng-container *ngIf="receive?.transportCompany">
+                <span class="">{{receive.clearanceCompany?.name}}</span>
+              </ng-container>
+              <ng-container *ngIf="!receive?.transportCompany">
+                <span class=" placeholder-glow"><span class="placeholder"></span></span>
+              </ng-container>
+            </p>
+            <p class="text-muted text-small mb-1">
+              {{'TransportCost' | localize}} :
+              <ng-container *ngIf="receive?.transportCompany">
+                <span class="">{{receive.transportCost | commaNumber}} {{getCurrency(receive.transportCostCurrency) }}</span>
+              </ng-container>
+              <ng-container *ngIf="!receive?.transportCompany">
+                <span class=" placeholder-glow"><span class="placeholder"></span></span>
+              </ng-container>
             </p>
             <p class="text-muted text-small">
-              {{'Description' | localize}} : <span class="placeholder col-6"></span>
+              {{'DriverName' | localize}} :
+              <ng-container *ngIf="receive?.driverName">
+                <span class="">{{receive?.driverName}}</span>
+              </ng-container>
+              <ng-container *ngIf="!receive?.driverName">
+                <span class=" placeholder-glow"><span class="placeholder"></span></span>
+              </ng-container>
             </p>
-            
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="d-flex">
-            <div class="mr-2">
-              <span class="transport-comp"></span>
-            </div>
-            <div class="p-3 ">
-              <p class="list-item-heading mb-1">
-                {{'TransportCompany' | localize}} : 
-              </p>
-              <p class="text-muted text-small">
-                {{'TransportCost' | localize}} :
-              </p>
-            </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex">
+          <div class="mr-2">
+            <span class="clearance-comp"></span>
+          </div>
+          <div class="px-3 pt-3">
+            <p class="list-item-heading mb-1 placeholder-glow">
+              {{'ClearanceCompany' | localize}} :
+              <ng-container *ngIf="receive?.clearanceCompany">
+                <span class="">{{receive.clearanceCompany?.name}}</span>
+              </ng-container>
+              <ng-container *ngIf="!receive?.clearanceCompany">
+                <span class=" placeholder-glow"><span class="placeholder"></span></span>
+              </ng-container>
+            </p>
+            <p class="text-muted text-small">
+              {{'ClearanceCost' | localize}} :
+              <ng-container *ngIf="receive?.clearanceCompany">
+                <span class="">{{receive.clearanceCost | commaNumber}} {{getCurrency(receive.clearanceCostCurrency)}}</span>
+              </ng-container>
+              <ng-container *ngIf="!receive?.clearanceCompany">
+                <span class=" placeholder-glow"><span class="placeholder"></span></span>
+              </ng-container>
+            </p>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="d-flex">
-            <div class="mr-2">
-              <span class="clearance-comp"></span>
-            </div>
-            <div class="p-3">
-              <p class="list-item-heading mb-1">
-                {{'ClearanceCompany' | localize}} : 
-              </p>
-              <p class="text-muted text-small">
-                {{'ClearanceCost' | localize}} :
-              </p>
-            </div>
+      </div>
+      <div class="col-md-1">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-primary btn-xs dropdown-toggle"
+                  aria-controls="dropdown-basic">
+            {{'خيارات' | localize}} <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item cursor-pointer" href="#">تعديل</a></li>
+            <li role="menuitem"><a class="dropdown-item cursor-pointer" href="#">حذف</a></li>
+            <li role="menuitem"><a class="dropdown-item cursor-pointer" (click)="completeData(receive.id)">استكمال البيانات</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <div class="row">
+      <div class="col-md-6" *ngFor="let item of receive.receivingItems">
+        <div class="d-flex justify-content-start  p-2 m-3" style="border:1px dashed #2797a2;border-radius:6px;">
+          <!-- MaterialName -->
+          <div class="w-50">
+            <item-info [isRow]="true" title="Material" [value]="item?.materialName"></item-info>
+            <ng-container *ngIf="!item?.materialName">
+              <span class=" placeholder-glow"><span class="placeholder"></span></span>
+            </ng-container>
           </div>
+          <!-- ReceivedQuantity -->
+          <div class="w-50">
+            <item-info [isRow]="true" title="ReceivedQuantity" [value]="item?.receivedQuantity"></item-info>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
+</div>

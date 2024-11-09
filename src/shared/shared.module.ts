@@ -33,7 +33,8 @@ import { FilterComponent } from './components/filter/filter.component';
 import { QueryBuilderModule } from 'angular2-query-builder';
 import { DetailsComponent } from '../shared/components/details/details.component';
 import { ItemInfoComponent } from './components/item-info/item-info.component';
-import { BalanceInfoComponent } from './components/balance-info/balance-info.component'
+import { BalanceInfoComponent } from './components/balance-info/balance-info.component';
+import { TruncatePipe } from './pipes/truncate.pipe'
 
 @NgModule({
     imports: [
@@ -67,7 +68,8 @@ import { BalanceInfoComponent } from './components/balance-info/balance-info.com
         FilterComponent,
         DetailsComponent,
         ItemInfoComponent,
-        BalanceInfoComponent
+        BalanceInfoComponent,
+        TruncatePipe
     ],
     exports: [
         AbpPaginationControlsComponent,
@@ -88,7 +90,8 @@ import { BalanceInfoComponent } from './components/balance-info/balance-info.com
         BtSortableHeader,
         DetailsComponent,
         ItemInfoComponent,
-        BalanceInfoComponent
+        BalanceInfoComponent,
+        TruncatePipe
     ]
 })
 export class SharedModule {

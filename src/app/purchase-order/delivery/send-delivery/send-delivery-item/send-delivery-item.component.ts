@@ -38,9 +38,10 @@ export class SendDeliveryItemComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-      if (this.customerId && this.items.length == 0) {
-          this.offerService.getForDelivery(this.customerId)
-      .subscribe(result => this.items = result);
+    if (this.customerId && this.items.length == 0) {
+      this.offerService
+        .getForDelivery(this.customerId)
+        .subscribe((result) => (this.items = result));
     }
   }
 
@@ -54,55 +55,58 @@ export class SendDeliveryItemComponent
       : `${this.l("LargeUnit")}`;
   }
 
-  onCheck(args, offerItemId, receivedQuantity){
-    if(this.deliveryItems == undefined)
-      this.deliveryItems = [];
+  onCheck(args, offerItemId, receivedQuantity) {
+    if (this.deliveryItems == undefined) this.deliveryItems = [];
 
     const index = this.checkIfItemExist(offerItemId);
-    if(index > -1){
-      this.deliveryItems.splice(index,1);
-    }else{
+    if (index > -1) {
+      this.deliveryItems.splice(index, 1);
+    } else {
       var item = new CreateDeliveryItemDto();
       item.init({
         offerItemId: offerItemId,
         deliveredQuantity: receivedQuantity,
-        batchNumber:''
+        batchNumber: "",
       });
 
       this.deliveryItems.push(item);
     }
   }
 
-  checkIfItemExist(offerItemId){
-    const index = this.deliveryItems.findIndex(x=>x.offerItemId == offerItemId);
+  checkIfItemExist(offerItemId) {
+    const index = this.deliveryItems.findIndex(
+      (x) => x.offerItemId == offerItemId
+    );
     return index;
   }
 
   updateQuantity(args, offerItemId) {
     debugger;
     var value = Number(args.target.value);
-    const index = this.deliveryItems ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId) : -1;
+    const index = this.deliveryItems
+      ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId)
+      : -1;
     if (index > -1) {
       this.deliveryItems[index].deliveredQuantity = Number(args.target.value);
-    } 
-    
+    }
+
     this.deliveryItemsChange.emit(this.deliveryItems);
   }
 
-  updateBatchNumber(args,offerItemId){
+  updateBatchNumber(args, offerItemId) {
     var value = args.target.value;
-    const index = this.deliveryItems ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId) : -1;
+    const index = this.deliveryItems
+      ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId)
+      : -1;
     if (index > -1) {
       this.deliveryItems[index].batchNumber = args.target.value;
-    } 
-    
+    }
+
     this.deliveryItemsChange.emit(this.deliveryItems);
   }
 
-  checkDisabled(offerItemId:number){
-    
-    if(this.deliveryItems == undefined)
-      return true;
-    return !this.deliveryItems.some(x=>x.offerItemId === offerItemId);
+  checkDisabled(offerItemId: number) {
+    if (this.deliveryItems == undefined) return true;
+    return !this.deliveryItems.some((x) => x.offerItemId === offerItemId);
   }
 }
