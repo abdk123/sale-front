@@ -14,6 +14,7 @@ import {
   UnitServiceProxy,
   CreateUnitDto,
   StockServiceProxy,
+  UnitDto,
 } from "@shared/service-proxies/service-proxies";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { finalize } from "rxjs";
@@ -133,27 +134,25 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
     this.categoryIsRequired = this.material.categoryId ? false : true;
     if(!this.categoryIsRequired){
       this.saving = true;
+      this.material.stocks = this.stocks;
       this._materialService
         .create(this.material)
         .pipe(
           finalize(() => {
             this.saving = false;
-            this.notify.info(this.l("SavedSuccessfully"));
-            this.bsModalRef.hide();
-            this._router.navigate(["/app/settings/material"]);
-            this.onSave.emit();
           })
         )
         .subscribe((result) => {
-          this.stocks.forEach((item) => {
-            item.materialId = result.id;
-            this._stockService.create(item).subscribe((res) => {});
-          });
+          this.notify.info(this.l("SavedSuccessfully"));
+            this.bsModalRef.hide();
+            this._router.navigate(["/app/settings/material"]);
+            this.onSave.emit();
         });
     }    
   }
 
   AddStock() {
+    
     this._unitService
       .create(
         new CreateUnitDto({
@@ -163,15 +162,9 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
       )
       .subscribe((result) => {
         
-        this.units.push(this.unit);
-
+        this.units.push(result.name);
+        
         const stock = new CreateStockDto(this.stock);
-        stock.quantityInLargeUnit = Math.round(
-          this.stock.numberInLargeUnit * this.stock.count
-        );
-        stock.totalNumberInSmallUnit =
-          stock.quantityInLargeUnit + this.stock.numberInSmallUnit;
-
         stock.unitId = result.id;
         this.stocks.push(stock);
 
@@ -179,7 +172,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
         this.stock.numberInLargeUnit = 0;
         this.stock.numberInSmallUnit = 0;
         this.stock.count = 0;
-        this.unit = " ";
+        this.unit = "";
       });
   }
 

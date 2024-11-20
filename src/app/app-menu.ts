@@ -124,12 +124,7 @@ const data: IMenuItem[] = [
           permissions: permissionsSetting,
           to: ``,
           subs: [
-            {
-              label: "DeliveriesList",
-              to: `${adminRoot}/orders/deliveries`,
-              icon: "",
-              permissions: permissionsSetting,
-            },
+           
             {
               label: "DeliveryManagement",
               to: `${adminRoot}/orders/manage-delivery`,

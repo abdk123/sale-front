@@ -57,14 +57,14 @@
                         <span>{{ 'Currency' | localize }}</span>
                     </label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" *ngIf="delivery.status < 2">
                     <label class=" has-float-label">
                         <ng-select [items]="deliveryStatus" bindLabel="name" bindValue="id" name="status" [(ngModel)]="delivery.status">
                         </ng-select>
                         <span>{{ 'Status' | localize }}</span>
                     </label>
                 </div>
-                <div class="col-md-3" *ngIf="delivery?.status === 1">
+                <div class="col-md-3" *ngIf="delivery?.status > 0">
                     <label class="form-group has-float-label">
                         <input type="text" required class="form-control" name="grNumber"
                             [(ngModel)]="delivery.grNumber" />

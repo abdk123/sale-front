@@ -11,14 +11,10 @@ import {
 import { AppComponentBase } from "@shared/app-component-base";
 import {
   ChangeItemStatusInputDto,
-  CreateDeliveryItemDto,
   DeliveryItemDto,
   DeliveryServiceProxy,
-  InvoiceItemForDeliveryDto,
-  InvoiceServiceProxy,
   UpdateDeliveryItemDto,
 } from "@shared/service-proxies/service-proxies";
-import { forEach } from "lodash-es";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { RejectDialogComponent } from "./reject-dialog/reject-dialog.component";
 
@@ -114,7 +110,8 @@ export class DeliveryReportItemComponent
       }
     );
     rejectDialog.content.onSave.subscribe(() => {
-      this.initialItems();
+      //this.initialItems();
+      this.items.forEach(x=>x.deliveryItemStatus = 2)
     });
   }
 

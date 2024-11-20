@@ -32,14 +32,14 @@
                     </label>
                     <span *ngIf="currencyIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <label class=" has-float-label">
                         <ng-select [items]="status" required bindLabel="name" bindValue="id" name="status" [(ngModel)]="offer.status" (change)="onChangeStatus($event)">
                         </ng-select>
                         <span>{{ 'Status' | localize }}</span>
                     </label>
                     <span *ngIf="statusIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
-                </div>
+                </div> -->
                 <div class="col-md-3">
                     <label class=" has-float-label">
                         <input class="form-control" required [(ngModel)]="offer.offerEndDate" name="offerEndDate"

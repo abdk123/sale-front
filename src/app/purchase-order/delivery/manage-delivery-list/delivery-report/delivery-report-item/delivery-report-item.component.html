@@ -38,8 +38,8 @@
                         <td>{{item.offerItem?.numberInSmallUnit}}</td>
                         <td>{{getSaleType(item)}}</td>
                         <td>
-                            <span *ngIf="item.deliveryItemStatus == 2" class="badge badge-pill badge-outline-danger">{{'RejectAndReturnToSupplier' | localize}}</span>
-                            <span *ngIf="item.deliveryItemStatus == 3" class="badge badge-pill badge-outline-danger">{{'RejectAndRecordAsDamaged' | localize}}</span>
+                            <span *ngIf="item.deliveryItemStatus == 2" class="badge badge-pill badge-outline-danger">{{'Rejected' | localize}}</span>
+                            <span *ngIf="item.deliveryItemStatus == 3" class="badge badge-pill badge-outline-danger">{{'Rejected' | localize}}</span>
                             <span *ngIf="item.deliveryItemStatus == 1" class="badge badge-pill badge-outline-success">{{'Approved' | localize}}</span>
                             <span *ngIf="item.deliveryItemStatus == 0" class="badge badge-pill badge-outline-success">{{'Pending' | localize}}</span>
                         </td>

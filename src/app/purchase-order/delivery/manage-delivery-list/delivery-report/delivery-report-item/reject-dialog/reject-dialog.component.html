@@ -1,36 +1,50 @@
 <abp-modal-header [title]="'RejectedMaterial' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
 <div class="modal-body modal-xl">
-  <div class="row">
-    <div class="col-md-6">
+  <div class="row mb-2" *ngFor="let item of rejectedMaterials; let index = index;trackBy:trackByIndex;">
+    <div class="col-md-1">
+      <div class="d-flex">
+        <a class="mr-1 cursor-pointer" (click)="addnewItem()"><span class="iconsminds-add text-success" style="font-size: 1.2rem;"></span></a>
+        <a class="cursor-pointer" (click)="removeItem(index)"><span class="iconsminds-remove  text-danger" style="font-size: 1.2rem;"></span></a>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <label class=" has-float-label">
+          <ng-select [items]="materialSource" required bindLabel="name" bindValue="id" name="materialSource" [(ngModel)]="rejectedMaterials[index].materialSource">
+          </ng-select>
+          <span>{{ 'MaterialSource' | localize }}</span>
+      </label>
+  </div>
+    <div class="col-md-3" *ngIf="rejectedMaterials[index].materialSource == 1">
+      <label class=" has-float-label">
+        <ng-select [items]="suppliers" required bindLabel="name" bindValue="id" [name]="'customerId'+[index]"
+            [(ngModel)]="rejectedMaterials[index].supplierId" (change)="onSelectCustomer($event,index)">
+        </ng-select>
+        <span >{{ 'Supplier' | localize }}</span> 
+    </label>
+    </div>
+    <div class="col-md-3">
       <label class=" has-float-label required">
-        <input type="number" class="form-control" required [(ngModel)]="rejectedQuantity" name="rejectedQuantity"
-          #rejectedQuantityModel="ngModel" #rejectedQuantityEl>
+        <input type="number" class="form-control" required [(ngModel)]="rejectedMaterials[index].rejectedQuantity" name="rejectedQuantity">
         <span>{{ 'RejectedQuantity' | localize }}</span>
       </label>
-      <abp-validation-summary [control]="rejectedQuantityModel"
-        [controlEl]="rejectedQuantityEl"></abp-validation-summary>
+      
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3">
       <label class=" has-float-label required">
-        <input class="form-control" required [(ngModel)]="model.rejectionDate" name="rejectionDate" bsDatepicker
+        <input class="form-control" required [(ngModel)]="rejectedMaterials[index].rejectionDate" name="rejectionDate" bsDatepicker
           [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
-          #rejectionDateModel="ngModel" #rejectionDateEl>
+          >
         <span>{{ 'RejectionDate' | localize }}</span>
       </label>
-      <abp-validation-summary [control]="rejectionDateModel" [controlEl]="rejectionDateEl">
-      </abp-validation-summary>
+      
     </div>
   </div>
 </div>
 <div class="modal-footer justify-content-between ">
   <div>
-    <button type="button" (click)="reject(true)" class="btn btn-primary"
-      [disabled]="saving || rejectedQuantity == 0 || rejectedQuantity == undefined">
-      <i class="bi bi-save"> </i> {{ 'RejectAndReturnToSupplier' | localize }}
-    </button>
-    <button type="button" (click)="reject(false)" class="btn btn-outline-primary  mx-2"
-      [disabled]="saving || rejectedQuantity == 0 || rejectedQuantity == undefined">
-      <i class="bi bi-save"> </i> {{ 'RejectAndRecordAsDamaged' | localize }}
+    <button type="button" (click)="save()" class="btn btn-primary"
+      [disabled]="saving || rejectedMaterials?.length == 0">
+      <i class="bi bi-save"> </i> {{ 'Save' | localize }}
     </button>
   </div>
   <button type="button" class="btn btn-outline-danger" [disabled]="saving" (click)="bsModalRef.hide()">

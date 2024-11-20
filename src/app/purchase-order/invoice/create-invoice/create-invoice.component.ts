@@ -154,11 +154,9 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
 
   onChangeOffer(item:OfferDto){
     this.selectedOffer = item;
-    this.invoice.invoiseDetails = [];
     this.offerService.getItemsByOfferId(item.id)
     .subscribe((result: UpdateOfferItemDto[]) =>{
-      
-      result.map(x=>{
+      result.forEach(x=>{
         let invoiceItem = new CreateInvoiceItemDto();
         invoiceItem.init({quantity:0,offerItemId:x.id,totalMaterilPrice:0});
         this.invoice.invoiseDetails.push(invoiceItem);
@@ -177,6 +175,7 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
     if (
       !this.typeIsRequired && !this.offerIsRequired && !this.supplierOfferIsRequired
     ) {
+      this.invoice.status = 1;
       
       this.saving = true;
       this.invoiceService

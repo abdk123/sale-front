@@ -42,7 +42,7 @@ currency: IEnumValue[] = [
   menuItems: IPageMenu[] = [
     {
       name: "addDeliveryReport",
-      label: "AddDeliveryReport",
+      label: "DeliveryManagement",
       icon: "bi bi-journal-bookmark",
     },
     {

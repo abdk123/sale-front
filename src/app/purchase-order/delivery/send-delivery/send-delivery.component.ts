@@ -20,7 +20,6 @@ import { finalize } from "rxjs";
 })
 export class SendDeliveryComponent extends AppComponentBase implements OnInit {
   deliveryDto: CreateDeliveryDto = new CreateDeliveryDto();
-  customerId: number;
   saving: boolean;
   customers: DropdownDto[] = [];
   customerIsRequired: boolean = false;
@@ -63,7 +62,6 @@ export class SendDeliveryComponent extends AppComponentBase implements OnInit {
 
   save() {
     this.saving = true;
-    this.deliveryDto.customerId = this.customerId;
     this.deliveryService
       .create(this.deliveryDto)
       .pipe(

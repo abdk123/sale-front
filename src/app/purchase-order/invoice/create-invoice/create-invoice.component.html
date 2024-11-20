@@ -19,7 +19,6 @@
                     <label class=" has-float-label">
                         <ng-select [items]="offerType" required bindLabel="name" bindValue="id" name="status"
                         (change)="onChangeOfferType($event)" [(ngModel)]="invoice.invoiceType">
-                            
                         </ng-select>
                         <span>{{ 'OfferType' | localize }} <span class="text-danger">*</span></span>
                     </label>
@@ -97,10 +96,10 @@
     </div>
 </form>
 
-<div class="card mt-2">
+<div class="card mt-2" *ngIf="invoice.invoiseDetails?.length > 0">
     <div class="card-body">
         <h5 class="card-title separator pb-2 mb-3">{{ 'MaterialsInfo' | localize }}</h5>
-        <div *ngIf="invoice.invoiseDetails?.length > 1" class="table-responsive">
+        <div  class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -108,8 +107,8 @@
                         <th>{{'Unit' | localize}}</th>
                         <th>{{'PackingUnit' | localize}}</th>
                         <th>{{'Quantity' | localize}}</th>
-                        <th>{{'MaterialPrice' | localize}}</th>
-                        <th>{{'TotalPrice' | localize}}</th>
+                        <!-- <th>{{'MaterialPrice' | localize}}</th>
+                        <th>{{'TotalPrice' | localize}}</th> -->
                         <th>{{'QuantityInStore' | localize}}</th>
                         <th>{{'SaleType' | localize}}</th>
                     </tr>

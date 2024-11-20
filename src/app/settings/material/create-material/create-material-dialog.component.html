@@ -38,10 +38,10 @@
       </div>
       <div class="col-md-4">
         <label class=" has-float-label">
-          <textarea type="text" class="form-control" required name="specification" id="specification"
-            [(ngModel)]="material.specification" #specificationModel="ngModel" rows="1" #specificationEl>
+          <textarea type="text" class="form-control"  name="specification" id="specification"
+            [(ngModel)]="material.specification" #specificationModel="ngModel" rows="3" #specificationEl>
              </textarea>
-          <abp-validation-summary [control]="specificationModel" [controlEl]="specificationEl"></abp-validation-summary>
+          <!-- <abp-validation-summary [control]="specificationModel" [controlEl]="specificationEl"></abp-validation-summary> -->
           <span>{{ "Specification"|localize }}</span>
         </label>
       </div>
@@ -65,14 +65,14 @@
   <div class="card-body">
     <h5 class="card-title separator pb-2 mb-3">{{ 'Stock' | localize }}</h5>    
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label class=" has-float-label">
             <ng-select [items]="stores" bindLabel="name" name="stock" bindValue="id" [(ngModel)]="stock.storeId">
             </ng-select>
             <span>{{ 'Store' | localize }}</span>
           </label>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label class=" has-float-label">
             <input type="text" class="form-control" unit="unit" id="unit" name="unit" [(ngModel)]="unit"
               #unitModel="ngModel" #unitEl />
@@ -80,32 +80,34 @@
             <span>{{ "Unit"|localize }}</span>
           </label>
         </div>
-        <div class="col-md-3">
-          <label class=" has-float-label">
-            <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.count"
-              #countModel="ngModel" #countEl />
-            <abp-validation-summary [control]="countModel" [controlEl]="countEl"></abp-validation-summary>
-            <span>{{ "Count"|localize }}</span>
-          </label>
-        </div>
-        <div class="col-md-3">
+        
+        <div class="col-md-4">
           <label class=" has-float-label">
             <ng-select [items]="sizes" name="size" [(ngModel)]="stock.sizeId" bindLabel="name" bindValue="id">
             </ng-select>
             <span>{{ 'Size' | localize }}</span>
           </label>
         </div>
-        <div class="col-md-3 mt-3">
+        <div class="col-md-4  mt-3">
+          <label class=" has-float-label">
+            <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.count"
+              #countModel="ngModel" #countEl />
+            <abp-validation-summary [control]="countModel" [controlEl]="countEl"></abp-validation-summary>
+            <span>{{ "ConversionValue"|localize }}</span>
+          </label>
+        </div>
+        <div class="col-md-4 mt-3">
           <label class=" has-float-label">
             <input type="number" name="numberInLargeUnit" class="form-control" numberInLargeUnit="numberInLargeUnit"
               id="numberInLargeUnit" [(ngModel)]="stock.numberInLargeUnit" #numberInLargeUnitModel="ngModel"
               #numberInLargeUnitEl />
             <abp-validation-summary [control]="numberInLargeUnitModel"
               [controlEl]="numberInLargeUnitEl"></abp-validation-summary>
-            <span>{{ "NumberInLargeUnit"|localize }}</span>
+            <span *ngIf="!unit || unit?.length < 2">{{ "Quantity" | localize }}</span>
+            <span *ngIf="unit?.length > 1">{{ "QuantityEnteredInUnit" | localize }} {{unit}}</span>
           </label>
         </div>
-        <div class="col-md-3 mt-3">
+        <!-- <div class="col-md-3 mt-3">
           <label class=" has-float-label">
             <input type="number" class="form-control" name="numberInSmallUnit" numberInSmallUnit="numberInSmallUnit"
               id="numberInSmallUnit" [(ngModel)]="stock.numberInSmallUnit" #numberInSmallUnitModel="ngModel"
@@ -114,7 +116,7 @@
               [controlEl]="numberInSmallUnitEl"></abp-validation-summary>
             <span>{{ "NumberInSmallUnit"|localize }}</span>
           </label>
-        </div>
+        </div> -->
         <div class="col-3 mt-3">
           <button type="button" class="btn btn-outline-primary" (click)="AddStock()">
             <i [class]="'bi bi-plus'"> </i> {{ 'Add' | localize }}
@@ -127,11 +129,10 @@
               <tr>
                 <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
                 <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
-                <th style="width: 13%;" class="bi">{{'NumberInLargeUnit' | localize}}</th>
-                <th style="width: 12%;" class="bi">{{'Count' | localize}}</th>
                 <th style="width: 13%;" class="bi">{{'QuantityInLargeUnit' | localize}}</th>
+                <th style="width: 12%;" class="bi">{{'ConversionValue' | localize}}</th>
+                <!-- <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th> -->
                 <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
-                <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th>
                 <th style="width: 3%;" class="bi"></th>
               </tr>
             </thead>
@@ -141,9 +142,8 @@
                 <td>{{getUnitName(i)}}</td>
                 <td>{{item.numberInLargeUnit}}</td>
                 <td>{{item.count}}</td>
-                <td>{{item.quantityInLargeUnit}}</td>
-                <td>{{item.totalNumberInSmallUnit + ' ' + getSizeName(item.sizeId)}}</td>
-                <td>{{item.numberInSmallUnit}}</td>
+                <!-- <td>{{item.numberInSmallUnit}}</td> -->
+                <td>{{(item.numberInLargeUnit * item.count) + ' ' + getSizeName(item.sizeId)}}</td>
                 <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
                     style="font-size: large; color: #dc3545; padding: 0;"></i></td>
               </tr>
