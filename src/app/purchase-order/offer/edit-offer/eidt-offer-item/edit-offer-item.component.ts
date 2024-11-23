@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, MaterialServiceProxy, OfferServiceProxy, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: "edit-offer-item",
@@ -13,9 +13,7 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
   @Input() offerId: number;
   items: UpdateOfferItemDto[] = [];
   materials: DropdownDto[] = [];
-  units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
-  allUnits: MaterialUnitDto[] = [];
   loading: boolean = false;
   saving = false;
   indexUpdate = -1;
@@ -45,19 +43,6 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
   initialMaterials() {
     this.materialService.getForDropdown().subscribe((result) => {
       this.materials = result;
-    });
-  }
-
-  initialMaterialUnits(materialId: number) {
-    this.stockService.getMaterialUnits(materialId).subscribe((result) => {
-      this.units = result;
-    });
-  }
-
-  initialAllMaterialUnits() {
-    this.stockService.getAllMaterialUnits().subscribe((result) => {
-      this.allUnits = result;
-      this.loading = true;
     });
   }
 

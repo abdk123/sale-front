@@ -38,41 +38,11 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   stocks: CreateStockDto[] = [];
   stores: StoreForDropdownDto[] = [];
   sizes: SizeForDropdownDto[] = [];
-  unit: string = "";
-  units: string[] = [];
+  units: UnitDto[] = [];
   expiryDate: Date;
   categoryIsRequired = false;
+  unitIsRequired = false;
   @Output() onSave = new EventEmitter<any>();
-
-  // fields = [
-  //   { label: this.l("Store"), name: "storeId", sortable: true, type: "number" },
-  //   { label: this.l("Unit"), name: "unitId", sortable: true, type: "number" },
-  //   {
-  //     label: this.l("NumberInLargeUnit"),
-  //     name: "numberInLargeUnit",
-  //     sortable: true,
-  //     type: "number",
-  //   },
-  //   { label: this.l("Count"), name: "count", sortable: true, type: "number" },
-  //   {
-  //     label: this.l("QuantityInLargeUnit"),
-  //     name: "quantityInLargeUnit",
-  //     sortable: true,
-  //     type: "number",
-  //   },
-  //   {
-  //     label: this.l("TotalNumberInSmallUnit"),
-  //     name: "totalNumberInSmallUnit",
-  //     sortable: true,
-  //     type: "number",
-  //   },
-  //   {
-  //     label: this.l("NumberInSmallUnit"),
-  //     name: "numberInSmallUnit",
-  //     sortable: true,
-  //     type: "number",
-  //   },
-  // ];
 
   constructor(
     injector: Injector,
@@ -80,7 +50,6 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
     private _categoryService: CategoryServiceProxy,
     private _storeService: StoreServiceProxy,
     private _sizeService: SizeServiceProxy,
-    private _stockService: StockServiceProxy,
     private _unitService: UnitServiceProxy,
     private _router: Router,
     public bsModalRef: BsModalRef
@@ -91,6 +60,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   ngOnInit(): void {
     this.initialCategories();
     this.initialStores();
+    this.initialUnits();
     this.initialSizes();
   }
 
@@ -115,6 +85,14 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
       .getForDropdown()
       .subscribe((result: SizeForDropdownDto[]) => {
         this.sizes = result;
+      });
+  }
+
+  initialUnits() {
+    this._unitService
+      .getAll(undefined,undefined,undefined,undefined,undefined,0,10000)
+      .subscribe((result) => {
+        this.units = result.items;
       });
   }
 
@@ -152,28 +130,11 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   }
 
   AddStock() {
-    
-    this._unitService
-      .create(
-        new CreateUnitDto({
-          id: undefined,
-          name: this.unit,
-        })
-      )
-      .subscribe((result) => {
-        
-        this.units.push(result.name);
-        
-        const stock = new CreateStockDto(this.stock);
-        stock.unitId = result.id;
+      const stock = new CreateStockDto(this.stock);
         this.stocks.push(stock);
-
         this.stock.init(new CreateStockDto());
-        this.stock.numberInLargeUnit = 0;
-        this.stock.numberInSmallUnit = 0;
-        this.stock.count = 0;
-        this.unit = "";
-      });
+        this.stock.quantity = 0;
+        this.stock.conversionValue = 0;
   }
 
   deleteStock(index) {
@@ -182,9 +143,8 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
       return !(
         x.sizeId === dStock.sizeId &&
         x.storeId === dStock.storeId &&
-        x.numberInLargeUnit === dStock.numberInLargeUnit &&
-        x.numberInSmallUnit === dStock.numberInSmallUnit &&
-        x.count === dStock.count
+        x.quantity === dStock.quantity &&
+        x.conversionValue === dStock.conversionValue
       );
     });
   }

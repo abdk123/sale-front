@@ -38,6 +38,14 @@
       </div>
       <div class="col-md-4">
         <label class=" has-float-label">
+          <ng-select [items]="units" name="unit" bindLabel="name" required bindValue="id" [(ngModel)]="material.unitId">
+          </ng-select>
+          <span>{{ 'Unit' | localize }}</span>
+        </label>
+        <span *ngIf="unitIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+      </div>
+      <div class="col-md-4">
+        <label class=" has-float-label">
           <textarea type="text" class="form-control"  name="specification" id="specification"
             [(ngModel)]="material.specification" #specificationModel="ngModel" rows="3" #specificationEl>
              </textarea>
@@ -74,15 +82,6 @@
         </div>
         <div class="col-md-4">
           <label class=" has-float-label">
-            <input type="text" class="form-control" unit="unit" id="unit" name="unit" [(ngModel)]="unit"
-              #unitModel="ngModel" #unitEl />
-            <abp-validation-summary [control]="unitModel" [controlEl]="unitEl"></abp-validation-summary>
-            <span>{{ "Unit"|localize }}</span>
-          </label>
-        </div>
-        
-        <div class="col-md-4">
-          <label class=" has-float-label">
             <ng-select [items]="sizes" name="size" [(ngModel)]="stock.sizeId" bindLabel="name" bindValue="id">
             </ng-select>
             <span>{{ 'Size' | localize }}</span>
@@ -90,7 +89,7 @@
         </div>
         <div class="col-md-4  mt-3">
           <label class=" has-float-label">
-            <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.count"
+            <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.conversionValue"
               #countModel="ngModel" #countEl />
             <abp-validation-summary [control]="countModel" [controlEl]="countEl"></abp-validation-summary>
             <span>{{ "ConversionValue"|localize }}</span>
@@ -99,12 +98,11 @@
         <div class="col-md-4 mt-3">
           <label class=" has-float-label">
             <input type="number" name="numberInLargeUnit" class="form-control" numberInLargeUnit="numberInLargeUnit"
-              id="numberInLargeUnit" [(ngModel)]="stock.numberInLargeUnit" #numberInLargeUnitModel="ngModel"
+              id="numberInLargeUnit" [(ngModel)]="stock.quantity" #numberInLargeUnitModel="ngModel"
               #numberInLargeUnitEl />
             <abp-validation-summary [control]="numberInLargeUnitModel"
               [controlEl]="numberInLargeUnitEl"></abp-validation-summary>
-            <span *ngIf="!unit || unit?.length < 2">{{ "Quantity" | localize }}</span>
-            <span *ngIf="unit?.length > 1">{{ "QuantityEnteredInUnit" | localize }} {{unit}}</span>
+            <span>{{ "Quantity" | localize }}</span>
           </label>
         </div>
         <!-- <div class="col-md-3 mt-3">

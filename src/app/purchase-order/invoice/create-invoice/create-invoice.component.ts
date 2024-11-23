@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CreateInvoiceDto, CreateInvoiceItemDto, CustomerDto, CustomerServiceProxy, DropdownDto, InvoiceServiceProxy, MaterialServiceProxy, MaterialUnitDto, OfferDto, OfferServiceProxy, StockDto, StockServiceProxy, SupplierOfferDto, SupplierOfferServiceProxy, UpdateOfferDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { CreateInvoiceDto, CreateInvoiceItemDto, CustomerDto, CustomerServiceProxy, DropdownDto, InvoiceServiceProxy, MaterialDto, MaterialServiceProxy, MaterialUnitDto, OfferDto, OfferServiceProxy, StockDto, StockServiceProxy, SupplierOfferDto, SupplierOfferServiceProxy, UpdateOfferDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
 import { result } from 'lodash-es';
 import { finalize, subscribeOn } from 'rxjs';
 
@@ -19,9 +19,10 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
   supplierOffers:SupplierOfferDto[] = [];
   selectedSupplierOffer:SupplierOfferDto = new SupplierOfferDto();
   suppliers: DropdownDto[] = [];
-  materials: DropdownDto[] = [];
-  units: MaterialUnitDto[] = [];
-  stocks: StockDto[] = [];
+  materialsIds: number[] = [];
+  materials:MaterialDto[] = [];
+  //units: MaterialUnitDto[] = [];
+  //allStocks: StockDto[] = [];
   allUnits: MaterialUnitDto[] = [];
   type = 0;
   offerType = [
@@ -49,9 +50,9 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
     this.invoice.invoiseDetails = [];
     this.invoice.invoiceType = 0;
     this.getOffers();
-    this.initialAllStocks();
+    //this.initialAllStocks();
     this.initialSuppliers();
-    this.initialMaterials();
+    //this.initialMaterials();
     this.initialAllMaterialUnits();
   }
 
@@ -76,22 +77,22 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
     .subscribe(result => this.supplierOffers = result);
   }
   initialMaterials() {
-    this.materialService.getForDropdown().subscribe((result) => {
+    this.materialService.getAllByIds(this.materialsIds).subscribe((result) => {
       this.materials = result;
     });
   }
 
-  initialMaterialUnits(materialId: number) {
-    this.stockService.getMaterialUnits(materialId).subscribe((result) => {
-      this.units = result;
-    });
-  }
+  // initialMaterialUnits(materialId: number) {
+  //   this.stockService.getMaterialUnits(materialId).subscribe((result) => {
+  //     this.units = result;
+  //   });
+  // }
 
 
-  getMaterialName(itemId: number, materialId: number) {
-    const offer = this.offers.find(x=>x.id == this.invoice.offerId);
-    return this.materials.find((x) => x.id == materialId)?.name;
-  }
+  // getMaterialName(itemId: number, materialId: number) {
+  //   const offer = this.offers.find(x=>x.id == this.invoice.offerId);
+  //   return this.materials.find((x) => x.id == materialId)?.name;
+  // }
 
   getUnit(id: number) {
     if (id) {
@@ -100,37 +101,29 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
     return "";
   }
 
-  getPackingUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && x.isSmallUnit)?.name;
-    }
-    return "";
-  }
+  // getPackingUnit(id: number) {
+  //   if (id) {
+  //     return this.allUnits.find((x) => x.id == id && x.isSmallUnit)?.name;
+  //   }
+  //   return "";
+  // }
 
-  allStocks: StockDto[] = [];
-  initialAllStocks(){
-    this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
-    .subscribe((result)=>{
-      this.allStocks = result.items;
-    })
-  }
+  // initialAllStocks(){
+  //   this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
+  //   .subscribe((result)=>{
+  //     this.allStocks = result.items;
+  //   })
+  // }
 
   getStock(materialId: number) {
-    debugger;
-    if(this.stocks.length !== 0){
-    var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
-    }else{
-      var materialStocks = this.allStocks.filter(
-        (x) => x.materialId == materialId
-      );
-    }
+    const material = this.materials.find(x=>x.id == materialId);
 
-    if (materialStocks.length > -1) {
-      var valueInLargeUnit = materialStocks.reduce(
+    if (material.stocks.length > -1) {
+      var valueInLargeUnit = material.stocks.reduce(
         (sum, current) => sum + current.numberInLargeUnit,
         0
       );
-      var valueInSmallUnit = materialStocks.reduce(
+      var valueInSmallUnit = material.stocks.reduce(
         (sum, current) => sum + current.numberInSmallUnit,
         0
       );
@@ -156,11 +149,14 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
     this.selectedOffer = item;
     this.offerService.getItemsByOfferId(item.id)
     .subscribe((result: UpdateOfferItemDto[]) =>{
+      this.materialsIds = [];
       result.forEach(x=>{
+        this.materialsIds.push(x.materialId);
         let invoiceItem = new CreateInvoiceItemDto();
         invoiceItem.init({quantity:0,offerItemId:x.id,totalMaterilPrice:0});
         this.invoice.invoiseDetails.push(invoiceItem);
       });
+      this.initialMaterials();
     });
   }
 

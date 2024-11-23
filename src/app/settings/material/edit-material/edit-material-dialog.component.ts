@@ -8,13 +8,10 @@ import {
   SizeForDropdownDto,
   StoreForDropdownDto,
   UpdateStockDto,
-  UpdateUnitDto,
   SizeServiceProxy,
-  StockServiceProxy,
   StoreServiceProxy,
   UnitServiceProxy,
   UnitDto,
-  StockDto,
 } from "@shared/service-proxies/service-proxies";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { finalize } from "rxjs";
@@ -32,29 +29,27 @@ export class ClassUnit{
 })
 export class EditMaterialDialogComponent extends AppComponentBase {
   saving = false;
-  id: number;
   material = new UpdateMaterialDto();
   categories: CategoryForDropdownDto[] = [];
   stock: UpdateStockDto = new UpdateStockDto();
   stocks: UpdateStockDto[] = [];
   stores: StoreForDropdownDto[] = [];
   sizes: SizeForDropdownDto[] = [];
-  unit: string = "";
-  units: ClassUnit[] = [];
-  allUnits: UnitDto[] = [];
+  units: UnitDto[] = [];
   expiryDate: Date;
-  deletedStocksIds: number[] = [];
-
+  categoryIsRequired = false;
+  unitIsRequired = false;
+  id:number;
   @Output() onSave = new EventEmitter<any>();
+
   constructor(
     injector: Injector,
     private _materialService: MaterialServiceProxy,
     private _categoryService: CategoryServiceProxy,
     private _storeService: StoreServiceProxy,
     private _sizeService: SizeServiceProxy,
-    private _router: Router,
-    private _stockService: StockServiceProxy,
     private _unitService: UnitServiceProxy,
+    private _router: Router,
     private _route: ActivatedRoute,
     public bsModalRef: BsModalRef
   ) {
@@ -66,26 +61,17 @@ export class EditMaterialDialogComponent extends AppComponentBase {
     this.initMaterial();
     this.initialCategories();
     this.initialStores();
+    this.initialUnits();
     this.initialSizes();
   }
 
-  initialStocks(materialId) {
-    this._stockService.getAllByMaterialId(materialId).subscribe((result) => {
-      this.stocks = result;
-
-      this.stocks.forEach((item) => {
-        this._unitService.get(item.unitId).subscribe((res) => {
-          const unitClass = new ClassUnit();
-          unitClass.stockId = item.id;
-          unitClass.name = res.name;
-          unitClass.unitId = res.id;
-
-          this.units.push(unitClass);
-        });
+  initMaterial() {
+    this._materialService
+      .getForEdit(this.id)
+      .subscribe((result: UpdateMaterialDto) => {
+        this.material = result;
       });
-    });
   }
-
   initialCategories() {
     this._categoryService
       .getAllForDropdown()
@@ -110,6 +96,14 @@ export class EditMaterialDialogComponent extends AppComponentBase {
       });
   }
 
+  initialUnits() {
+    this._unitService
+      .getAll(undefined,undefined,undefined,undefined,undefined,0,10000)
+      .subscribe((result) => {
+        this.units = result.items;
+      });
+  }
+
   getStoreName(storeId) {
     return this.stores.find((x) => x.id == storeId).name;
   }
@@ -118,101 +112,48 @@ export class EditMaterialDialogComponent extends AppComponentBase {
     return this.sizes.find((x) => x.id == sizeId).name;
   }
 
-  getUnitName(stockId, unitId) {
-    return this.units.find((x) => {
-      return x.stockId === stockId && x.unitId === unitId;
-    }).name;
-  }
-
-  initMaterial() {
-    this._materialService
-      .getForEdit(this.id)
-      .subscribe((result: UpdateMaterialDto) => {
-        this.material = result;
-        this.initialStocks(result.id);
-      });
+  getUnitName(index) {
+    return this.units[index];
   }
 
   save(): void {
-    this.saving = true;
-    this._materialService
-      .update(this.material)
-      .pipe(
-        finalize(() => {
-          this.saving = false;
+    this.categoryIsRequired = this.material.categoryId ? false : true;
+    if(!this.categoryIsRequired){
+      this.saving = true;
+      this.material.stocks = this.stocks;
+      this._materialService
+        .create(this.material)
+        .pipe(
+          finalize(() => {
+            this.saving = false;
+          })
+        )
+        .subscribe((result) => {
           this.notify.info(this.l("SavedSuccessfully"));
-          this.bsModalRef.hide();
-          this._router.navigate(["/app/settings/material"]);
-          this.onSave.emit();
-        })
-      )
-      .subscribe((result: any) => {
-        this.stocks.forEach((item) => {
-          if (item.id === undefined) {
-            item.materialId = result.id;
-            this._stockService.create(item).subscribe((res) => {});
-          }
+            this.bsModalRef.hide();
+            this._router.navigate(["/app/settings/material"]);
+            this.onSave.emit();
         });
-
-        this.deletedStocksIds.forEach((id) => {
-          this._stockService.delete(id).subscribe((result) => {});
-        });
-      });
+    }    
   }
 
   AddStock() {
-    this._unitService
-      .create(
-        new UpdateUnitDto({
-          id: undefined,
-          name: this.unit,
-        })
-      )
-      .subscribe((result) => {
-        const unitClass = new ClassUnit();
-        unitClass.name = this.unit;
-        unitClass.unitId = result.id;
-        this.units.push(unitClass);
-
-        const stock = new UpdateStockDto(this.stock);
-        stock.quantityInLargeUnit = Math.round(
-          this.stock.numberInLargeUnit * this.stock.count
-        );
-        stock.totalNumberInSmallUnit =
-          stock.quantityInLargeUnit + this.stock.numberInSmallUnit;
-
-        stock.unitId = result.id;
+      const stock = new UpdateStockDto(this.stock);
         this.stocks.push(stock);
-
         this.stock.init(new UpdateStockDto());
-        this.stock.numberInLargeUnit = 0;
-        this.stock.numberInSmallUnit = 0;
-        this.stock.count = 0;
-        this.unit = " ";
-      });
+        this.stock.quantity = 0;
+        this.stock.conversionValue = 0;
   }
 
   deleteStock(index) {
     const dStock = this.stocks[index];
-    this.units = this.units.filter((z) => {
-      return !(z.stockId === dStock.id && z.unitId === dStock.unitId);
+    this.stocks = this.stocks.filter((x) => {
+      return !(
+        x.sizeId === dStock.sizeId &&
+        x.storeId === dStock.storeId &&
+        x.quantity === dStock.quantity &&
+        x.conversionValue === dStock.conversionValue
+      );
     });
-
-    if (dStock.id === undefined) {
-      this.stocks = this.stocks.filter((x) => {
-        return !(
-          x.sizeId === dStock.sizeId &&
-          x.storeId === dStock.storeId &&
-          x.numberInLargeUnit === dStock.numberInLargeUnit &&
-          x.numberInSmallUnit === dStock.numberInSmallUnit &&
-          x.count === dStock.count
-        );
-      });
-    } else {
-      this.deletedStocksIds.push(dStock.id);
-      this.stocks = this.stocks.filter((x) => {
-        return !(x.id === dStock.id);
-      });
-    }
   }
 }
