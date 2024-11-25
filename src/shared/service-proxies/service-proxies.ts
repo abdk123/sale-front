@@ -28582,6 +28582,7 @@ export class StockDto implements IStockDto {
     materialId: number | undefined;
     material: string | undefined;
     storeId: number | undefined;
+    store: StoreDto;
     size: SizeDto;
 
     constructor(data?: IStockDto) {
@@ -28605,6 +28606,7 @@ export class StockDto implements IStockDto {
             this.materialId = _data["materialId"];
             this.material = _data["material"];
             this.storeId = _data["storeId"];
+            this.store = _data["store"] ? StoreDto.fromJS(_data["store"]) : <any>undefined;
             this.size = _data["size"] ? SizeDto.fromJS(_data["size"]) : <any>undefined;
         }
     }
@@ -28628,6 +28630,7 @@ export class StockDto implements IStockDto {
         data["materialId"] = this.materialId;
         data["material"] = this.material;
         data["storeId"] = this.storeId;
+        data["store"] = this.store ? this.store.toJSON() : <any>undefined;
         data["size"] = this.size ? this.size.toJSON() : <any>undefined;
         return data;
     }
@@ -28651,6 +28654,7 @@ export interface IStockDto {
     materialId: number | undefined;
     material: string | undefined;
     storeId: number | undefined;
+    store: StoreDto;
     size: SizeDto;
 }
 
@@ -31388,8 +31392,13 @@ export interface IUpdateEmployeeDto {
 
 export class UpdateInvoiceDto implements IUpdateInvoiceDto {
     id: number;
-    status: number;
+    invoiceType: number;
     offerId: number | undefined;
+    supplierOfferId: number | undefined;
+    supplierId: number | undefined;
+    currency: Currency;
+    status: number;
+    invoiseDetails: UpdateInvoiceItemDto[] | undefined;
 
     constructor(data?: IUpdateInvoiceDto) {
         if (data) {
@@ -31403,8 +31412,17 @@ export class UpdateInvoiceDto implements IUpdateInvoiceDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.status = _data["status"];
+            this.invoiceType = _data["invoiceType"];
             this.offerId = _data["offerId"];
+            this.supplierOfferId = _data["supplierOfferId"];
+            this.supplierId = _data["supplierId"];
+            this.currency = _data["currency"];
+            this.status = _data["status"];
+            if (Array.isArray(_data["invoiseDetails"])) {
+                this.invoiseDetails = [] as any;
+                for (let item of _data["invoiseDetails"])
+                    this.invoiseDetails.push(UpdateInvoiceItemDto.fromJS(item));
+            }
         }
     }
 
@@ -31418,8 +31436,17 @@ export class UpdateInvoiceDto implements IUpdateInvoiceDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["status"] = this.status;
+        data["invoiceType"] = this.invoiceType;
         data["offerId"] = this.offerId;
+        data["supplierOfferId"] = this.supplierOfferId;
+        data["supplierId"] = this.supplierId;
+        data["currency"] = this.currency;
+        data["status"] = this.status;
+        if (Array.isArray(this.invoiseDetails)) {
+            data["invoiseDetails"] = [];
+            for (let item of this.invoiseDetails)
+                data["invoiseDetails"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -31433,8 +31460,72 @@ export class UpdateInvoiceDto implements IUpdateInvoiceDto {
 
 export interface IUpdateInvoiceDto {
     id: number;
-    status: number;
+    invoiceType: number;
     offerId: number | undefined;
+    supplierOfferId: number | undefined;
+    supplierId: number | undefined;
+    currency: Currency;
+    status: number;
+    invoiseDetails: UpdateInvoiceItemDto[] | undefined;
+}
+
+export class UpdateInvoiceItemDto implements IUpdateInvoiceItemDto {
+    id: number;
+    quantity: number;
+    offerItemId: number | undefined;
+    supplierOfferItemId: number | undefined;
+    totalMaterilPrice: number;
+
+    constructor(data?: IUpdateInvoiceItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.quantity = _data["quantity"];
+            this.offerItemId = _data["offerItemId"];
+            this.supplierOfferItemId = _data["supplierOfferItemId"];
+            this.totalMaterilPrice = _data["totalMaterilPrice"];
+        }
+    }
+
+    static fromJS(data: any): UpdateInvoiceItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateInvoiceItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["quantity"] = this.quantity;
+        data["offerItemId"] = this.offerItemId;
+        data["supplierOfferItemId"] = this.supplierOfferItemId;
+        data["totalMaterilPrice"] = this.totalMaterilPrice;
+        return data;
+    }
+
+    clone(): UpdateInvoiceItemDto {
+        const json = this.toJSON();
+        let result = new UpdateInvoiceItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateInvoiceItemDto {
+    id: number;
+    quantity: number;
+    offerItemId: number | undefined;
+    supplierOfferItemId: number | undefined;
+    totalMaterilPrice: number;
 }
 
 export class UpdateMaterialDto implements IUpdateMaterialDto {

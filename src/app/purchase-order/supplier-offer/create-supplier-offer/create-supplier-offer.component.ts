@@ -19,7 +19,7 @@ import { finalize } from "rxjs";
   styleUrls: ["./create-supplier-offer.component.scss"],
 })
 export class CreateSupplierOfferComponent extends AppComponentBase implements OnInit {
-  supplierOffer: CreateSupplierOfferDto = new CreateSupplierOfferDto();
+  offer: CreateSupplierOfferDto = new CreateSupplierOfferDto();
   saving = false;
   customerIsRequired = false;
   currencyIsRequired = false;
@@ -41,13 +41,13 @@ export class CreateSupplierOfferComponent extends AppComponentBase implements On
     private router: Router,
     private customerService: CustomerServiceProxy,
     private customerCashFlowService: CustomerCashFlowServiceProxy,
-    private supplierOfferService: SupplierOfferServiceProxy,
+    private offerService: SupplierOfferServiceProxy,
   ) {
     super(injector);
   }
   ngOnInit(): void {
     this.initialCustomers();
-    this.supplierOffer.status = 0;
+    this.offer.status = 0;
   }
 
   initialCustomers() {
@@ -61,44 +61,47 @@ export class CreateSupplierOfferComponent extends AppComponentBase implements On
       this.showPorchaseOrder = true;
     }else{
       this.showPorchaseOrder = false;
-      this.supplierOffer.porchaseOrderId = '';
+      this.offer.porchaseOrderId = '';
     }
   }
 
   save() {
-    this.customerIsRequired = this.supplierOffer.supplierId ? false : true;
-    this.statusIsRequired = this.supplierOffer.status == undefined ? true : false;
-    this.currencyIsRequired = this.supplierOffer.currency == undefined ? true : false;
+    
+    this.customerIsRequired = this.offer.supplierId ? false : true;
+    this.statusIsRequired = this.offer.status == undefined ? true : false;
+    this.currencyIsRequired = this.offer.currency == undefined ? true : false;
     if(!this.customerIsRequired && !this.statusIsRequired && !this.currencyIsRequired){
-      if(!this.supplierOffer.supplierOfferItems){
+      if(!this.offer.supplierOfferItems){
         abp.message.warn(this.l('PleaseAddAtLeastOneMaterial'));
       }
-      if(!this.supplierOffer.porchaseOrderId && this.supplierOffer.status == 1){
+      if(!this.offer.porchaseOrderId && this.offer.status == 1){
         abp.message.warn(this.l('PoNumberIsRequired'));
       }
       this.saving = true;
-    this.supplierOfferService
-      .create(this.supplierOffer)
+    this.offerService
+      .create(this.offer)
       .pipe(
         finalize(() => {
           this.saving = false;
           this.notify.info(this.l("SavedSuccessfully"));
+          this.router.navigate(['/app/orders/supplier-offers']);
         })
       )
       .subscribe((result) => {
-        this.router.navigate(['/app/orders/supplier-offers']);
+        
       });
     }
   }
 
   onSaveOfferItem(items:CreateSupplierOfferItemDto[]) {
-    this.supplierOffer.supplierOfferItems = items;
+    this.offer.supplierOfferItems = items;
   }
 
-  onSelectSupplier(args){
-    this.customerCashFlowService.getBalance(this.supplierOffer.supplierId)
+  onSelectCustomer(args){
+    this.customerCashFlowService.getBalance(this.offer.supplierId)
     .subscribe((result: BalanceInfoDto)=>{
       this.customerBalance = result;
     })
   }
 }
+

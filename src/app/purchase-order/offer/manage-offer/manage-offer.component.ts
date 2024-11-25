@@ -1,8 +1,7 @@
-import { DatePipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { ChangeOfferStatusDto, CustomerDto, CustomerServiceProxy, DropdownDto, OfferDto, OfferServiceProxy, UpdateOfferDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { ChangeOfferStatusDto, OfferDto, OfferServiceProxy } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
 
 @Component({

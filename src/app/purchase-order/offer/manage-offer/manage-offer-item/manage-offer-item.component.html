@@ -8,7 +8,6 @@
                         <th></th>
                         <th>{{'Material' | localize}}</th>
                         <th>{{'Unit' | localize}}</th>
-                        <th>{{'PackingUnit' | localize}}</th>
                         <th>{{'Quantity' | localize}}</th>
                         <th>{{'MaterialPrice' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
@@ -25,8 +24,7 @@
                             </label>
                         </td>
                         <td>{{getMaterialName(item.materialId)}}</td>
-                        <td>{{getUnit(item.unitId)}}</td>
-                        <td>{{getPackingUnit(item.sizeId)}}</td>
+                        <td>{{getUnit(item)}}</td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.unitPrice}}</td>
                         <td>{{item.unitPrice * item.quantity}}</td>

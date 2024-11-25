@@ -116,7 +116,7 @@
                 <tbody>
                     <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;">
                         <td>{{selectedOffer?.offerItems[index]?.material?.name}}</td>
-                        <td>{{getUnit(selectedOffer?.offerItems[index]?.unitId)}}</td>
+                        <td>{{selectedOffer?.offerItems[index]?.unit.name}}</td>
                         <!-- <td>{{getPackingUnit(selectedOffer?.offerItems[index]?.sizeId)}}</td> -->
                         <td>
                             <input type="number" [(ngModel)]="invoice.invoiseDetails[index].quantity" class="form-control" />
@@ -125,8 +125,7 @@
                             <input type="number" [(ngModel)]="invoice.invoiseDetails[index].totalMaterilPrice" class="form-control" />
                         </td>
                         <td>{{item.totalMaterilPrice * item.quantity}}</td>
-                        <td>{{getStock(selectedOffer?.offerItems[index]?.material?.id)}} {{getUnit(selectedOffer?.offerItems[index]?.unitId)}}</td>
-                        <!-- <td>{{getSaleType(selectedOffer?.offerItems[index]?.addedBySmallUnit)}}</td> -->
+                        <td>{{getStock(selectedOffer?.offerItems[index]?.material?.id)}} {{selectedOffer?.offerItems[index]?.unit.name}}</td>
                     </tr>
                 </tbody>
             </table>

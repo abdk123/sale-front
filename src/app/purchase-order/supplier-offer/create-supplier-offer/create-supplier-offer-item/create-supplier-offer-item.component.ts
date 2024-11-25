@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Injector,
-  Input,
   OnInit,
   Output,
 } from "@angular/core";
@@ -11,9 +10,10 @@ import {
   CreateSupplierOfferItemDto,
   DropdownDto,
   MaterialServiceProxy,
-  MaterialUnitDto,
+  SizeDto,
   StockDto,
   StockServiceProxy,
+  UnitDto,
 } from "@shared/service-proxies/service-proxies";
 
 @Component({
@@ -29,7 +29,8 @@ export class CreateSupplierOfferItemComponent
   @Output() onSave = new EventEmitter<CreateSupplierOfferItemDto[]>();
   items: CreateSupplierOfferItemDto[] = [];
   materials: DropdownDto[] = [];
-  units: MaterialUnitDto[] = [];
+  sizes: SizeDto[] = [];
+  units: UnitDto[] = [];
   stocks: StockDto[] = [];
   saving=false;
   indexUpdate = -1;
@@ -38,7 +39,6 @@ export class CreateSupplierOfferItemComponent
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
-    private stockService: StockServiceProxy
   ) {
     super(injector);
   }
@@ -52,38 +52,24 @@ export class CreateSupplierOfferItemComponent
     });
   }
 
-  initialMaterialUnits(materialId: number) {
-    this.stockService.getMaterialUnits(materialId).subscribe((result) => {
-      this.units = result;
-    });
-  }
-
-  initialStocks(materialId: number) {
-    this.stockService.getAllByMaterialId(materialId).subscribe((result) => {
-      this.stocks.push.apply(this.stocks, result);
-    });
-  }
-
   onSelectMaterial(dto: DropdownDto) {
-    this.initialMaterialUnits(dto.id);
-    if(this.stocks.findIndex(x=>x.materialId) == -1){
-      this.initialStocks(dto.id);
-    }
+    this.materialService.getById(dto.id)
+    .subscribe(result=>{
+      if(this.units.findIndex(x=>x.id == result.unitId) == -1)
+        this.units.push(result.unit);
+      result.stocks.forEach(stock=>{
+        this.sizes = [];
+        this.sizes.push(stock.size);
+        if(this.stocks.findIndex(x=>x.id == stock.id) == -1)
+          this.stocks.push(stock);
+      })
+    })
   }
 
-  onChangeAddedbyUnit(dto: MaterialUnitDto) {
-    if(dto){
-      if (dto.isSmallUnit) {
-        this.item.addedBySmallUnit = true;
-        this.item.sizeId = dto.id;
-        this.item.unitId = undefined;
-      } else {
-        this.item.addedBySmallUnit = false;
-        this.item.unitId = dto.id;
-        this.item.sizeId = undefined;
-      }
-    }
+  onSelectPackageUnit(dto: StockDto){
+
   }
+
 
   save() {
     this.materialIsRequired = this.item.materialId ? false : true;
@@ -131,7 +117,7 @@ export class CreateSupplierOfferItemComponent
   deleteItem(index:number): void {
     var material = this.materials.find(x=> x.id == this.items[index].materialId);
     abp.message.confirm(
-      this.l('SupplierOfferMaterialDeleteWarningMessage',material.name),
+      this.l('OfferMaterialDeleteWarningMessage',material.name),
       undefined,
       (result: boolean) => {
         if (result) {
@@ -145,25 +131,18 @@ export class CreateSupplierOfferItemComponent
     return this.materials.find((x) => x.id == materialId)?.name;
   }
 
-  getUnit(id: number) {
-    if (id) {
-      return this.units.find((x) => x.id == id && !x.isSmallUnit)?.name;
+  getUnit(item: CreateSupplierOfferItemDto) {
+    if (item.addedBySmallUnit) {
+      return this.getMaterialName(item.materialId);
     }
-    return "";
-  }
-
-  getPackingUnit(id: number) {
-    if (id) {
-      return this.units.find((x) => x.id == id && x.isSmallUnit)?.name;
-    }
-    return "";
+    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
   }
 
   getStock(materialId:number){
     var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
 
     if(materialStocks.length > -1){
-      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.numberInLargeUnit, 0);
+      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
       var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
     }
     return `${valueInLargeUnit}-${valueInSmallUnit}`;

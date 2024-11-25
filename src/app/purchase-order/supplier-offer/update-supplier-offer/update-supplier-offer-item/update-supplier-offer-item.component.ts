@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, SupplierOfferServiceProxy, UnitDto, UpdateOfferItemDto, UpdateSupplierOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, MaterialServiceProxy, SupplierOfferServiceProxy, StockDto, UnitDto, UpdateSupplierOfferItemDto, SizeDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: "update-supplier-offer-item",
@@ -13,77 +13,65 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
   @Input() offerId: number;
   items: UpdateSupplierOfferItemDto[] = [];
   materials: DropdownDto[] = [];
-  units: MaterialUnitDto[] = [];
+  sizes: SizeDto[] = [];
+  units: UnitDto[] = [];
   stocks: StockDto[] = [];
-  allUnits: MaterialUnitDto[] = [];
-  loading: boolean = false;
-  saving = false;
+  saving=false;
   indexUpdate = -1;
   materialIsRequired = false;
   addByUnitIsRequired = false;
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
-    private _offerService: SupplierOfferServiceProxy,
-    private stockService: StockServiceProxy
+    private offerService: SupplierOfferServiceProxy,
   ) {
     super(injector);
   }
   ngOnInit(): void {
-    this.initialAllStocks();
-    this.initialItems();
     this.initialMaterials();
-    this.initialAllMaterialUnits();
+    this.initialItems();
   }
 
   initialItems() {
-    this._offerService.getItemsBySupplierOfferId(this.offerId).subscribe((result) => {
+    this.offerService.getItemsBySupplierOfferId(this.offerId).subscribe((result) => {
       this.items = result;
+      let materialsIds = [];
+      this.items.forEach(x=> {materialsIds.push(x.materialId)});
+      this.materialService.getAllByIds(materialsIds)
+      .subscribe(data=>{
+        this.initialInfo(data);
+      })
     });
   }
-  
+
   initialMaterials() {
     this.materialService.getForDropdown().subscribe((result) => {
       this.materials = result;
     });
   }
 
-  initialMaterialUnits(materialId: number) {
-    this.stockService.getMaterialUnits(materialId).subscribe((result) => {
-      this.units = result;
-    });
-  }
-
-  initialAllMaterialUnits() {
-    this.stockService.getAllMaterialUnits().subscribe((result) => {
-      this.allUnits = result;
-      this.loading = true;
-    });
-  }
-
-  initialStocks(materialId: number) {
-    this.stockService.getAllByMaterialId(materialId).subscribe((result) => {
-      this.stocks.push.apply(this.stocks, result);
-    });
-  }
-
   onSelectMaterial(dto: DropdownDto) {
-    this.initialMaterialUnits(dto.id);
-    if (this.stocks.findIndex((x) => x.materialId) == -1) {
-      this.initialStocks(dto.id);
-    }
+    this.materialService.getById(dto.id)
+    .subscribe(result=>{
+      this.initialInfo(result);
+    })
   }
 
-  onChangeAddedbyUnit(dto: MaterialUnitDto) {
-    if (dto) {
-      if (dto.isSmallUnit) {
-        this.item.addedBySmallUnit = dto.isSmallUnit;
-        this.item.sizeId = dto.id;
-      } else {
-        this.item.unitId = dto.id;
-      }
-    }
+  initialInfo(result){
+    if(this.units.findIndex(x=>x.id == result.unitId) == -1)
+      this.units.push(result.unit);
+    result.stocks.forEach(stock=>{
+      this.sizes = [];
+      this.sizes.push(stock.size);
+      if(this.stocks.findIndex(x=>x.id == stock.id) == -1)
+        this.stocks.push(stock);
+    })
   }
+
+  onSelectPackageUnit(dto: StockDto){
+
+  }
+
 
   save() {
     this.materialIsRequired = this.item.materialId ? false : true;
@@ -103,23 +91,11 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
   initialItemForUpdate(index: number) {
     this.indexUpdate = index;
     this.item = this.items[this.indexUpdate];
-
-    // 
-    // this.initialMaterialUnits(this.item.materialId);
-    // if (this.stocks.findIndex((x) => x.materialId) == -1) {
-    //   this.initialStocks(this.item.materialId);
-    // }
-  }
-
-  DeleteItem(i){
-    const item = this.items[i];
-    this.items = this.items.filter(x=>x.id != item.id);
-    this.onSave.emit(this.items);
   }
 
   cancelUpdate() {
     this.indexUpdate = -1;
-    this.item = new UpdateOfferItemDto();
+    this.item = new UpdateSupplierOfferItemDto();
   }
 
   updateItem() {
@@ -131,25 +107,23 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
     this.items[this.indexUpdate].unitPrice = this.item.unitPrice;
     this.items[this.indexUpdate].specefecation = this.item.specefecation;
     this.onSave.emit(this.items);
-    this.item = new UpdateOfferItemDto();
+    this.item = new UpdateSupplierOfferItemDto();
   }
 
   addNewItem() {
     this.items.push(this.item);
-    this.item = new UpdateOfferItemDto();
+    this.item = new UpdateSupplierOfferItemDto();
     this.onSave.emit(this.items);
   }
 
-  deleteItem(index: number): void {
-    var material = this.materials.find(
-      (x) => x.id == this.items[index].materialId
-    );
+  deleteItem(index:number): void {
+    var material = this.materials.find(x=> x.id == this.items[index].materialId);
     abp.message.confirm(
-      this.l("OfferMaterialDeleteWarningMessage", material.name),
+      this.l('SupplierOfferMaterialDeleteWarningMessage',material.name),
       undefined,
       (result: boolean) => {
         if (result) {
-          this.items.splice(index, 1);
+          this.items.splice(index,1);
         }
       }
     );
@@ -159,56 +133,24 @@ export class UpdateSupplierOfferItemComponent extends AppComponentBase implement
     return this.materials.find((x) => x.id == materialId)?.name;
   }
 
-  getUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && !x.isSmallUnit)?.name;
+  getUnit(item: UpdateSupplierOfferItemDto) {
+    if (item.addedBySmallUnit) {
+      return this.getMaterialName(item.materialId);
     }
-    return "";
+    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
   }
 
-  getPackingUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && x.isSmallUnit)?.name;
-    }
-    return "";
-  }
+  getStock(materialId:number){
+    var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
 
-  allStocks: StockDto[] = [];
-  initialAllStocks(){
-    
-    this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
-    .subscribe((result)=>{
-      
-      this.allStocks = result.items;
-    })
-  }
-
-  getStock(materialId: number) {
-    
-    if(this.stocks.length !== 0){
-    var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
-    }else{
-      var materialStocks = this.allStocks.filter(
-        (x) => x.materialId == materialId
-      );
-    }
-
-    if (materialStocks.length > -1) {
-      var valueInLargeUnit = materialStocks.reduce(
-        (sum, current) => sum + current.numberInLargeUnit,
-        0
-      );
-      var valueInSmallUnit = materialStocks.reduce(
-        (sum, current) => sum + current.numberInSmallUnit,
-        0
-      );
+    if(materialStocks.length > -1){
+      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
+      var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
     }
     return `${valueInLargeUnit}-${valueInSmallUnit}`;
   }
 
-  getSaleType(addedBySmallUnit) {
-    return addedBySmallUnit
-      ? `${this.l("SmallUnit")}`
-      : `${this.l("LargeUnit")}`;
+  getSaleType(addedBySmallUnit){
+    return addedBySmallUnit ? `${this.l("SmallUnit")}` : `${this.l("LargeUnit")}`
   }
 }

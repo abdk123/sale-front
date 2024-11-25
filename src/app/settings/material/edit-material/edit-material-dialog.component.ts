@@ -113,7 +113,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   }
 
   getUnitName(index) {
-    return this.units[index];
+    return this.units[index].name;
   }
 
   save(): void {
@@ -138,11 +138,7 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   }
 
   AddStock() {
-      const stock = new UpdateStockDto(this.stock);
-        this.stocks.push(stock);
-        this.stock.init(new UpdateStockDto());
-        this.stock.quantity = 0;
-        this.stock.conversionValue = 0;
+      this.material.stocks.push()
   }
 
   deleteStock(index) {

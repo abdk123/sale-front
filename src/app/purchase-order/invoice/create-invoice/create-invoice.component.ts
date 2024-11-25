@@ -1,9 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CreateInvoiceDto, CreateInvoiceItemDto, CustomerDto, CustomerServiceProxy, DropdownDto, InvoiceServiceProxy, MaterialDto, MaterialServiceProxy, MaterialUnitDto, OfferDto, OfferServiceProxy, StockDto, StockServiceProxy, SupplierOfferDto, SupplierOfferServiceProxy, UpdateOfferDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
-import { result } from 'lodash-es';
-import { finalize, subscribeOn } from 'rxjs';
+import { CreateInvoiceDto, CreateInvoiceItemDto, CustomerServiceProxy, DropdownDto, InvoiceServiceProxy, MaterialDto, MaterialServiceProxy, OfferDto, OfferServiceProxy, StockServiceProxy, SupplierOfferDto, SupplierOfferServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'create-invoice',
@@ -11,7 +10,6 @@ import { finalize, subscribeOn } from 'rxjs';
   styleUrls: ['./create-invoice.component.scss']
 })
 export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
-
   saving: boolean = false;
   invoice: CreateInvoiceDto = new CreateInvoiceDto();
   offers:OfferDto[] = [];
@@ -21,9 +19,6 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
   suppliers: DropdownDto[] = [];
   materialsIds: number[] = [];
   materials:MaterialDto[] = [];
-  //units: MaterialUnitDto[] = [];
-  //allStocks: StockDto[] = [];
-  allUnits: MaterialUnitDto[] = [];
   type = 0;
   offerType = [
     { id: 0, name: this.l("OfferToCustomer") },
@@ -50,21 +45,13 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
     this.invoice.invoiseDetails = [];
     this.invoice.invoiceType = 0;
     this.getOffers();
-    //this.initialAllStocks();
     this.initialSuppliers();
-    //this.initialMaterials();
-    this.initialAllMaterialUnits();
+    
   }
 
   initialSuppliers() {
     this.customerService.getForDropdown()
     .subscribe(result=>this.suppliers = result)
-  }
-
-  initialAllMaterialUnits() {
-    this.stockService.getAllMaterialUnits().subscribe((result) => {
-      this.allUnits = result;
-    });
   }
 
   getOffers() {
@@ -94,33 +81,15 @@ export class CreateInvoiceComponent extends AppComponentBase implements OnInit {
   //   return this.materials.find((x) => x.id == materialId)?.name;
   // }
 
-  getUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && !x.isSmallUnit)?.name;
-    }
-    return "";
+  getMaterialName(materialId: number) {
+    return this.materials.find((x) => x.id == materialId)?.name;
   }
-
-  // getPackingUnit(id: number) {
-  //   if (id) {
-  //     return this.allUnits.find((x) => x.id == id && x.isSmallUnit)?.name;
-  //   }
-  //   return "";
-  // }
-
-  // initialAllStocks(){
-  //   this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
-  //   .subscribe((result)=>{
-  //     this.allStocks = result.items;
-  //   })
-  // }
-
   getStock(materialId: number) {
     const material = this.materials.find(x=>x.id == materialId);
 
     if (material.stocks.length > -1) {
       var valueInLargeUnit = material.stocks.reduce(
-        (sum, current) => sum + current.numberInLargeUnit,
+        (sum, current) => sum + current.quantity,
         0
       );
       var valueInSmallUnit = material.stocks.reduce(

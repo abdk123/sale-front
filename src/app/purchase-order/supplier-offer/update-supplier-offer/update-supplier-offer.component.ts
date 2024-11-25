@@ -1,7 +1,7 @@
 import { AppComponentBase } from '@shared/app-component-base';
 import { Component,Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DropdownDto, UpdateOfferDto, CustomerServiceProxy, OfferServiceProxy, UpdateOfferItemDto, UpdateSupplierOfferDto, SupplierOfferServiceProxy, UpdateSupplierOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, UpdateSupplierOfferDto, CustomerServiceProxy, SupplierOfferServiceProxy, UpdateSupplierOfferItemDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
@@ -39,17 +39,20 @@ export class UpdateSupplierOfferComponent extends AppComponentBase implements On
   }
   ngOnInit(): void {
     this.id = this._route.snapshot?.params?.id;
-    this.initialOffer();
+    this.initialSupplierOffer();
     this.initialCustomers();
   }
 
-  endDate: Date;
-  initialOffer() {
+  endDate: string;
+  initialSupplierOffer() {
     this._offerService
       .getForEdit(this.id)
       .subscribe((result: UpdateSupplierOfferDto) => {
         this.offer = result;
-        this.endDate = this.getDateFromString(this.offer.supplierOfferEndDate);
+        this.endDate = new DatePipe("en-US").transform(
+          this.offer.supplierOfferEndDate,
+          "dd-MM-yyyy"
+        );
       });
   }
 
@@ -77,28 +80,28 @@ export class UpdateSupplierOfferComponent extends AppComponentBase implements On
       !this.statusIsRequired &&
       !this.currencyIsRequired
     ) {
-      if (!this.offer.supplierOfferEndDate) {
+      if (!this.offer.supplierOfferItems) {
         abp.message.warn(this.l("PleaseAddAtLeastOneMaterial"));
       }
       if (!this.offer.porchaseOrderId && this.offer.status == 1) {
         abp.message.warn(this.l("PoNumberIsRequired"));
       }
       this.saving = true;
-      this.offer.supplierOfferEndDate = this.endDate.toISOString();
+      this.offer.supplierOfferEndDate = this.endDate;
       this._offerService
         .update(this.offer)
         .pipe(
           finalize(() => {
             this.saving = false;
             this.notify.info(this.l("SavedSuccessfully"));
-            this._router.navigate(["/app/orders/supplier-offers"]);
+            this._router.navigate(["/app/orders/offers"]);
           })
         )
         .subscribe((result) => {});
     }
   }
 
-  onSaveOfferItem(items: UpdateSupplierOfferItemDto[]) {
+  onSaveSupplierOfferItem(items: UpdateSupplierOfferItemDto[]) {
     this.offer.supplierOfferItems = items;
   }
 }

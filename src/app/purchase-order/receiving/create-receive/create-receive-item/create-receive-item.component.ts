@@ -8,18 +8,9 @@ import {
 } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import {
-  UpdateOfferItemDto,
   InvoiceItemDto,
-  DropdownDto,
-  MaterialUnitDto,
-  StockDto,
-  MaterialServiceProxy,
-  OfferServiceProxy,
-  StockServiceProxy,
   InvoiceServiceProxy,
-  ReceivingServiceProxy,
   CreateReceivingItemDto,
-  InvoiceDto,
 } from "@shared/service-proxies/service-proxies";
 
 @Component({

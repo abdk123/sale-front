@@ -21,7 +21,6 @@ import { ManageOfferComponent } from './offer/manage-offer/manage-offer.componen
 import { ManageOfferItemComponent } from './offer/manage-offer/manage-offer-item/manage-offer-item.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { EditInvoiceComponent } from './invoice/edit-invoice/edit-invoice.component';
-import { EditInvoiceItemComponent } from './invoice/edit-invoice/update-invoice-item/edit-invoice-item.component';
 import { PrintOfferComponent } from './offer/print-offer/print-offer.component';
 import { ReceivingComponent } from './receiving/receiving.component';
 import { EditReceiveComponent } from './receiving/edit-receive/edit-receive.component';
@@ -75,7 +74,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ManageOfferItemComponent,
     InvoiceComponent,
     EditInvoiceComponent,
-    EditInvoiceItemComponent,
     // PrintOfferComponent,
     ReceivingComponent,
     EditReceiveComponent,

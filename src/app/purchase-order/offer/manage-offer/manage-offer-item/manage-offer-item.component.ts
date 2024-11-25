@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { ConvertToPurchaseInvoiceDto, CustomerServiceProxy, DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferServiceProxy, StockDto, StockServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { ConvertToPurchaseInvoiceDto, CustomerServiceProxy, DropdownDto, MaterialServiceProxy, OfferServiceProxy, StockDto, StockServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -15,9 +15,7 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   @Input() offerId: number;
   items: UpdateOfferItemDto[] = [];
   materials: DropdownDto[] = [];
-  units: MaterialUnitDto[] = [];
   stocks: StockDto[] = [];
-  allUnits: MaterialUnitDto[] = [];
   customers:DropdownDto[]=[];
   saving = false;
   indexUpdate = -1;
@@ -37,7 +35,6 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
     this.initialAllStocks();
     this.initialItems();
     this.initialMaterials();
-    this.initialAllMaterialUnits();
     this.initialCustomers();
   }
 
@@ -56,19 +53,6 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   initialMaterials() {
     this.materialService.getForDropdown().subscribe((result) => {
       this.materials = result;
-    });
-  }
-
-  initialMaterialUnits(materialId: number) {
-    this.stockService.getMaterialUnits(materialId).subscribe((result) => {
-      this.units = result;
-    });
-  }
-
-  initialAllMaterialUnits() {
-    this.stockService.getAllMaterialUnits().subscribe((result) => {
-      this.allUnits = result;
-      this.loading = true;
     });
   }
 
@@ -110,18 +94,11 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
     return this.materials.find((x) => x.id == materialId)?.name;
   }
 
-  getUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && !x.isSmallUnit)?.name;
+  getUnit(item: UpdateOfferItemDto) {
+    if (item.addedBySmallUnit) {
+      return this.getMaterialName(item.materialId);
     }
-    return "";
-  }
-
-  getPackingUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && x.isSmallUnit)?.name;
-    }
-    return "";
+    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
   }
 
   allStocks: StockDto[] = [];
@@ -132,33 +109,18 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
     })
   }
 
-  getStock(materialId: number) {
-    
-    if(this.stocks.length !== 0){
-    var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
-    }else{
-      var materialStocks = this.allStocks.filter(
-        (x) => x.materialId == materialId
-      );
-    }
+  getStock(materialId:number){
+    var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
 
-    if (materialStocks.length > -1) {
-      var valueInLargeUnit = materialStocks.reduce(
-        (sum, current) => sum + current.numberInLargeUnit,
-        0
-      );
-      var valueInSmallUnit = materialStocks.reduce(
-        (sum, current) => sum + current.numberInSmallUnit,
-        0
-      );
+    if(materialStocks.length > -1){
+      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
+      var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
     }
     return `${valueInLargeUnit}-${valueInSmallUnit}`;
   }
 
-  getSaleType(addedBySmallUnit) {
-    return addedBySmallUnit
-      ? `${this.l("SmallUnit")}`
-      : `${this.l("LargeUnit")}`;
+  getSaleType(addedBySmallUnit){
+    return addedBySmallUnit ? `${this.l("SmallUnit")}` : `${this.l("LargeUnit")}`
   }
 
   onCheck(args, offerItemId){

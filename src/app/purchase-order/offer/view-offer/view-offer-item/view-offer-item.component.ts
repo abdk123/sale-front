@@ -1,6 +1,6 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CustomerServiceProxy, DropdownDto, MaterialServiceProxy, MaterialUnitDto, OfferItemDto, OfferServiceProxy, StockDto, StockServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, MaterialDto, MaterialServiceProxy, OfferItemDto, SizeDto, StockDto, StockServiceProxy, UnitDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'view-offer-item',
@@ -10,11 +10,10 @@ import { CustomerServiceProxy, DropdownDto, MaterialServiceProxy, MaterialUnitDt
 export class ViewOfferItemComponent extends AppComponentBase implements OnInit {
   
   @Input() items: OfferItemDto[] = [];
-  materials: DropdownDto[] = [];
-  units: MaterialUnitDto[] = [];
+  sizes: SizeDto[] = [];
+  units: UnitDto[] = [];
   stocks: StockDto[] = [];
-  allUnits: MaterialUnitDto[] = [];
-  allStocks: StockDto[] = [];
+  materials: DropdownDto[] = [];
 
   constructor(
     injector: Injector,
@@ -25,9 +24,7 @@ export class ViewOfferItemComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initialAllStocks();
     this.initialMaterials();
-    this.initialAllMaterialUnits();
   }
 
   
@@ -38,72 +35,50 @@ export class ViewOfferItemComponent extends AppComponentBase implements OnInit {
     });
   }
 
-  initialMaterialUnits(materialId: number) {
-    this.stockService.getMaterialUnits(materialId).subscribe((result) => {
-      this.units = result;
-    });
-  }
-
-  initialAllMaterialUnits() {
-    this.stockService.getAllMaterialUnits().subscribe((result) => {
-      this.allUnits = result;
-    });
-  }
-
-  
-  initialAllStocks(){
-    this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
-    .subscribe((result)=>{
-      this.allStocks = result.items;
-    })
-  }
-
-  getStock(materialId: number) {
+  initialItems() {
     
-    if(this.stocks.length !== 0){
-    var materialStocks = this.stocks.filter((x) => x.materialId == materialId);
-    }else{
-      var materialStocks = this.allStocks.filter(
-        (x) => x.materialId == materialId
-      );
-    }
-
-    if (materialStocks.length > -1) {
-      var valueInLargeUnit = materialStocks.reduce(
-        (sum, current) => sum + current.numberInLargeUnit,
-        0
-      );
-      var valueInSmallUnit = materialStocks.reduce(
-        (sum, current) => sum + current.numberInSmallUnit,
-        0
-      );
-    }
-    return `${valueInLargeUnit}-${valueInSmallUnit}`;
+      let materialsIds = [];
+      this.items.forEach(x=> {materialsIds.push(x.materialId)});
+      this.materialService.getAllByIds(materialsIds)
+      .subscribe(data=>{
+        this.initialInfo(data);
+      })
   }
-
-  getSaleType(addedBySmallUnit) {
-    return addedBySmallUnit
-      ? `${this.l("SmallUnit")}`
-      : `${this.l("LargeUnit")}`;
+  
+  initialInfo(result){
+    if(this.units.findIndex(x=>x.id == result.unitId) == -1)
+      this.units.push(result.unit);
+    result.stocks.forEach(stock=>{
+      this.sizes = [];
+      this.sizes.push(stock.size);
+      if(this.stocks.findIndex(x=>x.id == stock.id) == -1)
+        this.stocks.push(stock);
+    })
   }
 
   getMaterialName(materialId: number) {
     return this.materials.find((x) => x.id == materialId)?.name;
   }
 
-  getUnit(item) {
-    
+  getUnit(item: OfferItemDto) {
     if (item.addedBySmallUnit) {
-      return this.allUnits.find((x) => x.id == item.sizeId)?.name;
+      return this.getMaterialName(item.materialId);
     }
-    return this.allUnits.find((x) => x.id == item.unitId)?.name;
+    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
   }
 
-  getPackingUnit(id: number) {
-    if (id) {
-      return this.allUnits.find((x) => x.id == id && x.isSmallUnit)?.name;
+  getStock(materialId:number){
+    var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
+
+    if(materialStocks.length > -1){
+      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
+      var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
     }
-    return "";
+    return `${valueInLargeUnit}-${valueInSmallUnit}`;
+  }
+
+  getSaleType(addedBySmallUnit){
+    return addedBySmallUnit ? `${this.l("SmallUnit")}` : `${this.l("LargeUnit")}`
   }
   
 }

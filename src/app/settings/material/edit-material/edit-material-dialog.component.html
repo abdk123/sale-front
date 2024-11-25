@@ -127,7 +127,7 @@
                 <tr>
                   <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
                   <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
-                  <th style="width: 13%;" class="bi">{{'QuantityInLargeUnit' | localize}}</th>
+                  <th style="width: 13%;" class="bi">{{'Quantity' | localize}}</th>
                   <th style="width: 12%;" class="bi">{{'ConversionValue' | localize}}</th>
                   <!-- <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th> -->
                   <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
@@ -138,10 +138,10 @@
                 <tr *ngFor="let item of stocks; index as i">
                   <td>{{getStoreName(item.storeId)}}</td>
                   <td>{{getUnitName(i)}}</td>
-                  <td>{{item.numberInLargeUnit}}</td>
+                  <td>{{item.quantity}}</td>
                   <td>{{item.count}}</td>
                   <!-- <td>{{item.numberInSmallUnit}}</td> -->
-                  <td>{{(item.numberInLargeUnit * item.count) + ' ' + getSizeName(item.sizeId)}}</td>
+                  <td>{{(item.quantity * item.count) + ' ' + getSizeName(item.sizeId)}}</td>
                   <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
                       style="font-size: large; color: #dc3545; padding: 0;"></i></td>
                 </tr>

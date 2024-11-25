@@ -1,9 +1,9 @@
 import { AppComponentBase } from '@shared/app-component-base';
 import { Component,Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DropdownDto, UpdateOfferDto, CustomerServiceProxy, OfferServiceProxy, UpdateOfferItemDto, InvoiceDto, InvoiceServiceProxy, InvoiceItemDto } from '@shared/service-proxies/service-proxies';
+import { DropdownDto, CustomerServiceProxy, OfferServiceProxy, UpdateOfferItemDto, InvoiceServiceProxy, UpdateInvoiceDto, OfferDto, SupplierOfferDto, MaterialDto, SupplierOfferServiceProxy, MaterialServiceProxy, StockServiceProxy, UpdateInvoiceItemDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { result } from 'lodash-es';
 
 @Component({
   selector: "edit-invoice",
@@ -11,138 +11,165 @@ import { DatePipe } from '@angular/common';
   styleUrls: ["./edit-invoice.component.scss"],
 })
 export class EditInvoiceComponent extends AppComponentBase implements OnInit {
-  offer: UpdateOfferDto = new UpdateOfferDto();
-  invoice: InvoiceDto = new InvoiceDto();
-  saving = false;
-  offerId: number;
-  invoiceId: number;
-  customerIsRequired = false;
-  currencyIsRequired = false;
-  statusIsRequired = false;
-  showPorchaseOrder = false;
-  customers: DropdownDto[] = [];
-  itemIndex: number;
-  endDate: Date;
-  currencies = [
-    { id: 1, name: this.l("Dollar") },
-    { id: 0, name: this.l("Dinar") },
+  saving: boolean = false;
+  invoice: UpdateInvoiceDto = new UpdateInvoiceDto();
+  offers:OfferDto[] = [];
+  selectedOffer:OfferDto = new OfferDto();
+  supplierOffers:SupplierOfferDto[] = [];
+  selectedSupplierOffer:SupplierOfferDto = new SupplierOfferDto();
+  suppliers: DropdownDto[] = [];
+  materialsIds: number[] = [];
+  materials:MaterialDto[] = [];
+  type = 0;
+  offerType = [
+    { id: 0, name: this.l("OfferToCustomer") },
+    { id: 1, name: this.l("OfferFromSupplier") },
   ];
-  status = [
-    { id: 0, name: this.l("WaitingApprove") },
-    { id: 1, name: this.l("Approved") },
-  ];
+  typeIsRequired: boolean = false;
+  offerIsRequired: boolean = false;
+  supplierOfferIsRequired: boolean = false;
+  id:number;
   constructor(
     injector: Injector,
-    private router: Router,
+    private invoiceService: InvoiceServiceProxy,
     private customerService: CustomerServiceProxy,
     private offerService: OfferServiceProxy,
-    private invoiceService: InvoiceServiceProxy,
-    
+    private supplierOfferService: SupplierOfferServiceProxy,
+    private materialService: MaterialServiceProxy,
+    private stockService: StockServiceProxy,
+    private router: Router,
     private route: ActivatedRoute
-  ) {
+  ){
     super(injector);
   }
+
   ngOnInit(): void {
-    this.offerId = this.route.snapshot?.params?.offerId;
-    this.invoiceId = this.route.snapshot?.params?.invoiceId;
-    this.initialOffer();
-    this.initialCustomers();
+    this.id = this.route.snapshot?.params?.id;
+    this.invoice.invoiseDetails = [];
+    this.initialSuppliers();
+    this.initialInvoice();
+  }
+  initialInvoice() {
+    this.invoiceService.getForEdit(this.id)
+    .subscribe(result=>{
+      this.invoice = result;
+      if(this.invoice.invoiceType == 1 && this.supplierOffers?.length == 0)
+        this.getOffers();
+      else if(this.invoice.invoiceType == 0 && this.offers?.length == 0)
+        this.getSupplierOffers();
+    })
   }
 
-  initialOffer() {
-    this.offerService
-      .getForEdit(this.offerId)
-      .subscribe((result: UpdateOfferDto) => {
-        this.offer = result;
-        this.endDate = this.getDateFromString(this.offer.offerEndDate);
-        this.initialInvoice();
-      });
+  initialSuppliers() {
+    this.customerService.getForDropdown()
+    .subscribe(result=>this.suppliers = result)
   }
 
-  initialInvoice(){
-    // this.invoiceService.getByOfferId(this.offerId)
-    // .subscribe(result=>{
-      
-    //   this.invoice = result;
-    // });
-    this.invoice.id = this.invoiceId;
-    this.invoice.offerId = this.offerId;
-  }
-
-  initialCustomers() {
-    this.customerService.getForDropdown().subscribe((result) => {
-      this.customers = result;
+  getOffers() {
+    this.offerService.getApproved()
+    .subscribe(result => {
+      this.offers = result;
+      this.initialInvoice();
     });
   }
 
-  onChangeStatus(status) {
-    if (status?.id == 1) {
-      this.showPorchaseOrder = true;
-    } else {
-      this.showPorchaseOrder = false;
-      this.offer.porchaseOrderId = "";
-    }
+  getSupplierOffers() {
+    this.supplierOfferService.getApproved()
+    .subscribe(result => this.supplierOffers = result);
+  }
+  initialMaterials() {
+    this.materialService.getAllByIds(this.materialsIds).subscribe((result) => {
+      this.materials = result;
+    });
   }
 
-  save() {
-    this.customerIsRequired = this.offer.customerId ? false : true;
-    this.statusIsRequired = this.offer.status == undefined ? true : false;
-    this.currencyIsRequired = this.offer.currency == undefined ? true : false;
+  // initialMaterialUnits(materialId: number) {
+  //   this.stockService.getMaterialUnits(materialId).subscribe((result) => {
+  //     this.units = result;
+  //   });
+  // }
+
+
+  // getMaterialName(itemId: number, materialId: number) {
+  //   const offer = this.offers.find(x=>x.id == this.invoice.offerId);
+  //   return this.materials.find((x) => x.id == materialId)?.name;
+  // }
+
+  getMaterialName(materialId: number) {
+    return this.materials.find((x) => x.id == materialId)?.name;
+  }
+  getStock(materialId: number) {
+    const material = this.materials.find(x=>x.id == materialId);
+
+    if (material.stocks.length > -1) {
+      var valueInLargeUnit = material.stocks.reduce(
+        (sum, current) => sum + current.quantity,
+        0
+      );
+      var valueInSmallUnit = material.stocks.reduce(
+        (sum, current) => sum + current.numberInSmallUnit,
+        0
+      );
+    }
+    return `${valueInLargeUnit}-${valueInSmallUnit}`;
+  }
+
+  getSaleType(addedBySmallUnit) {
+    return addedBySmallUnit
+      ? `${this.l("SmallUnit")}`
+      : `${this.l("LargeUnit")}`;
+  }
+
+  onChangeOfferType(item){
+    this.invoice.invoiceType = item.id;
+    if(this.invoice.invoiceType == 1 && this.supplierOffers?.length == 0)
+      this.getOffers();
+    else if(this.invoice.invoiceType == 0 && this.offers?.length == 0)
+      this.getSupplierOffers();
+  }
+
+  onChangeOffer(item:OfferDto){
+    this.selectedOffer = item;
+    this.offerService.getItemsByOfferId(item.id)
+    .subscribe((result: UpdateOfferItemDto[]) =>{
+      this.materialsIds = [];
+      result.forEach(x=>{
+        this.materialsIds.push(x.materialId);
+        let invoiceItem = new UpdateInvoiceItemDto();
+        invoiceItem.init({quantity:0,offerItemId:x.id,totalMaterilPrice:0});
+        this.invoice.invoiseDetails.push(invoiceItem);
+      });
+      this.initialMaterials();
+    });
+  }
+
+  trackByIndex(index: number, obj: any): any {
+    return index;
+  }
+
+  save(){
+    this.typeIsRequired = this.invoice.invoiceType == undefined ? true : false;
+    this.offerIsRequired = this.invoice.offerId == undefined && this.invoice.invoiceType == 0 ? true : false;
+    this.supplierOfferIsRequired = this.invoice.supplierId == undefined && this.invoice.invoiceType == 1 ? true : false;
     if (
-      !this.customerIsRequired &&
-      !this.statusIsRequired &&
-      !this.currencyIsRequired
+      !this.typeIsRequired && !this.offerIsRequired && !this.supplierOfferIsRequired
     ) {
-      if (!this.offer.offerItems) {
-        abp.message.warn(this.l("PleaseAddAtLeastOneMaterial"));
-      }
-      if (!this.offer.porchaseOrderId && this.offer.status == 1) {
-        abp.message.warn(this.l("PoNumberIsRequired"));
-      }
+      this.invoice.status = 1;
+      
       this.saving = true;
-      this.offer.offerEndDate = this.endDate.toISOString();
-      this.offerService
-        .update(this.offer)
+      this.invoiceService
+        .create(this.invoice)
         .pipe(
           finalize(() => {
             this.saving = false;
-            this.notify.info(this.l("SavedSuccessfully"));
-            this.router.navigate(["/app/orders/invoices"]);
           })
         )
-        .subscribe((result) => {});
+        .subscribe((result) => {
+          this.notify.info(this.l("SavedSuccessfully"));
+          this.router.navigate(["/app/orders/invoices"]);
+        });
     }
   }
 
-  saveInvoiceDetail(){
-    if(!this.invoice.invoiseDetails){
-      return;
-    }
-    if(this.invoice.invoiseDetails?.length == 0 || this.invoice.invoiseDetails.some(x=>x.quantity == 0)){
-      abp.message.error(this.l("الكمية المدخلة يجب ان تكون اكبر من صفر"));
-      return;
-    }else if(this.invoice.invoiseDetails && this.invoice.invoiseDetails.some(x=>x.quantity > x.offerItem.quantity)){
-      abp.message.error(this.l("الكمية المدخلة يجب ان تكون اصغر او تساوي الكمية المدخلة في العرض "));
-    }else if(this.invoice.invoiseDetails.some(x=>x.totalMaterilPrice == 0)){
-      abp.message.error(this.l("السعر يجب ان يكون اكبر من صفر"));
-    }else{
-      this.invoiceService.saveInvoiceDetail(this.invoice)
-      .subscribe((result)=>{
-        this.notify.info(this.l("SavedSuccessfully"));
-        this.router.navigate(["/app/orders/invoices"]);
-      });
-    }
-    
-  }
 
-  onSaveOfferItem(items: UpdateOfferItemDto[]) {
-    this.offer.offerItems = items;
-  }
-
-  onSaveInvoiceItem(args: InvoiceItemDto[]){
-    this.invoice.invoiseDetails = args;
-  }
-
-  
 }
-

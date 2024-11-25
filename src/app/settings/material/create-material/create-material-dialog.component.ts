@@ -105,7 +105,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   }
 
   getUnitName(index) {
-    return this.units[index];
+    return this.units[index].name;
   }
 
   save(): void {

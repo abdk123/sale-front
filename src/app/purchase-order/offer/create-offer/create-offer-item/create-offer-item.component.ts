@@ -15,6 +15,7 @@ import {
   SizeDto,
   StockDto,
   StockServiceProxy,
+  UnitDto,
 } from "@shared/service-proxies/service-proxies";
 
 @Component({
@@ -31,7 +32,8 @@ export class CreateOfferItemComponent
   items: CreateOfferItemDto[] = [];
   materials: DropdownDto[] = [];
   sizes: SizeDto[] = [];
-  material: MaterialDto = new MaterialDto();
+  units: UnitDto[] = [];
+  stocks: StockDto[] = [];
   saving=false;
   indexUpdate = -1;
   materialIsRequired = false;
@@ -56,9 +58,13 @@ export class CreateOfferItemComponent
   onSelectMaterial(dto: DropdownDto) {
     this.materialService.getById(dto.id)
     .subscribe(result=>{
-      this.material = result;
-      this.material.stocks.forEach(x=>{
-        this.sizes.push(x.size);
+      if(this.units.findIndex(x=>x.id == result.unitId) == -1)
+        this.units.push(result.unit);
+      result.stocks.forEach(stock=>{
+        this.sizes = [];
+        this.sizes.push(stock.size);
+        if(this.stocks.findIndex(x=>x.id == stock.id) == -1)
+          this.stocks.push(stock);
       })
     })
   }
@@ -130,13 +136,13 @@ export class CreateOfferItemComponent
 
   getUnit(item: CreateOfferItemDto) {
     if (item.addedBySmallUnit) {
-      return this.material?.name;
+      return this.getMaterialName(item.materialId);
     }
-    return this.material.stocks.find(x=>x.sizeId == item.sizeId)?.size.name;
+    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
   }
 
   getStock(materialId:number){
-    var materialStocks = this.material.stocks.filter(x=>x.materialId == materialId);
+    var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
 
     if(materialStocks.length > -1){
       var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
