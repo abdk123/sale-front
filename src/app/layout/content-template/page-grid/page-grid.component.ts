@@ -206,7 +206,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   }
 
   initialColor(item): string{
-    debugger;
+    
     
 
     return '';

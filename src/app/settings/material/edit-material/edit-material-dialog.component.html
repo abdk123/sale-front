@@ -17,7 +17,7 @@
   <div class="card mt-2">
     <div class="d-flex justify-content-between">
     </div>
-    <div class="card-body">
+    <div class="card-body" *ngIf="material">
       <h5 class="card-title separator pb-2 mb-3">{{ 'MaterialInfo' | localize }}</h5>
       <div class="row">
         <div class="col-md-4">
@@ -67,7 +67,7 @@
   </div>
   
   <!--Stock-->
-  <div class="card mt-2">
+  <div class="card mt-2" *ngIf="material">
     <div class="d-flex justify-content-between">
     </div>
     <div class="card-body">
@@ -87,7 +87,7 @@
               <span>{{ 'Size' | localize }}</span>
             </label>
           </div>
-          <div class="col-md-4  mt-3">
+          <div class="col-md-4">
             <label class=" has-float-label">
               <input type="number" class="form-control" count="count" id="count" name="count" [(ngModel)]="stock.conversionValue"
                 #countModel="ngModel" #countEl />
@@ -116,34 +116,48 @@
             </label>
           </div> -->
           <div class="col-3 mt-3">
-            <button type="button" class="btn btn-outline-primary" (click)="AddStock()">
+            <button *ngIf="!stock?.id" type="button" class="btn btn-outline-primary" (click)="addStock()">
               <i [class]="'bi bi-plus'"> </i> {{ 'Add' | localize }}
+            </button>
+            <button *ngIf="stock.id" type="button" class="btn btn-outline-primary" (click)="updateStock()">
+              <i [class]="'bi bi-save'"> </i> {{ 'Save' | localize }}
+            </button>
+            <button *ngIf="stock.id" type="button" class="btn btn-outline-danger ml-2" (click)="resetStock()">
+              <i [class]="'bi bi-cancel'"> </i> {{ 'Cancel' | localize }}
             </button>
           </div>
           <div class=" col-12 separator mt-3"></div>
           <div class="table-responsive table-bordered mt-3">
-            <table class="table">
+            <table class="table" *ngIf="material?.stocks?.length > 0">
               <thead>
                 <tr>
-                  <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
-                  <th style="width: 15%;" class="bi">{{'Unit' | localize}}</th>
-                  <th style="width: 13%;" class="bi">{{'Quantity' | localize}}</th>
-                  <th style="width: 12%;" class="bi">{{'ConversionValue' | localize}}</th>
+                  <th class="bi">{{'Store' | localize}}</th>
+                  <th  class="bi">{{'Unit' | localize}}</th>
+                  <th  class="bi">{{'Quantity' | localize}}</th>
+                  <th  class="bi">{{'ConversionValue' | localize}}</th>
                   <!-- <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th> -->
-                  <th style="width: 16%;" class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
-                  <th style="width: 3%;" class="bi"></th>
+                  <th  class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
+                  <th style="width: 5%;"  class="bi"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of stocks; index as i">
-                  <td>{{getStoreName(item.storeId)}}</td>
-                  <td>{{getUnitName(i)}}</td>
-                  <td>{{item.quantity}}</td>
-                  <td>{{item.count}}</td>
+                <tr *ngFor="let item of material.stocks; let index = index;trackBy:trackByIndex;">
+                  <td>{{getStoreName(material.stocks[index].storeId)}}</td>
+                  <td>{{getSizeName(material.stocks[index].sizeId)}}</td>
+                  <td>{{material.stocks[index].quantity}}</td>
+                  <td>{{material.stocks[index].conversionValue}}</td>
                   <!-- <td>{{item.numberInSmallUnit}}</td> -->
-                  <td>{{(item.quantity * item.count) + ' ' + getSizeName(item.sizeId)}}</td>
-                  <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
-                      style="font-size: large; color: #dc3545; padding: 0;"></i></td>
+                  <td>{{getNumberInSmallUnit(material.stocks[index]) | commaNumber}} {{getSizeName(material.stocks[index].sizeId)}}</td>
+                  <td>
+                    <div class="d-flex justify-content-start">
+                      <button type="button" (click)="initStock(material.stocks[index])" class="btn btn-empty">
+                        <i class="bi bi-pencil-square text-success" style="font-size: 1rem;"></i> 
+                    </button>
+                    <button type="button" (click)="deleteStock(index)" class="btn btn-empty">
+                        <i class="bi bi-trash text- text-danger" style="font-size: 1rem;"></i> 
+                    </button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>

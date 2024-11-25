@@ -113,12 +113,13 @@
             <abp-validation-summary [control]="numberInSmallUnitModel"
               [controlEl]="numberInSmallUnitEl"></abp-validation-summary>
             <span>{{ "NumberInSmallUnit"|localize }}</span>
-          </label>
+          </label>s
         </div> -->
         <div class="col-3 mt-3">
-          <button type="button" class="btn btn-outline-primary" (click)="AddStock()">
+          <button type="button" class="btn btn-outline-primary" (click)="addStock()">
             <i [class]="'bi bi-plus'"> </i> {{ 'Add' | localize }}
           </button>
+          
         </div>
         <div class=" col-12 separator mt-3"></div>
         <div class="table-responsive table-bordered mt-3">
@@ -135,14 +136,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of stocks; index as i">
+              <tr *ngFor="let item of material.stocks; ; let index = index;trackBy:trackByIndex;">
                 <td>{{getStoreName(item.storeId)}}</td>
-                <td>{{getUnitName(i)}}</td>
-                <td>{{item.numberInLargeUnit}}</td>
-                <td>{{item.count}}</td>
+                <td>{{getSizeName(item.sizeId)}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.conversionValue}}</td>
                 <!-- <td>{{item.numberInSmallUnit}}</td> -->
-                <td>{{(item.numberInLargeUnit * item.count) + ' ' + getSizeName(item.sizeId)}}</td>
-                <td><i (click)="deleteStock(i)" class="btn bi bi-trash"
+                <td>{{getNumberInSmallUnit(item)  | commaNumber}} {{getSizeName(item.sizeId)}}</td>
+                <td><i (click)="deleteStock(index)" class="btn bi bi-trash"
                     style="font-size: large; color: #dc3545; padding: 0;"></i></td>
               </tr>
             </tbody>

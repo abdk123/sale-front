@@ -36,7 +36,7 @@ export class HeaderLeftNavbarComponent extends AppComponentBase implements OnIni
       this.localization.languages,
       (l) => !l.isDisabled
     );
-    debugger;
+    
     this.customLanguage.push(this.languages.find(z=>z.name=='en'),this.languages.find(z=> z.name=='ar'));
     this.currentLanguage = this.localization.currentLanguage;
     if( this.currentLanguage.name=='ar')

@@ -24,11 +24,13 @@ export class MaterialComponent
   materials: MaterialDto[] = [];
   fields = [
     { label: this.l("Name"), name: "name", sortable: true, type: "string" },
+    { label: this.l("TotalQuantity"), name: "totalQuantity", sortable: true, type: "number" },
     {
-      label: this.l("Specification"),
-      name: "specification",
-      sortable: true,
-      type: "string",
+      label: this.l("Unit"),
+      name: "unit",
+      sortable: false,
+      type: "reference",
+      referenceTextField: "name",
     },
     {
       label: this.l("Category"),
@@ -36,6 +38,12 @@ export class MaterialComponent
       sortable: false,
       type: "reference",
       referenceTextField: "name",
+    },
+    {
+      label: this.l("Specification"),
+      name: "specification",
+      sortable: true,
+      type: "string",
     },
   ];
 
@@ -54,7 +62,7 @@ export class MaterialComponent
     pageNumber: number,
     finishedCallback: Function
   ): void {
-    request.including = "category";
+    request.including = "category,unit,stocks";
     this._materialService.read(request).subscribe((result) => {
       
       this.materials = result.items;

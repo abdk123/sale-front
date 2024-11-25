@@ -81,7 +81,7 @@ export class SendDeliveryItemComponent
   }
 
   updateQuantity(args, offerItemId) {
-    debugger;
+    
     var value = Number(args.target.value);
     const index = this.deliveryItems
       ? this.deliveryItems.findIndex((x) => x.offerItemId == offerItemId)

@@ -90,7 +90,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
 
   initialUnits() {
     this._unitService
-      .getAll(undefined,undefined,undefined,undefined,undefined,0,10000)
+      .getAll(undefined, undefined, undefined, undefined, undefined, 0, 10000)
       .subscribe((result) => {
         this.units = result.items;
       });
@@ -104,15 +104,18 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
     return this.sizes.find((x) => x.id == sizeId).name;
   }
 
-  getUnitName(index) {
-    return this.units[index].name;
+  getUnitName() {
+    return this.units.find(x=>x.id == this.material.unitId).name;
+  }
+
+  trackByIndex(index: number, obj: any): any {
+    return index;
   }
 
   save(): void {
     this.categoryIsRequired = this.material.categoryId ? false : true;
-    if(!this.categoryIsRequired){
+    if (!this.categoryIsRequired) {
       this.saving = true;
-      this.material.stocks = this.stocks;
       this._materialService
         .create(this.material)
         .pipe(
@@ -122,30 +125,27 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
         )
         .subscribe((result) => {
           this.notify.info(this.l("SavedSuccessfully"));
-            this.bsModalRef.hide();
-            this._router.navigate(["/app/settings/material"]);
-            this.onSave.emit();
+          this.bsModalRef.hide();
+          this._router.navigate(["/app/settings/material"]);
+          this.onSave.emit();
         });
-    }    
+    }
   }
 
-  AddStock() {
-      const stock = new CreateStockDto(this.stock);
-        this.stocks.push(stock);
-        this.stock.init(new CreateStockDto());
-        this.stock.quantity = 0;
-        this.stock.conversionValue = 0;
+  addStock() {
+    if (this.material.stocks == undefined) 
+      this.material.stocks = [];
+    this.material.stocks.push(this.stock);
+    //reset stock
+    this.stock = new CreateStockDto();
+
   }
 
+  getNumberInSmallUnit(item){
+    const value = item.quantity * item.conversionValue;
+    return value;
+  }
   deleteStock(index) {
-    const dStock = this.stocks[index];
-    this.stocks = this.stocks.filter((x) => {
-      return !(
-        x.sizeId === dStock.sizeId &&
-        x.storeId === dStock.storeId &&
-        x.quantity === dStock.quantity &&
-        x.conversionValue === dStock.conversionValue
-      );
-    });
+    this.material.stocks.splice(index,1);
   }
 }
