@@ -15,7 +15,7 @@
                     <label class=" has-float-label">
                         <ng-select [items]="sizes" required name="sizeId" [(ngModel)]="item.sizeId" bindLabel="name" bindValue="id"
                             (change)="onSelectPackageUnit($event)"></ng-select>
-                        <span>{{ 'PackageUnit' | localize }}</span>
+                        <span>{{ 'Size' | localize }}</span>
                     </label>
                     <span *ngIf="materialIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
@@ -41,8 +41,8 @@
                     <label class=" has-float-label">
                         <ng-select required bindLabel="name" bindValue="name" [(ngModel)]="item.addedBySmallUnit"
                             >
-                            <ng-option [value]="false">{{'LargeUnit'}}</ng-option>
-                            <ng-option [value]="true">{{'SmallUnit'}}</ng-option>
+                            <ng-option [value]="false">بالطن</ng-option>
+                            <ng-option [value]="true">{{'Size' | localize}}</ng-option>
                         </ng-select>
                         <span>{{ 'SaleType' | localize }}</span>
                     </label>
@@ -63,13 +63,13 @@
                         <span>{{ 'UnitName' | localize }}</span>
                     </label>
                 </div>
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <label class=" has-float-label">
                         <textarea class="form-control" name="specefecation"
                             [(ngModel)]="item.specefecation"></textarea>
                         <span>{{ 'Specification' | localize }}</span>
                     </label>
-                </div>
+                </div> -->
                 <div class="col-md-3">
                     <div class="d-flex justify-content-center align-items-center">
                         <button type="submit" class="btn btn-sm btn-outline-primary mx-1"
@@ -82,12 +82,12 @@
                 </div>
             </div>
         </form>
-        <div class="table-responsive">
+        <div class="table-responsive mt-2">
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>{{'Material' | localize}}</th>
-                        <th>{{'Unit' | localize}}</th>
+                        <th>{{'Size' | localize}}</th>
                         <th>{{'Quantity' | localize}}</th>
                         <th>{{'MaterialPrice' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
@@ -99,10 +99,10 @@
                 <tbody>
                     <tr *ngFor="let item of items; index as i">
                         <td>{{getMaterialName(item.materialId)}}</td>
-                        <td>{{getUnit(item.unitId)}}</td>
+                        <td>{{getSizeName(item.sizeId,item.materialId)}}</td>
                         <td>{{item.quantity}}</td>
-                        <td>{{item.unitPrice}}</td>
-                        <td>{{item.unitPrice * item.quantity}}</td>
+                        <td>{{item.unitPrice | commaNumber}}</td>
+                        <td>{{item.unitPrice * item.quantity | commaNumber}}</td>
                         <td>{{getStock(item.materialId)}}</td>
                         <td>{{getSaleType(item.addedBySmallUnit)}}</td>
                         <td>
