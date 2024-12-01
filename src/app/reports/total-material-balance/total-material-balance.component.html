@@ -32,7 +32,7 @@
                     <td>{{item.totalQuantity | commaNumber}} {{item.unitName}}</td>
                     <td>{{item.price | commaNumber}}</td>
                     <td>{{(item.totalQuantity * item.price) | commaNumber}}</td>
-                    <td><a class="btn btn-outline-primary btn-xs bi bi-eye bi-lg" (click)="navigateToDetails(item.materialId)"></a></td>
+                    <td><a class="btn btn-outline-primary btn-xs bi bi-eye bi-lg" (click)="navigateToDetails(item)"></a></td>
                 </tr>
             </tbody>
             <tfoot>

@@ -73,6 +73,13 @@ import { TenantsComponent } from './tenants/tenants.component';
                 (m) => m.NotificationModule
               ),
           },
+          {
+            path: "reports",
+            loadChildren: () =>
+              import("../app/reports/reports.module").then(
+                (m) => m.ReportsModule
+              ),
+          },
         ],
       },
     ]),

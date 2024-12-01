@@ -44,6 +44,7 @@ export class MaterialBalanceComponent
   }
 
   ngOnInit(): void {
+    debugger;
     this.materialId = this.route.snapshot?.params?.materialId;
     this.materialName = this.route.snapshot?.params?.materialName;
     this.totalQuantity = this.route.snapshot?.params?.totalQuantity;

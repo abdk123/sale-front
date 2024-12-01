@@ -221,12 +221,7 @@ const data: IMenuItem[] = [
       icon: "iconsminds-file",
       permissions: permissionsSetting,
     },
-    {
-      label: "MaterialBalanceReport",
-      to: `${adminRoot}/reports/material-balance`,
-      icon: "iconsminds-file",
-      permissions: permissionsSetting,
-    },
+    
   ],
 },
   //Security
