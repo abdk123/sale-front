@@ -1,0 +1,35 @@
+<div class="row separator mb-4">
+    <div class="col-12">
+        <h1>{{'MaterialBalanceReport' | localize}} </h1><h1>{{materialName}}</h1>
+
+        <div class="top-right-button-container text-zero">
+            <a class="btn btn-link btn-empty btn-lg" href="/app/reports/materials-balances">{{'Back' | localize}} <i
+                    class="simple-icon-action-undo"></i></a>
+      
+    </div>
+  </div>
+  <!-- ------------- -->
+<div class="card p-2 mt-2 mb-3">
+    <div class="table-responsive">
+        <table class="table  table-bordered">
+            <thead>
+                <tr>
+                    <th >{{'Type' | localize}}</th>
+                    <th >{{'Reason' | localize}}</th>
+                    <th >{{'Incoming' | localize}}</th>
+                    <th >{{'Outgoing' | localize}}</th>
+                    <th >{{'Title' | localize}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of balances">
+                    <td>{{stockType[item.type]}}</td>
+                    <td>{{stockReason[item.reason]}}</td>
+                    <td><span *ngIf="item.quantity > 0">{{item.quantity | commaNumber}}</span></td>
+                    <td><span *ngIf="item.quantity < 0">{{numberWithCommasAndAbs(item.quantity)}}</span></td>
+                    <td>{{item.title}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

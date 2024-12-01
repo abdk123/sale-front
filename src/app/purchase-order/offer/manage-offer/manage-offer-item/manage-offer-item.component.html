@@ -1,7 +1,7 @@
 
         
 
-        <div *ngIf="loading" class="table-responsive">
+        <div *ngIf="items?.length > 0" class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -24,7 +24,7 @@
                             </label>
                         </td>
                         <td>{{getMaterialName(item.materialId)}}</td>
-                        <td>{{getUnit(item)}}</td>
+                        <td>{{getUnitName(item.materialId)}}</td>
                         <td>{{item.quantity}}</td>
                         <td>{{item.unitPrice}}</td>
                         <td>{{item.unitPrice * item.quantity}}</td>

@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Injector,
-  Input,
   OnInit,
   Output,
 } from "@angular/core";
@@ -10,7 +9,6 @@ import { AppComponentBase } from "@shared/app-component-base";
 import {
   CreateOfferItemDto,
   DropdownDto,
-  MaterialDto,
   MaterialServiceProxy,
   SizeDto,
   StockDto,
@@ -150,7 +148,7 @@ export class CreateOfferItemComponent
     let totalQuantity = 0;
     materialStocks.forEach(stock=>{
       const count = stock.conversionValue > 0 ? stock.quantity * stock.conversionValue : 0;
-      text = count + ' ' + this.getSizeName(stock.id,materialId) + '-';
+      text = count + ' ' + stock.size?.name + '-';
       totalQuantity += stock.quantity;
     })
     text = text.substring(0,text.length - 1);

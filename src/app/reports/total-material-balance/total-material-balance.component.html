@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-12">
+      <app-heading [title]="'MaterialsBalancesReport' | localize"></app-heading>
+      <div class="display-options-container ">
+        <!-- <div id="displayOptions"  class="collapse dont-collapse-sm">
+          <div class="d-inline-block">
+            <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+              <input class="form-control" placeholder="{{'Search'|localize}}" >
+            </div>
+          </div>
+        </div> -->
+        <div class="separator mb-4"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ------------- -->
+<div class="card p-2 mt-2 mb-3">
+    <div class="table-responsive">
+        <table class="table  table-bordered">
+            <thead>
+                <tr>
+                    <th >{{'Material' | localize}}</th>
+                    <th >{{'Quantity' | localize}}</th>
+                    <th >{{'Price' | localize}}</th>
+                    <th >{{'Total' | localize}}</th>
+                    <th style="width: 3rem;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of balances">
+                    <td>{{item.name}}</td>
+                    <td>{{item.totalQuantity | commaNumber}} {{item.unitName}}</td>
+                    <td>{{item.price | commaNumber}}</td>
+                    <td>{{(item.totalQuantity * item.price) | commaNumber}}</td>
+                    <td><a class="btn btn-outline-primary btn-xs bi bi-eye bi-lg" (click)="navigateToDetails(item.materialId)"></a></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="table-secondary">
+                    
+                    <td class="text-primary">{{'Total' | localize}}</td>
+                    <td class="text-primary">{{totalBalance | commaNumber}}</td>
+                    <td></td>
+                    <td class="text-primary">{{totalPrice | commaNumber}}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

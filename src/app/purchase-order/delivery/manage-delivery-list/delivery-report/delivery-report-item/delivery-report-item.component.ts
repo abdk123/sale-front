@@ -105,6 +105,7 @@ export class DeliveryReportItemComponent
         initialState:{
           deliveryId:this.deliveryId,
           deliveryItemId:item.id,
+          offerItemId:item.offerItem.id,
           quantity:item.deliveredQuantity
         }
       }

@@ -108,9 +108,9 @@ export class CompleteReceiveComponent
       .subscribe((result) => {
         this.saving = false;
           this.notify.info(this.l("SavedSuccessfully"));
-        this.router.navigate([
+        this.router.navigateByUrl(
           "/app/orders/receives;invoiceId=" + this.invoiceId,
-        ]);
+        );
       });
   }
 

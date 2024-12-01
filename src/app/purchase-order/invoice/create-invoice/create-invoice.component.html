@@ -1,14 +1,13 @@
 <form class="form-horizontal " autocomplete="off" #createInvoiceForm="ngForm" (ngSubmit)="save()">
     <div class="row">
         <div class="col-12 separator">
-            <h1>{{'ManageOffer' | localize}}</h1>
+            <h1>{{'CreateNewInvoice' | localize}}</h1>
             <a class="btn btn-link btn-empty btn-lg" href="/app/orders/invoices">{{'BackToInvoiceList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
                     [disabled]="!createInvoiceForm.form.valid || saving" (click)="save()">{{ 'Save' | localize}}</button>
             </div>
-            
         </div>
     </div>
     <div class="card mt-2">
@@ -110,13 +109,13 @@
                         <th>{{'MaterialPrice' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
                         <th>{{'QuantityInStore' | localize}}</th>
-                        <!-- <th>{{'SaleType' | localize}}</th> -->
+                        <th>{{'QuantityInOffer' | localize}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;">
                         <td>{{selectedOffer?.offerItems[index]?.material?.name}}</td>
-                        <td>{{selectedOffer?.offerItems[index]?.unit.name}}</td>
+                        <td>{{getUnitName(selectedOffer?.offerItems[index]?.materialId)}}</td>
                         <!-- <td>{{getPackingUnit(selectedOffer?.offerItems[index]?.sizeId)}}</td> -->
                         <td>
                             <input type="number" [(ngModel)]="invoice.invoiseDetails[index].quantity" class="form-control" />
@@ -124,8 +123,9 @@
                         <td>
                             <input type="number" [(ngModel)]="invoice.invoiseDetails[index].totalMaterilPrice" class="form-control" />
                         </td>
-                        <td>{{item.totalMaterilPrice * item.quantity}}</td>
-                        <td>{{getStock(selectedOffer?.offerItems[index]?.material?.id)}} {{selectedOffer?.offerItems[index]?.unit.name}}</td>
+                        <td>{{invoice.invoiseDetails[index].totalMaterilPrice * invoice.invoiseDetails[index].quantity | commaNumber}}</td>
+                        <td>{{getStock(selectedOffer?.offerItems[index]?.material?.id)}} {{selectedOffer?.offerItems[index]?.unit?.name}}</td>
+                        <td>{{selectedOffer?.offerItems[index]?.quantity | commaNumber}}</td>
                     </tr>
                 </tbody>
             </table>

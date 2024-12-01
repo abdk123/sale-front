@@ -39,8 +39,10 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
       this.items.forEach(x=> {materialsIds.push(x.materialId)});
       this.materialService.getAllByIds(materialsIds)
       .subscribe(data=>{
-        this.initialInfo(data);
-      })
+        data.forEach(material => {
+          this.initialInfo(material);
+        });
+      });
     });
   }
 
@@ -57,10 +59,12 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
     })
   }
 
-  initialInfo(result){
-    if(this.units.findIndex(x=>x.id == result.unitId) == -1)
-      this.units.push(result.unit);
-    result.stocks.forEach(stock=>{
+  initialInfo(material){
+    //Units
+    if(this.units.findIndex(x=>x.id == material.unitId) == -1)
+      this.units.push(material.unit);
+    //Szes
+    material.stocks.forEach(stock=>{
       this.sizes = [];
       this.sizes.push(stock.size);
       if(this.stocks.findIndex(x=>x.id == stock.id) == -1)

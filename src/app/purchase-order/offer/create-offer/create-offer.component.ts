@@ -66,7 +66,6 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
   }
 
   save() {
-    
     this.customerIsRequired = this.offer.customerId ? false : true;
     this.statusIsRequired = this.offer.status == undefined ? true : false;
     this.currencyIsRequired = this.offer.currency == undefined ? true : false;

@@ -7,6 +7,8 @@ import {
   CreateReceivingDto,
   ReceivingServiceProxy,
   CreateReceivingItemDto,
+  TransportCompanyServiceProxy,
+  DropdownDto,
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs";
 
@@ -20,12 +22,18 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
   receiveDto: CreateReceivingDto = new CreateReceivingDto();
   invoiceId: number;
   saving: boolean;
+  transportCompanies: DropdownDto[] = [];
   date: Date = new Date();
+  currencies = [
+    { id: 0, name: this.l("Dinar") },
+    { id: 1, name: this.l("Dollar") },
+  ];
   constructor(
     injector: Injector,
     private router: Router,
     private invoiceService: InvoiceServiceProxy,
     private receivingService: ReceivingServiceProxy,
+    private transportCompanyService: TransportCompanyServiceProxy,
     private route: ActivatedRoute
   ) {
     super(injector);
@@ -34,12 +42,20 @@ export class CreateReceiveComponent extends AppComponentBase implements OnInit {
   ngOnInit(): void {
     this.invoiceId = this.route.snapshot?.params?.invoiceId;
     this.initialInvoice();
+    this.initialTransportCompanies();
+
   }
 
   initialInvoice() {
     this.invoiceService.getWithDetail(this.invoiceId).subscribe((result) => {
       this.invoice = result;
     });
+  }
+
+  initialTransportCompanies() {
+    this.transportCompanyService
+      .getForDropdown()
+      .subscribe((result) => (this.transportCompanies = result));
   }
 
   save() {

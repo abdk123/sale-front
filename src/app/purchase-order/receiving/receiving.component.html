@@ -106,7 +106,7 @@
             <p class="list-item-heading mb-1">
               {{'TransportCompany' | localize}} :
               <ng-container *ngIf="receive?.transportCompany">
-                <span class="">{{receive.clearanceCompany?.name}}</span>
+                <span class="">{{receive.transportCompany?.name}}</span>
               </ng-container>
               <ng-container *ngIf="!receive?.transportCompany">
                 <span class=" placeholder-glow"><span class="placeholder"></span></span>
@@ -114,10 +114,10 @@
             </p>
             <p class="text-muted text-small mb-1">
               {{'TransportCost' | localize}} :
-              <ng-container *ngIf="receive?.transportCompany">
+              <ng-container *ngIf="receive?.transportCost > 0">
                 <span class="">{{receive.transportCost | commaNumber}} {{getCurrency(receive.transportCostCurrency) }}</span>
               </ng-container>
-              <ng-container *ngIf="!receive?.transportCompany">
+              <ng-container *ngIf="receive?.transportCost == 0">
                 <span class=" placeholder-glow"><span class="placeholder"></span></span>
               </ng-container>
             </p>

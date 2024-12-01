@@ -1,44 +1,49 @@
 <abp-modal-header [title]="'RejectedMaterial' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
 <div class="modal-body modal-xl">
-  <div class="row mb-2" *ngFor="let item of rejectedMaterials; let index = index;trackBy:trackByIndex;">
+  <div class="row" *ngFor="let item of rejectedMaterials; let index = index;trackBy:trackByIndex;">
     <div class="col-md-1">
       <div class="d-flex">
         <a class="mr-1 cursor-pointer" (click)="addnewItem()"><span class="iconsminds-add text-success" style="font-size: 1.2rem;"></span></a>
         <a class="cursor-pointer" (click)="removeItem(index)"><span class="iconsminds-remove  text-danger" style="font-size: 1.2rem;"></span></a>
       </div>
     </div>
-    <div class="col-md-2">
-      <label class=" has-float-label">
-          <ng-select [items]="materialSource" required bindLabel="name" bindValue="id" name="materialSource" [(ngModel)]="rejectedMaterials[index].materialSource">
-          </ng-select>
-          <span>{{ 'MaterialSource' | localize }}</span>
-      </label>
+    <div class="col-md-11">
+      <div class="row" >
+        <div class="col-md-3">
+          <label class=" has-float-label">
+              <ng-select [items]="materialSource" required bindLabel="name" bindValue="id" name="materialSource" [(ngModel)]="rejectedMaterials[index].materialSource" (change)="onSelectSource($event,index)">
+              </ng-select>
+              <span>{{ 'MaterialSource' | localize }}</span>
+          </label>
+      </div>
+        <div class="col-md-3" *ngIf="rejectedMaterials[index].materialSource == 1">
+          <label class=" has-float-label">
+            <ng-select [items]="suppliers" required bindLabel="fullName" bindValue="id" [name]="'customerId'+[index]"
+                [(ngModel)]="rejectedMaterials[index].supplierId" (change)="onSelectCustomer($event,index)">
+            </ng-select>
+            <span >{{ 'Supplier' | localize }}</span> 
+        </label>
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label required">
+            <input type="number" class="form-control" required [(ngModel)]="rejectedMaterials[index].rejectedQuantity" name="rejectedQuantity">
+            <span>{{ 'RejectedQuantity' | localize }}</span>
+          </label>
+          
+        </div>
+        <div class="col-md-3">
+          <label class=" has-float-label required">
+            <input class="form-control" required [(ngModel)]="rejectedMaterials[index].rejectionDate" name="rejectionDate" bsDatepicker
+              [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
+              >
+            <span>{{ 'RejectionDate' | localize }}</span>
+          </label>
+          
+        </div>
+      </div>
+    </div>
   </div>
-    <div class="col-md-3" *ngIf="rejectedMaterials[index].materialSource == 1">
-      <label class=" has-float-label">
-        <ng-select [items]="suppliers" required bindLabel="name" bindValue="id" [name]="'customerId'+[index]"
-            [(ngModel)]="rejectedMaterials[index].supplierId" (change)="onSelectCustomer($event,index)">
-        </ng-select>
-        <span >{{ 'Supplier' | localize }}</span> 
-    </label>
-    </div>
-    <div class="col-md-3">
-      <label class=" has-float-label required">
-        <input type="number" class="form-control" required [(ngModel)]="rejectedMaterials[index].rejectedQuantity" name="rejectedQuantity">
-        <span>{{ 'RejectedQuantity' | localize }}</span>
-      </label>
-      
-    </div>
-    <div class="col-md-3">
-      <label class=" has-float-label required">
-        <input class="form-control" required [(ngModel)]="rejectedMaterials[index].rejectionDate" name="rejectionDate" bsDatepicker
-          [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
-          >
-        <span>{{ 'RejectionDate' | localize }}</span>
-      </label>
-      
-    </div>
-  </div>
+  
 </div>
 <div class="modal-footer justify-content-between ">
   <div>

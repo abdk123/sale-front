@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select required [items]="transportCompanies" required bindLabel="name" bindValue="id"
+                        <ng-select  [items]="transportCompanies"  bindLabel="name" bindValue="id"
                             name="transportCompanyId" [(ngModel)]="input.transportCompanyId">
                         </ng-select>
                         <span>{{ 'TransportCompany'| localize }}</span>
@@ -26,7 +26,7 @@
                 
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="number" required class="form-control" name="transportCost"
+                        <input type="number"  class="form-control" name="transportCost"
                             [(ngModel)]="input.transportCost" #transportCostModel="ngModel" #transportCostEl />
                         <span>{{ 'TransportCost' | localize }}</span>
                     </label>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                        <input type="text"  class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="input.driverName" #driverNameModel="ngModel" #driverNameEl />
                         <span>{{ 'DriverName' | localize }}</span>
                     </label>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-group has-float-label">
-                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                        <input type="text"  class="form-control" name="driverPhoneNumber"
                             [(ngModel)]="input.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
                         <span>{{ 'DriverPhoneNumber' | localize }}</span>
                     </label>
@@ -53,14 +53,14 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="currencies" required bindLabel="name" bindValue="id" name="currency" [(ngModel)]="input.transportCostCurrency">
+                        <ng-select [items]="currencies"  bindLabel="name" bindValue="id" name="currency" [(ngModel)]="input.transportCostCurrency">
                         </ng-select>
                         <span>{{ 'TransportCostCurrency' | localize }}</span>
                     </label>
                 </div>
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <label class=" has-float-label">
-                        <input class="form-control" required [(ngModel)]="date" name="creationTime"
+                        <input class="form-control"  [(ngModel)]="date" name="creationTime"
                             bsDatepicker [container]="'html'"
                             [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
                             #creationTimeModel="ngModel" #creationTimeEl>
@@ -68,7 +68,7 @@
                     </label>
                     <abp-validation-summary [control]="creationTimeModel" [controlEl]="creationTimeEl">
                     </abp-validation-summary>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <ng-select [items]="clearanceCompanies" required bindLabel="name" bindValue="id"
+                        <ng-select [items]="clearanceCompanies"  bindLabel="name" bindValue="id"
                             name="clearanceCompanyId" [(ngModel)]="input.clearanceCompanyId">
                         </ng-select>
                         <span>{{ 'ClearanceCompany'| localize }}</span>

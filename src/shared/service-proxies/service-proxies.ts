@@ -5910,6 +5910,62 @@ export class InvoiceServiceProxy {
     }
 
     /**
+     * @param offerItemId (optional) 
+     * @return Success
+     */
+    getSupplierByOfferItem(offerItemId: number | undefined): Observable<CustomerDto> {
+        let url_ = this.baseUrl + "/api/services/app/Invoice/GetSupplierByOfferItem?";
+        if (offerItemId === null)
+            throw new Error("The parameter 'offerItemId' cannot be null.");
+        else if (offerItemId !== undefined)
+            url_ += "offerItemId=" + encodeURIComponent("" + offerItemId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSupplierByOfferItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSupplierByOfferItem(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CustomerDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CustomerDto>;
+        }));
+    }
+
+    protected processGetSupplierByOfferItem(response: HttpResponseBase): Observable<CustomerDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomerDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -11984,6 +12040,127 @@ export class StockHistoryServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getMaterialBalance(): Observable<MaterialBalanceDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/GetMaterialBalance";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMaterialBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMaterialBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MaterialBalanceDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MaterialBalanceDto[]>;
+        }));
+    }
+
+    protected processGetMaterialBalance(response: HttpResponseBase): Observable<MaterialBalanceDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(MaterialBalanceDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param materialId (optional) 
+     * @return Success
+     */
+    getByMaterialId(materialId: number | undefined): Observable<StockHistoryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/StockHistory/GetByMaterialId?";
+        if (materialId === null)
+            throw new Error("The parameter 'materialId' cannot be null.");
+        else if (materialId !== undefined)
+            url_ += "materialId=" + encodeURIComponent("" + materialId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByMaterialId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByMaterialId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StockHistoryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StockHistoryDto[]>;
+        }));
+    }
+
+    protected processGetByMaterialId(response: HttpResponseBase): Observable<StockHistoryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(StockHistoryDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -21731,6 +21908,7 @@ export class CreateStockDto implements ICreateStockDto {
     sizeId: number | undefined;
     materialId: number | undefined;
     storeId: number | undefined;
+    price: number;
 
     constructor(data?: ICreateStockDto) {
         if (data) {
@@ -21752,6 +21930,7 @@ export class CreateStockDto implements ICreateStockDto {
             this.sizeId = _data["sizeId"];
             this.materialId = _data["materialId"];
             this.storeId = _data["storeId"];
+            this.price = _data["price"];
         }
     }
 
@@ -21773,6 +21952,7 @@ export class CreateStockDto implements ICreateStockDto {
         data["sizeId"] = this.sizeId;
         data["materialId"] = this.materialId;
         data["storeId"] = this.storeId;
+        data["price"] = this.price;
         return data;
     }
 
@@ -21794,6 +21974,7 @@ export interface ICreateStockDto {
     sizeId: number | undefined;
     materialId: number | undefined;
     storeId: number | undefined;
+    price: number;
 }
 
 export class CreateStockHistoryDto implements ICreateStockHistoryDto {
@@ -25064,6 +25245,81 @@ export enum LayoutKind {
     _3 = 3,
 }
 
+export class MaterialBalanceDto implements IMaterialBalanceDto {
+    readonly totalQuantity: number;
+    materialId: number;
+    unitName: string | undefined;
+    name: string | undefined;
+    readonly price: number;
+    readonly stockInfo: string | undefined;
+    stocks: StockBalanceDto[] | undefined;
+
+    constructor(data?: IMaterialBalanceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).totalQuantity = _data["totalQuantity"];
+            this.materialId = _data["materialId"];
+            this.unitName = _data["unitName"];
+            this.name = _data["name"];
+            (<any>this).price = _data["price"];
+            (<any>this).stockInfo = _data["stockInfo"];
+            if (Array.isArray(_data["stocks"])) {
+                this.stocks = [] as any;
+                for (let item of _data["stocks"])
+                    this.stocks.push(StockBalanceDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MaterialBalanceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MaterialBalanceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalQuantity"] = this.totalQuantity;
+        data["materialId"] = this.materialId;
+        data["unitName"] = this.unitName;
+        data["name"] = this.name;
+        data["price"] = this.price;
+        data["stockInfo"] = this.stockInfo;
+        if (Array.isArray(this.stocks)) {
+            data["stocks"] = [];
+            for (let item of this.stocks)
+                data["stocks"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): MaterialBalanceDto {
+        const json = this.toJSON();
+        let result = new MaterialBalanceDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMaterialBalanceDto {
+    totalQuantity: number;
+    materialId: number;
+    unitName: string | undefined;
+    name: string | undefined;
+    price: number;
+    stockInfo: string | undefined;
+    stocks: StockBalanceDto[] | undefined;
+}
+
 export class MaterialDto implements IMaterialDto {
     id: number;
     name: string | undefined;
@@ -25072,6 +25328,7 @@ export class MaterialDto implements IMaterialDto {
     unitId: number | undefined;
     unit: UnitDto;
     totalQuantity: number;
+    totalPrice: number;
     category: CategoryForDropdownDto;
     stocks: StockDto[] | undefined;
 
@@ -25093,6 +25350,7 @@ export class MaterialDto implements IMaterialDto {
             this.unitId = _data["unitId"];
             this.unit = _data["unit"] ? UnitDto.fromJS(_data["unit"]) : <any>undefined;
             this.totalQuantity = _data["totalQuantity"];
+            this.totalPrice = _data["totalPrice"];
             this.category = _data["category"] ? CategoryForDropdownDto.fromJS(_data["category"]) : <any>undefined;
             if (Array.isArray(_data["stocks"])) {
                 this.stocks = [] as any;
@@ -25118,6 +25376,7 @@ export class MaterialDto implements IMaterialDto {
         data["unitId"] = this.unitId;
         data["unit"] = this.unit ? this.unit.toJSON() : <any>undefined;
         data["totalQuantity"] = this.totalQuantity;
+        data["totalPrice"] = this.totalPrice;
         data["category"] = this.category ? this.category.toJSON() : <any>undefined;
         if (Array.isArray(this.stocks)) {
             data["stocks"] = [];
@@ -25143,6 +25402,7 @@ export interface IMaterialDto {
     unitId: number | undefined;
     unit: UnitDto;
     totalQuantity: number;
+    totalPrice: number;
     category: CategoryForDropdownDto;
     stocks: StockDto[] | undefined;
 }
@@ -28571,12 +28831,69 @@ export interface ISizeForDropdownDto {
     name: string | undefined;
 }
 
+export class StockBalanceDto implements IStockBalanceDto {
+    quantity: number;
+    price: number;
+    numberInSmallUnit: number;
+    sizeName: string | undefined;
+
+    constructor(data?: IStockBalanceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.quantity = _data["quantity"];
+            this.price = _data["price"];
+            this.numberInSmallUnit = _data["numberInSmallUnit"];
+            this.sizeName = _data["sizeName"];
+        }
+    }
+
+    static fromJS(data: any): StockBalanceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StockBalanceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["quantity"] = this.quantity;
+        data["price"] = this.price;
+        data["numberInSmallUnit"] = this.numberInSmallUnit;
+        data["sizeName"] = this.sizeName;
+        return data;
+    }
+
+    clone(): StockBalanceDto {
+        const json = this.toJSON();
+        let result = new StockBalanceDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStockBalanceDto {
+    quantity: number;
+    price: number;
+    numberInSmallUnit: number;
+    sizeName: string | undefined;
+}
+
 export class StockDto implements IStockDto {
     id: number;
     barcode: string | undefined;
     note: string | undefined;
     conversionValue: number;
     quantity: number;
+    price: number;
+    stockAmount: number;
     numberInSmallUnit: number;
     sizeId: number | undefined;
     materialId: number | undefined;
@@ -28601,6 +28918,8 @@ export class StockDto implements IStockDto {
             this.note = _data["note"];
             this.conversionValue = _data["conversionValue"];
             this.quantity = _data["quantity"];
+            this.price = _data["price"];
+            this.stockAmount = _data["stockAmount"];
             this.numberInSmallUnit = _data["numberInSmallUnit"];
             this.sizeId = _data["sizeId"];
             this.materialId = _data["materialId"];
@@ -28625,6 +28944,8 @@ export class StockDto implements IStockDto {
         data["note"] = this.note;
         data["conversionValue"] = this.conversionValue;
         data["quantity"] = this.quantity;
+        data["price"] = this.price;
+        data["stockAmount"] = this.stockAmount;
         data["numberInSmallUnit"] = this.numberInSmallUnit;
         data["sizeId"] = this.sizeId;
         data["materialId"] = this.materialId;
@@ -28649,6 +28970,8 @@ export interface IStockDto {
     note: string | undefined;
     conversionValue: number;
     quantity: number;
+    price: number;
+    stockAmount: number;
     numberInSmallUnit: number;
     sizeId: number | undefined;
     materialId: number | undefined;
@@ -32027,6 +32350,7 @@ export class UpdateStockDto implements IUpdateStockDto {
     sizeId: number | undefined;
     materialId: number | undefined;
     storeId: number | undefined;
+    price: number;
 
     constructor(data?: IUpdateStockDto) {
         if (data) {
@@ -32048,6 +32372,7 @@ export class UpdateStockDto implements IUpdateStockDto {
             this.sizeId = _data["sizeId"];
             this.materialId = _data["materialId"];
             this.storeId = _data["storeId"];
+            this.price = _data["price"];
         }
     }
 
@@ -32069,6 +32394,7 @@ export class UpdateStockDto implements IUpdateStockDto {
         data["sizeId"] = this.sizeId;
         data["materialId"] = this.materialId;
         data["storeId"] = this.storeId;
+        data["price"] = this.price;
         return data;
     }
 
@@ -32090,6 +32416,7 @@ export interface IUpdateStockDto {
     sizeId: number | undefined;
     materialId: number | undefined;
     storeId: number | undefined;
+    price: number;
 }
 
 export class UpdateStockHistoryDto implements IUpdateStockHistoryDto {

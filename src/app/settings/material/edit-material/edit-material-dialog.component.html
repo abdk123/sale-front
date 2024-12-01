@@ -105,6 +105,16 @@
               <span>{{ "Quantity" | localize }}</span>
             </label>
           </div>
+          <div class="col-md-4 mt-3">
+            <label class=" has-float-label">
+              <input type="number" name="price" class="form-control" price="price"
+                id="price" [(ngModel)]="stock.price" #priceModel="ngModel"
+                #priceEl />
+              <abp-validation-summary [control]="priceModel"
+                [controlEl]="priceEl"></abp-validation-summary>
+              <span>{{ "PricePerTon" | localize }}</span>
+            </label>
+          </div>
           <!-- <div class="col-md-3 mt-3">
             <label class=" has-float-label">
               <input type="number" class="form-control" name="numberInSmallUnit" numberInSmallUnit="numberInSmallUnit"
@@ -134,6 +144,7 @@
                   <th class="bi">{{'Store' | localize}}</th>
                   <th  class="bi">{{'Unit' | localize}}</th>
                   <th  class="bi">{{'Quantity' | localize}}</th>
+                  <th class="bi">{{'PricePerTon' | localize}}</th>
                   <th  class="bi">{{'ConversionValue' | localize}}</th>
                   <!-- <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th> -->
                   <th  class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
@@ -145,6 +156,7 @@
                   <td>{{getStoreName(material.stocks[index].storeId)}}</td>
                   <td>{{getSizeName(material.stocks[index].sizeId)}}</td>
                   <td>{{material.stocks[index].quantity}}</td>
+                  <td>{{material.stocks[index].price}}</td>
                   <td>{{material.stocks[index].conversionValue}}</td>
                   <!-- <td>{{item.numberInSmallUnit}}</td> -->
                   <td>{{getNumberInSmallUnit(material.stocks[index]) | commaNumber}} {{getSizeName(material.stocks[index].sizeId)}}</td>

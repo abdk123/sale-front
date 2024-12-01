@@ -39,6 +39,33 @@
                 </div>
                 <div class="col-md-4">
                     <label class=" has-float-label">
+                        <ng-select required [items]="transportCompanies" required bindLabel="name" bindValue="id"
+                            name="transportCompanyId" [(ngModel)]="receiveDto.transportCompanyId">
+                        </ng-select>
+                        <span>{{ 'TransportCompany'| localize }}</span>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-group has-float-label">
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                            [(ngModel)]="receiveDto.driverName" #driverNameModel="ngModel" #driverNameEl />
+                        <span>{{ 'DriverName' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="driverNameModel" [controlEl]="driverNameEl">
+                    </abp-validation-summary>
+                </div>
+                <div class="col-md-4 mt-2">
+                    <label class="form-group has-float-label">
+                        <input type="text" required class="form-control" name="driverPhoneNumber"
+                            [(ngModel)]="receiveDto.driverPhoneNumber" #driverPhoneNumberModel="ngModel" #driverPhoneNumberEl />
+                        <span>{{ 'DriverPhoneNumber' | localize }}</span>
+                    </label>
+                    <abp-validation-summary [control]="driverPhoneNumberModel" [controlEl]="driverPhoneNumberEl">
+                    </abp-validation-summary>
+                </div>
+                
+                <div class="col-md-4 mt-2">
+                    <label class=" has-float-label">
                         <textarea class="form-control" name="specefecation" rows="3"
                             [(ngModel)]="receiveDto.note"></textarea>
                         <span>{{ 'Note' | localize }}</span>
@@ -47,6 +74,7 @@
             </div>
         </div>
     </div>
+    
 </form>
 <create-receive-item [invoiceId]="invoiceId" [(items)]="receiveDto.receivingItems"></create-receive-item>
 <!-- <receive-list [invoiceId]="invoiceId"></receive-list> -->

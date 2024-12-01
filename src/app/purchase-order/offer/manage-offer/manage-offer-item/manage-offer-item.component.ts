@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { ConvertToPurchaseInvoiceDto, CustomerServiceProxy, DropdownDto, MaterialServiceProxy, OfferServiceProxy, StockDto, StockServiceProxy, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
+import { ConvertToPurchaseInvoiceDto, CustomerServiceProxy, DropdownDto, MaterialServiceProxy, OfferServiceProxy, SizeDto, StockDto, StockServiceProxy, UnitDto, UpdateOfferItemDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -15,16 +15,18 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   @Input() offerId: number;
   items: UpdateOfferItemDto[] = [];
   materials: DropdownDto[] = [];
+  sizes: SizeDto[] = [];
+  units: UnitDto[] = [];
   stocks: StockDto[] = [];
   customers:DropdownDto[]=[];
   saving = false;
   indexUpdate = -1;
+  loading: boolean = false;
   supplierIsRequired = false;
   constructor(
     injector: Injector,
     private materialService: MaterialServiceProxy,
     private offerService: OfferServiceProxy,
-    private stockService: StockServiceProxy,
     private customerService: CustomerServiceProxy,
   ) {
     super(injector);
@@ -32,10 +34,9 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   ngOnInit(): void {
     this.purchaseInvoiceDto.offerId = this.offerId;
     this.purchaseInvoiceDto.offerItemsIds = [];
-    this.initialAllStocks();
-    this.initialItems();
     this.initialMaterials();
     this.initialCustomers();
+    this.initialItems();
   }
 
   initialCustomers() {
@@ -47,9 +48,31 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
   initialItems() {
     this.offerService.getItemsByOfferId(this.offerId).subscribe((result) => {
       this.items = result;
+      let materialsIds = [];
+      this.items.forEach(x=> {materialsIds.push(x.materialId)});
+
+      this.materialService.getAllByIds(materialsIds)
+      .subscribe(data=>{
+        data.forEach(material => {
+          this.initialInfo(material);
+        });
+      });
     });
   }
-  loading: boolean = false;
+
+  initialInfo(material){
+    //Units
+    if(this.units.findIndex(x=>x.id == material.unitId) == -1)
+      this.units.push(material.unit);
+    //Szes
+    material.stocks.forEach(stock=>{
+      this.sizes = [];
+      this.sizes.push(stock.size);
+      if(this.stocks.findIndex(x=>x.id == stock.id) == -1)
+        this.stocks.push(stock);
+    })
+  }
+
   initialMaterials() {
     this.materialService.getForDropdown().subscribe((result) => {
       this.materials = result;
@@ -94,33 +117,32 @@ export class ManageOfferItemComponent extends AppComponentBase implements OnInit
     return this.materials.find((x) => x.id == materialId)?.name;
   }
 
-  getUnit(item: UpdateOfferItemDto) {
-    if (item.addedBySmallUnit) {
-      return this.getMaterialName(item.materialId);
-    }
-    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
+  getSizeName(sizeId, materilId) {
+    debugger;
+    return this.stocks.find(x=>x=>x.id == sizeId && x.materialId == materilId)?.size.name;
   }
 
-  allStocks: StockDto[] = [];
-  initialAllStocks(){
-    this.stockService.getAll(undefined,undefined,undefined,undefined,undefined,0,100000)
-    .subscribe((result)=>{
-      this.allStocks = result.items;
-    })
+  getUnitName(materialId) {
+    return this.units.find(x=>x=>x.materialId == materialId)?.name;
   }
 
   getStock(materialId:number){
     var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
-
-    if(materialStocks.length > -1){
-      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
-      var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
-    }
-    return `${valueInLargeUnit}-${valueInSmallUnit}`;
+    if(materialStocks.length == -1)
+      return 0;
+    let text = '';
+    let totalQuantity = 0;
+    materialStocks.forEach(stock=>{
+      const count = stock.conversionValue > 0 ? stock.quantity * stock.conversionValue : 0;
+      text = count + ' ' + stock.size?.name + '-';
+      totalQuantity += stock.quantity;
+    })
+    text = text.substring(0,text.length - 1);
+    return `${totalQuantity} ${this.getUnitName(materialId)} (${text})`;
   }
 
   getSaleType(addedBySmallUnit){
-    return addedBySmallUnit ? `${this.l("SmallUnit")}` : `${this.l("LargeUnit")}`
+    return addedBySmallUnit ? `${this.l("Size")}` : `بالطن`
   }
 
   onCheck(args, offerItemId){

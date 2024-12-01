@@ -51,6 +51,7 @@ const routes: Routes = [
         //data: { permission: "Setting.Customers" },
         canActivate: [AppRouteGuard],
       },
+      
     ],
   },
 ];

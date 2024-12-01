@@ -36,8 +36,6 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
     this.id = this._route.snapshot?.params?.id;
     this.initialOffer();
   }
-  
-  
 
   initialOffer() {
     this.offerService
@@ -66,15 +64,12 @@ export class ManageOfferComponent extends AppComponentBase implements OnInit {
         .pipe(
           finalize(() => {
             this.saving = false;
-            
           })
         )
         .subscribe((result) => {
           this.notify.info(this.l("SavedSuccessfully"));
-            //this._router.navigate(["/app/orders/offers"]);
+          this._router.navigate(["/app/orders/offers"]);
         });
     }
   }
-
-  
 }

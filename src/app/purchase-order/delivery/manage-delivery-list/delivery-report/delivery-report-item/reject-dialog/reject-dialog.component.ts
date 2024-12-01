@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import {
+  CustomerDto,
   CustomerServiceProxy,
+  DeliveryDto,
   DeliveryServiceProxy,
   DropdownDto,
+  InvoiceServiceProxy,
   RejectDeliveryDto,
-  RejectDeliveryServiceProxy,
   RejectedMaterialDto,
 } from "@shared/service-proxies/service-proxies";
-import { result } from "lodash-es";
 import { BsModalRef } from "ngx-bootstrap/modal";
 
 @Component({
@@ -23,10 +24,11 @@ export class RejectDialogComponent extends AppComponentBase implements OnInit {
   rejectedMaterials: RejectedMaterialDto[] = [];
   quantity: number;
   deliveryItemId: number;
+  offerItemId: number;
   deliveryId: number;
   rejectedQuantity: number;
   rejectionDate: Date = new Date();
-  suppliers: DropdownDto[] = [];
+  suppliers: CustomerDto[] = [];
   materialSource = [
     { id: 0, name: this.l("Store") },
     { id: 1, name: this.l("Supplier") },
@@ -34,7 +36,7 @@ export class RejectDialogComponent extends AppComponentBase implements OnInit {
   constructor(
     injector: Injector,
     private deliveryService: DeliveryServiceProxy,
-    private customerService: CustomerServiceProxy,
+    private invoiceService: InvoiceServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -46,10 +48,10 @@ export class RejectDialogComponent extends AppComponentBase implements OnInit {
     this.model.rejectedMaterials = []; 
     this.initialRejectedMaterial();
     this.deliveryService.get(this.deliveryId)
-    .subscribe(result=>{
-      this.rejectedQuantity = result.deliveryItems
-      .find(x=>x.id == this.deliveryItemId)?.rejectedQuantity;
-    })
+    .subscribe((result: DeliveryDto)=>{
+      const item = result.deliveryItems.find(x=>x.id == this.deliveryItemId);
+      this.rejectedQuantity = item?.rejectedQuantity;
+    });
   }
   initialRejectedMaterial() {
     if(this.model.rejectedMaterials?.length == 0){
@@ -68,12 +70,20 @@ export class RejectDialogComponent extends AppComponentBase implements OnInit {
     this.rejectedMaterials.splice(index, 1);
   }
   initialCustomer() {
-    this.customerService.getForDropdown()
-    .subscribe(result=>this.suppliers = result);
+    this.invoiceService.getSupplierByOfferItem(this.offerItemId)
+    .subscribe(result=> {
+      this.suppliers.push(result);
+    });
   }
 
   onSelectCustomer(item,index){
 
+  }
+
+  onSelectSource(item,index){
+    if(item.id == 1){
+      this.rejectedMaterials[index].supplierId == this.suppliers[0].id;
+    }
   }
 
   save() {
