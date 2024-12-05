@@ -37,6 +37,7 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
       this.items = result;
       let materialsIds = [];
       this.items.forEach(x=> {materialsIds.push(x.materialId)});
+
       this.materialService.getAllByIds(materialsIds)
       .subscribe(data=>{
         data.forEach(material => {
@@ -103,6 +104,7 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
   }
 
   updateItem() {
+    this.items[this.indexUpdate].id = this.item.id;
     this.items[this.indexUpdate].materialId = this.item.materialId;
     this.items[this.indexUpdate].quantity = this.item.quantity;
     this.items[this.indexUpdate].addedBySmallUnit = this.item.addedBySmallUnit;
@@ -137,24 +139,30 @@ export class EditOfferItemComponent extends AppComponentBase implements OnInit {
     return this.materials.find((x) => x.id == materialId)?.name;
   }
 
-  getUnit(item: UpdateOfferItemDto) {
-    if (item.addedBySmallUnit) {
-      return this.getMaterialName(item.materialId);
-    }
-    return this.stocks.find(x=>x=>x.materialId == item.materialId)?.size.name;
+  getSizeName(sizeId, materilId) {
+    return this.stocks.find(x=>x=>x.id == sizeId && x.materialId == materilId)?.size.name;
+  }
+
+  getUnitName(materialId) {
+    return this.units.find(x=>x=>x.materialId == materialId)?.name;
   }
 
   getStock(materialId:number){
     var materialStocks = this.stocks.filter(x=>x.materialId == materialId);
-
-    if(materialStocks.length > -1){
-      var valueInLargeUnit = materialStocks.reduce((sum, current) => sum + current.quantity, 0);
-      var valueInSmallUnit = materialStocks.reduce((sum, current) => sum + current.numberInSmallUnit, 0);
-    }
-    return `${valueInLargeUnit}-${valueInSmallUnit}`;
+    if(materialStocks.length == -1)
+      return 0;
+    let text = '';
+    let totalQuantity = 0;
+    materialStocks.forEach(stock=>{
+      const count = stock.conversionValue > 0 ? stock.quantity * stock.conversionValue : 0;
+      text = count + ' ' + stock.size?.name + '-';
+      totalQuantity += stock.quantity;
+    })
+    text = text.substring(0,text.length - 1);
+    return `${totalQuantity} ${this.getUnitName(materialId)} (${text})`;
   }
 
   getSaleType(addedBySmallUnit){
-    return addedBySmallUnit ? `${this.l("SmallUnit")}` : `${this.l("LargeUnit")}`
+    return addedBySmallUnit ? `${this.l("Size")}` : `بالطن`
   }
 }

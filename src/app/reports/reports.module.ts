@@ -6,6 +6,7 @@ import { ReportsComponent } from './reports.component';
 import { TotalMaterialBalanceComponent } from './total-material-balance/total-material-balance.component';
 import { SharedModule } from '@shared/shared.module';
 import { MaterialBalanceComponent } from './material-balance/material-balance.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { MaterialBalanceComponent } from './material-balance/material-balance.co
     ReportsRoutingModule,
     SharedModule,
     ReportViewerModule,
+    TooltipModule
   ],
  
   schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA]

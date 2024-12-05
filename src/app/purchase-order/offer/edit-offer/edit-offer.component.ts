@@ -20,6 +20,7 @@ export class EditOfferComponent extends AppComponentBase implements OnInit {
   showPorchaseOrder = false;
   customers: DropdownDto[] = [];
   itemIndex: number;
+  endDate: string;
   currencies = [
     { id: 1, name: this.l("Dollar") },
     { id: 0, name: this.l("Dinar") },
@@ -39,23 +40,19 @@ export class EditOfferComponent extends AppComponentBase implements OnInit {
   }
   ngOnInit(): void {
     this.id = this._route.snapshot?.params?.id;
-    this.initialOffer();
     this.initialCustomers();
+    this.initialOffer();
   }
 
-  endDate: string;
   initialOffer() {
     this._offerService
       .getForEdit(this.id)
       .subscribe((result: UpdateOfferDto) => {
         this.offer = result;
-        this.endDate = new DatePipe("en-US").transform(
-          this.offer.offerEndDate,
-          "dd-MM-yyyy"
-        );
+        this.endDate = this.offer.offerEndDate;
       });
   }
-
+  
   initialCustomers() {
     this._customerService.getForDropdown().subscribe((result) => {
       this.customers = result;

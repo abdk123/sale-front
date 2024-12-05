@@ -29,7 +29,7 @@
             <tbody>
                 <tr *ngFor="let item of balances">
                     <td>{{item.name}}</td>
-                    <td>{{item.totalQuantity | commaNumber}} {{item.unitName}}</td>
+                    <td ><span [tooltip]="item.stockInfo">{{item.totalQuantity | commaNumber}} </span><span class="text-success">{{item.unitName}}</span></td>
                     <td>{{item.price | commaNumber}}</td>
                     <td>{{(item.totalQuantity * item.price) | commaNumber}}</td>
                     <td><a class="btn btn-outline-primary btn-xs bi bi-eye bi-lg" (click)="navigateToDetails(item)"></a></td>
