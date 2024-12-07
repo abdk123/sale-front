@@ -133,12 +133,20 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   }
 
   addStock() {
-    if (this.material.stocks == undefined) 
-      this.material.stocks = [];
-    this.material.stocks.push(this.stock);
-    //reset stock
-    this.stock = new CreateStockDto();
-
+    if(
+      !this.stock.storeId || 
+      !this.stock.sizeId || 
+      !this.stock.conversionValue || 
+      !this.stock.quantity || 
+      !this.stock.price){
+        this.notify.warn("يرجى ملئ كل الحقول");
+    }else{
+      if (this.material.stocks == undefined) 
+        this.material.stocks = [];
+      this.material.stocks.push(this.stock);
+      //reset stock
+      this.stock = new CreateStockDto();
+    }
   }
 
   getNumberInSmallUnit(item){

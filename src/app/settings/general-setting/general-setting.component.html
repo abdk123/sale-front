@@ -1,0 +1,22 @@
+<form class="form-horizontal " autocomplete="off" #createSettingModal="ngForm" (ngSubmit)="save()" >
+    <div class="modal-body modal-xl">
+          <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="password">
+                      {{ "Password"|localize  }}
+                    </label>
+                    <div class="col-md-9">
+                      <input type="password" class="form-control" name="password" id="password" required
+                        [(ngModel)]="password" #passwordModel="ngModel" #passwordEl   />
+                      <abp-validation-summary [control]="passwordModel" [controlEl]="passwordEl"></abp-validation-summary>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" [disabled]="!createSettingModal.form.valid || saving" class="btn btn-outline-primary">تصفير قاعدة البيانات</button>
+            </div>
+          </div>
+    </div>
+  </form>
+  

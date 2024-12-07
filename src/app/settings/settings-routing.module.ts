@@ -13,6 +13,7 @@ import { ClearanceCompanyComponent } from "./clearance-company/clearance-company
 import { TransportCompanyComponent } from "./transport-company/transport-company.component";
 import { CreateMaterialDialogComponent } from "./material/create-material/create-material-dialog.component";
 import { EditMaterialDialogComponent } from "./material/edit-material/edit-material-dialog.component";
+import { GeneralSettingComponent } from "./general-setting/general-setting.component";
 
 const routes: Routes = [
   {
@@ -90,6 +91,12 @@ const routes: Routes = [
         path: "transportCompany",
         component: TransportCompanyComponent,
         //data: { permission: "Setting.Categories" },
+        canActivate: [AppRouteGuard],
+      },
+      {
+        path: "generalSetting",
+        component: GeneralSettingComponent,
+        //data: { permission: "Setting.GeneralSettings" },
         canActivate: [AppRouteGuard],
       },
     ],

@@ -146,24 +146,42 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   }
 
   addStock() {
-    if (this.material.stocks == undefined) 
-      this.material.stocks = [];
-    this.stock.materialId = this.id;
-    this.material.stocks.push(this.stock);
-
-    //reset stock
-    this.stock = new UpdateStockDto();
+    if(
+      !this.stock.storeId || 
+      !this.stock.sizeId || 
+      !this.stock.conversionValue || 
+      !this.stock.quantity || 
+      !this.stock.price){
+        this.notify.warn("يرجى ملئ كل الحقول");
+    }else{
+      if (this.material.stocks == undefined) 
+        this.material.stocks = [];
+      this.stock.materialId = this.id;
+      this.material.stocks.push(this.stock);
+  
+      //reset stock
+      this.stock = new UpdateStockDto();
+    }
   }
 
   updateStock() {
-    this.material.stocks.find(x=>x.id == this.stock.id).storeId = this.stock.storeId;
-    this.material.stocks.find(x=>x.id == this.stock.id).conversionValue = this.stock.conversionValue;
-    this.material.stocks.find(x=>x.id == this.stock.id).quantity = this.stock.quantity;
-    this.material.stocks.find(x=>x.id == this.stock.id).materialId = this.stock.materialId;
-    this.material.stocks.find(x=>x.id == this.stock.id).sizeId = this.stock.sizeId;
-    
-    //reset stock
-    this.stock = new UpdateStockDto();
+    if(
+      !this.material.stocks.find(x=>x.id == this.stock.id).storeId || 
+      !this.material.stocks.find(x=>x.id == this.stock.id).sizeId || 
+      !this.material.stocks.find(x=>x.id == this.stock.id).conversionValue || 
+      !this.material.stocks.find(x=>x.id == this.stock.id).quantity || 
+      !this.material.stocks.find(x=>x.id == this.stock.id).price){
+        this.notify.warn("يرجى ملئ كل الحقول");
+    }else{
+      this.material.stocks.find(x=>x.id == this.stock.id).storeId = this.stock.storeId;
+      this.material.stocks.find(x=>x.id == this.stock.id).conversionValue = this.stock.conversionValue;
+      this.material.stocks.find(x=>x.id == this.stock.id).quantity = this.stock.quantity;
+      this.material.stocks.find(x=>x.id == this.stock.id).materialId = this.stock.materialId;
+      this.material.stocks.find(x=>x.id == this.stock.id).sizeId = this.stock.sizeId;
+      
+      //reset stock
+      this.stock = new UpdateStockDto();
+    }
   }
 
   initStock(item){

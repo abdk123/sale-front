@@ -77,6 +77,12 @@ const data: IMenuItem[] = [
         icon: "simple-icon-user",
         permissions: permissionsSetting,
       },
+      {
+        label: "GeneralSetting",
+        to: `${adminRoot}/settings/generalSetting`,
+        icon: "iconsminds-inbox-empty",
+        permissions: permissionsSetting,
+      },
     ],
   },
     //Offers

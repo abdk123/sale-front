@@ -29,7 +29,7 @@ import { CategoryComponent } from './category/category.component';
 import { FilterCategoryDialogComponent } from './category/filter-category/filter-category-dialog.component';
 import { SharedModule } from '@shared/shared.module';
 import { FilterMaterialDialogComponent } from './material/filter-material/filter-material-dialog.component';
-import { CategoryServiceProxy, ClearanceCompanyServiceProxy, CustomerServiceProxy, MaterialServiceProxy, SizeServiceProxy, StockServiceProxy, StoreServiceProxy, TransportCompanyServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CategoryServiceProxy, ClearanceCompanyServiceProxy, CustomerServiceProxy, MaterialServiceProxy, MigrationServiceProxy, SizeServiceProxy, StockServiceProxy, StoreServiceProxy, TransportCompanyServiceProxy } from '@shared/service-proxies/service-proxies';
 import { StoreComponent } from './store/store.component';
 import { CreateStoreComponent } from './store/create-store/create-store.component';
 import { EditStoreComponent } from './store/edit-store/edit-store.component';
@@ -43,6 +43,7 @@ import { ViewTransportCompanyComponent } from './transport-company/view-transpor
 import { CreateTransportCompanyComponent } from './transport-company/create-transport-company/create-transport-company.component';
 import { EditTransportCompanyComponent } from './transport-company/edit-transport-company/edit-transport-company.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { GeneralSettingComponent } from './general-setting/general-setting.component';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     ViewTransportCompanyComponent,
     CreateTransportCompanyComponent,
     EditTransportCompanyComponent,
+    GeneralSettingComponent,
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -104,6 +106,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     TransportCompanyServiceProxy,
     SizeServiceProxy,
     StockServiceProxy,
+    MigrationServiceProxy
   ],
 })
 export class SettingsModule {}

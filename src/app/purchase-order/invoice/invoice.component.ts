@@ -108,12 +108,10 @@ export class InvoiceComponent
   }
 
   showEditModal(id: any) {
-    var orderId = this.invoices.find((x) => x.id == id)?.offerId;
     this.router.navigate([
       "/app/orders/edit-invoice",
       {
-        invoiceId: id,
-        offerId: orderId,
+        id: id
       },
     ]);
   }

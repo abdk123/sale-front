@@ -117,7 +117,7 @@ export class CreateSupplierOfferItemComponent
   deleteItem(index:number): void {
     var material = this.materials.find(x=> x.id == this.items[index].materialId);
     abp.message.confirm(
-      this.l('OfferMaterialDeleteWarningMessage',material.name),
+      this.l('ConfirmationDeleteTheItem{0}',material.name),
       undefined,
       (result: boolean) => {
         if (result) {
