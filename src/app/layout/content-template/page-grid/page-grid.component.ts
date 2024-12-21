@@ -135,7 +135,7 @@ export class PageGridComponent extends AppComponentBase implements OnChanges {
   }
 
   getDateValue(item, field: IPageField) {
-    let format = field.format ? field.format : "dd MM yyyy";
+    let format = field.format ? field.format : "dd-MM-yyyy";
     let value = this._datePipe.transform(item[field.name], format);
     return value;
   }

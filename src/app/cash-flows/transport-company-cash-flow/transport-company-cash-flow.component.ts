@@ -16,8 +16,8 @@ export class TransportCompanyCashFlowComponent
 {
   cashFlows: TransportCompanyCashFlowDto[] = [];
   id: number;
-  fromDate: string;
-  toDate: string;
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
 
   transactionNames = [
     {
@@ -33,6 +33,7 @@ export class TransportCompanyCashFlowComponent
     {value:4, text:this.l("ReceivingCost")},
     {value:5, text:this.l("DeliveryTransportCost")},
     {value:6, text:this.l("DeliveryCost")},
+    {value:7, text:this.l("InitialBalance")},
   ];
 
   fields: IPageField[] = [];
@@ -52,17 +53,8 @@ export class TransportCompanyCashFlowComponent
     finishedCallback: Function
   ): void {
     let fromDate = undefined;
-    if (this.fromDate != undefined) {
-      fromDate = new DatePipe("en-US").transform(this.fromDate, "MM/dd/yyyy");
-    }
-
-    let toDate = undefined;
-    if (this.toDate != undefined) {
-      toDate = new DatePipe("en-US").transform(this.toDate, "MM/dd/yyyy");
-    }
-
     this._transportCompanyCashFlowService
-      .getAllByTransportCompanyId(this.id, fromDate, toDate,this.currency)
+      .getAllByTransportCompanyId(this.id, this.fromDate.toISOString(), this.toDate.toISOString(),this.currency)
       .subscribe((result) => {
         this.cashFlows = result;
       });
@@ -131,13 +123,13 @@ export class TransportCompanyCashFlowComponent
     if (this.currency == 1) {
       this.fields.unshift(
         {
-          label: this.l("CurrentBalanceDollar"),
+          label: this.l("Balance"),
           name: "currentBalanceDollar",
           sortable: false,
           type: "balance",
         },
         {
-          label: this.l("AmountDollar"),
+          label: this.l("Amount"),
           name: "amountDollar",
           sortable: true,
           type: "balance",
@@ -147,13 +139,13 @@ export class TransportCompanyCashFlowComponent
       this.fields.unshift(
         
         {
-          label: this.l("CurrentBalanceDinar"),
+          label: this.l("Balance"),
           name: "currentBalanceDinar",
           sortable: false,
           type: "balance",
         },
         {
-          label: this.l("AmountDinar"),
+          label: this.l("Amount"),
           name: "amountDinar",
           sortable: false,
           type: "balance",
