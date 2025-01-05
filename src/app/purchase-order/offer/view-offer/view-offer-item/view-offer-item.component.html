@@ -7,7 +7,7 @@
                     <a href="javascript:;" class="list-item-heading mb-0 truncate w-10 w-xs-100">
                         {{getMaterialName(item.materialId)}}</a>
                     <div><item-info title="Quantity"
-                            [value]="(item.quantity | commaNumber) +' '+getUnit(item)"></item-info></div>
+                            [value]="(item.quantity | commaNumber) +' '+getUnitName(item.materialId)"></item-info></div>
                     <div><item-info title="UnitPrice" [value]="(item.unitPrice | commaNumber)"></item-info></div>
                     <div><item-info title="TotalPrice"
                             [value]="(item.unitPrice * item.quantity) | commaNumber"></item-info></div>

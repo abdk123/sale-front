@@ -14,7 +14,7 @@
             </div>
             <div class="">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered ">
                         <thead>
                             <tr>
                                 <th>{{'Material' | localize}}</th>
@@ -25,41 +25,132 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let invoiceItem of invoice.invoiseDetails; index as i">
-                                <td>{{invoiceItem?.offerItem?.material?.name}}</td>
-                                <td>{{invoiceItem?.quantity | commaNumber}}</td>
-                                <td>{{invoiceItem?.receivedQuantity | commaNumber}}</td>
-                                <td>{{invoiceItem?.totalMaterilPrice | commaNumber}}</td>
-                                <td>{{(invoiceItem?.receivedQuantity * invoiceItem?.totalMaterilPrice) | commaNumber}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>{{'ReceivedQuantity' | localize}}</th>
-                                <th>{{'TransportCompany' | localize}}</th>
-                                <th>{{'TransportCost' | localize}}</th>
-                                <th>{{'DriverName' | localize}}</th>
-                                <th>{{'DriverPhoneNumber' | localize}}</th>
-                                <th>{{'ClearanceCompany' | localize}}</th>
-                                <th>{{'ClearanceCost' | localize}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let receiving of invoice.receivings; index as i">
-                                <td>{{receiving?.totalReceivedQuantity}}</td>
-                                <td>{{receiving?.transportCompany?.name}}</td>
-                                <td>{{receiving?.transportCost}} {{receiving?.transportCostCurrency ? getCurrency(receiving?.transportCostCurrency) : ''}}</td>
-                                <td>{{receiving?.driverName}}</td>
-                                <td>{{receiving?.driverPhoneNumber}}</td>
-                                <td>{{receiving?.clearanceCompany?.name}}</td>
-                                <td>{{receiving?.clearanceCost}} {{receiving?.clearanceCostCurrency ? getCurrency(receiving?.clearanceCostCurrency) : ''}}</td>
-                            </tr>
+                            <ng-container *ngFor="let invoiceItem of invoice.invoiseDetails; index as i">
+                                <tr >
+                                    <td>{{invoiceItem?.offerItem?.material?.name}}</td>
+                                    <td>{{invoiceItem?.quantity | commaNumber}}</td>
+                                    <td>{{invoiceItem?.receivedQuantity | commaNumber}}</td>
+                                    <td>{{invoiceItem?.totalMaterilPrice | commaNumber}}</td>
+                                    <td>{{(invoiceItem?.receivedQuantity * invoiceItem?.totalMaterilPrice) | commaNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="card mt-1 mb-2 w-full" *ngFor="let receive of invoice.receivings; index as i">
+                                            <div class="card-body" style="padding: 1rem !important;">
+                                              <div class="row">
+                                                <div class="col-md-3">
+                                                  <div class="px-3 pt-3">
+                                                    <p class="mb-2">
+                                                      {{'ReceivingDate' | localize}} :
+                                                      <ng-container *ngIf="receive.receivingDate">
+                                                        <span class="badge badge-outline-pill badge-info">{{receive.receivingDate | format: 'DD-MM-yyyy'}}</span>
+                                                      </ng-container>
+                                                      <ng-container *ngIf="!receive.receivingDate">
+                                                        <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                      </ng-container>
+                                                    </p>
+                                                    <p class="text-muted text-small">
+                                                      {{'Description' | localize}} :
+                                                      <ng-container *ngIf="receive.note">
+                                                        <span [tooltip]="receive.note">{{receive.note | truncate:30}}</span>
+                                                      </ng-container>
+                                                      <ng-container *ngIf="!receive.note">
+                                                        <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                      </ng-container>
+                                                    </p>
+                                          
+                                                  </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <div class="d-flex">
+                                                    <div class="mr-2">
+                                                      <span class="transport-comp"></span>
+                                                    </div>
+                                                    <div class="px-3 pt-1">
+                                                      <p class="list-item-heading mb-1">
+                                                        {{'TransportCompany' | localize}} :
+                                                        <ng-container *ngIf="receive?.transportCompany">
+                                                          <span class="">{{receive.transportCompany?.name}}</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!receive?.transportCompany">
+                                                          <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                        </ng-container>
+                                                      </p>
+                                                      <p class="text-muted text-small mb-1">
+                                                        {{'TransportCost' | localize}} :
+                                                        <ng-container *ngIf="receive?.transportCost > 0">
+                                                          <span class="">{{receive.transportCost | commaNumber}} {{getCurrency(receive.transportCostCurrency) }}</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="receive?.transportCost == 0">
+                                                          <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                        </ng-container>
+                                                      </p>
+                                                      <p class="text-muted text-small">
+                                                        {{'DriverName' | localize}} :
+                                                        <ng-container *ngIf="receive?.driverName">
+                                                          <span class="">{{receive?.driverName}}</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!receive?.driverName">
+                                                          <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                        </ng-container>
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <div class="d-flex">
+                                                    <div class="mr-2">
+                                                      <span class="clearance-comp"></span>
+                                                    </div>
+                                                    <div class="px-3 pt-3">
+                                                      <p class="list-item-heading mb-1 placeholder-glow">
+                                                        {{'ClearanceCompany' | localize}} :
+                                                        <ng-container *ngIf="receive?.clearanceCompany">
+                                                          <span class="">{{receive.clearanceCompany?.name}}</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!receive?.clearanceCompany">
+                                                          <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                        </ng-container>
+                                                      </p>
+                                                      <p class="text-muted text-small">
+                                                        {{'ClearanceCost' | localize}} :
+                                                        <ng-container *ngIf="receive?.clearanceCompany">
+                                                          <span class="">{{receive.clearanceCost | commaNumber}} {{getCurrency(receive.clearanceCostCurrency)}}</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!receive?.clearanceCompany">
+                                                          <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                        </ng-container>
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                </div>
+                                              </div>
+                                              <!--  -->
+                                              <div class="row">
+                                                <div class="col-md-6" *ngFor="let item of receive.receivingItems">
+                                                  <div class="d-flex justify-content-start  p-2 m-3" style="border:1px dashed #2797a2;border-radius:6px;">
+                                                    <!-- MaterialName -->
+                                                    <div class="w-50">
+                                                      <item-info [isRow]="true" title="Material" [value]="item?.materialName"></item-info>
+                                                      <ng-container *ngIf="!item?.materialName">
+                                                        <span class=" placeholder-glow"><span class="placeholder"></span></span>
+                                                      </ng-container>
+                                                    </div>
+                                                    <!-- ReceivedQuantity -->
+                                                    <div class="w-50">
+                                                      <item-info [isRow]="true" title="ReceivedQuantity" [value]="item?.receivedQuantity"></item-info>
+                                                    </div>
+                                          
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </tbody>
                     </table>
                 </div>
