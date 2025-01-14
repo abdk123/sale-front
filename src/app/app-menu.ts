@@ -1,10 +1,11 @@
-import { environment } from "environments/environment";
+import { environment } from "../environments/environment";
+import { Constants } from "../shared/Constants";
 
 const adminRoot = environment.adminRoot;
-const permissionsWorkflow = environment.permissionsWorkflow;
-const permissionsSetting = environment.permissionsSetting;
-const permissionsVoucher = environment.permissionsVoucher;
-const permissionsUser = environment.permissionsUser;
+const permissionsWorkflow:string[] = Constants.permissionsWorkflow;
+const permissionsSetting = Constants.permissionsSetting;
+const permissionsVoucher = Constants.permissionsVoucher;
+const permissionsUser = Constants.permissionsUser;
 
 export interface IMenuItem {
   id?: string;

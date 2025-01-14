@@ -61,6 +61,7 @@ import { ManageSupplierOfferItemComponent } from './supplier-offer/manage-suppli
 import { CreateInvoiceComponent } from './invoice/create-invoice/create-invoice.component';
 import { CompleteReceiveComponent } from './receiving/complete-receive/complete-receive.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ViewProfitComponent } from './offer/view-offer/view-profit/view-profit.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ManageSupplierOfferComponent,
     ManageSupplierOfferItemComponent,
     CreateInvoiceComponent,
-    CompleteReceiveComponent
+    CompleteReceiveComponent,
+    ViewProfitComponent
   ],
   imports: [
     AccordionModule.forRoot(),

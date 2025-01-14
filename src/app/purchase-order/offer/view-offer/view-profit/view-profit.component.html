@@ -1,0 +1,23 @@
+<div class="row" *ngIf="profit?.profitItems?.length > 0">
+    <div class="col-12 list">
+        <div class="card d-flex flex-row mb-3" *ngFor="let item of profit.profitItems">
+            <div class="d-flex flex-grow-1 min-width-zero">
+                <div
+                    class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                    <a href="javascript:;" class="list-item-heading mb-0 truncate w-10 w-xs-100">
+                        {{item.materialName}}</a>
+                    <div><item-info title="DeliveredQuantity"
+                            [value]="item.deliveredQuantity | commaNumber"></item-info></div>
+                    <div><item-info title="SellingPrice" [value]="item.sellingPrice | commaNumber"></item-info></div>
+                    <div><item-info title="PurchasePrice" [value]="item.purchasePrice | commaNumber"></item-info></div>
+                    <div><item-info title="TransportCost" [value]="item.transportCost | commaNumber"></item-info></div>
+                    <div><item-info title="ClearanceCost" [value]="item.clearanceCost | commaNumber"></item-info></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="profit?.profitItems?.length == 0">
+    <h3 class="text-center text-danger">لا يوجد فواتير حالياً</h3>
+</div>

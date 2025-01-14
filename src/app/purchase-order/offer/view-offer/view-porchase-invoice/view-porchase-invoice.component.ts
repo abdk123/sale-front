@@ -10,6 +10,8 @@ import { AppComponentBase } from "@shared/app-component-base";
 import {
   InvoiceDto,
   InvoiceServiceProxy,
+  ReceivingDto,
+  ReceivingServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 
 @Component({
@@ -23,6 +25,7 @@ export class ViewPorchaseInvoiceComponent
 {
   @Input() offerId: number;
   invoices: InvoiceDto[] = [];
+  receivings: ReceivingDto[] = [];
 
   status: IEnumValue[] = [
     { value: 0, text: this.l("NotPriced") },
@@ -35,7 +38,9 @@ export class ViewPorchaseInvoiceComponent
     { value: 0, text: this.l("Dinar") },
   ];
   
-  constructor(injector: Injector, private invoiceService: InvoiceServiceProxy) {
+  constructor(injector: Injector, 
+    private invoiceService: InvoiceServiceProxy,
+    private receivingService: ReceivingServiceProxy,) {
     super(injector);
   }
 
@@ -48,8 +53,19 @@ export class ViewPorchaseInvoiceComponent
   initialInvoice() {
     this.invoiceService.getByOfferId(this.offerId).subscribe((result) => {
       this.invoices = result;
-      console.log(this.invoices);
+      this.getReceivings(this.invoices.map(x=> x.id));
     });
+  }
+
+  getReceivings(invoicesId: number[]) {
+    this.receivingService.getAllByInvoicesIds(invoicesId)
+    .subscribe(result=>{
+      this.receivings = result;
+    })
+  }
+
+  getReceivingById(receivingId: number):ReceivingDto[]{
+    return this.receivings.filter(x=>x.id == receivingId);
   }
 
   getStatus(value){

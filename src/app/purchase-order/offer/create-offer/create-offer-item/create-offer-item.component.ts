@@ -148,11 +148,11 @@ export class CreateOfferItemComponent
     let totalQuantity = 0;
     materialStocks.forEach(stock=>{
       const count = stock.conversionValue > 0 ? stock.quantity * stock.conversionValue : 0;
-      text = count + ' ' + stock.size?.name + '-';
+      text = this.numberWithCommas(count) + ' ' + stock.size?.name + '-';
       totalQuantity += stock.quantity;
     })
     text = text.substring(0,text.length - 1);
-    return `${totalQuantity} ${this.getUnitName(materialId)} (${text})`;
+    return `${this.numberWithCommas(totalQuantity)} ${this.getUnitName(materialId)} (${text})`;
   }
 
   getSaleType(addedBySmallUnit){

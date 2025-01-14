@@ -5,10 +5,17 @@
             <a class="btn btn-link btn-empty btn-lg" href="/app/orders/offers">{{'BackToOfferList' | localize}} <i
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
-                <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
-                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save Offer' |
+                <button *ngIf="offer.status == 0" type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
+                    [disabled]="!updateOfferForm.form.valid || saving" (click)="save()">{{ 'Save' |
                     localize}}</button>
             </div>
+        </div>
+    </div>
+    <div class="card mt-2" *ngIf="offer.status != 0">
+        <div class="card-body">
+            <h5 class="text-center text-danger">
+                لا يمكنك التعديل على عرض الا اذا كانت حالته <b>بانتظار الموافقة </b> 
+            </h5>
         </div>
     </div>
     <div class="card mt-2">
@@ -44,9 +51,8 @@
                 </div>
                 <div class="col-md-3">
                     <label class=" has-float-label">
-                        <input class="form-control" required [(ngModel)]="endDate" name="offerEndDate"
-                            bsDatepicker [container]="'html'"
-                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
+                        <input class="form-control" required [(ngModel)]="endDate" name="offerEndDate" bsDatepicker
+                            [container]="'html'" [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }"
                             #offerEndDateModel="ngModel" #offerEndDateEl>
                         <span>{{ 'OfferEndDate' | localize }}</span>
                     </label>

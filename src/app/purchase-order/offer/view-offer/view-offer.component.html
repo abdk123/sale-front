@@ -41,6 +41,9 @@
                         <div class="col-md-3">
                             <item-info title="TotalPrice" value="{{offer.totalPrice | commaNumber}}"></item-info>
                         </div>
+                        <div class="col-md-3">
+                            <item-info icon="bi bi-cash-stack" cssClass="text-info" title="Profits" value="{{profit.profitValue | commaNumber}}"></item-info>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,6 +74,9 @@
                 </tab>
                 <tab [heading]="('SaleInvoices' | localize)" class="tab-content">
                     <view-sale-invoice [offerItemsIds]="offerItemsIds"></view-sale-invoice>
+                </tab>
+                <tab [heading]="('ProfitsDetails' | localize)" class="tab-content">
+                    <view-profit [profit]="profit"></view-profit>
                 </tab>
             </tabset>
             

@@ -3,8 +3,9 @@ import { LayoutStoreService } from '@shared/layout/layout-store.service';
 import { ISidebar, SidebarService } from '@shared/services/sidebar/sidebar.service';
 import { Subscription } from 'rxjs';
 import { filter as _filter } from 'lodash-es';
-import { ChangeUserLanguageDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ChangeUserLanguageDto, OfferDto, OfferServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/app-component-base';
+import { Router } from '@node_modules/@angular/router';
 
 @Component({
   selector: 'header-left-navbar',
@@ -25,6 +26,8 @@ export class HeaderLeftNavbarComponent extends AppComponentBase implements OnIni
     ,private sidebarService: SidebarService,
      private userService: UserServiceProxy,
      private rendererFactory: RendererFactory2,
+     private offerService: OfferServiceProxy,
+     private router: Router
      ) {
       
     super(injector);
@@ -81,6 +84,21 @@ export class HeaderLeftNavbarComponent extends AppComponentBase implements OnIni
   }
 
   searchClick(event): void {
+    this.offerService.getByPoNumber(this.searchKey)
+    .subscribe((result: OfferDto)=>{
+      if(result?.porchaseOrderId){
+        this.showOfferPage(result.id);
+      }
+    })
+  }
+
+  showOfferPage(id: number) {
+    this.router.navigate([
+      "/app/orders/summary",
+      {
+        id: id,
+      },
+    ]);
   }
 
   menuButtonClick = (
