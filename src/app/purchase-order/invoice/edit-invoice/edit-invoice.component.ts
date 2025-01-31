@@ -1,8 +1,26 @@
-import { AppComponentBase } from '@shared/app-component-base';
-import { Component,Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DropdownDto, CustomerServiceProxy, OfferServiceProxy, UpdateOfferItemDto, InvoiceServiceProxy, UpdateInvoiceDto, OfferDto, SupplierOfferDto, MaterialDto, SupplierOfferServiceProxy, MaterialServiceProxy, StockServiceProxy, UpdateInvoiceItemDto } from '@shared/service-proxies/service-proxies';
-import { finalize } from 'rxjs';
+import { AppComponentBase } from "@shared/app-component-base";
+import { Component, Injector, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import {
+  DropdownDto,
+  CustomerServiceProxy,
+  OfferServiceProxy,
+  UpdateOfferItemDto,
+  InvoiceServiceProxy,
+  UpdateInvoiceDto,
+  OfferDto,
+  SupplierOfferDto,
+  MaterialDto,
+  SupplierOfferServiceProxy,
+  MaterialServiceProxy,
+  StockServiceProxy,
+  UpdateInvoiceItemDto,
+  OfferItemDto,
+  SupplierOfferItemDto,
+  InvoiceItemDto,
+  CheckOfferQuantityAvailabelityDto,
+} from "@shared/service-proxies/service-proxies";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "edit-invoice",
@@ -19,16 +37,15 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   suppliers: DropdownDto[] = [];
   materialsIds: number[] = [];
   materials: MaterialDto[] = [];
-  type = 0;
+  offerQuantityAvailabelity: CheckOfferQuantityAvailabelityDto[] = []; 
   offerType = [
-    { id: 0, name: this.l("OfferToCustomer") },
-    { id: 1, name: this.l("OfferFromSupplier") },
+    { id: 1, name: this.l("OfferToCustomer") },
+    { id: 0, name: this.l("OfferFromSupplier") },
   ];
   typeIsRequired: boolean = false;
   offerIsRequired: boolean = false;
   supplierOfferIsRequired: boolean = false;
-  id:number;
-  offerId: number;
+  id: number;
 
   constructor(
     injector: Injector,
@@ -45,9 +62,11 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedOffer.offerItems = [];
+    this.selectedSupplierOffer.supplierOfferItems = [];
     this.id = this.route.snapshot?.params?.id;
+
     this.invoice.invoiseDetails = [];
-    this.invoice.invoiceType = 0;
     this.getOffers();
     this.initialSuppliers();
     this.initialInvoice();
@@ -55,22 +74,19 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
 
   initialInvoice() {
     this.invoiceService.getForEdit(this.id)
-    .subscribe(result=>{
+    .subscribe((result) => {
       this.invoice = result;
-      if(this.invoice.invoiceType == 1 && this.supplierOffers?.length == 0)
+      if (this.invoice.invoiceType == 1 && this.supplierOffers?.length == 0)
         this.getOffers();
-      else if(this.invoice.invoiceType == 0 && this.offers?.length == 0)
+      else if (this.invoice.invoiceType == 0 && this.offers?.length == 0)
         this.getSupplierOffers();
-    })
+    });
   }
 
   initialSuppliers() {
     this.customerService
-      .getForDropdown()
-      .subscribe((result) => {
-        this.suppliers = result;
-        
-      });
+      .getSuppliers()
+      .subscribe((result) => (this.suppliers = result));
   }
 
   getOffers() {
@@ -78,7 +94,9 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
       .getApproved()
       .subscribe((result) => {
         this.offers = result;
-        this.selectedOffer = this.offers.find(x=>x.id == this.invoice.offerId);
+        if(this.offers){
+          this.onChangeOffer(this.offers.find(x=>x.id == this.invoice?.offerId));
+        }
       });
   }
 
@@ -87,7 +105,9 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
       .getApproved()
       .subscribe((result) => {
         this.supplierOffers = result;
-        this.selectedSupplierOffer = this.supplierOffers.find(x=>x.id == this.invoice.offerId);
+        if(this.supplierOffers){
+          this.onChangeSupplierOffer(this.supplierOffers.find(x=>x.id == this.invoice?.supplierOfferId));
+        }
       });
   }
 
@@ -102,7 +122,8 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   }
 
   getUnitName(materialId) {
-    console.log(materialId);
+    if(!materialId)
+      return;
     return this.materials.find((x) => x.id == materialId)?.unit?.name;
   }
 
@@ -126,7 +147,13 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   getSaleType(addedBySmallUnit) {
     return addedBySmallUnit ? `${this.l("Size")}` : `بالطن`;
   }
-
+  
+  CheckOfferQuantityAvailabelity(offerId) {
+    this.offerService.checkOfferQuantityAvailabelity(offerId)
+    .subscribe((result)=>{
+      this.offerQuantityAvailabelity = result;
+    })
+  }
   onChangeOfferType(item) {
     this.invoice.invoiceType = item.id;
     if (this.invoice.invoiceType == 1 && this.supplierOffers?.length == 0)
@@ -136,28 +163,54 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
   }
 
   onChangeOffer(item: OfferDto) {
+    if(!item)
+      return;
     this.selectedOffer = item;
     this.materialsIds = [];
     this.selectedOffer.offerItems.forEach((x) => {
       this.materialsIds.push(x.materialId);
-      let invoiceItem = new UpdateInvoiceItemDto();
-      invoiceItem.init({
-        quantity: 0,
-        offerItemId: x.id,
-        totalMaterilPrice: 0,
-      });
-      this.invoice.invoiseDetails.push(invoiceItem);
+      // let invoiceItem = new UpdateInvoiceItemDto();
+      // invoiceItem.init({
+      //   quantity: 0,
+      //   offerItemId: x.id,
+      //   totalMaterilPrice: 0,
+      // });
+      // this.invoice.invoiseDetails.push(invoiceItem);
     });
     if (this.materialsIds.length > 0) {
       this.initialMaterials();
     }
   }
 
+  onChangeSupplierOffer(item: SupplierOfferDto) {
+    if(item)
+      return;
+    this.selectedSupplierOffer = item;
+    this.materialsIds = [];
+    this.selectedSupplierOffer.supplierOfferItems.forEach((x) => {
+      this.materialsIds.push(x.materialId);
+      let invoiceItem = new UpdateInvoiceItemDto();
+      // invoiceItem.init({
+      //   quantity: 0,
+      //   supplierOfferItemId: x.id,
+      //   totalMaterilPrice: 0,
+      // });
+      // this.invoice.invoiseDetails.push(invoiceItem);
+    });
+    if (this.materialsIds.length > 0) {
+      this.initialMaterials();
+    }
+  }
+
+
   trackByIndex(index: number, obj: any): any {
     return index;
   }
 
   save() {
+    debugger;
+    if(!this.checkValidQuantity())
+      return;
     this.typeIsRequired = this.invoice.invoiceType == undefined ? true : false;
     this.offerIsRequired =
       this.invoice.offerId == undefined && this.invoice.invoiceType == 0
@@ -176,7 +229,7 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
 
       this.saving = true;
       this.invoiceService
-        .create(this.invoice)
+        .update(this.invoice)
         .pipe(
           finalize(() => {
             this.saving = false;
@@ -188,4 +241,38 @@ export class EditInvoiceComponent extends AppComponentBase implements OnInit {
         });
     }
   }
+
+  checkValidQuantity() {
+    if(this.invoice.invoiceType == 1){
+      this.invoice.invoiseDetails.forEach((item)=>{
+        var offerItem = this.selectedOffer.offerItems.find(x=>x.id == item.offerItemId);
+        if(offerItem.quantity < item.quantity){
+          abp.message.error(
+            this.l('TheEnteredQuantityMustBeLessThanOfEqual{0}',offerItem.quantity),
+            this.l('Material')+' '+ offerItem.material.name
+          );
+          return false;
+        }
+      });
+    }else{
+      this.invoice.invoiseDetails.some((item)=>{
+        var supplierOfferItem = this.selectedSupplierOffer.supplierOfferItems.find(x=>x.id == item.offerItemId);
+        if(supplierOfferItem.quantity < item.quantity){
+          abp.message.error(
+            this.l('TheEnteredQuantityMustBeLessThanOfEqual{0}',supplierOfferItem.quantity),
+            this.l('Material')+' '+ supplierOfferItem.material.name
+          );
+          return false;
+        }
+      })
+    }
+    return true;
+  }
+
+getCssClasses(invoiceItem: InvoiceItemDto){
+    const item = this.offerQuantityAvailabelity.find(x=>x.offerItemId == invoiceItem.offerItemId);
+    if(item.quantity == 0)
+      return 'hide-row';
+    return '';
+  }  
 }

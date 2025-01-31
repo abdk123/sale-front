@@ -105,6 +105,7 @@ export class ClearanceCompanyCashFlowComponent
   ngOnInit(): void {
     this.getCurrentBalance();
     this.initialFields();
+    this.refresh();
   }
   initialFields() {
     this.fields = [];

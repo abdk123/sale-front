@@ -118,7 +118,7 @@ export class ReceivingComponent extends PagedListingComponentBase<ReceivingDto> 
       undefined,
       (result: boolean) => {
         if (result) {
-          this.invoiceService.delete(entity.id).subscribe(() => {
+          this.receivingService.delete(entity.id).subscribe(() => {
             abp.notify.success(this.l('SuccessfullyDeleted'));
             this.refresh();
           });

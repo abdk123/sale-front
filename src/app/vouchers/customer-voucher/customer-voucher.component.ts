@@ -60,6 +60,12 @@ export class CustomerVoucherComponent
       type: "number",
     },
     {
+      label: this.l("Discount"),
+      name: "discount",
+      sortable: true,
+      type: "number",
+    },
+    {
       label: this.l("VoucherNumber"),
       name: "voucherNumber",
       sortable: true,

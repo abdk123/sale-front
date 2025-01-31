@@ -21,6 +21,7 @@ export class MaterialBalanceComponent
   materialName: string = '';
   stockInfo: string = '';
   stockType = [
+    "",
     this.l("Entry"), 
     this.l("Exit"), 
     this.l("TransferToDamaged")
@@ -32,8 +33,13 @@ export class MaterialBalanceComponent
     this.l("ReturnedToSuppleir"),
     this.l("ReturnedFromCustomer"),
     this.l("DamagedMaterial"),
+    this.l("PreviouseBalance"),
   ];
   title = '';
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
+  previouseBalance: StockHistoryDto;
+
   constructor(
     injector: Injector,
     private router: Router,
@@ -44,17 +50,35 @@ export class MaterialBalanceComponent
   }
 
   ngOnInit(): void {
-    debugger;
     this.materialId = this.route.snapshot?.params?.materialId;
     this.materialName = this.route.snapshot?.params?.materialName;
     this.totalQuantity = this.route.snapshot?.params?.totalQuantity;
     this.stockInfo = this.route.snapshot?.params?.stockInfo;
+    this.getStockHistory();
     
-    this.stockHistoryServiceProxy
-      .getByMaterialId(this.materialId)
+  }
+
+  getStockHistory() {
+    let message = '';
+    if(!this.fromDate || !this.toDate)
+      message = 'يجب ملء كل الحقول';
+    else if(this.fromDate > this.toDate)
+      message = 'من تاريخ يجب ان يكون اصغر او يساوي إلى تاريخ';
+
+    if(message === ''){
+      this.stockHistoryServiceProxy
+      .getByMaterialId(this.materialId, this.fromDate.toISOString(),this.toDate.toISOString())
       .subscribe((result) => {
-        this.balances = result;
+        if(result?.length > 0){
+          this.previouseBalance = result[0]; 
+          this.balances = result;
+          this.balances.shift();
+        }
       });
+    }else{
+      abp.message.error(message);
+    }
+    
   }
 
   navigateToTotalMaterial() {

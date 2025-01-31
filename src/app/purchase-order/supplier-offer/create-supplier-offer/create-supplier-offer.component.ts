@@ -46,12 +46,12 @@ export class CreateSupplierOfferComponent extends AppComponentBase implements On
     super(injector);
   }
   ngOnInit(): void {
-    this.initialCustomers();
+    this.initialSuppliers();
     this.offer.status = 0;
   }
 
-  initialCustomers() {
-    this.customerService.getForDropdown().subscribe((result) => {
+  initialSuppliers() {
+    this.customerService.getSuppliers().subscribe((result) => {
       this.customers = result;
     });
   }

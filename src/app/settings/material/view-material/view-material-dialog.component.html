@@ -1,78 +1,98 @@
-<abp-modal-header [title]="'MaterialDetails'|localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
-<div class="modal-body my-custom-scrollbar">
+<form class="form-horizontal " autocomplete="off" #createMaterialModal="ngForm">
   <div class="row">
-    <div class="col-md-4">
-      <div class="form-group row">
-        <label class="col-md-12 col-form-label" for="name">
-          {{ "Name" | localize }}
-        </label>
-        <div class="col-md-9">
-          <label class="form-control" name="name" id="name">
-            {{ data.name }}
-          </label>
-        </div>
+    <div class="col-12 separator">
+      <!-- <h1>{{'EditMaterial' | localize}}</h1> -->
+      <a class="btn btn-link btn-empty btn-lg" href="/app/settings/material">{{'BackToMaterialList' | localize}} <i
+          class="simple-icon-arrow-right"></i></a>
+      <div class="top-right-button-container text-zero">
+
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="form-group row">
-        <label class="col-md-12 col-form-label" for="category">
-          {{ "Category" | localize }}
-        </label>
-        <div class="col-md-9">
-          <label class="form-control" name="category" id="category">
-            {{ category.name }}
+  </div>
+
+  <!--Material-->
+  <div class="card mt-2">
+    <div class="d-flex justify-content-between">
+    </div>
+    <div class="card-body" *ngIf="material">
+      <h5 class="card-title separator pb-2 mb-3">{{ 'MaterialInfo' | localize }}</h5>
+      <div class="row">
+        <div class="col-md-4">
+          <label class="has-float-label">
+            <input type="text" class="form-control" name="name" id="name" required [(ngModel)]="material.name"
+              #nameModel="ngModel" #nameEl />
+            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+            <span>{{ "Name"|localize }}</span>
           </label>
         </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group row">
-        <label class="col-md-12 col-form-label" for="unit">
-          {{ "Unit" | localize }}
-        </label>
-        <div class="col-md-9">
-          <label class="form-control" name="unit" id="unit">
-            {{ data.unit.name }}
+        <div class="col-md-4">
+          <label class=" has-float-label">
+            <ng-select [items]="categories" name="category" bindLabel="name" required bindValue="id"
+              [(ngModel)]="material.categoryId">
+            </ng-select>
+            <span>{{ 'Category' | localize }}</span>
           </label>
+          <span *ngIf="categoryIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
         </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="form-group row">
-        <label class="col-md-12 col-form-label" for="specification">
-          {{ "Specification" | localize }}
-        </label>
-        <div class="col-md-9">
-          <label class="form-control" name="specification" id="specification">
-            {{ data.specification }}
+        <div class="col-md-4">
+          <label class=" has-float-label">
+            <ng-select [items]="units" name="unit" bindLabel="name" required bindValue="id"
+              [(ngModel)]="material.unitId">
+            </ng-select>
+            <span>{{ 'Unit' | localize }}</span>
+          </label>
+          <span *ngIf="unitIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
+        </div>
+        <div class="col-md-4">
+          <label class=" has-float-label">
+            <textarea type="text" class="form-control" name="specification" id="specification"
+              [(ngModel)]="material.specification" #specificationModel="ngModel" rows="3" #specificationEl>
+               </textarea>
+            <!-- <abp-validation-summary [control]="specificationModel" [controlEl]="specificationEl"></abp-validation-summary> -->
+            <span>{{ "Specification"|localize }}</span>
           </label>
         </div>
       </div>
     </div>
   </div>
-  <div class="separator mb-3"></div>
-  <div class="mb-3">
-    <h4>{{"Stock" | localize}}</h4>
+
+  <!--Stock-->
+  <div class="card mt-2" *ngIf="material">
+    <div class="d-flex justify-content-between">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title separator pb-2 mb-3">{{ 'Stock' | localize }}</h5>
+      <div class="row">
+        <div class=" col-12">
+          <div class="table-responsive table-bordered">
+            <table class="table" *ngIf="material?.stocks?.length > 0">
+              <thead>
+                <tr>
+                  <th class="bi">{{'Store' | localize}}</th>
+                  <th class="bi">{{'Unit' | localize}}</th>
+                  <th class="bi">{{'Quantity' | localize}}</th>
+                  <th class="bi">{{'PricePerTon' | localize}}</th>
+                  <th class="bi">{{'ConversionValue' | localize}}</th>
+                  <th class="bi">{{'TotalNumberInSmallUnit' | localize}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of material.stocks; let index = index;trackBy:trackByIndex;">
+                  <td>{{getStoreName(material.stocks[index].storeId)}}</td>
+                  <td>{{getSizeName(material.stocks[index].sizeId)}}</td>
+                  <td>{{material.stocks[index].quantity}}</td>
+                  <td>{{material.stocks[index].price}}</td>
+                  <td>{{material.stocks[index].conversionValue}}</td>
+                  <!-- <td>{{item.numberInSmallUnit}}</td> -->
+                  <td>{{getNumberInSmallUnit(material.stocks[index]) | commaNumber}}
+                    {{getSizeName(material.stocks[index].sizeId)}}</td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="separator mb-3"></div>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th style="width: 15%;" class="bi">{{'Store' | localize}}</th>
-          <th style="width: 12%;" class="bi">{{'ConversionValue' | localize}}</th>
-          <th style="width: 13%;" class="bi">{{'Quantity' | localize}}</th>
-          <th style="width: 13%;" class="bi">{{'NumberInSmallUnit' | localize}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of data.stocks; index as i">
-          <td>{{item.store.name}}</td>
-          <td>{{item.conversionValue}}</td>
-          <td>{{item.quantity}}</td>
-          <td>{{item.numberInSmallUnit + ' ' + item.size.name}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+</form>

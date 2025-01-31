@@ -45,7 +45,14 @@ export class CreateCustomerVoucherComponent extends AppComponentBase {
   }
 
   ngOnInit(): void {
+    this.initialNumber();
     this.initialCustomer();
+  }
+  initialNumber() {
+    this._customerVoucherService.getIdentityNumber()
+    .subscribe((number)=>{
+      this.customerVoucher.voucherNumber = number.toString();
+    })
   }
 
   initialCustomer() {

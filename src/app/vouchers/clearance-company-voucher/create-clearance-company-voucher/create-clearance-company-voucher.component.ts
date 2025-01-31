@@ -45,9 +45,17 @@ export class CreateClearanceCompanyVoucherComponent  extends AppComponentBase {
   }
 
   ngOnInit(): void {
+    this.initialNumber();
     this.initialClearanceCompanies();
   }
 
+  initialNumber() {
+    this._clearanceCompanyVoucherService.getIdentityNumber()
+    .subscribe((number)=>{
+      this.clearanceCompanyVoucher.voucherNumber = number.toString();
+    })
+  }
+  
   initialClearanceCompanies() {
     this._clearanceCompanyService.getForDropdown()
     .subscribe((result)=>{

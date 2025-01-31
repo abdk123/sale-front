@@ -1,4 +1,4 @@
-<div class="row separator mb-4">
+<div class="row separator mb-2">
     <div class="col-12">
         <h1>{{'MaterialBalanceReport' | localize}} </h1><h1>&nbsp; {{materialName}}</h1>
 
@@ -10,7 +10,41 @@
   </div>
 </div>
   <!-- ------------- -->
-  <div class="card p-2 mt-2 mb-3">
+  <div class="card p-2 mt-1 mb-3">
+    <div class="row mb-3 mt-3">
+        <div class="col-md-3">
+            <h4 class="text-center">
+                <small class="text-muted">{{'PreviouseBalance' | localize}} :</small>
+                {{previouseBalance.quantity ?? 0}}
+            </h4>
+        </div>
+        <div class="col-md-3">
+            <label class="has-float-label">
+                <input class="form-control" bsDatepicker [container]="'html'"
+                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="fromDate" id="fromDate"
+                    [(ngModel)]="fromDate" #fromDateModel="ngModel" #fromDateEl />
+                <abp-validation-summary [control]="fromDateModel" [controlEl]="fromDateEl"></abp-validation-summary>
+                <span>{{ "FromDate"|localize }}</span>
+            </label>
+
+        </div>
+        <div class="col-md-3">
+            <label class="has-float-label">
+                <input class="form-control" bsDatepicker [container]="'html'"
+                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY' }" name="toDate" id="toDate"
+                    [(ngModel)]="toDate" #toDateModel="ngModel" #toDateEl />
+                <abp-validation-summary [control]="toDateModel" [controlEl]="toDateEl"></abp-validation-summary>
+                <span>{{ "ToDate"|localize }}</span>
+            </label>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-outline-primary" [disabled]="false"
+                (click)="getStockHistory()">
+                <i class="bi-search"> </i> {{ 'Search' | localize }}
+            </button>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
     <div class="table-responsive">
         <table class="table  table-bordered">
             <thead>
@@ -19,6 +53,8 @@
                     <th >{{'Reason' | localize}}</th>
                     <th >{{'Incoming' | localize}}</th>
                     <th >{{'Outgoing' | localize}}</th>
+                    <th >{{'Price' | localize}}</th>
+                    <th >{{'Date' | localize}}</th>
                     <th >{{'Title' | localize}}</th>
                 </tr>
             </thead>
@@ -28,7 +64,10 @@
                     <td>{{stockReason[item.reason]}}</td>
                     <td><span *ngIf="item.quantity > 0">{{item.quantity | commaNumber}}</span></td>
                     <td><span *ngIf="item.quantity < 0">{{numberWithCommasAndAbs(item.quantity)}}</span></td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.creationTime | date:'dd-MM-yyyy'}}</td>
                     <td>{{item.title}}</td>
+                    
                 </tr>
             </tbody>
         </table>

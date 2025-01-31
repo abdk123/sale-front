@@ -46,6 +46,8 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   expiryDate: Date;
   categoryIsRequired = false;
   unitIsRequired = false;
+  storeIsRequired = false;
+  sizeIsRequired = false;
   id: number;
   @Output() onSave = new EventEmitter<any>();
 
@@ -165,19 +167,20 @@ export class EditMaterialDialogComponent extends AppComponentBase {
   }
 
   updateStock() {
-    if(
-      !this.material.stocks.find(x=>x.id == this.stock.id).storeId || 
-      !this.material.stocks.find(x=>x.id == this.stock.id).sizeId || 
-      !this.material.stocks.find(x=>x.id == this.stock.id).conversionValue || 
-      !this.material.stocks.find(x=>x.id == this.stock.id).quantity || 
-      !this.material.stocks.find(x=>x.id == this.stock.id).price){
-        this.notify.warn("يرجى ملئ كل الحقول");
-    }else{
+    if (!this.material.stocks.find(x=>x.id == this.stock.id).storeId) {
+      this.storeIsRequired = true;
+    }
+    if (!this.material.stocks.find(x=>x.id == this.stock.id).sizeId) {
+      this.sizeIsRequired = true;
+    }
+
+    if(!this.sizeIsRequired && !this.storeIsRequired){
       this.material.stocks.find(x=>x.id == this.stock.id).storeId = this.stock.storeId;
-      this.material.stocks.find(x=>x.id == this.stock.id).conversionValue = this.stock.conversionValue;
-      this.material.stocks.find(x=>x.id == this.stock.id).quantity = this.stock.quantity;
+      this.material.stocks.find(x=>x.id == this.stock.id).conversionValue = this.stock.conversionValue ?? 0;
+      this.material.stocks.find(x=>x.id == this.stock.id).quantity = this.stock.quantity ?? 0;
       this.material.stocks.find(x=>x.id == this.stock.id).materialId = this.stock.materialId;
       this.material.stocks.find(x=>x.id == this.stock.id).sizeId = this.stock.sizeId;
+      this.material.stocks.find(x=>x.id == this.stock.id).price = this.stock.price ?? 0;
       
       //reset stock
       this.stock = new UpdateStockDto();

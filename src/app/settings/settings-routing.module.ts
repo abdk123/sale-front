@@ -14,6 +14,7 @@ import { TransportCompanyComponent } from "./transport-company/transport-company
 import { CreateMaterialDialogComponent } from "./material/create-material/create-material-dialog.component";
 import { EditMaterialDialogComponent } from "./material/edit-material/edit-material-dialog.component";
 import { GeneralSettingComponent } from "./general-setting/general-setting.component";
+import { ViewMaterialDialogComponent } from "./material/view-material/view-material-dialog.component";
 
 const routes: Routes = [
   {
@@ -59,7 +60,12 @@ const routes: Routes = [
         //data: { permission: "Setting.Materials" },
         canActivate: [AppRouteGuard],
       },
-
+      {
+        path: "view-material",
+        component: ViewMaterialDialogComponent,
+        //data: { permission: "Setting.Materials" },
+        canActivate: [AppRouteGuard],
+      },
       {
         path: "notifications",
         component: NotificationComponent,

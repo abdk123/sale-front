@@ -40,7 +40,7 @@ export class UpdateSupplierOfferComponent extends AppComponentBase implements On
   ngOnInit(): void {
     this.id = this._route.snapshot?.params?.id;
     this.initialSupplierOffer();
-    this.initialCustomers();
+    this.initialSuppliers();
   }
 
   endDate: string;
@@ -56,8 +56,8 @@ export class UpdateSupplierOfferComponent extends AppComponentBase implements On
       });
   }
 
-  initialCustomers() {
-    this._customerService.getForDropdown().subscribe((result) => {
+  initialSuppliers() {
+    this._customerService.getSuppliers().subscribe((result) => {
       this.customers = result;
     });
   }

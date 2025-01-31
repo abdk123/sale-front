@@ -23,7 +23,7 @@
                     </label>
                     <span *ngIf="typeIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4" *ngIf="invoice.invoiceType == 0">
+                <div class="col-md-4" *ngIf="invoice.invoiceType == 1">
                     <label class=" has-float-label">
                         <ng-select [items]="offers" required  name="offerId" bindLabel="porchaseOrderId" bindValue="id"
                         [(ngModel)]="invoice.offerId" (change)="onChangeOffer($event)">
@@ -38,10 +38,10 @@
                     </label>
                     <span *ngIf="offerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4" *ngIf="invoice.invoiceType == 1">
+                <div class="col-md-4" *ngIf="invoice.invoiceType == 0">
                     <label class=" has-float-label">
                         <ng-select [items]="supplierOffers" required bindLabel="name" bindValue="id" name="supplierOfferId"
-                         [(ngModel)]="invoice.supplierOfferId">
+                         [(ngModel)]="invoice.supplierOfferId"  (change)="onChangeSupplierOffer($event)">
                          <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
                             <div class="d-flex justify-content-between px-1">
                                 <div>{{item.porchaseOrderId}}</div>
@@ -53,7 +53,7 @@
                     </label>
                     <span *ngIf="supplierOfferIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4" *ngIf="invoice.invoiceType == 0">
+                <div class="col-md-4" *ngIf="invoice.invoiceType == 1">
                     <label class=" has-float-label">
                         <ng-select [items]="suppliers" required  name="supplierId" bindLabel="name" bindValue="id"
                         [(ngModel)]="invoice.supplierId" >
@@ -113,7 +113,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;">
+                    <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;" [class]="getCssClasses(item)">
                         <td>{{selectedOffer?.offerItems[index]?.material?.name}}</td>
                         <td>{{getUnitName(selectedOffer?.offerItems[index]?.materialId)}}</td>
                         <!-- <td>{{getPackingUnit(selectedOffer?.offerItems[index]?.sizeId)}}</td> -->

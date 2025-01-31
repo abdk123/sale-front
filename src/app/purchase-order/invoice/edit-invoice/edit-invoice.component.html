@@ -1,4 +1,4 @@
-<form class="form-horizontal " autocomplete="off" #editInvoiceForm="ngForm" (ngSubmit)="save()">
+<form class="form-horizontal " autocomplete="off" #createInvoiceForm="ngForm" (ngSubmit)="save()">
     <div class="row">
         <div class="col-12 separator">
             <h1>{{'CreateNewInvoice' | localize}}</h1>
@@ -6,7 +6,7 @@
                     class="simple-icon-arrow-right"></i></a>
             <div class="top-right-button-container text-zero">
                 <button type="submit" class="top-right-button btn btn-primary  mb-3 mr-2"
-                    [disabled]="!editInvoiceForm.form.valid || saving" (click)="save()">{{ 'Save' | localize}}</button>
+                    (click)="save()">{{ 'Save' | localize}}</button>
             </div>
         </div>
     </div>
@@ -16,16 +16,16 @@
             <div class="row">
                 <div class="col-md-4">
                     <label class=" has-float-label">
-                        <ng-select [items]="offerType" required bindLabel="name" bindValue="id" name="status"
-                        (change)="onChangeOfferType($event)" [(ngModel)]="invoice.invoiceType">
+                        <ng-select [items]="offerType" bindLabel="name" bindValue="id" name="status"
+                        (change)="onChangeOfferType($event)" [disabled]="true" [(ngModel)]="invoice.invoiceType">
                         </ng-select>
                         <span>{{ 'OfferType' | localize }} <span class="text-danger">*</span></span>
                     </label>
                     <span *ngIf="typeIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4" *ngIf="invoice.invoiceType == 0">
+                <div class="col-md-4" *ngIf="invoice.invoiceType == 1">
                     <label class=" has-float-label">
-                        <ng-select [items]="offers" required  name="offerId" bindLabel="porchaseOrderId" bindValue="id"
+                        <ng-select [items]="offers" [disabled]="true" name="offerId" bindLabel="porchaseOrderId" bindValue="id"
                         [(ngModel)]="invoice.offerId" (change)="onChangeOffer($event)">
                             <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
                                 <div class="d-flex justify-content-between px-1">
@@ -38,10 +38,10 @@
                     </label>
                     <span *ngIf="offerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4" *ngIf="invoice.invoiceType == 1">
+                <div class="col-md-4" *ngIf="invoice.invoiceType == 0">
                     <label class=" has-float-label">
-                        <ng-select [items]="supplierOffers" required bindLabel="name" bindValue="id" name="supplierOfferId"
-                         [(ngModel)]="invoice.supplierOfferId">
+                        <ng-select [items]="supplierOffers" [disabled]="true" bindLabel="name" bindValue="id" name="supplierOfferId"
+                         [(ngModel)]="invoice.supplierOfferId" (change)="onChangeSupplierOffer($event)">
                          <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
                             <div class="d-flex justify-content-between px-1">
                                 <div>{{item.porchaseOrderId}}</div>
@@ -53,9 +53,9 @@
                     </label>
                     <span *ngIf="supplierOfferIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
-                <div class="col-md-4" *ngIf="invoice.invoiceType == 0">
+                <div class="col-md-4" *ngIf="invoice.invoiceType == 1">
                     <label class=" has-float-label">
-                        <ng-select [items]="suppliers" required  name="supplierId" bindLabel="name" bindValue="id"
+                        <ng-select [items]="suppliers" [disabled]="true" name="supplierId" bindLabel="name" bindValue="id"
                         [(ngModel)]="invoice.supplierId" >
                         </ng-select>
                         <span>{{ 'Supplier' | localize }} <span class="text-danger">*</span></span>
@@ -63,34 +63,6 @@
                     <span *ngIf="offerIsRequired" class="error invalid-feedback d-block"> ThisFieldIsRequired </span>
                 </div>
             </div>
-            <!-- <div class="separator mb-2"></div>
-            <div class="row">
-                <div class="col-md-3">
-                    <item-info title="Customer" *ngIf="offer.customer" [value]="offer.customer.fullName"
-                        icon="bi bi-person"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="OfferId" [value]="offer.id" icon="bi bi-bookmark"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="Currency" value="{{offer.currency == 1 ? 'Dollar' : 'Dinar'}}"
-                        icon="bi bi-cash-stack"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="StartDate" *ngIf="offer.creationTime"
-                        value="{{offer.creationTime.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="OfferEndDate" *ngIf="offer.offerEndDate"
-                        value="{{offer.offerEndDate.toDate() | date:'dd-MM-yyyy hh:MM' }}" icon="bi bi-calendar"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="TotalQuantity" value="{{offer.totalQuantity}}"></item-info>
-                </div>
-                <div class="col-md-3">
-                    <item-info title="TotalPrice" value="{{offer.totalPrice}}"></item-info>
-                </div>
-            </div> -->
         </div>
     </div>
 </form>
@@ -104,7 +76,6 @@
                     <tr>
                         <th>{{'Material' | localize}}</th>
                         <th>{{'Unit' | localize}}</th>
-                        <!-- <th>{{'PackingUnit' | localize}}</th> -->
                         <th>{{'Quantity' | localize}}</th>
                         <th>{{'MaterialPrice' | localize}}</th>
                         <th>{{'TotalPrice' | localize}}</th>
@@ -113,20 +84,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;">
-                        <td>{{selectedOffer?.offerItems[index]?.material?.name}}</td>
-                        <td>{{getUnitName(selectedOffer?.offerItems[index]?.materialId)}}</td>
-                        <!-- <td>{{getPackingUnit(selectedOffer?.offerItems[index]?.sizeId)}}</td> -->
-                        <td>
-                            <input type="number" [(ngModel)]="invoice.invoiseDetails[index].quantity" class="form-control" />
-                        </td>
-                        <td>
-                            <input type="number" [(ngModel)]="invoice.invoiseDetails[index].totalMaterilPrice" class="form-control" />
-                        </td>
-                        <td>{{invoice.invoiseDetails[index].totalMaterilPrice * invoice.invoiseDetails[index].quantity | commaNumber}}</td>
-                        <td>{{getStock(selectedOffer?.offerItems[index]?.material?.id)}} {{selectedOffer?.offerItems[index]?.unit?.name}}</td>
-                        <td>{{selectedOffer?.offerItems[index]?.quantity | commaNumber}}</td>
-                    </tr>
+                    <ng-container *ngIf="invoice != undefined && selectedOffer?.offerItems?.length > 0 && invoice.invoiceType == 1" >
+                        <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;">
+                            <td>{{selectedOffer?.offerItems[index]?.material?.name}}</td>
+                            <td>{{getUnitName(selectedOffer?.offerItems[index]?.materialId)}}</td>
+                            <td>
+                                <input type="number" [(ngModel)]="invoice.invoiseDetails[index].quantity" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="invoice.invoiseDetails[index].totalMaterilPrice" class="form-control" />
+                            </td>
+                            <td>{{invoice.invoiseDetails[index].totalMaterilPrice * invoice.invoiseDetails[index].quantity | commaNumber}}</td>
+                            <td>{{getStock(selectedOffer?.offerItems[index]?.material?.id)}} {{selectedOffer?.offerItems[index]?.unit?.name}}</td>
+                            <td>{{selectedOffer?.offerItems[index]?.quantity | commaNumber}}</td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="invoice != undefined && selectedSupplierOffer?.supplierOfferItems?.length > 0 && invoice.invoiceType == 0">
+                        <tr *ngFor="let item of invoice.invoiseDetails; let index = index;trackBy:trackByIndex;">
+                            <td>{{selectedSupplierOffer?.supplierOfferItems[index]?.material?.name}}</td>
+                            <td>{{getUnitName(selectedSupplierOffer?.supplierOfferItems[index]?.materialId)}}</td>
+                            <td>
+                                <input type="number" [(ngModel)]="invoice.invoiseDetails[index].quantity" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="invoice.invoiseDetails[index].totalMaterilPrice" class="form-control" />
+                            </td>
+                            <td>{{invoice.invoiseDetails[index].totalMaterilPrice * invoice.invoiseDetails[index].quantity | commaNumber}}</td>
+                            <td>{{getStock(selectedSupplierOffer?.supplierOfferItems[index]?.material?.id)}} {{selectedSupplierOffer?.supplierOfferItems[index]?.unit?.name}}</td>
+                            <td>{{selectedSupplierOffer?.supplierOfferItems[index]?.quantity | commaNumber}}</td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>

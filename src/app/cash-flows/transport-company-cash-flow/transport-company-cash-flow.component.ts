@@ -90,6 +90,7 @@ export class TransportCompanyCashFlowComponent
   ngOnInit(): void {
     this.getCurrentBalance();
     this.initialFields();
+    this.refresh();
   }
   initialFields() {
     this.fields = [];

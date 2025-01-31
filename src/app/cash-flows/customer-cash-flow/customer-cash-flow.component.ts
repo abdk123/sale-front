@@ -99,6 +99,7 @@ export class CustomerCashFlowComponent
   ngOnInit(): void {
     this.getCurrentBalance();
     this.initialFields();
+    this.refresh();
   }
   initialFields() {
     this.fields = [];

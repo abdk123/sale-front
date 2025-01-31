@@ -51,7 +51,7 @@ export class CreateOfferComponent extends AppComponentBase implements OnInit {
   }
 
   initialCustomers() {
-    this.customerService.getForDropdown().subscribe((result) => {
+    this.customerService.getCustomers().subscribe((result) => {
       this.customers = result;
     });
   }

@@ -54,7 +54,7 @@ export class EditOfferComponent extends AppComponentBase implements OnInit {
   }
   
   initialCustomers() {
-    this._customerService.getForDropdown().subscribe((result) => {
+    this._customerService.getCustomers().subscribe((result) => {
       this.customers = result;
     });
   }

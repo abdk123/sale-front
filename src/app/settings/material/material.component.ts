@@ -97,14 +97,12 @@ export class MaterialComponent
   }
 
   showViewModal(id: number) {
-    this._modalService.show(ViewMaterialDialogComponent, {
-      backdrop: true,
-      class: "modal-lg",
-      ignoreBackdropClick: true,
-      initialState: {
+    this._router.navigate([
+      "/app/settings/view-material",
+      {
         id: id,
       },
-    });
+    ]);
   }
 
   showFilterDialog(status) {

@@ -168,8 +168,8 @@
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
               role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><a class="dropdown-item cursor-pointer" href="#">تعديل</a></li>
-            <li role="menuitem"><a class="dropdown-item cursor-pointer" href="#">حذف</a></li>
+            <li role="menuitem"><a class="dropdown-item cursor-pointer" (click)="showEditModal(receive.id)">تعديل</a></li>
+            <li role="menuitem"><a class="dropdown-item cursor-pointer" (click)="delete(receive)">حذف</a></li>
             <li role="menuitem"><a class="dropdown-item cursor-pointer" (click)="completeData(receive.id)">استكمال البيانات</a></li>
           </ul>
         </div>

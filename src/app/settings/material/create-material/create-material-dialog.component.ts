@@ -41,6 +41,8 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   units: UnitDto[] = [];
   expiryDate: Date;
   categoryIsRequired = false;
+  storeIsRequired = false;
+  sizeIsRequired = false;
   unitIsRequired = false;
   @Output() onSave = new EventEmitter<any>();
 
@@ -105,7 +107,7 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   }
 
   getUnitName() {
-    return this.units.find(x=>x.id == this.material.unitId).name;
+    return this.units.find((x) => x.id == this.material.unitId).name;
   }
 
   trackByIndex(index: number, obj: any): any {
@@ -133,27 +135,28 @@ export class CreateMaterialDialogComponent extends AppComponentBase {
   }
 
   addStock() {
-    if(
-      !this.stock.storeId || 
-      !this.stock.sizeId || 
-      !this.stock.conversionValue || 
-      !this.stock.quantity || 
-      !this.stock.price){
-        this.notify.warn("يرجى ملئ كل الحقول");
-    }else{
-      if (this.material.stocks == undefined) 
-        this.material.stocks = [];
+    if (!this.stock.storeId) {
+      this.storeIsRequired = true;
+    }
+    if (!this.stock.sizeId) {
+      this.sizeIsRequired = true;
+    }
+    if (!this.sizeIsRequired && !this.storeIsRequired) {
+      this.material.stocks = this.material?.stocks ?? [];
+      this.stock.conversionValue = this.stock?.conversionValue ?? 0;
+      this.stock.quantity = this.stock?.quantity ?? 0;
+      this.stock.price = this.stock?.price ?? 0;
       this.material.stocks.push(this.stock);
       //reset stock
       this.stock = new CreateStockDto();
     }
   }
 
-  getNumberInSmallUnit(item){
+  getNumberInSmallUnit(item) {
     const value = item.quantity * item.conversionValue;
     return value;
   }
   deleteStock(index) {
-    this.material.stocks.splice(index,1);
+    this.material.stocks.splice(index, 1);
   }
 }

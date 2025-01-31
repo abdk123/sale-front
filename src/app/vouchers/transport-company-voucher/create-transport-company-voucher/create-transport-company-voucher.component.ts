@@ -45,7 +45,15 @@ export class CreateTransportCompanyVoucherComponent extends AppComponentBase {
   }
 
   ngOnInit(): void {
+    this.initialNumber();
     this.initialTransportCompanies();
+  }
+
+  initialNumber() {
+    this._transportCompanyVoucherService.getIdentityNumber()
+    .subscribe((number)=>{
+      this.transportCompanyVoucher.voucherNumber = number.toString();
+    })
   }
 
   initialTransportCompanies() {
